@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.project.mgt.dao.TXietongUserMapper" >
+  <resultMap id="BaseResultMap" type="com.project.mgt.entity.TXietongUser" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="departmentId" property="departmentid" jdbcType="VARCHAR" />
+    <result column="name_cn" property="nameCn" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="SMALLINT" />
+    <result column="createtime" property="createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="birth" property="birth"  jdbcType="TIMESTAMP" />
+    <result column="political_aff" property="politicalAff" jdbcType="INTEGER" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="top_contacts" property="topContacts" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="emp_num" property="empNum" jdbcType="VARCHAR" />
+    <result column="departmentName" property="departmentName" jdbcType="VARCHAR"/>
+    <result column="ext1" property="ext1" jdbcType="VARCHAR"/>
+    <result column="ext2" property="ext2" jdbcType="VARCHAR"/>
+    <result column="ext3" property="ext3" jdbcType="VARCHAR"/>
+    <result column="ext4" property="ext4" jdbcType="VARCHAR"/>
+    <result column="ext5" property="ext5" jdbcType="VARCHAR"/>
+    <result column="ext6" property="ext6" jdbcType="VARCHAR"/>
+    <result column="ext7" property="ext7" jdbcType="VARCHAR"/>
+    <result column="ext8" property="ext8" jdbcType="VARCHAR"/>
+    <result column="ext9" property="ext9" jdbcType="VARCHAR"/>
+    <result column="ext10" property="ext10" jdbcType="VARCHAR"/>
+  </resultMap>
+
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, login_name, departmentId, name_cn, password, isdelete, createtime, sort, status, 
+    birth, political_aff, telphone, cellphone, top_contacts, sex, emp_num,ext1,ext2,ext3,ext4,ext5,ext6,ext7,ext8,ext9,ext10
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.project.mgt.entity.TXietongUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xietong_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.project.mgt.entity.TXietongUserExample" >
+    delete from t_xietong_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.project.mgt.entity.TXietongUser" >
+    insert into t_xietong_user (id, login_name, departmentId, 
+      name_cn, password, isdelete, 
+      createtime, sort, status, 
+      birth, political_aff, telphone, 
+      cellphone, top_contacts, sex, 
+      emp_num,ext1,ext2,ext3,ext4,ext5,ext6,ext7,ext8,ext9,ext10)
+    values (#{id,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{departmentid,jdbcType=VARCHAR}, 
+      #{nameCn,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{isdelete,jdbcType=SMALLINT}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{birth,jdbcType=TIMESTAMP}, #{politicalAff,jdbcType=INTEGER}, #{telphone,jdbcType=VARCHAR}, 
+      #{cellphone,jdbcType=VARCHAR}, #{topContacts,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
+      #{empNum,jdbcType=VARCHAR}, #{ext1,jdbcType=VARCHAR}, #{ext2,jdbcType=VARCHAR},#{ext3,jdbcType=VARCHAR},
+      #{ext4,jdbcType=VARCHAR},#{ext5,jdbcType=VARCHAR},#{ext6,jdbcType=VARCHAR},#{ext7,jdbcType=VARCHAR},
+      #{ext8,jdbcType=VARCHAR},#{ext9,jdbcType=VARCHAR},#{ext10,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.project.mgt.entity.TXietongUser" >
+    insert into t_xietong_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="departmentid != null" >
+        departmentId,
+      </if>
+      <if test="nameCn != null" >
+        name_cn,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="birth != null" >
+        birth,
+      </if>
+      <if test="politicalAff != null" >
+        political_aff,
+      </if>
+      <if test="telphone != null" >
+        telphone,
+      </if>
+      <if test="cellphone != null" >
+        cellphone,
+      </if>
+      <if test="topContacts != null" >
+        top_contacts,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="empNum != null" >
+        emp_num,
+      </if>
+      <if test="ext1 != null" >
+        ext1,
+      </if>
+      <if test="ext2 != null" >
+      ext2,
+    </if>
+      <if test="ext3 != null" >
+        ext3,
+      </if>
+      <if test="ext4 != null" >
+        ext4,
+      </if>
+      <if test="ext5 != null" >
+      ext5,
+    </if>
+      <if test="ext6 != null" >
+        ext6,
+      </if>
+      <if test="ext7 != null" >
+        ext7,
+      </if>
+      <if test="ext8 != null" >
+        ext8,
+      </if>
+      <if test="ext9 != null" >
+        ext9,
+      </if>
+      <if test="ext10 != null" >
+        ext10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentid != null" >
+        #{departmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="nameCn != null" >
+        #{nameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=SMALLINT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="birth != null" >
+        #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="politicalAff != null" >
+        #{politicalAff,jdbcType=INTEGER},
+      </if>
+      <if test="telphone != null" >
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="topContacts != null" >
+        #{topContacts,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="empNum != null" >
+        #{empNum,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null" >
+        #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null" >
+        #{ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="ext3 != null" >
+        #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="ext4 != null" >
+        #{ext4,jdbcType=VARCHAR},
+      </if>
+      <if test="ext5 != null" >
+        #{ext5,jdbcType=VARCHAR},
+      </if>
+      <if test="ext6 != null" >
+        #{ext6,jdbcType=VARCHAR},
+      </if> <if test="ext7 != null" >
+      #{ext7,jdbcType=VARCHAR},
+    </if> <if test="ext8 != null" >
+      #{ext8,jdbcType=VARCHAR},
+    </if> <if test="ext9 != null" >
+      #{ext9,jdbcType=VARCHAR},
+    </if> <if test="ext10 != null" >
+      #{ext10,jdbcType=VARCHAR},
+    </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.project.mgt.entity.TXietongUserExample" resultType="java.lang.Integer" >
+    select count(*) from t_xietong_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xietong_user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginName != null" >
+        login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmentid != null" >
+        departmentId = #{record.departmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nameCn != null" >
+        name_cn = #{record.nameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdelete != null" >
+        isdelete = #{record.isdelete,jdbcType=SMALLINT},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.birth != null" >
+        birth = #{record.birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.politicalAff != null" >
+        political_aff = #{record.politicalAff,jdbcType=INTEGER},
+      </if>
+      <if test="record.telphone != null" >
+        telphone = #{record.telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cellphone != null" >
+        cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.topContacts != null" >
+        top_contacts = #{record.topContacts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=INTEGER},
+      </if>
+      <if test="record.empNum != null" >
+        emp_num = #{record.empNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext1 != null" >
+        ext1 = #{record.ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext2 != null" >
+        ext2 = #{record.ext2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext3 != null" >
+        ext3 = #{record.ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext4 != null" >
+        ext4 = #{record.ext4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext5 != null" >
+        ext5 = #{record.ext5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext6 != null" >
+        ext6 = #{record.ext6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext7 != null" >
+        ext7 = #{record.ext7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext8 != null" >
+        ext8 = #{record.ext8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext9 != null" >
+        ext9 = #{record.ext9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext10 != null" >
+        ext10 = #{record.ext10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xietong_user
+    set id = #{record.id,jdbcType=VARCHAR},
+      login_name = #{record.loginName,jdbcType=VARCHAR},
+      departmentId = #{record.departmentid,jdbcType=VARCHAR},
+      name_cn = #{record.nameCn,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      isdelete = #{record.isdelete,jdbcType=SMALLINT},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      sort = #{record.sort,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      birth = #{record.birth,jdbcType=TIMESTAMP},
+      political_aff = #{record.politicalAff,jdbcType=INTEGER},
+      telphone = #{record.telphone,jdbcType=VARCHAR},
+      cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      top_contacts = #{record.topContacts,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=INTEGER},
+      emp_num = #{record.empNum,jdbcType=VARCHAR},
+      ext1 = #{record.ext1,jdbcType=VARCHAR},
+    ext2 = #{record.ext2,jdbcType=VARCHAR},
+    ext3 = #{record.ext3,jdbcType=VARCHAR},
+    ext4 = #{record.ext4,jdbcType=VARCHAR},
+    ext5 = #{record.ext5,jdbcType=VARCHAR},
+    ext6 = #{record.ext6,jdbcType=VARCHAR},
+    ext7 = #{record.ext7,jdbcType=VARCHAR},
+    ext8 = #{record.ext8,jdbcType=VARCHAR},
+    ext9 = #{record.ext9,jdbcType=VARCHAR},
+    ext10 = #{record.ext10,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.project.mgt.entity.TXietongUser" >
+    update t_xietong_user
+    <set >
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentid != null" >
+        departmentId = #{departmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="nameCn != null" >
+        name_cn = #{nameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=SMALLINT},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="birth != null" >
+        birth = #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="politicalAff != null" >
+        political_aff = #{politicalAff,jdbcType=INTEGER},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="topContacts != null" >
+        top_contacts = #{topContacts,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="empNum != null" >
+        emp_num = #{empNum,jdbcType=VARCHAR},
+      </if>
+      <if test="ext1 != null" >
+        ext1 = #{ext1,jdbcType=VARCHAR},
+      </if>
+      <if test="ext2 != null" >
+      ext2 = #{ext2,jdbcType=VARCHAR},
+    </if>
+      <if test="ext3 != null" >
+        ext3 = #{ext3,jdbcType=VARCHAR},
+      </if>
+      <if test="ext4 != null" >
+        ext4 = #{ext4,jdbcType=VARCHAR},
+      </if>
+      <if test="ext5 != null" >
+        ext5 = #{ext5,jdbcType=VARCHAR},
+      </if>
+      <if test="ext6 != null" >
+        ext6 = #{ext6,jdbcType=VARCHAR},
+      </if>
+      <if test="ext7 != null" >
+        ext7 = #{ext7,jdbcType=VARCHAR},
+      </if>
+      <if test="ext8 != null" >
+        ext8 = #{ext8,jdbcType=VARCHAR},
+      </if>
+      <if test="ext9 != null" >
+        ext9 = #{ext9,jdbcType=VARCHAR},
+      </if>
+      <if test="ext10 != null" >
+        ext10 = #{ext10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.project.mgt.entity.TXietongUser" >
+    update t_xietong_user
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      departmentId = #{departmentid,jdbcType=VARCHAR},
+      name_cn = #{nameCn,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=SMALLINT},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      sort = #{sort,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      birth = #{birth,jdbcType=TIMESTAMP},
+      political_aff = #{politicalAff,jdbcType=INTEGER},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      cellphone = #{cellphone,jdbcType=VARCHAR},
+      top_contacts = #{topContacts,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      emp_num = #{empNum,jdbcType=VARCHAR},
+       ext1 = #{ext1,jdbcType=VARCHAR},
+        ext2 = #{ext2,jdbcType=VARCHAR},
+        ext3 = #{ext3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!--登录查询对象角色-->
+  <select id="loadUserByUsername" resultMap="lazyLoadRoles">
+    SELECT  u.*, r.`id` AS rid ,r.`isdelete` AS risdelete ,r.* ,d.`name` AS departmentName FROM t_xietong_user u INNER JOIN t_xietong_user_role ur
+     ON u.`id` = ur.`user_id` INNER JOIN
+    t_xietong_role r ON ur.`role_id` = r.`id`
+    LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`
+    WHERE u.`login_name` =  #{admin}  AND u.`isdelete` = "1"
+  </select>
+  <resultMap id="lazyLoadRoles" extends="BaseResultMap" type="com.project.mgt.entity.TXietongUser">
+    <collection property="roles" ofType="com.project.mgt.entity.TXietongRole">
+      <id column="rid" property="id" jdbcType="VARCHAR" />
+      <result column="role_flag" property="roleFlag" jdbcType="VARCHAR" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="code" property="code" jdbcType="VARCHAR" />
+      <result column="decription" property="decription" jdbcType="VARCHAR" />
+      <result column="risdelete" property="isdelete" jdbcType="INTEGER" />
+      <result column="menus_sidebar" property="date" jdbcType="TIMESTAMP"/>
+    </collection>
+  </resultMap>
+
+
+  <!--//根据用户名查找用户信息（不包括角色信息）-->
+  <select id="selectUserByUserName" resultMap="BaseResultMap">
+    SELECT * FROM t_xietong_user u WHERE u.`login_name`= #{username} AND u.`isdelete`="1"
+  </select>
+
+
+  <select id="selectMaxSort" resultType="int">
+    SELECT MAX(u.`sort`)  FROM t_xietong_user u;
+  </select>
+
+
+  <resultMap id="userRoleDepartment" type="com.project.mgt.entity.TXietongUser">
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="departmentId" property="departmentid" jdbcType="VARCHAR" />
+    <result column="name_cn" property="nameCn" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="SMALLINT" />
+    <result column="createtime" property="createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="birth" property="birth" jdbcType="TIMESTAMP" />
+    <result column="political_aff" property="politicalAff" jdbcType="INTEGER" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="top_contacts" property="topContacts" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="emp_num" property="empNum" jdbcType="VARCHAR" />
+    <result column="departmentName" property="departmentName" jdbcType="VARCHAR"/>
+    <result column="departmentLeadId" property="departmentLeadId" jdbcType="VARCHAR"/>
+
+
+    <!--<result column="rid" property="rid" jdbcType="VARCHAR"/>-->
+    <!--<result column="roleName" property="roleName" jdbcType="VARCHAR"/>-->
+    <!--<result column="rstatus" property="rstatus" jdbcType="VARCHAR"/>-->
+    <result column="dstatus" property="dstatus" jdbcType="VARCHAR"/>
+    <result column="ext1" property="ext1" jdbcType="VARCHAR"/>
+    <result column="ext2" property="ext2" jdbcType="VARCHAR"/>
+    <result column="ext3" property="ext3" jdbcType="VARCHAR"/>
+    <collection property="roles" ofType="com.project.mgt.entity.TXietongRole">
+      <result column="rid" property="id" jdbcType="VARCHAR"/>
+      <result column="roleName" property="name" jdbcType="VARCHAR"/>
+      <result column="rstatus" property="roleFlag" jdbcType="VARCHAR"/>
+
+    </collection>
+  </resultMap>
+
+  <!--查询所有可用用户-->
+  <select id="findAllUser" resultMap="userRoleDepartment">
+   SELECT u.*,d.`name` AS departmentName,r.`id` AS rid , r.`name` AS roleName,r.`isdelete` AS rstatus,d.`isdelete` AS dstatus ,d.`sort` FROM t_xietong_user u
+   LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`
+   LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`
+   WHERE u.`isdelete` = "1"
+   ORDER BY d.`sort` AND u.`sort`  limit #{pageNo},#{pageSize}
+  </select>
+  <!--SELECT u.*,d.`name` AS departmentName,r.`id` AS rid , r.`name` AS roleName FROM t_xietong_user u-->
+  <!--LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`-->
+  <!--LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`-->
+  <!--WHERE u.`isdelete` = "1" AND r.`isdelete` = "1" AND d.`isdelete` = "1" AND ur.`status` = "1"-->
+  <!--ORDER BY u.`sort` limit #{pageNo},#{pageSize}-->
+
+  <!--用户启用禁用-->
+  <update id="enOrDisUser">
+    UPDATE t_xietong_user u SET u.`status`= #{status} WHERE u.`login_name`= #{login_name}
+  </update>
+
+
+  <!--删除用户-->
+  <update id="deleteUserByLoginName">
+    UPDATE t_xietong_user u SET u.`isdelete`="0" WHERE u.`id` = #{id}
+  </update>
+
+  <select id="findUserAndRoleByUserName" resultMap="lazyLoadRoles">
+    SELECT  u.*, r.`id` AS rid ,r.`isdelete` AS risdelete ,r.*  FROM t_xietong_user u INNER JOIN t_xietong_user_role ur
+    ON u.`id` = ur.`user_id` INNER JOIN
+    t_xietong_role r ON ur.`role_id` = r.`id` WHERE u.`login_name` = #{login_name}  AND u.`isdelete` = "1"
+  </select>
+
+
+  <update id="updateUserSort">
+      UPDATE t_xietong_user u SET u.`sort` = #{sort} WHERE u.`id`  = #{id}
+  </update>
+
+  <select id="userCount" resultType="int">
+   SELECT COUNT(*) FROM t_xietong_user u
+   LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`
+   LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`
+   WHERE u.`isdelete` = "1"
+  </select>
+
+
+  <!--SELECT COUNT(*) FROM t_xietong_user u-->
+  <!--LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`-->
+  <!--LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`-->
+  <!--WHERE u.`isdelete` = "1" AND r.`isdelete` = "1" AND d.`isdelete` = "1" AND ur.`status` = "1"-->
+  <select id="selectById" resultType="String">
+  select name_cn from t_xietong_user  where id=#{id} and isdelete = "1"
+</select>
+
+  <select id="selectUserByLikeName" resultMap="BaseResultMap">
+     SELECT u.*,d.`name` AS departmentName  FROM t_xietong_user u  LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id` WHERE u.`name_cn` LIKE CONCAT('%',#{name}, '%') AND u.`isdelete` = "1"
+  </select>
+
+
+
+  <update id="updatePassword">
+    UPDATE t_xietong_user u SET u.`password`=#{password} WHERE u.`id` = #{uid}
+  </update>
+
+    <select id="selectUserByLikeNamePage" resultMap="userRoleDepartment">
+      SELECT  u.*,d.`leader_id` AS departmentLeadId,d.`name` AS departmentName,r.`id` AS rid , r.`name` AS roleName ,r.`isdelete` AS rstatus,d.`isdelete` AS dstatus FROM t_xietong_user u
+      LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`
+      LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`
+      WHERE u.`isdelete` = "1"  AND ur.`id` IN (SELECT MAX(ur.`id`) FROM t_xietong_user_role r GROUP BY ur.`id`)
+      <if test="name != null and name !=''">
+            AND  ( u.`name_cn` LIKE CONCAT('%',#{name},'%') OR u.`ext3` LIKE CONCAT('%',#{name},'%'))
+      </if>
+
+         <if test="departmentId != null and departmentId !=''">
+             AND u.`departmentId` = #{departmentId}
+         </if>
+         ORDER BY d.`sort` , u.`sort` limit #{pageNo},#{pageSize}
+  </select>
+
+  <!--SELECT u.*,d.`name` AS departmentName,r.`id` AS rid , r.`name` AS roleName FROM t_xietong_user u-->
+  <!--LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`-->
+  <!--LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`-->
+  <!--WHERE u.`isdelete` = "1" AND r.`isdelete` = "1" AND d.`isdelete` = "1" AND ur.`status` = "1"  and u.`name_cn` LIKE CONCAT('%',#{name}, '%')-->
+  <!--ORDER BY u.`sort` limit #{pageNo},#{pageSize}-->
+
+  <select id="selectUserByLikeNamePageCount" resultType="int">
+   SELECT COUNT(u.`id`) FROM t_xietong_user u
+   LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`
+   LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id`
+  LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`
+   WHERE u.`isdelete` = "1" AND ur.`id` IN (SELECT MAX(ur.`id`) FROM t_xietong_user_role r GROUP BY ur.`id`)
+      <if test="name != null and name !=''">
+          AND u.`name_cn` LIKE CONCAT('%',#{name}, '%')
+      </if>
+
+      <if test="departmentId != null and departmentId !=''">
+          AND u.`departmentId` = #{departmentId}
+      </if>
+  </select>
+
+  <!--SELECT COUNT(u.`id`) FROM t_xietong_user u-->
+  <!--LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`-->
+  <!--LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`-->
+  <!--WHERE u.`isdelete` = "1" AND r.`isdelete` = "1" AND d.`isdelete` = "1" AND ur.`status` = "1"  AND u.`name_cn` LIKE CONCAT('%',#{name}, '%')-->
+
+  <select id="selectUserByDepartmentId" resultType="int">
+    SELECT COUNT(u.`id`) FROM t_xietong_user u WHERE u.`departmentId` = #{departmentId} AND u.`isdelete` = "1"
+  </select>
+
+  <update id="updatePinYin">
+    UPDATE t_xietong_user u SET u.`ext3`=#{pinyin} WHERE u.`id` = #{id}
+  </update>
+  
+  <!--查询用户总条数-->
+  <select id="selectTotalCountLikeName" resultType="int">
+  select count(u.id)from t_xietong_user u where u.isdelete=1
+  <if test="name != null and name !=''">
+            AND  ( u.`name_cn` LIKE CONCAT('%',#{name},'%') OR u.`ext3` LIKE CONCAT('%',#{name},'%'))
+      </if>
+
+         <if test="departmentId != null and departmentId !=''">
+             AND u.`departmentId` = #{departmentId}
+         </if>
+  </select>
+  <!--查询用户信息-->
+  <select id="selectUserByNamePage" resultMap="BaseResultMap">
+  select * from t_xietong_user u where u.isdelete=1
+  <if test="name != null and name !=''">
+            AND  ( u.`name_cn` LIKE CONCAT('%',#{name},'%') OR u.`ext3` LIKE CONCAT('%',#{name},'%'))
+      </if>
+
+         <if test="departmentId != null and departmentId !=''">
+             AND u.`departmentId` = #{departmentId}
+         </if>
+         ORDER BY  u.`sort` limit #{pageNo},#{pageSize}
+  </select>
+  <!--查询角色信息-->
+  <select id="selectUserByUserId" resultMap="userRoleDepartment">
+  SELECT  u.*,d.`leader_id` AS departmentLeadId,d.`name` AS departmentName,r.`id` AS rid , r.`name` AS roleName ,r.`isdelete` AS rstatus,d.`isdelete` AS dstatus FROM t_xietong_user u
+      LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`
+      LEFT JOIN t_xietong_user_role ur ON ur.`user_id` = u.`id` LEFT JOIN t_xietong_role r ON ur.`role_id` = r.`id`
+      WHERE u.`isdelete` = "1" and u.id=#{id}
+  </select>
+</mapper>
