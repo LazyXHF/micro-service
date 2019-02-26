@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.project.mgt.dao.TXietongDictionaryMapper">
+    <resultMap id="BaseResultMap" type="com.project.mgt.entity.TXietongDictionary">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR"/>
+        <result column="TYPE_DESC" property="typeDesc" jdbcType="VARCHAR"/>
+        <result column="MAIN_VALUE" property="mainValue" jdbcType="VARCHAR"/>
+        <result column="MID_VALUE" property="midValue" jdbcType="VARCHAR"/>
+        <result column="SUB_VALUE" property="subValue" jdbcType="VARCHAR"/>
+        <result column="VALUE_SORT" property="valueSort" jdbcType="VARCHAR"/>
+        <result column="VALUE_DESC" property="valueDesc" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="TYPE_ID" property="typeId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    ID, TYPE_CODE, TYPE_DESC, MAIN_VALUE, MID_VALUE, SUB_VALUE, VALUE_SORT, VALUE_DESC, 
+    REMARK, TYPE_ID
+  </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.project.mgt.entity.TXietongDictionaryExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_xietong_dictionary
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xietong_dictionary
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_xietong_dictionary
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.project.mgt.entity.TXietongDictionaryExample">
+        delete from t_xietong_dictionary
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.project.mgt.entity.TXietongDictionary">
+    insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC, 
+      MAIN_VALUE, MID_VALUE, SUB_VALUE, 
+      VALUE_SORT, VALUE_DESC, REMARK, 
+      TYPE_ID)
+    values (#{id,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, #{typeDesc,jdbcType=VARCHAR}, 
+      #{mainValue,jdbcType=VARCHAR}, #{midValue,jdbcType=VARCHAR}, #{subValue,jdbcType=VARCHAR}, 
+      #{valueSort,jdbcType=VARCHAR}, #{valueDesc,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.project.mgt.entity.TXietongDictionary">
+        insert into t_xietong_dictionary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="typeCode != null">
+                TYPE_CODE,
+            </if>
+            <if test="typeDesc != null">
+                TYPE_DESC,
+            </if>
+            <if test="mainValue != null">
+                MAIN_VALUE,
+            </if>
+            <if test="midValue != null">
+                MID_VALUE,
+            </if>
+            <if test="subValue != null">
+                SUB_VALUE,
+            </if>
+            <if test="valueSort != null">
+                VALUE_SORT,
+            </if>
+            <if test="valueDesc != null">
+                VALUE_DESC,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="typeId != null">
+                TYPE_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="typeCode != null">
+                #{typeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="typeDesc != null">
+                #{typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="mainValue != null">
+                #{mainValue,jdbcType=VARCHAR},
+            </if>
+            <if test="midValue != null">
+                #{midValue,jdbcType=VARCHAR},
+            </if>
+            <if test="subValue != null">
+                #{subValue,jdbcType=VARCHAR},
+            </if>
+            <if test="valueSort != null">
+                #{valueSort,jdbcType=VARCHAR},
+            </if>
+            <if test="valueDesc != null">
+                #{valueDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="typeId != null">
+                #{typeId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.project.mgt.entity.TXietongDictionaryExample"
+            resultType="java.lang.Integer">
+        select count(*) from t_xietong_dictionary
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update t_xietong_dictionary
+        <set>
+            <if test="record.id != null">
+                ID = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.typeCode != null">
+                TYPE_CODE = #{record.typeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.typeDesc != null">
+                TYPE_DESC = #{record.typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mainValue != null">
+                MAIN_VALUE = #{record.mainValue,jdbcType=VARCHAR},
+            </if>
+            <if test="record.midValue != null">
+                MID_VALUE = #{record.midValue,jdbcType=VARCHAR},
+            </if>
+            <if test="record.subValue != null">
+                SUB_VALUE = #{record.subValue,jdbcType=VARCHAR},
+            </if>
+            <if test="record.valueSort != null">
+                VALUE_SORT = #{record.valueSort,jdbcType=VARCHAR},
+            </if>
+            <if test="record.valueDesc != null">
+                VALUE_DESC = #{record.valueDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.remark != null">
+                REMARK = #{record.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.typeId != null">
+                TYPE_ID = #{record.typeId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update t_xietong_dictionary
+        set ID = #{record.id,jdbcType=VARCHAR},
+        TYPE_CODE = #{record.typeCode,jdbcType=VARCHAR},
+        TYPE_DESC = #{record.typeDesc,jdbcType=VARCHAR},
+        MAIN_VALUE = #{record.mainValue,jdbcType=VARCHAR},
+        MID_VALUE = #{record.midValue,jdbcType=VARCHAR},
+        SUB_VALUE = #{record.subValue,jdbcType=VARCHAR},
+        VALUE_SORT = #{record.valueSort,jdbcType=VARCHAR},
+        VALUE_DESC = #{record.valueDesc,jdbcType=VARCHAR},
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+        TYPE_ID = #{record.typeId,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.project.mgt.entity.TXietongDictionary">
+        update t_xietong_dictionary
+        <set>
+            <if test="typeCode != null">
+                TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="typeDesc != null">
+                TYPE_DESC = #{typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="mainValue != null">
+                MAIN_VALUE = #{mainValue,jdbcType=VARCHAR},
+            </if>
+            <if test="midValue != null">
+                MID_VALUE = #{midValue,jdbcType=VARCHAR},
+            </if>
+            <if test="subValue != null">
+                SUB_VALUE = #{subValue,jdbcType=VARCHAR},
+            </if>
+            <if test="valueSort != null">
+                VALUE_SORT = #{valueSort,jdbcType=VARCHAR},
+            </if>
+            <if test="valueDesc != null">
+                VALUE_DESC = #{valueDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="typeId != null">
+                TYPE_ID = #{typeId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.project.mgt.entity.TXietongDictionary">
+    update t_xietong_dictionary
+    set TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      TYPE_DESC = #{typeDesc,jdbcType=VARCHAR},
+      MAIN_VALUE = #{mainValue,jdbcType=VARCHAR},
+      MID_VALUE = #{midValue,jdbcType=VARCHAR},
+      SUB_VALUE = #{subValue,jdbcType=VARCHAR},
+      VALUE_SORT = #{valueSort,jdbcType=VARCHAR},
+      VALUE_DESC = #{valueDesc,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      TYPE_ID = #{typeId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <!--督办类型下拉-->
+    <select id="selectTpyeXiala" resultMap="BaseResultMap">
+    select * from t_xietong_dictionary t where t.type_code='2' order by CAST(VALUE_SORT AS SIGNED INTEGER)
+   </select>
+
+    <!--督办类型种类下拉-->
+    <select id="selectDubanzhonglei" resultMap="BaseResultMap">
+    select * from t_xietong_dictionary t where t.type_code='21'
+   </select>
+
+    <!--督办类型下拉-->
+    <select id="selectJinjiXiala" resultMap="BaseResultMap">
+    select t.main_value from t_xietong_dictionary t where t.type_code='1'
+   </select>
+
+    <!--字典表类型查询-->
+    <select id="selectDictionaryType" resultMap="BaseResultMap">
+        select TYPE_DESC,TYPE_CODE,TYPE_ID from t_xietong_dictionary GROUP BY TYPE_DESC
+    </select>
+    <!--//下拉框固定资产-->
+    <select id="queryLeixing" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_xietong_dictionary
+        where TYPE_CODE =4;
+    </select>
+    <select id="querySupplyName" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from t_xietong_dictionary
+        where  TYPE_CODE =6;
+    </select>
+    <select id="querySupplyType" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from t_xietong_dictionary
+        where  TYPE_ID =#{id};
+    </select>
+    <select id="queryApplyPeople" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from t_xietong_dictionary
+        where  TYPE_CODE =10;
+    </select>
+    <!--查询机要员信息-->
+    <select id="selectjiyaoMsg" resultMap="BaseResultMap">
+select * from t_xietong_dictionary where TYPE_CODE=15 and MID_VALUE=#{mid_value} ;
+</select>
+
+    <select id="selectalljiyaoMsg" resultMap="BaseResultMap">
+select * from t_xietong_dictionary where TYPE_CODE=15 ;
+</select>
+    <!--更新办公室审核人-->
+    <update id="updateOfficer" parameterType="com.project.mgt.entity.TXietongDictionary">
+        update  t_xietong_dictionary set
+        MAIN_VALUE = #{name},
+        MID_VALUE = #{nameId}
+        where id=#{id};
+    </update>
+    <!--查询原来审核人信息-->
+    <select id="queryOfficer" parameterType="String" resultMap="BaseResultMap">
+        SELECT * from t_xietong_dictionary
+        where id=#{id}
+    </select>
+    <!--查询采购员Id-->
+    <select id="queryPucharseId" resultType="long">
+        select MID_VALUE from t_xietong_dictionary
+        where id=40
+    </select>
+    <!--查询办公室Id-->
+    <select id="queryBanGongId" resultType="long">
+        select MID_VALUE from t_xietong_dictionary
+        where id=26
+    </select>
+    <!--查询仓管员Id-->
+    <select id="queryRepositoryId" resultType="long">
+        select MID_VALUE from t_xietong_dictionary
+        where id=30
+    </select>
+    <!--督办员配置显示-->
+    <select id="selectDubanyuan" resultMap="BaseResultMap">
+        select d.* from t_xietong_dictionary d
+        where d.TYPE_CODE=16
+    </select>
+
+    <!--配置督办员-->
+    <update id="updateDubanyuan">
+        update t_xietong_dictionary
+        <set>
+            <if test="mainValue !=null and mainValue!=''">
+                MAIN_VALUE=#{mainValue,jdbcType=VARCHAR},
+            </if>
+            <if test="mainValue!=null and mainValue!=''">
+                MID_VALUE=#{midValue,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where TYPE_CODE='16'
+    </update>
+
+    <!--添加督办员-->
+    <insert id="insertDubanyuan" parameterType="com.project.mgt.entity.TXietongDictionary">
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      values (#{id,jdbcType=VARCHAR},'16', '督办员-收文',#{mainValue,jdbcType=VARCHAR},#{midValue,jdbcType=VARCHAR},
+      #{subValue,jdbcType=VARCHAR},#{valueSort,jdbcType=VARCHAR}, '督办员-收文', #{remark,jdbcType=VARCHAR},'1'
+      )
+    </insert>
+
+    <!--删除督办员-->
+    <delete id="deletedubanyuan">
+        delete from t_xietong_dictionary where TYPE_CODE='16'
+    </delete>
+
+
+    <!--督办类型添加-->
+    <insert id="insertDuban" parameterType="com.project.mgt.entity.TXietongDictionary">
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      values (#{id,jdbcType=VARCHAR}, '2', '督办类型',#{mainValue,jdbcType=VARCHAR},#{midValue,jdbcType=VARCHAR},
+      #{subValue,jdbcType=VARCHAR},#{valueSort,jdbcType=VARCHAR}, '督办类型', #{remark,jdbcType=VARCHAR},'1')
+    </insert>
+
+    <!--督办类型种类添加-->
+    <insert id="insertDubanzhonglei" parameterType="com.project.mgt.entity.TXietongDictionary">
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      select #{id,jdbcType=VARCHAR}, '21', '督办类型种类',#{mainValue,jdbcType=VARCHAR},MAX(d.MID_VALUE+1) as MID_VALUE,
+      #{subValue,jdbcType=VARCHAR},#{valueSort,jdbcType=VARCHAR}, '督办类型种类', #{remark,jdbcType=VARCHAR},'1'
+      from t_xietong_dictionary d
+      where d.TYPE_CODE='21'
+    </insert>
+
+
+    <!--机要类型添加-->
+    <insert id="insertJiyaoyuan" parameterType="com.project.mgt.entity.TXietongDictionary">
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      values (#{id,jdbcType=VARCHAR}, '15', '机要员-收文',
+      #{mainValue,jdbcType=VARCHAR}, #{midValue,jdbcType=VARCHAR},
+      #{subValue,jdbcType=VARCHAR},#{valueSort,jdbcType=VARCHAR}, '机要员-收文', #{remark,jdbcType=VARCHAR},'1')
+    </insert>
+    <!--机要员修改-->
+    <update id="updateJiyaoyuan">
+        update t_xietong_dictionary
+        <set>
+            <if test="typeCode != null">
+                TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="typeDesc != null">
+                TYPE_DESC = #{typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="mainValue != null">
+                MAIN_VALUE = #{mainValue,jdbcType=VARCHAR},
+            </if>
+            <if test="midValue != null">
+                MID_VALUE = #{midValue,jdbcType=VARCHAR},
+            </if>
+            <if test="subValue != null">
+                SUB_VALUE = #{subValue,jdbcType=VARCHAR},
+            </if>
+            <if test="valueSort != null">
+                VALUE_SORT = #{valueSort,jdbcType=VARCHAR},
+            </if>
+            <if test="valueDesc != null">
+                VALUE_DESC = #{valueDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="typeId != null">
+                TYPE_ID = #{typeId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <!--收文部委领导添加-->
+    <insert id="insertReceivingLeader" parameterType="com.project.mgt.entity.TXietongDictionary">
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      values (#{id,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, #{typeDesc,jdbcType=VARCHAR},
+      #{mainValue,jdbcType=VARCHAR}, #{midValue,jdbcType=VARCHAR},
+      #{subValue,jdbcType=VARCHAR},#{valueSort,jdbcType=VARCHAR}, #{valueDesc,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{typeId,jdbcType=VARCHAR})
+    </insert>
+    <delete id="deleteReceivingLeader"> 
+    delete from t_xietong_dictionary where TYPE_CODE=#{typeCode} 
+    </delete>
+    <!--删除机要员信息-->
+    <delete id="deleteJiyaoMsg"> delete from t_xietong_dictionary where TYPE_CODE='15' </delete>
+    <select id="selectByPage" resultMap="BaseResultMap">
+        select * from t_xietong_dictionary
+        <where>
+            <if test="code!=null and ''!=code">
+                type_code=#{code}
+            </if>
+        </where>
+        LIMIT #{rowNum} , #{pageCount}
+    </select>
+<!--查询会议室审核人-->
+<select id="selectConferenceRoom" resultMap="BaseResultMap">
+select * from t_xietong_dictionary where type_code='14'
+</select>
+
+    <!--年份配置下拉-->
+    <select id="selectNiandu" resultMap="BaseResultMap">
+        select * from t_xietong_dictionary where type_code='23' order by CAST(MAIN_VALUE AS SIGNED INTEGER) desc
+    </select>
+
+    <!--添加年度配置-->
+    <insert id="insertNiandu" parameterType="com.project.mgt.entity.TXietongDictionary" >
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      select #{id,jdbcType=VARCHAR}, '23', '年度',#{mainValue,jdbcType=VARCHAR},#{midValue,jdbcType=VARCHAR},
+      #{subValue,jdbcType=VARCHAR},MAX(d.VALUE_SORT+1) as VALUE_SORT, '年度', #{remark,jdbcType=VARCHAR},'1'
+      from t_xietong_dictionary d
+      where d.TYPE_CODE='23'
+    </insert>
+
+    <!--派车员查询-->
+    <select id="selectPaicheyuan" resultMap="BaseResultMap">
+        select * from t_xietong_dictionary where type_code='13'
+    </select>
+
+</mapper>
