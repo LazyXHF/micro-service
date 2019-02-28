@@ -6,7 +6,7 @@
 	<properties resource="application.properties" />
 	<!-- JavaBean类型自动映射扫描包配置 Java类型别名 -->
 	<typeAliases>
-		<package name="com.portjs.xietong.entity" />
+		<package name="com.project.mgt.entity" />
 	</typeAliases>
 
 	<!--&lt;!&ndash; 数据库环境 &ndash;&gt;-->

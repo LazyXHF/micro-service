@@ -1,0 +1,11 @@
+# swagger项目相关配置
+template:
+  name: gumingyang
+  copyright-year: 2019
+  email: 550284612@qq.com
+  title: 自定义管理系统_接口文档
+  description: 用于管理集团旗下公司的项目开发
+  url: https://swagger.io/
+  base-package: com.mgt.common.utils
+  version: 0.0.1
+  enable: true

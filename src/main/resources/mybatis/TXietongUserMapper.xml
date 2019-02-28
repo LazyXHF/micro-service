@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.project.mgt.dao.TXietongUserMapper" >
-  <resultMap id="BaseResultMap" type="com.project.mgt.entity.TXietongUser" >
+<mapper namespace="com.mgt.project.Example.dao.TXietongUserMapper" >
+  <resultMap id="BaseResultMap" type="com.mgt.project.Example.entity.TXietongUser" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="login_name" property="loginName" jdbcType="VARCHAR" />
     <result column="departmentId" property="departmentid" jdbcType="VARCHAR" />
@@ -94,7 +94,7 @@
     id, login_name, departmentId, name_cn, password, isdelete, createtime, sort, status, 
     birth, political_aff, telphone, cellphone, top_contacts, sex, emp_num,ext1,ext2,ext3,ext4,ext5,ext6,ext7,ext8,ext9,ext10
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.project.mgt.entity.TXietongUserExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mgt.project.Example.entity.TXietongUserExample" >
     select
     <if test="distinct" >
       distinct
@@ -118,13 +118,13 @@
     delete from t_xietong_user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.project.mgt.entity.TXietongUserExample" >
+  <delete id="deleteByExample" parameterType="com.mgt.project.Example.entity.TXietongUserExample" >
     delete from t_xietong_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.project.mgt.entity.TXietongUser" >
+  <insert id="insert" parameterType="com.mgt.project.Example.entity.TXietongUser" >
     insert into t_xietong_user (id, login_name, departmentId, 
       name_cn, password, isdelete, 
       createtime, sort, status, 
@@ -140,7 +140,7 @@
       #{ext4,jdbcType=VARCHAR},#{ext5,jdbcType=VARCHAR},#{ext6,jdbcType=VARCHAR},#{ext7,jdbcType=VARCHAR},
       #{ext8,jdbcType=VARCHAR},#{ext9,jdbcType=VARCHAR},#{ext10,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.project.mgt.entity.TXietongUser" >
+  <insert id="insertSelective" parameterType="com.mgt.project.Example.entity.TXietongUser" >
     insert into t_xietong_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -299,7 +299,7 @@
     </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.project.mgt.entity.TXietongUserExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.mgt.project.Example.entity.TXietongUserExample" resultType="java.lang.Integer" >
     select count(*) from t_xietong_user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -423,7 +423,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.project.mgt.entity.TXietongUser" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.mgt.project.Example.entity.TXietongUser" >
     update t_xietong_user
     <set >
       <if test="loginName != null" >
@@ -504,7 +504,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.project.mgt.entity.TXietongUser" >
+  <update id="updateByPrimaryKey" parameterType="com.mgt.project.Example.entity.TXietongUser" >
     update t_xietong_user
     set login_name = #{loginName,jdbcType=VARCHAR},
       departmentId = #{departmentid,jdbcType=VARCHAR},
@@ -535,8 +535,8 @@
     LEFT JOIN t_xietong_department d ON u.`departmentId` = d.`id`
     WHERE u.`login_name` =  #{admin}  AND u.`isdelete` = "1"
   </select>
-  <resultMap id="lazyLoadRoles" extends="BaseResultMap" type="com.project.mgt.entity.TXietongUser">
-    <collection property="roles" ofType="com.project.mgt.entity.TXietongRole">
+  <resultMap id="lazyLoadRoles" extends="BaseResultMap" type="com.mgt.project.Example.entity.TXietongUser">
+    <collection property="roles" ofType="com.mgt.project.Example.entity.TXietongRole">
       <id column="rid" property="id" jdbcType="VARCHAR" />
       <result column="role_flag" property="roleFlag" jdbcType="VARCHAR" />
       <result column="name" property="name" jdbcType="VARCHAR" />
@@ -559,7 +559,7 @@
   </select>
 
 
-  <resultMap id="userRoleDepartment" type="com.project.mgt.entity.TXietongUser">
+  <resultMap id="userRoleDepartment" type="com.mgt.project.Example.entity.TXietongUser">
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="login_name" property="loginName" jdbcType="VARCHAR" />
     <result column="departmentId" property="departmentid" jdbcType="VARCHAR" />
@@ -587,7 +587,7 @@
     <result column="ext1" property="ext1" jdbcType="VARCHAR"/>
     <result column="ext2" property="ext2" jdbcType="VARCHAR"/>
     <result column="ext3" property="ext3" jdbcType="VARCHAR"/>
-    <collection property="roles" ofType="com.project.mgt.entity.TXietongRole">
+    <collection property="roles" ofType="com.mgt.project.Example.entity.TXietongRole">
       <result column="rid" property="id" jdbcType="VARCHAR"/>
       <result column="roleName" property="name" jdbcType="VARCHAR"/>
       <result column="rstatus" property="roleFlag" jdbcType="VARCHAR"/>
