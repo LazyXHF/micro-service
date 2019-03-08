@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.xietong.dao.TTraceLogMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TTraceLog" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="consume_TIME" property="consumeTime" jdbcType="INTEGER" />
+    <result column="model_name" property="modelName" jdbcType="VARCHAR" />
+    <result column="METHOD_INFO" property="methodInfo" jdbcType="VARCHAR" />
+    <result column="METHOD_NAME" property="methodName" jdbcType="VARCHAR" />
+    <result column="REQUEST_MESSAGE" property="requestMessage" jdbcType="VARCHAR" />
+    <result column="RESPONSE_MESSAGE" property="responseMessage" jdbcType="VARCHAR" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="remote_ip" property="remoteIp" jdbcType="VARCHAR" />
+    <result column="remote_user" property="remoteUser" jdbcType="VARCHAR" />
+    <result column="reserved1" property="reserved1" jdbcType="VARCHAR" />
+    <result column="reserved2" property="reserved2" jdbcType="VARCHAR" />
+    <result column="reserved3" property="reserved3" jdbcType="VARCHAR" />
+    <result column="reserved4" property="reserved4" jdbcType="VARCHAR" />
+    <result column="reserved5" property="reserved5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, CREATETIME, consume_TIME, model_name, METHOD_INFO, METHOD_NAME, REQUEST_MESSAGE, 
+    RESPONSE_MESSAGE, OPERATOR_NAME, remote_ip, remote_user, reserved1, reserved2, reserved3, 
+    reserved4, reserved5
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TTraceLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_trace_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_trace_log
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_trace_log
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TTraceLogExample" >
+    delete from t_trace_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TTraceLog" >
+    insert into t_trace_log (ID, CREATETIME, consume_TIME, 
+      model_name, METHOD_INFO, METHOD_NAME, 
+      REQUEST_MESSAGE, RESPONSE_MESSAGE, OPERATOR_NAME, 
+      remote_ip, remote_user, reserved1, 
+      reserved2, reserved3, reserved4, 
+      reserved5)
+    values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{consumeTime,jdbcType=INTEGER}, 
+      #{modelName,jdbcType=VARCHAR}, #{methodInfo,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, 
+      #{requestMessage,jdbcType=VARCHAR}, #{responseMessage,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, 
+      #{remoteIp,jdbcType=VARCHAR}, #{remoteUser,jdbcType=VARCHAR}, #{reserved1,jdbcType=VARCHAR}, 
+      #{reserved2,jdbcType=VARCHAR}, #{reserved3,jdbcType=VARCHAR}, #{reserved4,jdbcType=VARCHAR}, 
+      #{reserved5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TTraceLog" >
+    insert into t_trace_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="createtime != null" >
+        CREATETIME,
+      </if>
+      <if test="consumeTime != null" >
+        consume_TIME,
+      </if>
+      <if test="modelName != null" >
+        model_name,
+      </if>
+      <if test="methodInfo != null" >
+        METHOD_INFO,
+      </if>
+      <if test="methodName != null" >
+        METHOD_NAME,
+      </if>
+      <if test="requestMessage != null" >
+        REQUEST_MESSAGE,
+      </if>
+      <if test="responseMessage != null" >
+        RESPONSE_MESSAGE,
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME,
+      </if>
+      <if test="remoteIp != null" >
+        remote_ip,
+      </if>
+      <if test="remoteUser != null" >
+        remote_user,
+      </if>
+      <if test="reserved1 != null" >
+        reserved1,
+      </if>
+      <if test="reserved2 != null" >
+        reserved2,
+      </if>
+      <if test="reserved3 != null" >
+        reserved3,
+      </if>
+      <if test="reserved4 != null" >
+        reserved4,
+      </if>
+      <if test="reserved5 != null" >
+        reserved5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consumeTime != null" >
+        #{consumeTime,jdbcType=INTEGER},
+      </if>
+      <if test="modelName != null" >
+        #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="methodInfo != null" >
+        #{methodInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMessage != null" >
+        #{requestMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="responseMessage != null" >
+        #{responseMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorName != null" >
+        #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="remoteIp != null" >
+        #{remoteIp,jdbcType=VARCHAR},
+      </if>
+      <if test="remoteUser != null" >
+        #{remoteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null" >
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null" >
+        #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved3 != null" >
+        #{reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved4 != null" >
+        #{reserved4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved5 != null" >
+        #{reserved5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TTraceLogExample" resultType="java.lang.Integer" >
+    select count(*) from t_trace_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_trace_log
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        CREATETIME = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.consumeTime != null" >
+        consume_TIME = #{record.consumeTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.modelName != null" >
+        model_name = #{record.modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.methodInfo != null" >
+        METHOD_INFO = #{record.methodInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.methodName != null" >
+        METHOD_NAME = #{record.methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestMessage != null" >
+        REQUEST_MESSAGE = #{record.requestMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.responseMessage != null" >
+        RESPONSE_MESSAGE = #{record.responseMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operatorName != null" >
+        OPERATOR_NAME = #{record.operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remoteIp != null" >
+        remote_ip = #{record.remoteIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remoteUser != null" >
+        remote_user = #{record.remoteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved1 != null" >
+        reserved1 = #{record.reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved2 != null" >
+        reserved2 = #{record.reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved3 != null" >
+        reserved3 = #{record.reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved4 != null" >
+        reserved4 = #{record.reserved4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved5 != null" >
+        reserved5 = #{record.reserved5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_trace_log
+    set ID = #{record.id,jdbcType=INTEGER},
+      CREATETIME = #{record.createtime,jdbcType=TIMESTAMP},
+      consume_TIME = #{record.consumeTime,jdbcType=INTEGER},
+      model_name = #{record.modelName,jdbcType=VARCHAR},
+      METHOD_INFO = #{record.methodInfo,jdbcType=VARCHAR},
+      METHOD_NAME = #{record.methodName,jdbcType=VARCHAR},
+      REQUEST_MESSAGE = #{record.requestMessage,jdbcType=VARCHAR},
+      RESPONSE_MESSAGE = #{record.responseMessage,jdbcType=VARCHAR},
+      OPERATOR_NAME = #{record.operatorName,jdbcType=VARCHAR},
+      remote_ip = #{record.remoteIp,jdbcType=VARCHAR},
+      remote_user = #{record.remoteUser,jdbcType=VARCHAR},
+      reserved1 = #{record.reserved1,jdbcType=VARCHAR},
+      reserved2 = #{record.reserved2,jdbcType=VARCHAR},
+      reserved3 = #{record.reserved3,jdbcType=VARCHAR},
+      reserved4 = #{record.reserved4,jdbcType=VARCHAR},
+      reserved5 = #{record.reserved5,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TTraceLog" >
+    update t_trace_log
+    <set >
+      <if test="createtime != null" >
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consumeTime != null" >
+        consume_TIME = #{consumeTime,jdbcType=INTEGER},
+      </if>
+      <if test="modelName != null" >
+        model_name = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="methodInfo != null" >
+        METHOD_INFO = #{methodInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        METHOD_NAME = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMessage != null" >
+        REQUEST_MESSAGE = #{requestMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="responseMessage != null" >
+        RESPONSE_MESSAGE = #{responseMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="remoteIp != null" >
+        remote_ip = #{remoteIp,jdbcType=VARCHAR},
+      </if>
+      <if test="remoteUser != null" >
+        remote_user = #{remoteUser,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null" >
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null" >
+        reserved2 = #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved3 != null" >
+        reserved3 = #{reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved4 != null" >
+        reserved4 = #{reserved4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved5 != null" >
+        reserved5 = #{reserved5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TTraceLog" >
+    update t_trace_log
+    set CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      consume_TIME = #{consumeTime,jdbcType=INTEGER},
+      model_name = #{modelName,jdbcType=VARCHAR},
+      METHOD_INFO = #{methodInfo,jdbcType=VARCHAR},
+      METHOD_NAME = #{methodName,jdbcType=VARCHAR},
+      REQUEST_MESSAGE = #{requestMessage,jdbcType=VARCHAR},
+      RESPONSE_MESSAGE = #{responseMessage,jdbcType=VARCHAR},
+      OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      remote_ip = #{remoteIp,jdbcType=VARCHAR},
+      remote_user = #{remoteUser,jdbcType=VARCHAR},
+      reserved1 = #{reserved1,jdbcType=VARCHAR},
+      reserved2 = #{reserved2,jdbcType=VARCHAR},
+      reserved3 = #{reserved3,jdbcType=VARCHAR},
+      reserved4 = #{reserved4,jdbcType=VARCHAR},
+      reserved5 = #{reserved5,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TMenuResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TMenuResource" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="leaf" property="leaf" jdbcType="INTEGER" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="resource_menu" property="resourceMenu" jdbcType="INTEGER" />
+    <result column="resource_key" property="resourceKey" jdbcType="VARCHAR" />
+    <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+    <result column="reserved1" property="reserved1" jdbcType="VARCHAR" />
+    <result column="reserved2" property="reserved2" jdbcType="VARCHAR" />
+    <result column="reserved3" property="reserved3" jdbcType="VARCHAR" />
+    <result column="reserved4" property="reserved4" jdbcType="VARCHAR" />
+    <result column="reserved5" property="reserved5" jdbcType="VARCHAR" />
+    <result column="reserved6" property="reserved6" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, parent_id, name, sort, leaf, path, grade, icon, update_time, create_time, resource_menu, 
+    resource_key, menu_id, reserved1, reserved2, reserved3, reserved4, reserved5, reserved6
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TMenuResourceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_menu_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_menu_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_menu_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TMenuResourceExample" >
+    delete from t_menu_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TMenuResource" >
+    insert into t_menu_resource (id, parent_id, name, 
+      sort, leaf, path, grade, 
+      icon, update_time, create_time, 
+      resource_menu, resource_key, menu_id, 
+      reserved1, reserved2, reserved3, 
+      reserved4, reserved5, reserved6
+      )
+    values (#{id,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{leaf,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{resourceMenu,jdbcType=INTEGER}, #{resourceKey,jdbcType=VARCHAR}, #{menuId,jdbcType=VARCHAR}, 
+      #{reserved1,jdbcType=VARCHAR}, #{reserved2,jdbcType=VARCHAR}, #{reserved3,jdbcType=VARCHAR}, 
+      #{reserved4,jdbcType=VARCHAR}, #{reserved5,jdbcType=VARCHAR}, #{reserved6,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TMenuResource" >
+    insert into t_menu_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="leaf != null" >
+        leaf,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="resourceMenu != null" >
+        resource_menu,
+      </if>
+      <if test="resourceKey != null" >
+        resource_key,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="reserved1 != null" >
+        reserved1,
+      </if>
+      <if test="reserved2 != null" >
+        reserved2,
+      </if>
+      <if test="reserved3 != null" >
+        reserved3,
+      </if>
+      <if test="reserved4 != null" >
+        reserved4,
+      </if>
+      <if test="reserved5 != null" >
+        reserved5,
+      </if>
+      <if test="reserved6 != null" >
+        reserved6,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="leaf != null" >
+        #{leaf,jdbcType=INTEGER},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resourceMenu != null" >
+        #{resourceMenu,jdbcType=INTEGER},
+      </if>
+      <if test="resourceKey != null" >
+        #{resourceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null" >
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null" >
+        #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved3 != null" >
+        #{reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved4 != null" >
+        #{reserved4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved5 != null" >
+        #{reserved5,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved6 != null" >
+        #{reserved6,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TMenuResourceExample" resultType="java.lang.Integer" >
+    select count(*) from t_menu_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_menu_resource
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.leaf != null" >
+        leaf = #{record.leaf,jdbcType=INTEGER},
+      </if>
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.resourceMenu != null" >
+        resource_menu = #{record.resourceMenu,jdbcType=INTEGER},
+      </if>
+      <if test="record.resourceKey != null" >
+        resource_key = #{record.resourceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.menuId != null" >
+        menu_id = #{record.menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved1 != null" >
+        reserved1 = #{record.reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved2 != null" >
+        reserved2 = #{record.reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved3 != null" >
+        reserved3 = #{record.reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved4 != null" >
+        reserved4 = #{record.reserved4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved5 != null" >
+        reserved5 = #{record.reserved5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved6 != null" >
+        reserved6 = #{record.reserved6,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_menu_resource
+    set id = #{record.id,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      leaf = #{record.leaf,jdbcType=INTEGER},
+      path = #{record.path,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      resource_menu = #{record.resourceMenu,jdbcType=INTEGER},
+      resource_key = #{record.resourceKey,jdbcType=VARCHAR},
+      menu_id = #{record.menuId,jdbcType=VARCHAR},
+      reserved1 = #{record.reserved1,jdbcType=VARCHAR},
+      reserved2 = #{record.reserved2,jdbcType=VARCHAR},
+      reserved3 = #{record.reserved3,jdbcType=VARCHAR},
+      reserved4 = #{record.reserved4,jdbcType=VARCHAR},
+      reserved5 = #{record.reserved5,jdbcType=VARCHAR},
+      reserved6 = #{record.reserved6,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TMenuResource" >
+    update t_menu_resource
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="leaf != null" >
+        leaf = #{leaf,jdbcType=INTEGER},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resourceMenu != null" >
+        resource_menu = #{resourceMenu,jdbcType=INTEGER},
+      </if>
+      <if test="resourceKey != null" >
+        resource_key = #{resourceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null" >
+        reserved1 = #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null" >
+        reserved2 = #{reserved2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved3 != null" >
+        reserved3 = #{reserved3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved4 != null" >
+        reserved4 = #{reserved4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved5 != null" >
+        reserved5 = #{reserved5,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved6 != null" >
+        reserved6 = #{reserved6,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TMenuResource" >
+    update t_menu_resource
+    set parent_id = #{parentId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      leaf = #{leaf,jdbcType=INTEGER},
+      path = #{path,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      resource_menu = #{resourceMenu,jdbcType=INTEGER},
+      resource_key = #{resourceKey,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=VARCHAR},
+      reserved1 = #{reserved1,jdbcType=VARCHAR},
+      reserved2 = #{reserved2,jdbcType=VARCHAR},
+      reserved3 = #{reserved3,jdbcType=VARCHAR},
+      reserved4 = #{reserved4,jdbcType=VARCHAR},
+      reserved5 = #{reserved5,jdbcType=VARCHAR},
+      reserved6 = #{reserved6,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <resultMap id="getAllResource"  extends="BaseResultMap" type="com.portjs.base.entity.TMenuResource">
+
+    <collection property="roles" ofType="com.portjs.base.entity.TRole">
+      <id column="rid" property="id" jdbcType="VARCHAR" />
+      <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+      <result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+      <result column="rstatus" property="status" jdbcType="INTEGER" />
+      <result column="create_time" property="createTime" jdbcType="DATE" />
+      <result column="update_time" property="updateTime" jdbcType="DATE" />
+      <result column="sort" property="sort" jdbcType="INTEGER" />
+    </collection>
+    <collection property="children" ofType="com.portjs.base.entity.TMenuResource">
+      <id column="mids" property="id" jdbcType="VARCHAR" />
+      <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="sort" property="sort" jdbcType="INTEGER" />
+      <result column="leaf" property="leaf" jdbcType="INTEGER" />
+      <result column="path" property="path" jdbcType="VARCHAR" />
+      <result column="grade" property="grade" jdbcType="VARCHAR" />
+      <result column="icon" property="icon" jdbcType="VARCHAR" />
+      <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="resource_menu" property="resourceMenu" jdbcType="INTEGER" />
+      <result column="resource_key" property="resourceKey" jdbcType="VARCHAR" />
+      <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+      <result column="reserved1" property="reserved1" jdbcType="VARCHAR" />
+      <result column="reserved2" property="reserved2" jdbcType="VARCHAR" />
+      <result column="reserved3" property="reserved3" jdbcType="VARCHAR" />
+      <result column="reserved4" property="reserved4" jdbcType="VARCHAR" />
+      <result column="reserved5" property="reserved5" jdbcType="VARCHAR" />
+      <result column="reserved6" property="reserved6" jdbcType="VARCHAR" />
+    </collection>
+    
+
+  </resultMap>
+
+  <select id="getAllResource" resultMap="getAllResource">
+    SELECT r.*,m.*,r.`id` AS rid ,m.`id` AS mids  FROM t_menu_resource m
+INNER JOIN t_role_menu rm ON m.`id` = rm.`menu_id`
+INNER JOIN t_role r ON rm.`role_id` = r.`id`
+AND m.`resource_menu` = "1"
+  </select>
+
+
+  <select id="getSortMax" resultType="int">
+    SELECT MAX(r.`sort`)  FROM t_menu_resource r
+  </select>
+
+<select id="selectMenusRis" resultMap="BaseResultMap">
+SELECT DISTINCT mr.* FROM t_menu_resource mr
+INNER JOIN t_role_menu rm ON mr.`id` = rm.`menu_id`
+INNER JOIN t_role r ON rm.`role_id` = r.`id`
+WHERE FIND_IN_SET(mr.`id`,getMeunChild((SELECT mr.`id` FROM t_menu_resource mr WHERE mr.`name` = "菜单树")))
+AND r.`id` IN
+<foreach item="rids" index="index" collection="rids" open="(" separator="," close=")">
+  #{rids}
+</foreach>
+ AND mr.`resource_menu`="0" ORDER BY mr.`sort`
+</select>
+
+  <select id="selectResourcesRis" resultMap="BaseResultMap">
+    SELECT DISTINCT mr.* FROM t_menu_resource mr
+    INNER JOIN t_role_menu rm ON mr.`id` = rm.`menu_id`
+    INNER JOIN t_role r ON rm.`role_id` = r.`id`
+    WHERE  r.`id`  IN
+    <foreach item="rids" index="index" collection="rids" open="(" separator="," close=")">
+      #{rids}
+    </foreach>   AND mr.`resource_menu`="1" ORDER BY mr.`sort`
+  </select>
+
+
+  <select id="selectMenusResourcesRis" resultMap="BaseResultMap">
+    SELECT DISTINCT mr.* FROM t_menu_resource mr
+    INNER JOIN t_role_menu rm ON mr.`id` = rm.`menu_id`
+    INNER JOIN t_role r ON rm.`role_id` = r.`id`
+    WHERE FIND_IN_SET(mr.`id`,getMeunChild((SELECT mr.`id` FROM t_menu_resource mr WHERE mr.`name` = "菜单树")))
+    AND r.`id` IN
+    <foreach item="rids" index="index" collection="rids" open="(" separator="," close=")">
+      #{rids}
+    </foreach>
+    ORDER BY mr.`sort`
+  </select>
+
+
+  <select id="selectMenusResourcesByMenuId" resultMap="BaseResultMap">
+    SELECT * FROM t_menu_resource r WHERE r.`menu_id` = #{menuId} AND r.`resource_menu` = "1"  ORDER BY r.`name` LIMIT #{pageNo},#{pageSize}
+  </select>
+
+  <select id="selectMenusResourcesByMenuIdCount" resultType="int">
+     SELECT COUNT(r.`id`)  FROM t_menu_resource r WHERE r.`menu_id` = #{menuId} AND r.`resource_menu` = "1"
+  </select>
+
+
+
+  <select id="selectMenuTree" resultMap="BaseResultMap">
+    SELECT DISTINCT mr.* FROM t_menu_resource mr
+    WHERE FIND_IN_SET(mr.`id`,getMeunChild((SELECT mr.`id` FROM t_menu_resource mr WHERE mr.`name` = "菜单树")))
+    AND mr.`resource_menu`="0" ORDER BY mr.`sort`
+  </select>
+
+  <update id="updateSort">
+   UPDATE t_menu_resource m SET m.`sort` = #{sort} WHERE m.`id`=#{id}
+  </update>
+
+
+  <select id="selectMenuAndResource" resultMap="BaseResultMap">
+    SELECT DISTINCT mr.* FROM t_menu_resource mr
+    WHERE FIND_IN_SET(mr.`id`,getMeunChild((SELECT mr.`id` FROM t_menu_resource mr WHERE mr.`name` = "菜单树")))
+    ORDER BY mr.`sort`
+  </select>
+</mapper>

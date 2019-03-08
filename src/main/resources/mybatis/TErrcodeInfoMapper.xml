@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.xietong.dao.TErrcodeInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TErrcodeInfo" >
+    <result column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ERROR_TYPE" property="errorType" jdbcType="VARCHAR" />
+    <result column="ERROR_CODE" property="errorCode" jdbcType="VARCHAR" />
+    <result column="ERROR_MSG" property="errorMsg" jdbcType="VARCHAR" />
+    <result column="ERROR_DESC" property="errorDesc" jdbcType="VARCHAR" />
+    <result column="reserved1" property="reserved1" jdbcType="VARCHAR" />
+    <result column="reserved2" property="reserved2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, ERROR_TYPE, ERROR_CODE, ERROR_MSG, ERROR_DESC, reserved1, reserved2
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TErrcodeInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_errcode_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TErrcodeInfoExample" >
+    delete from t_errcode_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TErrcodeInfo" >
+    insert into t_errcode_info (ID, ERROR_TYPE, ERROR_CODE, 
+      ERROR_MSG, ERROR_DESC, reserved1, 
+      reserved2)
+    values (#{id,jdbcType=INTEGER}, #{errorType,jdbcType=VARCHAR}, #{errorCode,jdbcType=VARCHAR}, 
+      #{errorMsg,jdbcType=VARCHAR}, #{errorDesc,jdbcType=VARCHAR}, #{reserved1,jdbcType=VARCHAR}, 
+      #{reserved2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TErrcodeInfo" >
+    insert into t_errcode_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="errorType != null" >
+        ERROR_TYPE,
+      </if>
+      <if test="errorCode != null" >
+        ERROR_CODE,
+      </if>
+      <if test="errorMsg != null" >
+        ERROR_MSG,
+      </if>
+      <if test="errorDesc != null" >
+        ERROR_DESC,
+      </if>
+      <if test="reserved1 != null" >
+        reserved1,
+      </if>
+      <if test="reserved2 != null" >
+        reserved2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="errorType != null" >
+        #{errorType,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCode != null" >
+        #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null" >
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errorDesc != null" >
+        #{errorDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved1 != null" >
+        #{reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserved2 != null" >
+        #{reserved2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TErrcodeInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_errcode_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_errcode_info
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.errorType != null" >
+        ERROR_TYPE = #{record.errorType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorCode != null" >
+        ERROR_CODE = #{record.errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorMsg != null" >
+        ERROR_MSG = #{record.errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorDesc != null" >
+        ERROR_DESC = #{record.errorDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved1 != null" >
+        reserved1 = #{record.reserved1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserved2 != null" >
+        reserved2 = #{record.reserved2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_errcode_info
+    set ID = #{record.id,jdbcType=INTEGER},
+      ERROR_TYPE = #{record.errorType,jdbcType=VARCHAR},
+      ERROR_CODE = #{record.errorCode,jdbcType=VARCHAR},
+      ERROR_MSG = #{record.errorMsg,jdbcType=VARCHAR},
+      ERROR_DESC = #{record.errorDesc,jdbcType=VARCHAR},
+      reserved1 = #{record.reserved1,jdbcType=VARCHAR},
+      reserved2 = #{record.reserved2,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
