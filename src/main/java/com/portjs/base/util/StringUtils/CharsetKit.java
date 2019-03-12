@@ -1,16 +1,14 @@
-package com.mgt.common.support;
-
-import com.mgt.common.utils.StringUtils;
+package com.portjs.base.util.StringUtils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @program: mgt-contrl-platform
- * @description: 字符集工具类
- * @author: Mr.Gu
- * @create: 2019-02-27 12:27
- **/
+ * 字符集工具类
+ * 
+ * @author gumingyang
+ *
+ */
 public class CharsetKit
 {
     /** ISO-8859-1 */

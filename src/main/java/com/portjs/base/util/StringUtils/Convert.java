@@ -1,6 +1,4 @@
-package com.mgt.common.support;
-
-import com.mgt.common.utils.StringUtils;
+package com.portjs.base.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -10,11 +8,11 @@ import java.text.NumberFormat;
 import java.util.Set;
 
 /**
- * @program: mgt-contrl-platform
- * @description: 类型转换器
- * @author: Mr.Gu
- * @create: 2019-02-27 12:27
- **/
+ * 类型转换器
+ * 
+ * @author gumingyang
+ * 
+ */
 public class Convert
 {
     /**

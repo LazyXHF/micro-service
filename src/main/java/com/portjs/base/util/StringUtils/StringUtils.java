@@ -1,17 +1,15 @@
-package com.mgt.common.utils;
+package com.portjs.base.util.StringUtils;
 
-import com.mgt.common.support.StrFormatter;
 import org.apache.commons.lang.text.StrBuilder;
 
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * @program: mgt-contrl-platform
- * @description: 字符串工具类
- * @author: Mr.Gu
- * @create: 2019-02-27 18:27
- **/
+ * 字符串工具类
+ * 
+ * @author gumingyang
+ */
 public class StringUtils extends org.apache.commons.lang3.StringUtils
 {
     /** 空字符串 */

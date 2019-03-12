@@ -1,13 +1,10 @@
-package com.mgt.common.support;
-
-import com.mgt.common.utils.StringUtils;
+package com.portjs.base.util.StringUtils;
 
 /**
- * @program: mgt-contrl-platform
- * @description: 字符串格式化
- * @author: Mr.Gu
- * @create: 2019-02-27 12:27
- **/
+ * 字符串格式化
+ * 
+ * @author gumingyang
+ */
 public class StrFormatter
 {
     public static final String EMPTY_JSON = "{}";

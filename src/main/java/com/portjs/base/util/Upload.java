@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.Calendar;
 
 /**
@@ -64,5 +66,69 @@ public class Upload extends LogUtil{
             logger.debug(tag + "Upload()error#################### ", e);
         }
         return "1";
+    }
+    public void downloadFile(HttpServletRequest request, HttpServletResponse response,String fileName) throws UnsupportedEncodingException {
+        if (fileName != null) {
+            //设置文件路径
+            File file = new File(path1 + fileName);
+            if (file.exists()) {
+                if ("FF".equals(getBrowser(request))) {
+                    // 火狐浏览器 设置编码new String(realName.getBytes("GB2312"), "ISO-8859-1");
+                    fileName = new String(fileName.getBytes("GB2312"), "ISO-8859-1");
+                }else{
+                    fileName = URLEncoder.encode(fileName, "UTF-8");//encode编码UTF-8 解决大多数中文乱码
+                    fileName = fileName.replace("+", "%20");//encode后替换空格  解决空格问题
+                }
+                response.setContentType("application/force-download");// 设置强制下载不打开
+                response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    bis = new BufferedInputStream(fis);
+                    OutputStream os = response.getOutputStream();
+                    int i = bis.read(buffer);
+                    while (i != -1) {
+                        os.write(buffer, 0, i);
+                        i = bis.read(buffer);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (fis != null) {
+                        try {
+                            fis.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private static String getBrowser(HttpServletRequest request) {
+        String UserAgent = request.getHeader("USER-AGENT").toLowerCase();
+        if (UserAgent != null) {
+            if (UserAgent.indexOf("msie") != -1){
+                return "IE";
+            }
+
+            if (UserAgent.indexOf("firefox") != -1){
+                return "FF";
+            }
+
+            if (UserAgent.indexOf("safari") != -1){
+                return "SF";
+            }
+        }
+        return null;
     }
 }

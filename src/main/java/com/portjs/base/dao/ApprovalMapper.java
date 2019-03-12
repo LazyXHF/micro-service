@@ -1,49 +1,52 @@
 package com.portjs.base.dao;
 
-import com.portjs.base.entity.Design;
+import com.portjs.base.entity.Approval;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface DesignMapper {
+public interface ApprovalMapper {
     /**
      * 删除 支持多条删除
      * @param id
      * @return
      */
     int deleteByPrimaryKey(String id);
-
     /**
      *  插入
      * @param record
      * @return
      */
-    int insert(Design record);
-
+    int insert(Approval record);
     /**
      * 条件插入
      * @param record
      * @return
      */
-    int insertSelective(Design record);
-
+    int insertSelective(Approval record);
     /**
      * 根据record条件查询
      * @param record
      * @return
      */
-    List<Design> selectByPrimaryKey(Design record);
+    List<Approval> selectByPrimaryKey(Approval record);
+    /**
+     * 条件更新
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKeySelective(Approval record);
     /**
      * 全更新
      * @param record
      * @return
      */
-    int updateByPrimaryKeySelective(Design record);
+    int updateByPrimaryKeyWithBLOBs(Approval record);
     /**
      * id更新
      * @param record
      * @return
      */
-    int updateByPrimaryKey(Design record);
+    int updateByPrimaryKey(Approval record);
 }

@@ -1,20 +1,21 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 项目设计
+ * 项目开发
  */
 @Data
-public class Design implements Serializable {
+public class Construction extends BaseEntity {
     private String id;
 
     private String projectId;//项目id
 
-    private String unit;//设计单位
+    private String devUnit;//开发单位
 
     private Date planStartTime;//计划开始时间
 
@@ -24,9 +25,17 @@ public class Design implements Serializable {
 
     private Date actualEndTime;//实际结束时间
 
-    private Date reviewTime;//评审时间
+    private Date testPassTime;//测试通过时间
 
-    private String enable;//数据是否可用0可用1不可用默认0
+    private Date creatTime;//创建时间
+
+    private String creater;//创建人
+
+    private Date updateTime;//更新时间
+
+    private String updater;//更新人
+
+    private String enable;
 
     private String backUp1;
 
@@ -48,19 +57,11 @@ public class Design implements Serializable {
 
     private String backUp10;
 
-    private Date creatTime;//创建时间
-
-    private String creater;//创建人
-
-    private Date updateTime;//更新时间
-
     private String coordinationMatters;//协调事项
 
     private String coordinator;//协调人
 
     private String priority;//问题优先级
-
-    private String updater;//更新人
 
     private String description;//描述
 

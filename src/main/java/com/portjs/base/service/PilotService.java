@@ -1,49 +1,50 @@
-package com.portjs.base.dao;
+package com.portjs.base.service;
 
-import com.portjs.base.entity.Design;
+import com.portjs.base.entity.Pilot;
+import com.portjs.base.util.ResponseMessage;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface DesignMapper {
+public interface PilotService {
     /**
      * 删除 支持多条删除
      * @param id
      * @return
+     * TODO
      */
-    int deleteByPrimaryKey(String id);
-
+    ResponseMessage deleteByPrimaryKey(String id);
     /**
      *  插入
      * @param record
      * @return
+     * TODO
      */
-    int insert(Design record);
+    ResponseMessage insert(Pilot record);
 
     /**
      * 条件插入
      * @param record
      * @return
      */
-    int insertSelective(Design record);
-
+    ResponseMessage insertSelective(String record);
     /**
      * 根据record条件查询
      * @param record
      * @return
      */
-    List<Design> selectByPrimaryKey(Design record);
+    ResponseMessage selectByPrimaryKey(Pilot record);
     /**
      * 全更新
      * @param record
      * @return
      */
-    int updateByPrimaryKeySelective(Design record);
+    ResponseMessage updateByPrimaryKeySelective(Pilot record);
     /**
      * id更新
      * @param record
      * @return
+     * TODO
      */
-    int updateByPrimaryKey(Design record);
+    ResponseMessage updateByPrimaryKey(Pilot record);
 }
