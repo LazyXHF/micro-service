@@ -69,7 +69,7 @@ public class InternalProjectController extends BaseController{
     public ResponseMessage queryAllProjectInfo(@RequestBody PageVo pageVo){
         logger.debug("queryAllProjectInfo() begin...");
         try{
-            int pageNo = pageVo.getPageNo();
+            int pageNo =   pageVo.getPageNo();
             int pageSize = pageVo.getPageSize();
             if (pageNo == 0) {
                 pageNo = 0;
