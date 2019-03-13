@@ -56,6 +56,6 @@ public interface TUserMapper {
 
 
 //    List<TUser> selectUserByDepartmentId(String did);
-
+    String selectById(@Param("id") String id);
 
 }

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongAgendaMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongAgenda" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="meeting_subject" property="meetingSubject" jdbcType="VARCHAR" />
+    <result column="meeting_place" property="meetingPlace" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP"  javaType="java.util.Date" />
+    <result column="am_pm" property="amPm" jdbcType="INTEGER" />
+    <result column="ispublish" property="ispublish" jdbcType="INTEGER" />
+    <result column="createrid" property="createrid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, begin_time, end_time, meeting_subject, meeting_place, remark, isdelete, createtime, 
+    am_pm, ispublish, createrid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongAgendaExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xietong_agenda
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_agenda
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_agenda
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TXietongAgendaExample" >
+    delete from t_xietong_agenda
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TXietongAgenda" >
+    insert into t_xietong_agenda (ID, begin_time, end_time, 
+      meeting_subject, meeting_place, remark, 
+      isdelete, createtime, am_pm, 
+      ispublish, createrid)
+    values (#{id,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{meetingSubject,jdbcType=VARCHAR}, #{meetingPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{isdelete,jdbcType=INTEGER}, now(), #{amPm,jdbcType=INTEGER},
+      #{ispublish,jdbcType=INTEGER}, #{createrid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TXietongAgenda" >
+    insert into t_xietong_agenda
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="meetingSubject != null" >
+        meeting_subject,
+      </if>
+      <if test="meetingPlace != null" >
+        meeting_place,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+        createtime
+      <if test="amPm != null" >
+        am_pm,
+      </if>
+      <if test="ispublish != null" >
+        ispublish,
+      </if>
+      <if test="createrid != null" >
+        createrid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="meetingSubject != null" >
+        #{meetingSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="meetingPlace != null" >
+        #{meetingPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      now(),
+      <if test="amPm != null" >
+        #{amPm,jdbcType=INTEGER},
+      </if>
+      <if test="ispublish != null" >
+        #{ispublish,jdbcType=INTEGER},
+      </if>
+      <if test="createrid != null" >
+        #{createrid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TXietongAgendaExample" resultType="java.lang.Integer" >
+    select count(*) from t_xietong_agenda
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xietong_agenda
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginTime != null" >
+        begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.meetingSubject != null" >
+        meeting_subject = #{record.meetingSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.meetingPlace != null" >
+        meeting_place = #{record.meetingPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdelete != null" >
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.amPm != null" >
+        am_pm = #{record.amPm,jdbcType=INTEGER},
+      </if>
+      <if test="record.ispublish != null" >
+        ispublish = #{record.ispublish,jdbcType=INTEGER},
+      </if>
+      <if test="record.createrid != null" >
+        createrid = #{record.createrid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xietong_agenda
+    set ID = #{record.id,jdbcType=VARCHAR},
+      begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      meeting_subject = #{record.meetingSubject,jdbcType=VARCHAR},
+      meeting_place = #{record.meetingPlace,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      isdelete = #{record.isdelete,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      am_pm = #{record.amPm,jdbcType=INTEGER},
+      ispublish = #{record.ispublish,jdbcType=INTEGER},
+      createrid = #{record.createrid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TXietongAgenda" >
+    update t_xietong_agenda
+    <set >
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="meetingSubject != null" >
+        meeting_subject = #{meetingSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="meetingPlace != null" >
+        meeting_place = #{meetingPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amPm != null" >
+        am_pm = #{amPm,jdbcType=INTEGER},
+      </if>
+      <if test="ispublish != null" >
+        ispublish = #{ispublish,jdbcType=INTEGER},
+      </if>
+      <if test="createrid != null" >
+        createrid = #{createrid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TXietongAgenda" >
+    update t_xietong_agenda
+    set begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      meeting_subject = #{meetingSubject,jdbcType=VARCHAR},
+      meeting_place = #{meetingPlace,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      am_pm = #{amPm,jdbcType=INTEGER},
+      ispublish = #{ispublish,jdbcType=INTEGER},
+      createrid = #{createrid,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAgendaByIdAndTime" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongAgenda">
+    select *
+    from t_xietong_agenda a
+      <where>
+        id = #{id}
+        and a.begin_time &gt;= #{beginTime} and a.begin_time &lt;=#{endTime}
+        and a.end_time &gt;= #{beginTime} and a.end_time &lt;=#{endTime}
+      </where>
+      ORDER BY a.begin_time
+  </select>
+
+  <select id="selectAgendaByTime" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongAgenda">
+    select * from t_xietong_agenda where id in (select distinct t.agenda_id from t_xietong_agenda_human t
+    where
+    t.isdelete=1
+    <if test="remark!=null and remark!=''">
+      and t.participant_id = #{remark}
+    </if>
+    <if test="beginTime!=null">
+      and t.begin_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+    <if test="endTime!=null">
+      and t.begin_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+
+
+    )
+    and isdelete=1
+
+    ORDER BY ispublish,begin_time
+  </select>
+
+  <select id="selectAgenda" resultType="int" parameterType="com.portjs.base.entity.TXietongAgenda">
+    select count(*) from t_xietong_agenda where id in (select t.agenda_id from t_xietong_agenda_human t
+    where
+    t.begin_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    and t.begin_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    <if test="remark!=null and remark!=''">
+      and t.participant_value = #{remark}
+    </if>
+    and t.isdelete=1)
+    and isdelete=1
+  </select>
+  
+</mapper>

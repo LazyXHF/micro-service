@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongAgendaRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongAgendaRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP"  javaType="java.util.Date" />
+    <result column="rstatus" property="rstatus" jdbcType="VARCHAR" />
+    <result column="agenda_process_id" property="agendaProcessId" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="owner_id" property="ownerId" jdbcType="VARCHAR" />
+    <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, isdelete, createtime, rstatus, agenda_process_id, comment, owner_id, deal_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongAgendaRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xietong_agenda_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_agenda_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_agenda_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TXietongAgendaRecordExample" >
+    delete from t_xietong_agenda_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TXietongAgendaRecord" >
+    insert into t_xietong_agenda_record (id, isdelete, createtime, 
+      rstatus, agenda_process_id, comment, 
+      owner_id, deal_time)
+    values (#{id,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER},now(),
+      #{rstatus,jdbcType=VARCHAR}, #{agendaProcessId,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{ownerId,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TXietongAgendaRecord" >
+    insert into t_xietong_agenda_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+        createtime,
+      <if test="rstatus != null" >
+        rstatus,
+      </if>
+      <if test="agendaProcessId != null" >
+        agenda_process_id,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="ownerId != null" >
+        owner_id,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      now(),
+      <if test="rstatus != null" >
+        #{rstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="agendaProcessId != null" >
+        #{agendaProcessId,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TXietongAgendaRecordExample" resultType="java.lang.Integer" >
+    select count(*) from t_xietong_agenda_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xietong_agenda_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdelete != null" >
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rstatus != null" >
+        rstatus = #{record.rstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agendaProcessId != null" >
+        agenda_process_id = #{record.agendaProcessId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerId != null" >
+        owner_id = #{record.ownerId,jdbcType=VARCHAR},
+      </if>
+
+        deal_time = now(),
+
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xietong_agenda_record
+    set id = #{record.id,jdbcType=VARCHAR},
+      isdelete = #{record.isdelete,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      rstatus = #{record.rstatus,jdbcType=VARCHAR},
+      agenda_process_id = #{record.agendaProcessId,jdbcType=VARCHAR},
+      comment = #{record.comment,jdbcType=VARCHAR},
+      owner_id = #{record.ownerId,jdbcType=VARCHAR},
+      deal_time = #{record.dealTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TXietongAgendaRecord" >
+    update t_xietong_agenda_record
+    <set >
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rstatus != null" >
+        rstatus = #{rstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="agendaProcessId != null" >
+        agenda_process_id = #{agendaProcessId,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null" >
+        owner_id = #{ownerId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TXietongAgendaRecord" >
+    update t_xietong_agenda_record
+    set isdelete = #{isdelete,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      rstatus = #{rstatus,jdbcType=VARCHAR},
+      agenda_process_id = #{agendaProcessId,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      owner_id = #{ownerId,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,6 +1,5 @@
 package com.portjs.base.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.Annex;
@@ -8,9 +7,7 @@ import com.portjs.base.service.AnnexService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.StringUtils;
-import com.portjs.base.util.Upload;
 import com.portjs.base.vo.ArrayVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;

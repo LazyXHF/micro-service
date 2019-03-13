@@ -129,7 +129,18 @@ public class TUserExample {
             addCriterion("ID >", value, "id");
             return (Criteria) this;
         }
-
+        public Criteria andNameCnEqualTo(String value) {
+            addCriterion("name_cn =", value, "nameCn");
+            return (Criteria) this;
+        }
+  /*      public Criteria andIsdeleteEqualTo(Short value) {
+            addCriterion("isdelete =", value, "isdelete");
+            return (Criteria) this;
+        }*/
+        public Criteria andDepartmentidEqualTo(String value) {
+            addCriterion("DEPARTMENT_ID =", value, "departmentid");
+            return (Criteria) this;
+        }
         public Criteria andIdGreaterThanOrEqualTo(String value) {
             addCriterion("ID >=", value, "id");
             return (Criteria) this;

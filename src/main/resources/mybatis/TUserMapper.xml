@@ -33,6 +33,7 @@
     <result column="reserved8" property="reserved8" jdbcType="VARCHAR" />
     <result column="reserved9" property="reserved9" jdbcType="VARCHAR" />
     <result column="reserved10" property="reserved10" jdbcType="VARCHAR" />
+    <result column="name_cn" property="nameCn" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -96,8 +97,11 @@
     ID, login_account, login_PASSWORD, login_name, DEPARTMENT_ID, CREATETIME, SORT, STATUS, 
     last_login_time, last_upd_passwd_time, password_modify_cycle, history_password, passwd_wrong_count, 
     birth_date, sex, duty, duty_lev, phonenum, telephone, pingyin, reserved1, reserved2, 
-    reserved3, reserved4, reserved5, reserved6, reserved7, reserved8, reserved9, reserved10
+    reserved3, reserved4, reserved5, reserved6, reserved7, reserved8, reserved9, reserved10,name_cn
   </sql>
+  <select id="selectById" resultType="String">
+    select name_cn from t_user  where id=#{id}
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TUserExample" >
     select
     <if test="distinct" >
@@ -139,7 +143,7 @@
       reserved1, reserved2, reserved3, 
       reserved4, reserved5, reserved6, 
       reserved7, reserved8, reserved9, 
-      reserved10)
+      reserved10,name_cn)
     values (#{id,jdbcType=VARCHAR}, #{loginAccount,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR}, 
       #{loginName,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
       #{sort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
@@ -150,7 +154,7 @@
       #{reserved1,jdbcType=VARCHAR}, #{reserved2,jdbcType=VARCHAR}, #{reserved3,jdbcType=VARCHAR}, 
       #{reserved4,jdbcType=VARCHAR}, #{reserved5,jdbcType=VARCHAR}, #{reserved6,jdbcType=VARCHAR}, 
       #{reserved7,jdbcType=VARCHAR}, #{reserved8,jdbcType=VARCHAR}, #{reserved9,jdbcType=VARCHAR}, 
-      #{reserved10,jdbcType=VARCHAR})
+      #{reserved10,jdbcType=VARCHAR},#{nameCn,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.TUser" >
     insert into t_user
@@ -245,6 +249,9 @@
       <if test="reserved10 != null" >
         reserved10,
       </if>
+      <if test="nameCn != null" >
+        name_cn,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -336,6 +343,9 @@
       </if>
       <if test="reserved10 != null" >
         #{reserved10,jdbcType=VARCHAR},
+      </if>
+      <if test="nameCn != null" >
+        #{nameCn,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -438,6 +448,9 @@
       <if test="record.reserved10 != null" >
         reserved10 = #{record.reserved10,jdbcType=VARCHAR},
       </if>
+      <if test="record.nameCn != null" >
+        name_cn = #{record.nameCn,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -474,7 +487,8 @@
       reserved7 = #{record.reserved7,jdbcType=VARCHAR},
       reserved8 = #{record.reserved8,jdbcType=VARCHAR},
       reserved9 = #{record.reserved9,jdbcType=VARCHAR},
-      reserved10 = #{record.reserved10,jdbcType=VARCHAR}
+      reserved10 = #{record.reserved10,jdbcType=VARCHAR},
+      name_cn = #{record.nameCn,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -569,6 +583,9 @@
       <if test="reserved10 != null" >
         reserved10 = #{reserved10,jdbcType=VARCHAR},
       </if>
+      <if test="nameCn != null" >
+        name_cn = #{nameCn,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -602,7 +619,8 @@
       reserved7 = #{reserved7,jdbcType=VARCHAR},
       reserved8 = #{reserved8,jdbcType=VARCHAR},
       reserved9 = #{reserved9,jdbcType=VARCHAR},
-      reserved10 = #{reserved10,jdbcType=VARCHAR}
+      reserved10 = #{reserved10,jdbcType=VARCHAR},
+       name_cn = #{nameCn,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 
