@@ -24,10 +24,10 @@ public interface CoordService {
     ResponseMessage insert(Coord record);
     /**
      * 条件插入
-     * @param record
+     * @param
      * @return
      */
-    ResponseMessage insertSelective(Coord record,MultipartFile file);
+    ResponseMessage insertSelective(String projectId,String nodeType,String coordination,String coordinator,String priority,String description, MultipartFile file);
     /**
      * record，条件查询
      * @param record

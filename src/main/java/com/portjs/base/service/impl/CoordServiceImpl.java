@@ -62,20 +62,35 @@ public class CoordServiceImpl implements CoordService {
     }
 
     @Override
-    public ResponseMessage insertSelective(Coord construction,MultipartFile file) {
+    public ResponseMessage insertSelective(String projectId,String nodeType,String coordination,String coordinator,String priority,String description, MultipartFile file) {
         //先查询库中是否存在，不存在插入 存在更新
-        if(StringUtils.isEmpty(construction.getProjectId())){
+        if(StringUtils.isEmpty(projectId)){
             return new ResponseMessage(Code.CODE_ERROR , "添加协调事项,projectId未传");
         }
-        if(StringUtils.isEmpty(construction.getNodeType())){
+        if(StringUtils.isEmpty(nodeType)){
             return new ResponseMessage(Code.CODE_ERROR , "添加协调事项,nodeType未传");
         }
+        Coord construction = new Coord();
+        construction.setProjectId(projectId);
+        construction.setNodeType(nodeType);
         if(file!=null){
             String url = upload.uploadFlie(file);
             if("1".equals(url)){
                 return new ResponseMessage(Code.CODE_ERROR ,"添加协调事项,文件上传失败");
             }
             construction.setFileUrl(url);
+        }
+        if(!StringUtils.isEmpty(coordination)){
+            construction.setCoordination(coordination);
+        }
+        if(!StringUtils.isEmpty(coordinator)){
+            construction.setCoordinator(coordinator);
+        }
+        if(!StringUtils.isEmpty(priority)){
+            construction.setPriority(priority);
+        }
+        if(!StringUtils.isEmpty(description)){
+            construction.setDescription(description);
         }
         int count = 0;
         List<Coord> list =  coordMapper.selectByPrimaryKey(construction);
