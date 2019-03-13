@@ -60,7 +60,7 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名 -->
-        <table tableName="internal_pact" domainObjectName="InternalPact"
+        <table tableName="internal_project" domainObjectName="InternalProject"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
                enableDeleteByPrimaryKey="true">

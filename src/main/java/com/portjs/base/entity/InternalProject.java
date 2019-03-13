@@ -1,13 +1,8 @@
 package com.portjs.base.entity;
 
-import lombok.Data;
-
-import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-//@Data?
 public class InternalProject implements Serializable {
     private String id;
 
@@ -35,7 +30,7 @@ public class InternalProject implements Serializable {
 
     private String responsibleUnitId;
 
-    private String range;
+    private String ranges;
 
     private String meeting;
 
@@ -61,26 +56,16 @@ public class InternalProject implements Serializable {
 
     private String backUp9;
 
-    private String project_type;
+    private String projectType;
 
-    private List<InternalPersionResource> list;
-
-    /*public InternalPersionResource getInternalPersionResource1() {
-        return internalPersionResource1;
-    }
-
-    public void setInternalPersionResource1(InternalPersionResource internalPersionResource1) {
-        this.internalPersionResource1 = internalPersionResource1;
-    }*/
-
-
+    private static final long serialVersionUID = 1L;
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id == null ? null : id.trim();
     }
 
     public Date getCreateTime() {
@@ -96,7 +81,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setCreater(String creater) {
-        this.creater = creater;
+        this.creater = creater == null ? null : creater.trim();
     }
 
     public Date getModifyTime() {
@@ -112,7 +97,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setModifer(String modifer) {
-        this.modifer = modifer;
+        this.modifer = modifer == null ? null : modifer.trim();
     }
 
     public String getType() {
@@ -120,7 +105,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.type = type == null ? null : type.trim();
     }
 
     public String getName() {
@@ -128,7 +113,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getLeader() {
@@ -136,7 +121,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setLeader(String leader) {
-        this.leader = leader;
+        this.leader = leader == null ? null : leader.trim();
     }
 
     public String getLeaderName() {
@@ -144,7 +129,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setLeaderName(String leaderName) {
-        this.leaderName = leaderName;
+        this.leaderName = leaderName == null ? null : leaderName.trim();
     }
 
     public String getLeaderTell() {
@@ -152,7 +137,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setLeaderTell(String leaderTell) {
-        this.leaderTell = leaderTell;
+        this.leaderTell = leaderTell == null ? null : leaderTell.trim();
     }
 
     public String getStatus() {
@@ -160,7 +145,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = status == null ? null : status.trim();
     }
 
     public String getResponsibleUnit() {
@@ -168,7 +153,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setResponsibleUnit(String responsibleUnit) {
-        this.responsibleUnit = responsibleUnit;
+        this.responsibleUnit = responsibleUnit == null ? null : responsibleUnit.trim();
     }
 
     public String getResponsibleUnitId() {
@@ -176,15 +161,15 @@ public class InternalProject implements Serializable {
     }
 
     public void setResponsibleUnitId(String responsibleUnitId) {
-        this.responsibleUnitId = responsibleUnitId;
+        this.responsibleUnitId = responsibleUnitId == null ? null : responsibleUnitId.trim();
     }
 
-    public String getRange() {
-        return range;
+    public String getRanges() {
+        return ranges;
     }
 
-    public void setRange(String range) {
-        this.range = range;
+    public void setRanges(String ranges) {
+        this.ranges = ranges == null ? null : ranges.trim();
     }
 
     public String getMeeting() {
@@ -192,7 +177,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setMeeting(String meeting) {
-        this.meeting = meeting;
+        this.meeting = meeting == null ? null : meeting.trim();
     }
 
     public String getContent() {
@@ -200,7 +185,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.content = content == null ? null : content.trim();
     }
 
     public String getEnable() {
@@ -208,7 +193,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setEnable(String enable) {
-        this.enable = enable;
+        this.enable = enable == null ? null : enable.trim();
     }
 
     public String getBackUp1() {
@@ -216,7 +201,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp1(String backUp1) {
-        this.backUp1 = backUp1;
+        this.backUp1 = backUp1 == null ? null : backUp1.trim();
     }
 
     public String getBackUp2() {
@@ -224,7 +209,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp2(String backUp2) {
-        this.backUp2 = backUp2;
+        this.backUp2 = backUp2 == null ? null : backUp2.trim();
     }
 
     public String getBackUp3() {
@@ -232,7 +217,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp3(String backUp3) {
-        this.backUp3 = backUp3;
+        this.backUp3 = backUp3 == null ? null : backUp3.trim();
     }
 
     public String getBackUp4() {
@@ -240,7 +225,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp4(String backUp4) {
-        this.backUp4 = backUp4;
+        this.backUp4 = backUp4 == null ? null : backUp4.trim();
     }
 
     public String getBackUp5() {
@@ -248,7 +233,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp5(String backUp5) {
-        this.backUp5 = backUp5;
+        this.backUp5 = backUp5 == null ? null : backUp5.trim();
     }
 
     public String getBackUp6() {
@@ -256,7 +241,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp6(String backUp6) {
-        this.backUp6 = backUp6;
+        this.backUp6 = backUp6 == null ? null : backUp6.trim();
     }
 
     public String getBackUp7() {
@@ -264,7 +249,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp7(String backUp7) {
-        this.backUp7 = backUp7;
+        this.backUp7 = backUp7 == null ? null : backUp7.trim();
     }
 
     public String getBackUp8() {
@@ -272,7 +257,7 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp8(String backUp8) {
-        this.backUp8 = backUp8;
+        this.backUp8 = backUp8 == null ? null : backUp8.trim();
     }
 
     public String getBackUp9() {
@@ -280,29 +265,14 @@ public class InternalProject implements Serializable {
     }
 
     public void setBackUp9(String backUp9) {
-        this.backUp9 = backUp9;
+        this.backUp9 = backUp9 == null ? null : backUp9.trim();
     }
 
-    public String getProject_type() {
-        return project_type;
+    public String getProjectType() {
+        return projectType;
     }
 
-    public void setProject_type(String project_type) {
-        this.project_type = project_type;
+    public void setProjectType(String projectType) {
+        this.projectType = projectType == null ? null : projectType.trim();
     }
-
-    public List<InternalPersionResource> getList() {
-        return list;
-    }
-
-    public void setList(List<InternalPersionResource> list) {
-        this.list = list;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    private static final long serialVersionUID = 1L;
-
 }

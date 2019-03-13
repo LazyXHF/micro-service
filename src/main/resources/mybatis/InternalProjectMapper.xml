@@ -15,7 +15,7 @@
     <result column="status" jdbcType="CHAR" property="status" />
     <result column="responsible_unit" jdbcType="VARCHAR" property="responsibleUnit" />
     <result column="responsible_unit_id" jdbcType="VARCHAR" property="responsibleUnitId" />
-    <result column="range" jdbcType="VARCHAR" property="range" />
+    <result column="ranges" jdbcType="VARCHAR" property="ranges" />
     <result column="meeting" jdbcType="VARCHAR" property="meeting" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="enable" jdbcType="CHAR" property="enable" />
@@ -31,21 +31,22 @@
     <result column="project_type" jdbcType="VARCHAR" property="projectType" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, create_time, creater, modify_time, modifer, type, name, leader, leader_name,
-    leader_tell, status, responsible_unit, responsible_unit_id, range, meeting, content, 
+    id, create_time, creater, modify_time, modifer, type, name, leader, leader_name, 
+    leader_tell, status, responsible_unit, responsible_unit_id, ranges, meeting, content,
     enable, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6, back_up7, back_up8, 
     back_up9, project_type
   </sql>
 
+
   <resultMap id="BaseResultMap2" type="com.portjs.base.entity.InternalProject" extends="BaseResultMap">
     <collection property="list" ofType="com.portjs.base.entity.InternalPersionResource">
-    <id column="iprId" jdbcType="VARCHAR" property="id" />
-    <result column="iprProjectId" jdbcType="VARCHAR" property="projectId" />
-    <result column="iprPersionName" jdbcType="VARCHAR" property="persionName" />
-    <result column="iprUnnit" jdbcType="VARCHAR" property="unnit" />
-    <result column="iprType" jdbcType="VARCHAR" property="type" />
-    <result column="iprStatus" jdbcType="VARCHAR" property="status" />
-    <result column="iprEnable" jdbcType="CHAR" property="enable" />
+      <id column="iprId" jdbcType="VARCHAR" property="id" />
+      <result column="iprProjectId" jdbcType="VARCHAR" property="projectId" />
+      <result column="iprPersionName" jdbcType="VARCHAR" property="persionName" />
+      <result column="iprUnnit" jdbcType="VARCHAR" property="unnit" />
+      <result column="iprType" jdbcType="VARCHAR" property="type" />
+      <result column="iprStatus" jdbcType="VARCHAR" property="status" />
+      <result column="iprEnable" jdbcType="CHAR" property="enable" />
     </collection>
   </resultMap>
   <!--根据id查询项目信息和相关人员信息-->
@@ -81,10 +82,6 @@
     from internal_project
     where id = #{id,jdbcType=VARCHAR}
   </select>
-
-
-
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from internal_project
     where id = #{id,jdbcType=VARCHAR}
@@ -94,7 +91,7 @@
       modify_time, modifer, type, 
       name, leader, leader_name, 
       leader_tell, status, responsible_unit, 
-      responsible_unit_id, range, meeting, 
+      responsible_unit_id, ranges, meeting,
       content, enable, back_up1, 
       back_up2, back_up3, back_up4, 
       back_up5, back_up6, back_up7, 
@@ -104,11 +101,11 @@
       #{modifyTime,jdbcType=TIMESTAMP}, #{modifer,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, 
       #{name,jdbcType=VARCHAR}, #{leader,jdbcType=VARCHAR}, #{leaderName,jdbcType=VARCHAR}, 
       #{leaderTell,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{responsibleUnit,jdbcType=VARCHAR}, 
-      #{responsibleUnitId,jdbcType=VARCHAR}, #{range,jdbcType=VARCHAR}, #{meeting,jdbcType=VARCHAR}, 
+      #{responsibleUnitId,jdbcType=VARCHAR}, #{ranges,jdbcType=VARCHAR}, #{meeting,jdbcType=VARCHAR},
       #{content,jdbcType=VARCHAR}, #{enable,jdbcType=CHAR}, #{backUp1,jdbcType=VARCHAR}, 
       #{backUp2,jdbcType=VARCHAR}, #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, 
       #{backUp5,jdbcType=VARCHAR}, #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, 
-      #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, #{project_type,jdbcType=VARCHAR}
+      #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.InternalProject">
@@ -153,8 +150,8 @@
       <if test="responsibleUnitId != null">
         responsible_unit_id,
       </if>
-      <if test="range != null">
-        range,
+      <if test="ranges != null">
+        ranges,
       </if>
       <if test="meeting != null">
         meeting,
@@ -192,7 +189,7 @@
       <if test="backUp9 != null">
         back_up9,
       </if>
-      <if test="project_type != null">
+      <if test="projectType != null">
         project_type,
       </if>
     </trim>
@@ -236,8 +233,8 @@
       <if test="responsibleUnitId != null">
         #{responsibleUnitId,jdbcType=VARCHAR},
       </if>
-      <if test="range != null">
-        #{range,jdbcType=VARCHAR},
+      <if test="ranges != null">
+        #{ranges,jdbcType=VARCHAR},
       </if>
       <if test="meeting != null">
         #{meeting,jdbcType=VARCHAR},
@@ -275,8 +272,8 @@
       <if test="backUp9 != null">
         #{backUp9,jdbcType=VARCHAR},
       </if>
-      <if test="project_type != null">
-        #{project_type,jdbcType=VARCHAR},
+      <if test="projectType != null">
+        #{projectType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -319,8 +316,8 @@
       <if test="responsibleUnitId != null">
         responsible_unit_id = #{responsibleUnitId,jdbcType=VARCHAR},
       </if>
-      <if test="range != null">
-        range = #{range,jdbcType=VARCHAR},
+      <if test="ranges != null">
+        ranges = #{ranges,jdbcType=VARCHAR},
       </if>
       <if test="meeting != null">
         meeting = #{meeting,jdbcType=VARCHAR},
@@ -358,8 +355,8 @@
       <if test="backUp9 != null">
         back_up9 = #{backUp9,jdbcType=VARCHAR},
       </if>
-      <if test="project_type != null">
-        project_type = #{project_type,jdbcType=VARCHAR},
+      <if test="projectType != null">
+        project_type = #{projectType,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -378,7 +375,7 @@
       status = #{status,jdbcType=CHAR},
       responsible_unit = #{responsibleUnit,jdbcType=VARCHAR},
       responsible_unit_id = #{responsibleUnitId,jdbcType=VARCHAR},
-      range = #{range,jdbcType=VARCHAR},
+      ranges = #{ranges,jdbcType=VARCHAR},
       meeting = #{meeting,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       enable = #{enable,jdbcType=CHAR},
@@ -391,7 +388,7 @@
       back_up7 = #{backUp7,jdbcType=VARCHAR},
       back_up8 = #{backUp8,jdbcType=VARCHAR},
       back_up9 = #{backUp9,jdbcType=VARCHAR},
-      project_type = #{project_type,jdbcType=VARCHAR}
+      project_type = #{projectType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
