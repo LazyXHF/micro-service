@@ -1,5 +1,6 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.service.InternalPersionResourceService;
@@ -50,7 +51,10 @@ public class InternalPersionResourceController extends BaseController{
     public ResponseMessage selectByPrimaryKey(@RequestBody String id) {
         logger.debug("internalPersionResource() begin...");
         try{
-            responseMessage = internalPersionResourceService.selectByPrimaryKey(id);
+            JSONObject jsonObject = JSONObject.parseObject(id);
+            String ids = jsonObject.getString("id");
+
+            responseMessage = internalPersionResourceService.selectByPrimaryKey(ids);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("internalPersionResource() error...",e);
