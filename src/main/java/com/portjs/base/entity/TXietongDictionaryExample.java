@@ -1,4 +1,4 @@
-package com.mgt.project.Example.entity;
+package com.portjs.base.entity;
 
 import java.util.ArrayList;
 import java.util.List;

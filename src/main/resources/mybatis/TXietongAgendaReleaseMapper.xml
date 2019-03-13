@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongAgendaReleaseMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongAgendaRelease" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="meeting_subject" property="meetingSubject" jdbcType="VARCHAR" />
+    <result column="meeting_place" property="meetingPlace" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP"  javaType="java.util.Date" />
+    <result column="am_pm" property="amPm" jdbcType="INTEGER" />
+    <result column="createrid" property="createrid" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <delete id="deleteRelease" parameterType="com.portjs.base.entity.TXietongAgenda">
+    <!--update t_xietong_agenda_release set isdelete =0 where id in(select distinct t.agenda_id from t_xietong_agenda_human t
+    where
+    t.isdelete=1
+    <if test="remark!=null and remark!=''">
+      and t.participant_id = #{remark}
+    </if>
+    <if test="beginTime!=null">
+      and t.begin_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+    <if test="endTime!=null">
+      and t.begin_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+    )-->
+
+    delete from t_xietong_agenda_release where id in(select distinct t.agenda_id from t_xietong_agenda_human t
+    where
+    t.isdelete=1
+    <if test="remark!=null and remark!=''">
+      and t.participant_id = #{remark}
+    </if>
+    <if test="beginTime!=null">
+      and t.begin_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+    <if test="endTime!=null">
+      and t.begin_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+    )
+  </delete>
+
+  <insert id="insert" parameterType="com.portjs.base.entity.TXietongAgenda">
+    insert into t_xietong_agenda_release(ID, begin_time, end_time,
+      meeting_subject, meeting_place, remark,
+      isdelete, createtime, am_pm, createrId)
+		VALUES(#{id,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
+      #{meetingSubject,jdbcType=VARCHAR}, #{meetingPlace,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+      #{isdelete,jdbcType=INTEGER}, now(), #{amPm,jdbcType=INTEGER},#{createrid,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="selectAgendaByTime" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongAgendaRelease">
+    select * from t_xietong_agenda_release where id in (select distinct t.agenda_id from t_xietong_agenda_human t
+    where
+    t.isdelete=1
+    <if test="remark!=null and remark!=''">
+      and t.participant_id = #{remark}
+    </if>
+    <if test="beginTime!=null">
+      and t.begin_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+    <if test="endTime!=null">
+      and t.begin_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+    </if>
+    )
+    and isdelete=1
+    ORDER BY begin_time
+  </select>
+  
+</mapper>

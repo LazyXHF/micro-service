@@ -1,11 +1,13 @@
-package com.project.mgt.dao;
+package com.portjs.base.dao;
 
-import com.project.mgt.entity.TXietongDictionary;
-import com.project.mgt.entity.TXietongDictionaryExample;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.portjs.base.entity.TXietongDictionary;
+import com.portjs.base.entity.TXietongDictionaryExample;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TXietongDictionaryMapper {
@@ -70,7 +72,7 @@ public interface TXietongDictionaryMapper {
 
     //修改机要信息
     int updateJiyaoyuan(TXietongDictionary dictionary);
-    
+
     //收文部委领导配置
     int insertReceivingLeader(TXietongDictionary dictionary);
 
@@ -104,13 +106,15 @@ public interface TXietongDictionaryMapper {
     List<TXietongDictionary> selectNiandu();
 
     int insertNiandu(TXietongDictionary dictionary);
-   //
-	int deleteReceivingLeader(@Param("typeCode") String typeCode);
 
-	//用车审核员
-	TXietongDictionary selectPaicheyuan();
+    //
+    int deleteReceivingLeader(@Param("typeCode") String typeCode);
+
+    //用车审核员
+    TXietongDictionary selectPaicheyuan();
 
 
+    Long queryCaiGouYuanId();
 
-	
+    TXietongDictionary selectgongwuyuan();
 }

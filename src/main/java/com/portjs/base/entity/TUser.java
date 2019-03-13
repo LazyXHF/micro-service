@@ -83,10 +83,26 @@ public class TUser implements UserDetails {
 
     private String reserved10;
 
+    private String nameCn;
+
+    public List<TUser> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<TUser> users) {
+        this.users = users;
+    }
+
+    private List<TUser> users;
 
 
+    public String getNameCn() {
+        return nameCn;
+    }
 
-
+    public void setNameCn(String nameCn) {
+        this.nameCn = nameCn;
+    }
 
     private List<TRole> roles;
 

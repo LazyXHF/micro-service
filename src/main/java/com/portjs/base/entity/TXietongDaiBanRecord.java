@@ -1,4 +1,4 @@
-package com.mgt.project.Example.entity;
+package com.portjs.base.entity;
 
 import org.apache.ibatis.type.Alias;
 

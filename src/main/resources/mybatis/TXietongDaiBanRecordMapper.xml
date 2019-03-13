@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongDaiBanRecordMapper">
+    <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongDaiBanRecord">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="recordId" property="recordId" jdbcType="VARCHAR"/>
+        <result column="recordContent" property="recordContent" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="ownerId" property="ownerId" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="creatTime" property="creatTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="is_Urgent" property="is_Urgent" jdbcType="INTEGER"/>
+        <result column="EXT1" property="EXT1" jdbcType="VARCHAR"/>
+        <result column="EXT2" property="EXT2" jdbcType="VARCHAR"/>
+        <result column="EXT3" property="EXT3" jdbcType="VARCHAR"/>
+        <result column="EXT4" property="EXT4" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询代办提醒条数-->
+    <select id="selectDaibanRecordCount" resultType="int">
+        select count(id) from t_xietong_daiban_record
+        where status=0
+        and ownerId like '%${ownerId}%'
+    </select>
+
+    <!--分页查询代办提醒-->
+    <select id="selectDaibanRecords" resultMap="BaseResultMap">
+        select * from t_xietong_daiban_record
+        where status=0
+        and ownerId like '%${ownerId}%'
+        order by creatTime desc
+        limit #{rowNum},#{pageCount}
+    </select>
+
+    <!--创建督办提醒-->
+    <insert id="insertDaibanRecord" parameterType="com.portjs.base.entity.TXietongDaiBanRecord">
+        insert into t_xietong_daiban_record(id,recordId,recordContent,type,ownerId,status,creatTime,is_Urgent,
+        EXT1,EXT2,EXT3,EXT4)
+        values (#{id,jdbcType=VARCHAR},#{recordId,jdbcType=VARCHAR},#{recordContent,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+        #{ownerId,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},now(),#{is_Urgent,jdbcType=INTEGER},
+        #{EXT1,jdbcType=VARCHAR},#{EXT2,jdbcType=VARCHAR},#{EXT3,jdbcType=VARCHAR},#{EXT4,jdbcType=VARCHAR})
+    </insert>
+
+    <!--修改代办状态-->
+    <update id="updateStatus" parameterType="com.portjs.base.entity.TXietongDaiBanRecord">
+        update t_xietong_daiban_record
+        set status=1
+        where recordId=#{recordId}
+    </update>
+
+    <!--修改催办状态-->
+    <update id="updateisUrgent" parameterType="com.portjs.base.entity.TXietongDaiBanRecord">
+        update t_xietong_daiban_record
+        set is_Urgent=1
+        where recordId=#{recordId}
+    </update>
+
+    <!--创建催办督办提醒-->
+    <insert id="insertDaibanRecord2" parameterType="com.portjs.base.entity.TXietongDaiBanRecord">
+        insert into t_xietong_daiban_record(id,recordId,recordContent,type,ownerId,status,creatTime,is_Urgent,
+        EXT1,EXT2,EXT3,EXT4)
+        values (#{id,jdbcType=VARCHAR},#{recordId,jdbcType=VARCHAR},#{recordContent,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+        #{ownerId,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},now(),1,
+        #{EXT1,jdbcType=VARCHAR},#{EXT2,jdbcType=VARCHAR},#{EXT3,jdbcType=VARCHAR},#{EXT4,jdbcType=VARCHAR})
+    </insert>
+</mapper>

@@ -1,6 +1,6 @@
-package com.project.mgt.dao;
+package com.portjs.base.dao;
 
-import com.project.mgt.entity.TXietongDaiBanRecord;
+import com.portjs.base.entity.TXietongDaiBanRecord;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

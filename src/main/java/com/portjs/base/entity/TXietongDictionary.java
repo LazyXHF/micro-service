@@ -1,4 +1,4 @@
-package com.mgt.project.Example.entity;
+package com.portjs.base.entity;
 
 public class TXietongDictionary {
     private String id;

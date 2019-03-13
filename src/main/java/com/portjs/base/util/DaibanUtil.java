@@ -1,7 +1,7 @@
-package com.project.mgt.util;
+package com.portjs.base.util;
 
-import com.project.mgt.dao.TXietongDaiBanRecordMapper;
-import com.project.mgt.entity.TXietongDaiBanRecord;
+import com.portjs.base.dao.TXietongDaiBanRecordMapper;
+import com.portjs.base.entity.TXietongDaiBanRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

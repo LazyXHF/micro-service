@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongUserMinisterRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongUserMinisterRelation" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="minister_id" property="ministerId" jdbcType="VARCHAR" />
+    <result column="visual_id" property="visualId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, minister_id, visual_id, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongUserMinisterRelationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xietong_user_minister_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_user_minister_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_user_minister_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TXietongUserMinisterRelationExample" >
+    delete from t_xietong_user_minister_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TXietongUserMinisterRelation" >
+    insert into t_xietong_user_minister_relation (id, minister_id, visual_id, 
+      status)
+    values (#{id,jdbcType=VARCHAR}, #{ministerId,jdbcType=VARCHAR}, #{visualId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TXietongUserMinisterRelation" >
+    insert into t_xietong_user_minister_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ministerId != null" >
+        minister_id,
+      </if>
+      <if test="visualId != null" >
+        visual_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ministerId != null" >
+        #{ministerId,jdbcType=VARCHAR},
+      </if>
+      <if test="visualId != null" >
+        #{visualId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TXietongUserMinisterRelationExample" resultType="java.lang.Integer" >
+    select count(*) from t_xietong_user_minister_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xietong_user_minister_relation
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ministerId != null" >
+        minister_id = #{record.ministerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visualId != null" >
+        visual_id = #{record.visualId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xietong_user_minister_relation
+    set id = #{record.id,jdbcType=VARCHAR},
+      minister_id = #{record.ministerId,jdbcType=VARCHAR},
+      visual_id = #{record.visualId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TXietongUserMinisterRelation" >
+    update t_xietong_user_minister_relation
+    <set >
+      <if test="ministerId != null" >
+        minister_id = #{ministerId,jdbcType=VARCHAR},
+      </if>
+      <if test="visualId != null" >
+        visual_id = #{visualId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TXietongUserMinisterRelation" >
+    update t_xietong_user_minister_relation
+    set minister_id = #{ministerId,jdbcType=VARCHAR},
+      visual_id = #{visualId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.TUser" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="login_account" property="loginAccount" jdbcType="VARCHAR" />
+    <result column="login_PASSWORD" property="loginPassword" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="DEPARTMENT_ID" property="departmentId" jdbcType="VARCHAR" />
+    <result column="departmentName" property="departmentName" jdbcType="VARCHAR" />
+    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="SORT" property="sort" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="last_upd_passwd_time" property="lastUpdPasswdTime" jdbcType="TIMESTAMP" />
+    <result column="password_modify_cycle" property="passwordModifyCycle" jdbcType="INTEGER" />
+    <result column="history_password" property="historyPassword" jdbcType="VARCHAR" />
+    <result column="passwd_wrong_count" property="passwdWrongCount" jdbcType="INTEGER" />
+    <result column="birth_date" property="birthDate" jdbcType="TIMESTAMP" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="duty" property="duty" jdbcType="VARCHAR" />
+    <result column="duty_lev" property="dutyLev" jdbcType="VARCHAR" />
+    <result column="phonenum" property="phonenum" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="pingyin" property="pingyin" jdbcType="VARCHAR" />
+    <result column="reserved1" property="reserved1" jdbcType="VARCHAR" />
+    <result column="reserved2" property="reserved2" jdbcType="VARCHAR" />
+    <result column="reserved3" property="reserved3" jdbcType="VARCHAR" />
+    <result column="reserved4" property="reserved4" jdbcType="VARCHAR" />
+    <result column="reserved5" property="reserved5" jdbcType="VARCHAR" />
+    <result column="reserved6" property="reserved6" jdbcType="VARCHAR" />
+    <result column="reserved7" property="reserved7" jdbcType="VARCHAR" />
+    <result column="reserved8" property="reserved8" jdbcType="VARCHAR" />
+    <result column="reserved9" property="reserved9" jdbcType="VARCHAR" />
+    <result column="reserved10" property="reserved10" jdbcType="VARCHAR" />
+    <result column="name_cn" property="nameCn" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectAll" resultMap="BaseResultMap1" >
+    select  u.* from t_user u,t_xietong_user_minister_relation r where
+    u.isdelete="1"
+    and r.status="0"
+    and u.id = r.minister_id
+    GROUP BY r.minister_id
+  </select>
+</mapper>
