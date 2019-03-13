@@ -1,7 +1,6 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.InternalProject;
-import com.portjs.base.util.ResponseMessage;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -12,8 +11,13 @@ import java.util.List;
 public interface InternalProjectMapper{
     int deleteByPrimaryKey(String id);
 
-    int insertProjectInfo(InternalProject record);
+    int insert(InternalProject record);
 
+    /**
+     * 添加项目信息
+     * @param record
+     * @return
+     */
     int insertSelective(InternalProject record);
 
     InternalProject selectByPrimaryKey(String id);

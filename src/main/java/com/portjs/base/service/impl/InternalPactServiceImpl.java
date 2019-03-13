@@ -38,8 +38,10 @@ public class InternalPactServiceImpl implements InternalPactService {
         page.init(totalCount,pageNo,pageSize);
 
         List<InternalPact> list = internalPactMapper.queryAllPacts(id, page.getRowNum(), page.getPageCount());
+        page.setList(list);
 
-        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功！",list);
+
+        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功！",page);
 
         return responseMessage;
     }
