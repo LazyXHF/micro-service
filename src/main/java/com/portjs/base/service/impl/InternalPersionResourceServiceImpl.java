@@ -7,6 +7,7 @@ import com.portjs.base.entity.InternalProject;
 import com.portjs.base.service.InternalPersionResourceService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -60,11 +61,18 @@ public class InternalPersionResourceServiceImpl implements InternalPersionResour
      */
     @Override
     public ResponseMessage updatePersionInfo(InternalPersionResource record) {
-        int i = internalPersionResourceMapper.updatePersionInfo(record);
-        if(i==0){
-            return new ResponseMessage(Code.CODE_ERROR,"更新失败！",i);
+        int count = 0;
+        try {
+            if(com.portjs.base.util.StringUtils.StringUtils.isEmpty(record.getId())){
+                return new ResponseMessage(Code.CODE_ERROR , "更新项目开发模块,id未传");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new ResponseMessage(Code.CODE_OK,"更新成功！",i);
+        if(count==0){
+            return new ResponseMessage(Code.CODE_ERROR,"更新失败！",count);
+        }
+        return new ResponseMessage(Code.CODE_OK,"更新成功！",count);
     }
 
     /**

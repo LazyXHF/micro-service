@@ -48,12 +48,12 @@
     <result column="iprEnable" jdbcType="CHAR" property="enable" />
     </collection>
   </resultMap>
-  <!--查询所有项目信息和相关人员信息-->
+  <!--根据id查询项目信息和相关人员信息-->
   <select id="selectAllProjectInfo" resultMap="BaseResultMap2">
     SELECT ip.id as id,ip.create_time as ipCreateTime,ip.creater as creator,ip.modify_time as ipModifyTime,ip.modifer as ipModifer,ip.type as ipType,
     ip.name as ipName,ip.project_type as ipProjectType,ipr.id as iprId,ipr.project_id as iprProjectId,ipr.persion_name as iprPersionName,ipr.unnit as iprUnnit,ipr.type as iprType,
     ipr.status as iprStatus,ipr.enable as iprEnable,ip.*,ipr.*
-    from internal_project ip LEFT JOIN internal_persons_resource ipr ON ip.id = ipr.project_id
+    from internal_project ip LEFT JOIN internal_persons_resource ipr ON ip.id = ipr.project_id where ip.id = #{id,jdbcType=VARCHAR}
     ORDER BY  ipCreateTime  ASC  limit #{pageNo},#{pageSize}
   </select>
   <select id="projectCount"  resultType="Integer">

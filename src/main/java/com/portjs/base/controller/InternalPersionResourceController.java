@@ -82,7 +82,7 @@ public class InternalPersionResourceController extends BaseController{
      * @return
      */
     @RequestMapping("delete-persion-info-by-id")
-    @LogInfo(methodName = "插入人员信息")
+    @LogInfo(methodName = "根据id删除人员信息")
     public ResponseMessage deleteByPrimaryKey(@RequestBody String id) {
         logger.debug("internalPersionResource() begin...");
         try{

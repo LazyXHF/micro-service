@@ -20,7 +20,7 @@ public interface InternalPactService {
      * @param record
      * @return
      */
-    ResponseMessage insertPact(InternalPact record);
+    ResponseMessage insertSelective(InternalPact record);
 
     /**
      * 根据id删除合同信息
@@ -41,5 +41,5 @@ public interface InternalPactService {
      * @param record
      * @return
      */
-    ResponseMessage updateByPrimaryKey(InternalPact record);
+    ResponseMessage updateByPrimaryKeySelective(InternalPact record);
 }

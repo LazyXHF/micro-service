@@ -59,7 +59,7 @@ public class InternalPactController extends BaseController {
     public ResponseMessage insertPactInfo(@RequestBody InternalPact internalPact) {
         logger.debug("insertPactInfo() begin...");
         try{
-            responseMessage = internalPactService.insertPact(internalPact);
+            responseMessage = internalPactService.insertSelective(internalPact);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("insertPactInfo() error...",e);
@@ -95,7 +95,8 @@ public class InternalPactController extends BaseController {
     public ResponseMessage updatePactInfo(@RequestBody InternalPact record) {
         logger.debug("InternalPact-updatePactInfo() begin...");
         try{
-            responseMessage = internalPactService.updateByPrimaryKey(record);
+
+            responseMessage = internalPactService.updateByPrimaryKeySelective(record);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("InternalPact-updatePactInfo() error...",e);

@@ -6,6 +6,7 @@ import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.StringUtils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,13 @@ public class InternalProjectServiceImpl implements InternalProjectService {
      * @return
      */
     @Override
-    public Page<InternalProject> selectAllProjectInfo(int pageNo, int pageSize) {
+    public Page<InternalProject> selectAllProjectInfo(String id, int pageNo, int pageSize) {
         Page<InternalProject> page = new Page<>();
+        /*InternalProject internalProject = new InternalProject();
+        internalProject.getId();*/
         int totalCount = internalProjectMapper.projectCount();
         page.init(totalCount,pageNo,pageSize);
-        List<InternalProject>  list= internalProjectMapper.selectAllProjectInfo(page.getRowNum(),page.getPageCount());
+        List<InternalProject>  list= internalProjectMapper.selectAllProjectInfo(id,page.getRowNum(),page.getPageCount());
         page.setList(list);
         return page;
     }
@@ -50,22 +53,14 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     }
 
     /**
-     * 添加项目信息和相关人员信息
+     * 添加项目信息
      * @param record
      * @return
      */
     @Override
     public ResponseMessage insertProjectInfo(InternalProject record) {
-        InternalProject internalProject = new InternalProject();
-        internalProject.setId(UUID.randomUUID().toString());
-        internalProject.setType(record.getType());
-        internalProject.setName(record.getName());
-        internalProject.setResponsibleUnit(record.getResponsibleUnit());
-        internalProject.setRange(record.getRange());
-        internalProject.setMeeting(record.getMeeting());
-        internalProject.setContent(record.getContent());
-
-        int i  = internalProjectMapper.insertProjectInfo(internalProject);
+        record.setId(UUID.randomUUID().toString());
+        int i  = internalProjectMapper.insertProjectInfo(record);
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
         }

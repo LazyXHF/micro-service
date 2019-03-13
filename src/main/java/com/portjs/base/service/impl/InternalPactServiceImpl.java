@@ -7,6 +7,8 @@ import com.portjs.base.service.InternalPactService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.StringUtils.StringUtils;
+import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +50,11 @@ public class InternalPactServiceImpl implements InternalPactService {
      * @return
      */
     @Override
-    public ResponseMessage insertPact(InternalPact record) {
+    public ResponseMessage insertSelective(InternalPact record) {
 //        InternalPact internalPact = new InternalPact();
         record.setId(UUID.randomUUID().toString());
 
-        int i  = internalPactMapper.insertPact(record);
+        int i  = internalPactMapper.insertSelective(record);
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
         }
@@ -94,11 +96,20 @@ public class InternalPactServiceImpl implements InternalPactService {
      * @return
      */
     @Override
-    public ResponseMessage updateByPrimaryKey(InternalPact record) {
-        int i = internalPactMapper.updateByPrimaryKey(record);
-        if(i==0){
-            return new ResponseMessage(Code.CODE_ERROR,"更新失败！",i);
+    public ResponseMessage updateByPrimaryKeySelective(InternalPact record) {
+        int count = 0;
+        try {
+            if(StringUtils.isEmpty(record.getId())){
+                return new ResponseMessage(Code.CODE_ERROR , "更新项目开发模块,id未传");
+            }
+            record.setUploader(UserUtils.getCurrentUser().getId());
+            count =  internalPactMapper.updateByPrimaryKeySelective(record);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new ResponseMessage(Code.CODE_OK,"更新成功！",i);
+        if(count==0){
+            return new ResponseMessage(Code.CODE_ERROR,"更新失败！",count);
+        }
+        return new ResponseMessage(Code.CODE_OK,"更新成功！",count);
     }
 }

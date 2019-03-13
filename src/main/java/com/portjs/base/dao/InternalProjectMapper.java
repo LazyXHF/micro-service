@@ -41,12 +41,12 @@ public interface InternalProjectMapper{
      */
     int projectCounts();
     /**
-     * 查询所有项目数据和相关人员信息
+     * 根据查询项目数据和相关人员信息
      * @param pageNo
      * @param pageSize
      * @return
      */
-    List<InternalProject> selectAllProjectInfo(@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+    List<InternalProject> selectAllProjectInfo(@Param("id") String id, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 
     /**
      * 统计项目信息条数包含关联人员条数
