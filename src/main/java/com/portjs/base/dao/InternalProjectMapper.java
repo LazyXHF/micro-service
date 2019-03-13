@@ -19,7 +19,7 @@ public interface InternalProjectMapper{
      * @param record
      * @return
      */
-    int insertProjectInfo(InternalProject record);
+    int insertSelective(InternalProject record);
 
     InternalProject selectByPrimaryKey(String id);
 

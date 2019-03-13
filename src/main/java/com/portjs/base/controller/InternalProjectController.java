@@ -24,7 +24,7 @@ public class InternalProjectController extends BaseController{
     static final String tag = "InternalProjectService===>";
 
     @Autowired
-    InternalProjectService internalProject;
+    InternalProjectService internalProjectService;
 
     ResponseMessage responseMessage=null;
 
@@ -47,7 +47,7 @@ public class InternalProjectController extends BaseController{
             if (pageSize == 0) {
                 pageSize = 10;
             }
-            Page<InternalProject> project = internalProject.selectAllProjectInfo(id,pageNo, pageSize);
+            Page<InternalProject> project = internalProjectService.selectAllProjectInfo(id,pageNo, pageSize);
             if (project == null) {
                 responseMessage = new ResponseMessage(Code.CODE_ERROR, "查询数据为空");
                 return responseMessage;
@@ -78,7 +78,7 @@ public class InternalProjectController extends BaseController{
             if (pageSize == 0) {
                 pageSize = 10;
             }
-            Page<InternalProject> project = internalProject.queryAllProjectInfo(pageNo, pageSize);
+            Page<InternalProject> project = internalProjectService.queryAllProjectInfo(pageNo, pageSize);
             if (project == null) {
                 responseMessage = new ResponseMessage(Code.CODE_ERROR, "查询数据为空");
                 return responseMessage;
@@ -92,5 +92,22 @@ public class InternalProjectController extends BaseController{
         return responseMessage;
     }
 
+    /**
+     *  添加项目信息
+     * @param internalProject
+     * @return
+     */
+    @RequestMapping("insert-project-info")
+    @LogInfo(methodName = "添加项目信息")
+    public ResponseMessage insertPactInfo(@RequestBody InternalProject internalProject) {
+        logger.debug("insertProjectInfo() begin...");
+        try{
+            responseMessage = internalProjectService.insertProjectInfo(internalProject);
+        }catch (Exception e){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
+            logger.error("insertProjectInfo() error...",e);
+        }
+        return responseMessage;
+    }
 
 }

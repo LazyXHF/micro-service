@@ -60,7 +60,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     @Override
     public ResponseMessage insertProjectInfo(InternalProject record) {
         record.setId(UUID.randomUUID().toString());
-        int i  = internalProjectMapper.insertProjectInfo(record);
+        int i  = internalProjectMapper.insertSelective(record);
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
         }
