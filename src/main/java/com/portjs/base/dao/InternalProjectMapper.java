@@ -12,9 +12,14 @@ import java.util.List;
 public interface InternalProjectMapper{
     int deleteByPrimaryKey(String id);
 
-    int insertProjectInfo(InternalProject record);
+    int insert(InternalProject record);
 
-    int insertSelective(InternalProject record);
+    /**
+     * 添加项目信息
+     * @param record
+     * @return
+     */
+    int insertProjectInfo(InternalProject record);
 
     InternalProject selectByPrimaryKey(String id);
 
