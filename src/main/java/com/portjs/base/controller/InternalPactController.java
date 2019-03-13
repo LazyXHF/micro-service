@@ -1,12 +1,11 @@
 package com.portjs.base.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.InternalPact;
-import com.portjs.base.entity.InternalProject;
 import com.portjs.base.service.InternalPactService;
 import com.portjs.base.util.Code;
-import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,9 @@ public class InternalPactController extends BaseController {
     public ResponseMessage selectByPrimaryKey(@RequestBody String id) {
         logger.debug("InternalPact-selectByPrimaryKey() begin...");
         try{
-            responseMessage = internalPactService.selectByPrimaryKey(id);
+            JSONObject jsonObject = JSONObject.parseObject(id);
+            String ids = jsonObject.getString("id");
+            responseMessage = internalPactService.selectByPrimaryKey(ids);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("InternalPact-selectByPrimaryKey() error...",e);
@@ -114,7 +115,9 @@ public class InternalPactController extends BaseController {
     public ResponseMessage deleteByPrimaryKey(@RequestBody String id) {
         logger.debug("InternalPact-deleteByPrimaryKey() begin...");
         try{
-            responseMessage = internalPactService.deleteByPrimaryKey(id);
+            JSONObject jsonObject = JSONObject.parseObject(id);
+            String ids = jsonObject.getString("id");
+            responseMessage = internalPactService.deleteByPrimaryKey(ids);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("InternalPact-deleteByPrimaryKey() error...",e);

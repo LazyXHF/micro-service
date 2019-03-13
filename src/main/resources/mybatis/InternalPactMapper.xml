@@ -105,7 +105,7 @@
         name,
       </if>
       <if test="tradeNames != null">
-        "trade _names",
+        trade_names,
       </if>
       <if test="fileType != null">
         file_type,
@@ -265,7 +265,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="tradeNames != null">
-        "trade _names" = #{tradeNames,jdbcType=VARCHAR},
+        "trade_names" = #{tradeNames,jdbcType=VARCHAR},
       </if>
       <if test="fileType != null">
         file_type = #{fileType,jdbcType=CHAR},
