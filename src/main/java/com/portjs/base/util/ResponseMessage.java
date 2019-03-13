@@ -1,5 +1,9 @@
 package com.portjs.base.util;
 
+import com.portjs.base.entity.InternalProject;
+
+import java.util.List;
+
 /**
  * Created by 许虎飞 on 2018/12/14.
  * 统一请求体返回
