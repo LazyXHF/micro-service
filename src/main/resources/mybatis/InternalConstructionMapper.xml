@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.InternalConstructionMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.InternalConstruction">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="dev_unit" jdbcType="VARCHAR" property="devUnit" />
+    <result column="plan_start_time" jdbcType="TIMESTAMP" property="planStartTime" />
+    <result column="plan_end_time" jdbcType="TIMESTAMP" property="planEndTime" />
+    <result column="actual_start_time" jdbcType="TIMESTAMP" property="actualStartTime" />
+    <result column="actual_end_time" jdbcType="TIMESTAMP" property="actualEndTime" />
+    <result column="test_pass_time" jdbcType="TIMESTAMP" property="testPassTime" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="enable" jdbcType="CHAR" property="enable" />
+    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
+    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
+    <result column="back_up4" jdbcType="VARCHAR" property="backUp4" />
+    <result column="back_up5" jdbcType="VARCHAR" property="backUp5" />
+    <result column="back_up6" jdbcType="VARCHAR" property="backUp6" />
+    <result column="back_up7" jdbcType="VARCHAR" property="backUp7" />
+    <result column="back_up8" jdbcType="VARCHAR" property="backUp8" />
+    <result column="back_up9" jdbcType="VARCHAR" property="backUp9" />
+    <result column="back_up10" jdbcType="VARCHAR" property="backUp10" />
+    <result column="coordination_matters" jdbcType="VARCHAR" property="coordinationMatters" />
+    <result column="coordinator" jdbcType="VARCHAR" property="coordinator" />
+    <result column="priority" jdbcType="VARCHAR" property="priority" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.portjs.base.entity.InternalConstruction">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, dev_unit, plan_start_time, plan_end_time, actual_start_time, actual_end_time, 
+    test_pass_time, creat_time, creater, update_time, updater, enable, back_up1, back_up2, 
+    back_up3, back_up4, back_up5, back_up6, back_up7, back_up8, back_up9, back_up10, 
+    coordination_matters, coordinator, priority
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    *
+    from internal_construction
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from internal_construction
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.InternalConstruction">
+    insert into internal_construction (id, project_id, dev_unit, 
+      plan_start_time, plan_end_time, actual_start_time, 
+      actual_end_time, test_pass_time, creat_time, 
+      creater, update_time, updater, 
+      enable, back_up1, back_up2, 
+      back_up3, back_up4, back_up5, 
+      back_up6, back_up7, back_up8, 
+      back_up9, back_up10, coordination_matters, 
+      coordinator, priority, description
+      )
+    values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{devUnit,jdbcType=VARCHAR}, 
+      #{planStartTime,jdbcType=TIMESTAMP}, #{planEndTime,jdbcType=TIMESTAMP}, #{actualStartTime,jdbcType=TIMESTAMP}, 
+      #{actualEndTime,jdbcType=TIMESTAMP}, #{testPassTime,jdbcType=TIMESTAMP}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{creater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, 
+      #{enable,jdbcType=CHAR}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, 
+      #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, 
+      #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, 
+      #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{coordinationMatters,jdbcType=VARCHAR}, 
+      #{coordinator,jdbcType=VARCHAR}, #{priority,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.InternalConstruction">
+    insert into internal_construction
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="devUnit != null">
+        dev_unit,
+      </if>
+      <if test="planStartTime != null">
+        plan_start_time,
+      </if>
+      <if test="planEndTime != null">
+        plan_end_time,
+      </if>
+      <if test="actualStartTime != null">
+        actual_start_time,
+      </if>
+      <if test="actualEndTime != null">
+        actual_end_time,
+      </if>
+      <if test="testPassTime != null">
+        test_pass_time,
+      </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+      <if test="backUp1 != null">
+        back_up1,
+      </if>
+      <if test="backUp2 != null">
+        back_up2,
+      </if>
+      <if test="backUp3 != null">
+        back_up3,
+      </if>
+      <if test="backUp4 != null">
+        back_up4,
+      </if>
+      <if test="backUp5 != null">
+        back_up5,
+      </if>
+      <if test="backUp6 != null">
+        back_up6,
+      </if>
+      <if test="backUp7 != null">
+        back_up7,
+      </if>
+      <if test="backUp8 != null">
+        back_up8,
+      </if>
+      <if test="backUp9 != null">
+        back_up9,
+      </if>
+      <if test="backUp10 != null">
+        back_up10,
+      </if>
+      <if test="coordinationMatters != null">
+        coordination_matters,
+      </if>
+      <if test="coordinator != null">
+        coordinator,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="devUnit != null">
+        #{devUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="planStartTime != null">
+        #{planStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planEndTime != null">
+        #{planEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualStartTime != null">
+        #{actualStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualEndTime != null">
+        #{actualEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="testPassTime != null">
+        #{testPassTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        #{backUp10,jdbcType=VARCHAR},
+      </if>
+      <if test="coordinationMatters != null">
+        #{coordinationMatters,jdbcType=VARCHAR},
+      </if>
+      <if test="coordinator != null">
+        #{coordinator,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.InternalConstruction">
+    update internal_construction
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="devUnit != null">
+        dev_unit = #{devUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="planStartTime != null">
+        plan_start_time = #{planStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planEndTime != null">
+        plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualStartTime != null">
+        actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualEndTime != null">
+        actual_end_time = #{actualEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="testPassTime != null">
+        test_pass_time = #{testPassTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        back_up1 = #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        back_up2 = #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        back_up3 = #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        back_up4 = #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        back_up5 = #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        back_up6 = #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        back_up10 = #{backUp10,jdbcType=VARCHAR},
+      </if>
+      <if test="coordinationMatters != null">
+        coordination_matters = #{coordinationMatters,jdbcType=VARCHAR},
+      </if>
+      <if test="coordinator != null">
+        coordinator = #{coordinator,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.portjs.base.entity.InternalConstruction">
+    update internal_construction
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      dev_unit = #{devUnit,jdbcType=VARCHAR},
+      plan_start_time = #{planStartTime,jdbcType=TIMESTAMP},
+      plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
+      actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
+      actual_end_time = #{actualEndTime,jdbcType=TIMESTAMP},
+      test_pass_time = #{testPassTime,jdbcType=TIMESTAMP},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      creater = #{creater,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      updater = #{updater,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=CHAR},
+      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      back_up2 = #{backUp2,jdbcType=VARCHAR},
+      back_up3 = #{backUp3,jdbcType=VARCHAR},
+      back_up4 = #{backUp4,jdbcType=VARCHAR},
+      back_up5 = #{backUp5,jdbcType=VARCHAR},
+      back_up6 = #{backUp6,jdbcType=VARCHAR},
+      back_up7 = #{backUp7,jdbcType=VARCHAR},
+      back_up8 = #{backUp8,jdbcType=VARCHAR},
+      back_up9 = #{backUp9,jdbcType=VARCHAR},
+      back_up10 = #{backUp10,jdbcType=VARCHAR},
+      coordination_matters = #{coordinationMatters,jdbcType=VARCHAR},
+      coordinator = #{coordinator,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.InternalConstruction">
+    update internal_construction
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      dev_unit = #{devUnit,jdbcType=VARCHAR},
+      plan_start_time = #{planStartTime,jdbcType=TIMESTAMP},
+      plan_end_time = #{planEndTime,jdbcType=TIMESTAMP},
+      actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
+      actual_end_time = #{actualEndTime,jdbcType=TIMESTAMP},
+      test_pass_time = #{testPassTime,jdbcType=TIMESTAMP},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      creater = #{creater,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      updater = #{updater,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=CHAR},
+      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      back_up2 = #{backUp2,jdbcType=VARCHAR},
+      back_up3 = #{backUp3,jdbcType=VARCHAR},
+      back_up4 = #{backUp4,jdbcType=VARCHAR},
+      back_up5 = #{backUp5,jdbcType=VARCHAR},
+      back_up6 = #{backUp6,jdbcType=VARCHAR},
+      back_up7 = #{backUp7,jdbcType=VARCHAR},
+      back_up8 = #{backUp8,jdbcType=VARCHAR},
+      back_up9 = #{backUp9,jdbcType=VARCHAR},
+      back_up10 = #{backUp10,jdbcType=VARCHAR},
+      coordination_matters = #{coordinationMatters,jdbcType=VARCHAR},
+      coordinator = #{coordinator,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

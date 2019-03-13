@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.InternalProjectMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.InternalProject">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="modifer" jdbcType="VARCHAR" property="modifer" />
+    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="leader" jdbcType="VARCHAR" property="leader" />
+    <result column="leader_name" jdbcType="VARCHAR" property="leaderName" />
+    <result column="leader_tell" jdbcType="VARCHAR" property="leaderTell" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="responsible_unit" jdbcType="VARCHAR" property="responsibleUnit" />
+    <result column="responsible_unit_id" jdbcType="VARCHAR" property="responsibleUnitId" />
+    <result column="range" jdbcType="VARCHAR" property="range" />
+    <result column="meeting" jdbcType="VARCHAR" property="meeting" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="enable" jdbcType="CHAR" property="enable" />
+    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
+    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
+    <result column="back_up4" jdbcType="VARCHAR" property="backUp4" />
+    <result column="back_up5" jdbcType="VARCHAR" property="backUp5" />
+    <result column="back_up6" jdbcType="VARCHAR" property="backUp6" />
+    <result column="back_up7" jdbcType="VARCHAR" property="backUp7" />
+    <result column="back_up8" jdbcType="VARCHAR" property="backUp8" />
+    <result column="back_up9" jdbcType="VARCHAR" property="backUp9" />
+    <result column="project_type" jdbcType="VARCHAR" property="projectType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, creater, modify_time, modifer, type, name, leader, leader_name, 
+    leader_tell, status, responsible_unit, responsible_unit_id, range, meeting, content, 
+    enable, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6, back_up7, back_up8, 
+    back_up9, project_type
+  </sql>
+
+  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.InternalProject" extends="BaseResultMap">
+    <collection property="list" ofType="com.portjs.base.entity.InternalPersionResource">
+    <id column="iprId" jdbcType="VARCHAR" property="id" />
+    <result column="iprProjectId" jdbcType="VARCHAR" property="projectId" />
+    <result column="iprPersionName" jdbcType="VARCHAR" property="persionName" />
+    <result column="iprUnnit" jdbcType="VARCHAR" property="unnit" />
+    <result column="iprType" jdbcType="VARCHAR" property="type" />
+    <result column="iprStatus" jdbcType="VARCHAR" property="status" />
+    <result column="iprEnable" jdbcType="CHAR" property="enable" />
+    </collection>
+  </resultMap>
+  <!--查询所有项目信息和相关人员信息-->
+  <select id="selectAllProjectInfo" resultMap="BaseResultMap2">
+    SELECT ip.id as id,ip.create_time as ipCreateTime,ip.creater as creator,ip.modify_time as ipModifyTime,ip.modifer as ipModifer,ip.type as ipType,
+    ip.name as ipName,ip.project_type as ipProjectType,ipr.id as iprId,ipr.project_id as iprProjectId,ipr.persion_name as iprPersionName,ipr.unnit as iprUnnit,ipr.type as iprType,
+    ipr.status as iprStatus,ipr.enable as iprEnable,ip.*,ipr.*
+    from internal_project ip LEFT JOIN internal_persons_resource ipr ON ip.id = ipr.project_id
+    ORDER BY  ipCreateTime  ASC  limit #{pageNo},#{pageSize}
+  </select>
+  <select id="projectCount"  resultType="Integer">
+    SELECT count(ip.id)
+    from internal_project ip LEFT JOIN internal_persons_resource ipr ON ip.id = ipr.project_id
+  </select>
+
+  <!--查询所有项目信息-->
+  <select id="queryAllProjectInfo" resultMap="BaseResultMap">
+    select
+    *
+    from internal_project order by create_time asc limit #{pageNo},#{pageSize}
+  </select>
+  <select id="projectCounts"  resultType="Integer">
+    SELECT count(id)
+    from internal_project
+  </select>
+
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from internal_project
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from internal_project
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertProjectInfo" parameterType="com.portjs.base.entity.InternalProject">
+    insert into internal_project (id, create_time, creater, 
+      modify_time, modifer, type, 
+      name, leader, leader_name, 
+      leader_tell, status, responsible_unit, 
+      responsible_unit_id, range, meeting, 
+      content, enable, back_up1, 
+      back_up2, back_up3, back_up4, 
+      back_up5, back_up6, back_up7, 
+      back_up8, back_up9, project_type
+      )
+    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{modifer,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, 
+      #{name,jdbcType=VARCHAR}, #{leader,jdbcType=VARCHAR}, #{leaderName,jdbcType=VARCHAR}, 
+      #{leaderTell,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{responsibleUnit,jdbcType=VARCHAR}, 
+      #{responsibleUnitId,jdbcType=VARCHAR}, #{range,jdbcType=VARCHAR}, #{meeting,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{enable,jdbcType=CHAR}, #{backUp1,jdbcType=VARCHAR}, 
+      #{backUp2,jdbcType=VARCHAR}, #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, 
+      #{backUp5,jdbcType=VARCHAR}, #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, 
+      #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, #{project_type,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.InternalProject">
+    insert into internal_project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="modifer != null">
+        modifer,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="leader != null">
+        leader,
+      </if>
+      <if test="leaderName != null">
+        leader_name,
+      </if>
+      <if test="leaderTell != null">
+        leader_tell,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="responsibleUnit != null">
+        responsible_unit,
+      </if>
+      <if test="responsibleUnitId != null">
+        responsible_unit_id,
+      </if>
+      <if test="range != null">
+        range,
+      </if>
+      <if test="meeting != null">
+        meeting,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+      <if test="backUp1 != null">
+        back_up1,
+      </if>
+      <if test="backUp2 != null">
+        back_up2,
+      </if>
+      <if test="backUp3 != null">
+        back_up3,
+      </if>
+      <if test="backUp4 != null">
+        back_up4,
+      </if>
+      <if test="backUp5 != null">
+        back_up5,
+      </if>
+      <if test="backUp6 != null">
+        back_up6,
+      </if>
+      <if test="backUp7 != null">
+        back_up7,
+      </if>
+      <if test="backUp8 != null">
+        back_up8,
+      </if>
+      <if test="backUp9 != null">
+        back_up9,
+      </if>
+      <if test="project_type != null">
+        project_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifer != null">
+        #{modifer,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="leader != null">
+        #{leader,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderName != null">
+        #{leaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderTell != null">
+        #{leaderTell,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="responsibleUnit != null">
+        #{responsibleUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="responsibleUnitId != null">
+        #{responsibleUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="range != null">
+        #{range,jdbcType=VARCHAR},
+      </if>
+      <if test="meeting != null">
+        #{meeting,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="project_type != null">
+        #{project_type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.InternalProject">
+    update internal_project
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifer != null">
+        modifer = #{modifer,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="leader != null">
+        leader = #{leader,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderName != null">
+        leader_name = #{leaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderTell != null">
+        leader_tell = #{leaderTell,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="responsibleUnit != null">
+        responsible_unit = #{responsibleUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="responsibleUnitId != null">
+        responsible_unit_id = #{responsibleUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="range != null">
+        range = #{range,jdbcType=VARCHAR},
+      </if>
+      <if test="meeting != null">
+        meeting = #{meeting,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        back_up1 = #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        back_up2 = #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        back_up3 = #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        back_up4 = #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        back_up5 = #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        back_up6 = #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="project_type != null">
+        project_type = #{project_type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.InternalProject">
+    update internal_project
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      creater = #{creater,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modifer = #{modifer,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      name = #{name,jdbcType=VARCHAR},
+      leader = #{leader,jdbcType=VARCHAR},
+      leader_name = #{leaderName,jdbcType=VARCHAR},
+      leader_tell = #{leaderTell,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      responsible_unit = #{responsibleUnit,jdbcType=VARCHAR},
+      responsible_unit_id = #{responsibleUnitId,jdbcType=VARCHAR},
+      range = #{range,jdbcType=VARCHAR},
+      meeting = #{meeting,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=CHAR},
+      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      back_up2 = #{backUp2,jdbcType=VARCHAR},
+      back_up3 = #{backUp3,jdbcType=VARCHAR},
+      back_up4 = #{backUp4,jdbcType=VARCHAR},
+      back_up5 = #{backUp5,jdbcType=VARCHAR},
+      back_up6 = #{backUp6,jdbcType=VARCHAR},
+      back_up7 = #{backUp7,jdbcType=VARCHAR},
+      back_up8 = #{backUp8,jdbcType=VARCHAR},
+      back_up9 = #{backUp9,jdbcType=VARCHAR},
+      project_type = #{project_type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
