@@ -36,7 +36,7 @@ public class InternalPersionResourceServiceImpl implements InternalPersionResour
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
         }
-        return responseMessage;
+        return  new ResponseMessage(Code.CODE_OK,"添加成功！",i);
     }
 
     /**
