@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.AcceptanceMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.Acceptance">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="acceptance_form" jdbcType="VARCHAR" property="acceptanceForm" />
+    <result column="acceptance_method" jdbcType="VARCHAR" property="acceptanceMethod" />
+    <result column="acceptance_charge" jdbcType="VARCHAR" property="acceptanceCharge" />
+    <result column="completion_time" jdbcType="TIMESTAMP" property="completionTime" />
+    <result column="experimental_time" jdbcType="TIMESTAMP" property="experimentalTime" />
+    <result column="problem" jdbcType="VARCHAR" property="problem" />
+    <result column="enable" jdbcType="CHAR" property="enable" />
+    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
+    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
+    <result column="back_up4" jdbcType="VARCHAR" property="backUp4" />
+    <result column="back_up5" jdbcType="VARCHAR" property="backUp5" />
+    <result column="back_up6" jdbcType="VARCHAR" property="backUp6" />
+    <result column="back_up7" jdbcType="VARCHAR" property="backUp7" />
+    <result column="back_up8" jdbcType="VARCHAR" property="backUp8" />
+    <result column="back_up9" jdbcType="VARCHAR" property="backUp9" />
+    <result column="back_up10" jdbcType="VARCHAR" property="backUp10" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, acceptance_form, acceptance_method, acceptance_charge, completion_time, 
+    experimental_time, problem, enable, back_up1, back_up2, back_up3, back_up4, back_up5, 
+    back_up6, back_up7, back_up8, back_up9, back_up10, creat_time, creater, update_time, 
+    updater
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from internal_acceptance
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from internal_acceptance
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.Acceptance">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into internal_acceptance (project_id, acceptance_form, acceptance_method, 
+      acceptance_charge, completion_time, experimental_time, 
+      problem, enable, back_up1, 
+      back_up2, back_up3, back_up4, 
+      back_up5, back_up6, back_up7, 
+      back_up8, back_up9, back_up10, 
+      creat_time, creater, update_time, 
+      updater)
+    values (#{projectId,jdbcType=VARCHAR}, #{acceptanceForm,jdbcType=VARCHAR}, #{acceptanceMethod,jdbcType=VARCHAR}, 
+      #{acceptanceCharge,jdbcType=VARCHAR}, #{completionTime,jdbcType=TIMESTAMP}, #{experimentalTime,jdbcType=TIMESTAMP}, 
+      #{problem,jdbcType=VARCHAR}, #{enable,jdbcType=CHAR}, #{backUp1,jdbcType=VARCHAR}, 
+      #{backUp2,jdbcType=VARCHAR}, #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, 
+      #{backUp5,jdbcType=VARCHAR}, #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, 
+      #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, 
+      #{creatTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updater,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.Acceptance">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into internal_acceptance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="acceptanceForm != null">
+        acceptance_form,
+      </if>
+      <if test="acceptanceMethod != null">
+        acceptance_method,
+      </if>
+      <if test="acceptanceCharge != null">
+        acceptance_charge,
+      </if>
+      <if test="completionTime != null">
+        completion_time,
+      </if>
+      <if test="experimentalTime != null">
+        experimental_time,
+      </if>
+      <if test="problem != null">
+        problem,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+      <if test="backUp1 != null">
+        back_up1,
+      </if>
+      <if test="backUp2 != null">
+        back_up2,
+      </if>
+      <if test="backUp3 != null">
+        back_up3,
+      </if>
+      <if test="backUp4 != null">
+        back_up4,
+      </if>
+      <if test="backUp5 != null">
+        back_up5,
+      </if>
+      <if test="backUp6 != null">
+        back_up6,
+      </if>
+      <if test="backUp7 != null">
+        back_up7,
+      </if>
+      <if test="backUp8 != null">
+        back_up8,
+      </if>
+      <if test="backUp9 != null">
+        back_up9,
+      </if>
+      <if test="backUp10 != null">
+        back_up10,
+      </if>
+      <if test="creatTime != null">
+        creat_time,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptanceForm != null">
+        #{acceptanceForm,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptanceMethod != null">
+        #{acceptanceMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptanceCharge != null">
+        #{acceptanceCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="completionTime != null">
+        #{completionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="experimentalTime != null">
+        #{experimentalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="problem != null">
+        #{problem,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        #{backUp10,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.Acceptance">
+    update internal_acceptance
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptanceForm != null">
+        acceptance_form = #{acceptanceForm,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptanceMethod != null">
+        acceptance_method = #{acceptanceMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptanceCharge != null">
+        acceptance_charge = #{acceptanceCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="completionTime != null">
+        completion_time = #{completionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="experimentalTime != null">
+        experimental_time = #{experimentalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="problem != null">
+        problem = #{problem,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        back_up1 = #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        back_up2 = #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        back_up3 = #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        back_up4 = #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        back_up5 = #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        back_up6 = #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        back_up10 = #{backUp10,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Acceptance">
+    update internal_acceptance
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      acceptance_form = #{acceptanceForm,jdbcType=VARCHAR},
+      acceptance_method = #{acceptanceMethod,jdbcType=VARCHAR},
+      acceptance_charge = #{acceptanceCharge,jdbcType=VARCHAR},
+      completion_time = #{completionTime,jdbcType=TIMESTAMP},
+      experimental_time = #{experimentalTime,jdbcType=TIMESTAMP},
+      problem = #{problem,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=CHAR},
+      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      back_up2 = #{backUp2,jdbcType=VARCHAR},
+      back_up3 = #{backUp3,jdbcType=VARCHAR},
+      back_up4 = #{backUp4,jdbcType=VARCHAR},
+      back_up5 = #{backUp5,jdbcType=VARCHAR},
+      back_up6 = #{backUp6,jdbcType=VARCHAR},
+      back_up7 = #{backUp7,jdbcType=VARCHAR},
+      back_up8 = #{backUp8,jdbcType=VARCHAR},
+      back_up9 = #{backUp9,jdbcType=VARCHAR},
+      back_up10 = #{backUp10,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      creater = #{creater,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      updater = #{updater,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
