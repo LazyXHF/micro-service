@@ -6,11 +6,10 @@
     <result column="project_id" jdbcType="VARCHAR" property="projectId" />
     <result column="persion_name" jdbcType="VARCHAR" property="persionName" />
     <result column="unnit" jdbcType="VARCHAR" property="unnit" />
-    <result column="sort" jdbcType="VARCHAR" property="sort" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="enable" jdbcType="CHAR" property="enable" />
-    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="sort" jdbcType="VARCHAR" property="sort" />
     <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
     <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
     <result column="back_up4" jdbcType="VARCHAR" property="backUp4" />
@@ -23,12 +22,12 @@
 
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_id, persion_name, unnit, type, status,sort, enable, back_up1, back_up2, back_up3,
+    id, project_id, persion_name, unnit, type, status, enable, sort, back_up2, back_up3,
     back_up4, back_up5, back_up6, back_up7, back_up8, back_up9, back_up10
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
+    *
     from internal_persons_resource
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -41,13 +40,13 @@
   <insert id="insertPersionInfo" parameterType="com.portjs.base.entity.InternalPersionResource">
     insert into internal_persons_resource (id, project_id, persion_name, 
       unnit, type, status, 
-      enable, back_up1, back_up2, 
+      enable, sort, back_up2, 
       back_up3, back_up4, back_up5, 
       back_up6, back_up7, back_up8, 
       back_up9, back_up10)
     values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{persionName,jdbcType=VARCHAR}, 
       #{unnit,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{enable,jdbcType=CHAR}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, 
+      #{enable,jdbcType=CHAR}, #{sort,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, 
       #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, 
       #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, 
       #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR})
@@ -76,8 +75,8 @@
       <if test="enable != null">
         enable,
       </if>
-      <if test="backUp1 != null">
-        back_up1,
+      <if test="sort != null">
+        sort,
       </if>
       <if test="backUp2 != null">
         back_up2,
@@ -129,8 +128,8 @@
       <if test="enable != null">
         #{enable,jdbcType=CHAR},
       </if>
-      <if test="backUp1 != null">
-        #{backUp1,jdbcType=VARCHAR},
+      <if test="sort != null">
+        #{sort,jdbcType=VARCHAR},
       </if>
       <if test="backUp2 != null">
         #{backUp2,jdbcType=VARCHAR},
@@ -182,8 +181,8 @@
       <if test="enable != null">
         enable = #{enable,jdbcType=CHAR},
       </if>
-      <if test="backUp1 != null">
-        back_up1 = #{backUp1,jdbcType=VARCHAR},
+      <if test="sort != null">
+        sort = #{sort,jdbcType=VARCHAR},
       </if>
       <if test="backUp2 != null">
         back_up2 = #{backUp2,jdbcType=VARCHAR},
@@ -223,7 +222,7 @@
       type = #{type,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       enable = #{enable,jdbcType=CHAR},
-      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR},
       back_up2 = #{backUp2,jdbcType=VARCHAR},
       back_up3 = #{backUp3,jdbcType=VARCHAR},
       back_up4 = #{backUp4,jdbcType=VARCHAR},

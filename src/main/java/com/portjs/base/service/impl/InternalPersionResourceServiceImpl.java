@@ -47,9 +47,9 @@ public class InternalPersionResourceServiceImpl implements InternalPersionResour
     @Override
     public ResponseMessage selectByPrimaryKey(String id) {
         InternalPersionResource internalPersionResource = internalPersionResourceMapper.selectByPrimaryKey(id);
-        if(internalPersionResource==null){
-            return new ResponseMessage(Code.CODE_ERROR,"查询失败！",internalPersionResource);
-        }
+//        if(internalPersionResource==null){
+//            return new ResponseMessage(Code.CODE_ERROR,"查询失败！",internalPersionResource);
+//        }
 
         return new ResponseMessage(Code.CODE_OK,"查询成功！",internalPersionResource);
     }

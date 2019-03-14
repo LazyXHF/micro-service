@@ -2,6 +2,7 @@ package com.portjs.base.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class InternalProject implements Serializable {
     private String id;
@@ -57,6 +58,16 @@ public class InternalProject implements Serializable {
     private String backUp9;
 
     private String projectType;
+
+    private List<InternalPersionResource> list;
+
+    public List<InternalPersionResource> getList() {
+        return list;
+    }
+
+    public void setList(List<InternalPersionResource> list) {
+        this.list = list;
+    }
 
     private static final long serialVersionUID = 1L;
 
