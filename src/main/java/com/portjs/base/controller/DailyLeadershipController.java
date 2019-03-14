@@ -361,7 +361,6 @@ public class DailyLeadershipController extends BaseController{
         logger.debug("submitAudit() begin...requestBody=",requestBody);
         try {
             ResponseMessage responseMessage=  dailyLeadershipService.submitAudit(requestBody);
-
             return responseMessage;
         } catch (Exception e) {
             e.printStackTrace();
