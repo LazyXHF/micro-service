@@ -90,7 +90,10 @@ public class InternalPersionResourceController extends BaseController{
     public ResponseMessage deleteByPrimaryKey(@RequestBody String id) {
         logger.debug("internalPersionResource() begin...");
         try{
-            responseMessage = internalPersionResourceService.deleteByPrimaryKey(id);
+
+            JSONObject jsonObject = JSONObject.parseObject(id);
+            String ids = jsonObject.getString("id");
+            responseMessage = internalPersionResourceService.deleteByPrimaryKey(ids);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("internalPersionResource() error...",e);
