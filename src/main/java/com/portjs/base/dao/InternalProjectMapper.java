@@ -56,7 +56,7 @@ public interface InternalProjectMapper{
      * 统计项目信息条数包含关联人员条数
      * @return
      */
-    int projectCount();
+    int projectCount(@Param("id") String id);
 
 
 }

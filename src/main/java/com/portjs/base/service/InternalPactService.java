@@ -4,6 +4,8 @@ import com.portjs.base.entity.InternalPact;
 import com.portjs.base.util.ResponseMessage;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface InternalPactService {
 
     /**
@@ -13,7 +15,7 @@ public interface InternalPactService {
      * @param pageSize
      * @return
      */
-   ResponseMessage queryAllPacts(@Param("id") String id, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+   ResponseMessage queryAllPacts(String id, int pageNo,int pageSize,String name,String signState,String involvedUnit,String tradeNames);
 
     /**
      * 添加合同信息
@@ -24,10 +26,10 @@ public interface InternalPactService {
 
     /**
      * 根据id删除合同信息
-     * @param id
+     * @param ids
      * @return
      */
-    ResponseMessage deleteByPrimaryKey(String id);
+    ResponseMessage deleteByPrimaryKey( List<String> id);
 
     /**
      * 根据id查询合同信息

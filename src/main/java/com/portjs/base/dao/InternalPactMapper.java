@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface InternalPactMapper {
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(@Param("ids") List<String> id);
 
     /**
      * 添加合同信息
@@ -38,13 +38,13 @@ public interface InternalPactMapper {
      * @param pageSize
      * @return
      */
-    List<InternalPact> queryAllPacts(@Param("id") String id, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+    List<InternalPact> queryAllPacts(@Param("id") String id, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize,@Param("name")String  name,@Param("signState")String  signState,@Param("involvedUnit")String involvedUnit,@Param("tradeNames")String tradeNames);
 
     /**
-     * 统计所有合同条数信息
+     * 不同条件统计合同条数信息
      * @return
      */
-    int pactCount();
+    int pactCount(@Param("name")String  name,@Param("signState")String  signState,@Param("involvedUnit")String involvedUnit,@Param("tradeNames")String tradeNames);
 
 
 }

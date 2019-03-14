@@ -9,7 +9,7 @@
     <result column="involved_unit" jdbcType="VARCHAR" property="involvedUnit" />
     <result column="sign_state" jdbcType="VARCHAR" property="signState" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="trade _names" jdbcType="VARCHAR" property="tradeNames" />
+    <result column="trade_names" jdbcType="VARCHAR" property="tradeNames" />
     <result column="file_type" jdbcType="CHAR" property="fileType" />
     <result column="file_size" jdbcType="DOUBLE" property="fileSize" />
     <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
@@ -46,20 +46,51 @@
     select
     *
     from internal_pact
-    where project_id=#{id,jdbcType=VARCHAR} order by upload_time asc limit #{pageNo},#{pageSize}
+    where project_id=#{id,jdbcType=VARCHAR}
+    <if test="involved_unit != null and involved_unit !=''">
+      AND involved_unit LIKE CONCAT('%',#{involved_unit},'%')
+    </if>
+    <if test="sign_state != null and sign_state !=''">
+      AND sign_state LIKE CONCAT('%',#{sign_state},'%')
+    </if>
+    <if test="trade_names != null and trade_names !=''">
+      AND trade_names LIKE CONCAT('%',#{trade_names},'%')
+    </if>
+    <if test="name != null and name !=''">
+      AND name LIKE CONCAT('%',#{name},'%')
+    </if>
+    order by upload_time asc limit #{pageNo},#{pageSize}
   </select>
 
 
 
   <select id="pactCount" resultType="Integer">
-    SELECT count(ipr.id)
-    from internal_project ip right join internal_pact ipr ON ip.id = ipr.project_id
+    select
+    count(*)
+    from internal_pact
+    where project_id=#{id,jdbcType=VARCHAR}
+    <if test="involved_unit != null and involved_unit !=''">
+      AND involved_unit LIKE CONCAT('%',#{involved_unit},'%')
+    </if>
+    <if test="sign_state != null and sign_state !=''">
+      AND sign_state LIKE CONCAT('%',#{sign_state},'%')
+    </if>
+    <if test="trade_names != null and trade_names !=''">
+      AND trade_names LIKE CONCAT('%',#{trade_names},'%')
+    </if>
+    <if test="name != null and name !=''">
+      AND name LIKE CONCAT('%',#{name},'%')
+    </if>
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey">
     delete from internal_pact
-    where id = #{id,jdbcType=VARCHAR}
+    where id in
+    <foreach item="ids" index="index" collection="ids" open="(" separator="," close=")">
+      #{ids}
+    </foreach>
   </delete>
+
   <insert id="insertPact" parameterType="com.portjs.base.entity.InternalPact">
     insert into internal_pact (id, upload_time, uploader, 
       uploader_name, involved_unit, sign_state, 

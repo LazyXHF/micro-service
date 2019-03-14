@@ -41,12 +41,7 @@ public class InternalProjectController extends BaseController{
             int pageNo = pageVo.getPageNo();
             int pageSize = pageVo.getPageSize();
             String id = pageVo.getObject();
-            if (pageNo == 0) {
-                pageNo = 0;
-            }
-            if (pageSize == 0) {
-                pageSize = 10;
-            }
+
             Page<InternalProject> project = internalProjectService.selectAllProjectInfo(id,pageNo, pageSize);
             if (project == null) {
                 responseMessage = new ResponseMessage(Code.CODE_ERROR, "查询数据为空");

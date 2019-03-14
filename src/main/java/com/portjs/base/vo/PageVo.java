@@ -7,6 +7,42 @@ public class PageVo {
     private String departmentId;
     private String uid;
     private String currentTime;
+    private String name;
+    private String involvedUnit;
+    private String tradeNames;
+    private String signState;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getInvolvedUnit() {
+        return involvedUnit;
+    }
+
+    public void setInvolvedUnit(String involvedUnit) {
+        this.involvedUnit = involvedUnit;
+    }
+
+    public String getTradeNames() {
+        return tradeNames;
+    }
+
+    public void setTradeNames(String tradeNames) {
+        this.tradeNames = tradeNames;
+    }
+
+    public String getSignState() {
+        return signState;
+    }
+
+    public void setSignState(String signState) {
+        this.signState = signState;
+    }
 
     public String getCurrentTime() {
         return currentTime;

@@ -32,12 +32,12 @@ public class InternalPactServiceImpl implements InternalPactService {
      * @return
      */
     @Override
-    public ResponseMessage queryAllPacts(String id, int pageNo, int pageSize) {
+    public ResponseMessage queryAllPacts(String id, int pageNo, int pageSize,String name,String signState,String involvedUnit,String tradeNames) {
         Page<InternalPact> page = new Page<>();
-        int totalCount = internalPactMapper.pactCount();
+        int totalCount = internalPactMapper.pactCount(name,signState,involvedUnit,tradeNames);
         page.init(totalCount,pageNo,pageSize);
 
-        List<InternalPact> list = internalPactMapper.queryAllPacts(id, page.getRowNum(), page.getPageCount());
+        List<InternalPact> list = internalPactMapper.queryAllPacts(id, page.getRowNum(), page.getPageCount(),name,signState,involvedUnit,tradeNames);
         page.setList(list);
 
 
@@ -65,16 +65,22 @@ public class InternalPactServiceImpl implements InternalPactService {
 
     /**
      * 根据id删除合同信息
-     * @param id
+     * @param
      * @return
      */
     @Override
-    public ResponseMessage deleteByPrimaryKey(String id) {
-        int i = internalPactMapper.deleteByPrimaryKey(id);
-        if(i==0){
-            return new ResponseMessage(Code.CODE_ERROR,"删除失败！",i);
+    public ResponseMessage deleteByPrimaryKey(List<String> id) {
+        int i  = 0;
+
+        try {
+           i = internalPactMapper.deleteByPrimaryKey(id);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new ResponseMessage(Code.CODE_OK,"删除成功",i);
+        if(i>0){
+            return new ResponseMessage(Code.CODE_OK,"删除成功");
+        }
+        return new ResponseMessage(Code.CODE_ERROR,"删除失败");
     }
 
     /**

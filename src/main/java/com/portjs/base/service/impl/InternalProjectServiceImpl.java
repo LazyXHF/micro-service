@@ -30,7 +30,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         Page<InternalProject> page = new Page<>();
         /*InternalProject internalProject = new InternalProject();
         internalProject.getId();*/
-        int totalCount = internalProjectMapper.projectCount();
+        int totalCount = internalProjectMapper.projectCount(id);
         page.init(totalCount,pageNo,pageSize);
         List<InternalProject>  list= internalProjectMapper.selectAllProjectInfo(id,page.getRowNum(),page.getPageCount());
         page.setList(list);

@@ -59,7 +59,7 @@
   </select>
   <select id="projectCount"  resultType="Integer">
     SELECT count(ip.id)
-    from internal_project ip LEFT JOIN internal_persons_resource ipr ON ip.id = ipr.project_id
+    from internal_project ip  where ip.id = #{id,jdbcType=VARCHAR}
   </select>
 
   <!--查询所有项目信息-->

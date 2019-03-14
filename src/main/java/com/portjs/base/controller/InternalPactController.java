@@ -7,12 +7,15 @@ import com.portjs.base.entity.InternalPact;
 import com.portjs.base.service.InternalPactService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.ArrayVO;
 import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 关于合同信息
@@ -41,7 +44,11 @@ public class InternalPactController extends BaseController {
             int pageNo = pageVo.getPageNo();
             int pageSize = pageVo.getPageSize();
             String id = pageVo.getObject();
-            responseMessage = internalPactService.queryAllPacts(id, pageNo, pageSize);
+            String names = pageVo.getName();
+            String involvedUnits = pageVo.getInvolvedUnit();
+            String tradeName = pageVo.getTradeNames();
+            String signStates = pageVo.getSignState();
+            responseMessage = internalPactService.queryAllPacts(id, pageNo, pageSize,names,involvedUnits,tradeName,signStates);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("queryAllPactInfo() error...",e);
@@ -106,18 +113,17 @@ public class InternalPactController extends BaseController {
     }
 
     /**
-     * 根据id删除合同信息
-     * @param id
+     * 根据id删除合同信息(批量删除)
+     * @param
      * @return
      */
     @RequestMapping("delete-pact-info-by-id")
     @LogInfo(methodName = "删除合同信息")
-    public ResponseMessage deleteByPrimaryKey(@RequestBody String id) {
+    public ResponseMessage deleteByPrimaryKey(@RequestBody ArrayVO arrayVO) {
         logger.debug("InternalPact-deleteByPrimaryKey() begin...");
         try{
-            JSONObject jsonObject = JSONObject.parseObject(id);
-            String ids = jsonObject.getString("id");
-            responseMessage = internalPactService.deleteByPrimaryKey(ids);
+
+            responseMessage = internalPactService.deleteByPrimaryKey(arrayVO.getList());
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("InternalPact-deleteByPrimaryKey() error...",e);
