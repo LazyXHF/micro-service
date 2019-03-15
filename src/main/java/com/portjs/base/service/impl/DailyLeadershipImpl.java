@@ -1183,14 +1183,14 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             List<TXietongAgenda> agendas = agendaMapper.selectAgendaByTime(agenda);
             if (!StringUtils.isEmpty(agendas)) {
                 for (TXietongAgenda agenda1 : agendas) {
-                    if (agenda1.getIspublish() == 2) {
+                    /*if (agenda1.getIspublish() == 2) {
                         agenda1.setIspublish(3);
-                    }
+                    }*/
                     //根据时间和领导全量更新发布状态
-                    int update = agendaMapper.updateByPrimaryKey(agenda1);
+                    /*int update = agendaMapper.updateByPrimaryKey(agenda1);
                     if (update != 1) {
                         return new ResponseMessage(Code.CODE_ERROR, "发布失败");
-                    }
+                    }*/
                     if (agenda1.getIsdelete() == 0) {
                         TXietongAgendaHumanExample example = new TXietongAgendaHumanExample();
                         TXietongAgendaHumanExample.Criteria criteria = example.createCriteria();
@@ -1203,12 +1203,12 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                         }
                     }
                     //根据时间和领导全量新增发布表
-                    if (agenda1.getIspublish() == 3) {
+                    /*if (agenda1.getIspublish() == 3) {*/
                         int insert = agendaReleaseMapper.insert(agenda1);
                         if (insert != 1) {
                             return new ResponseMessage(Code.CODE_ERROR, "发布失败");
                         }
-                    }
+                    /*}*/
                 }
             }
         }
