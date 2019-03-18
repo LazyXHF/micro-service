@@ -1,6 +1,5 @@
 package com.portjs.base.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.ConstructionMapper;
 import com.portjs.base.entity.Construction;
 import com.portjs.base.service.ConstructionService;
@@ -11,6 +10,7 @@ import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,10 +27,10 @@ public class ConstructionServiceImpl implements ConstructionService {
     private ConstructionMapper constructionMapper;
 
     @Override
-    public ResponseMessage deleteByPrimaryKey(String id) {
+    public ResponseMessage deleteByPrimaryKey(List<String> id) {
         int count = 0;
         try {
-            count =  constructionMapper.deleteByPrimaryKey(id);
+            count =  constructionMapper.updateFalseDeletion(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,12 +57,17 @@ public class ConstructionServiceImpl implements ConstructionService {
     }
 
     @Override
-    public ResponseMessage insertSelective(String record) {
-        JSONObject requestJson = JSONObject.parseObject(record);
-        //组装bean
-        Construction construction = JSONObject.toJavaObject(requestJson,Construction.class);
+    public ResponseMessage insertSelective(Construction construction) {
+
         if(StringUtils.isEmpty(construction.getProjectId())){
             return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,projectId未传");
+        }
+        Construction approval = new Construction();
+        approval.setProjectId(construction.getProjectId());
+        List<Construction> approvals = constructionMapper.selectByPrimaryKey(approval);
+        if(!CollectionUtils.isEmpty(approvals)){
+            approval.setEnable("1");
+            constructionMapper.updateByPrimaryKeySelective(approval);
         }
         if(StringUtils.isEmpty(construction.getDevUnit())){
             return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,devUnit未传");
@@ -75,14 +80,11 @@ public class ConstructionServiceImpl implements ConstructionService {
         }
         construction.setId(UUID.randomUUID().toString());
         construction.setCreater(UserUtils.getCurrentUser().getId());
-        int count = 0;
-        try {
-            count =  constructionMapper.insertSelective(construction);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        int   count =  constructionMapper.insertSelective(construction);
+
         message = count > 0?"插入成功":"插入失败";
-        code=count>0?Code.CODE_OK:Code.CODE_ERROR;
+        code = count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);
     }
 

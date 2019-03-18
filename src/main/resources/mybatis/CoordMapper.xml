@@ -304,7 +304,16 @@
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="projectId != null">
+      and project_id = #{projectId,jdbcType=VARCHAR}
+    </if>
+    <if test="nodeType != null">
+      and node_type = #{nodeType,jdbcType=CHAR}
+    </if>
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.portjs.base.entity.Coord">
     update internal_coord

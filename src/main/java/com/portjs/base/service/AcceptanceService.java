@@ -3,6 +3,8 @@ package com.portjs.base.service;
 import com.portjs.base.entity.Acceptance;
 import com.portjs.base.util.ResponseMessage;
 
+import java.util.List;
+
 /**
  * @author gumingyang
  **/
@@ -12,7 +14,7 @@ public interface AcceptanceService {
      * @param ids
      * @return
      */
-    ResponseMessage deleteByPrimaryKey(String ids);
+    ResponseMessage deleteByPrimaryKey(List<String> ids);
     /**
      * 插入
      * @param record

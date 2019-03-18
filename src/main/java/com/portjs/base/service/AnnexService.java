@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.portjs.base.entity.Annex;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
@@ -26,10 +27,10 @@ public interface AnnexService {
     ResponseMessage insert(Annex record);
     /**
      * 插入 加入上传文件
-     * @param record
+     * @param
      * @return
      */
-    ResponseMessage insertSelective(Annex record,MultipartFile file);
+    ResponseMessage insertSelective(JSONArray list);
 
     /**
      * 根据annex，条件查询
@@ -40,10 +41,10 @@ public interface AnnexService {
 
     /**
      * 条件更新
-     * @param record
+     * @param requestJson
      * @return
      */
-    ResponseMessage updateByPrimaryKeySelective(Annex record);
+    ResponseMessage updateByPrimaryKeySelective(JSONArray requestJson );
 
     /**
      * 更新所有

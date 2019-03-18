@@ -1,16 +1,19 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.ApprovalMapper;
 import com.portjs.base.entity.Approval;
 import com.portjs.base.service.ApprovalService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.StringUtils.Convert;
 import com.portjs.base.util.StringUtils.StringUtils;
 import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,10 +30,10 @@ public class ApprovalServiceImpl implements ApprovalService {
     private ApprovalMapper approvalMapper;
 
     @Override
-    public ResponseMessage deleteByPrimaryKey(String id) {
+    public ResponseMessage deleteByPrimaryKey(List<String> id) {
         int count = 0;
         try {
-            count =  approvalMapper.deleteByPrimaryKey(id);
+            count =  approvalMapper.updateApprovals(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,41 +60,33 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public ResponseMessage insertSelective(String record) {
-       JSONObject requestJson = JSONObject.parseObject(record);
-        //组装bean
-        Approval construction = JSONObject.toJavaObject(requestJson,Approval.class);
-        if(StringUtils.isEmpty(construction.getProjectId())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,projectId未传");
+    public ResponseMessage insertSelective(JSONArray construction) {
+        int count =0;
+        //1.软删除库中数据2.插入
+        for (int i =0;i<construction.size();i++){
+            JSONObject object = construction.getJSONObject(i);
+            Approval annex = JSONObject.toJavaObject(object, Approval.class);
+            if(StringUtils.isEmpty(annex.getProjectId())){
+                return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,projectId未传");
+            }
+            Approval coord = new Approval();
+            coord.setProjectId(annex.getProjectId());
+            List<Approval> list = approvalMapper.selectByPrimaryKey(coord);
+            if(!CollectionUtils.isEmpty(list)){
+                coord.setEnable("1");
+                approvalMapper.updateByPrimaryKeySelective(coord);
+            }
         }
-        if(StringUtils.isEmpty(construction.getUnit())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,unit未传");
-        }
-        if(StringUtils.isEmpty(construction.getMethod())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,method未传");
-        }
-        if(StringUtils.isEmpty(construction.getCalibrationTime().toString())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,calibrationTime未传");
-        }
-        if(StringUtils.isEmpty(construction.getSuccessfulBidder())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,successfulBidder未传");
-        }
-        if(StringUtils.isEmpty(construction.getBiddingContent())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,biddingContent未传");
-        }
-        if(construction.getAmount() == null){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目立项模块,amount未传");
-        }
-        construction.setId(UUID.randomUUID().toString());
-        construction.setCreater(UserUtils.getCurrentUser().getId());
-        int count = 0;
-        try {
-            count =  approvalMapper.insertSelective(construction);
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int i =0;i<construction.size();i++){
+            JSONObject object = construction.getJSONObject(i);
+            Approval annex = JSONObject.toJavaObject(object, Approval.class);
+            annex.setId(UUID.randomUUID().toString());
+            annex.setCreater(UserUtils.getCurrentUser().getId());
+            count = approvalMapper.insertSelective(annex);
         }
         message = count > 0?"插入成功":"插入失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
+
         return new ResponseMessage(code , message);
     }
 

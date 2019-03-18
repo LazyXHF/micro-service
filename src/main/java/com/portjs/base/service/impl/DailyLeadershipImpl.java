@@ -377,7 +377,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
         return new ResponseMessage(Code.CODE_OK, "新增成功");
     }
 
-    //批量新增领导日程
+  /*  //批量新增领导日程
     @Override
     public ResponseMessage insertAllLeadershipAgenda(String requestBody) throws Exception {
         //JSONObject requestJson = JSONObject.parseObject(requestBody);
@@ -442,7 +442,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             List participant_ids = (List) map.get("participant_ids");//领导id数组
             String ispublish = map.get("ispublish").toString();//状态
             String amPm = map.get("amPm").toString();//0上午1下午2全天
-            /*ArrayList participant_ids =(ArrayList)*/
+            *//*ArrayList participant_ids =(ArrayList)*//*
             String remark = map.get("remark").toString();//备注
             String createrId = map.get("createrId").toString();//创建人id(登录人id)
 
@@ -471,13 +471,13 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             //agenda.setCreatetime(new java.util.Date());
             agenda.setAmPm(Integer.valueOf(amPm));
 
-            /*TXietongAgendaExample example = new TXietongAgendaExample();
+            *//*TXietongAgendaExample example = new TXietongAgendaExample();
             TXietongAgendaExample.Criteria criteria = example.createCriteria();
             criteria.andMeetingSubjectEqualTo(meeting_subjet);
             List<TXietongAgenda> agenda1 = agendaMapper.selectByExample(example);
             if(!CollectionUtils.isEmpty(agenda1)){
                 return new ResponseMessage(Code.CODE_ERROR, "会议名称已存在");
-            }*/
+            }*//*
             //新增领导日程表
             int sign = agendaMapper.insert(agenda);
             if (sign != 1) {
@@ -502,17 +502,17 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             }
         }
         return new ResponseMessage(Code.CODE_OK, "新增成功");
-        /*String begin_time = requestJson.getString("begin_time");//开始时间
+        *//*String begin_time = requestJson.getString("begin_time");//开始时间
         String end_time = requestJson.getString("end_time");//结束时间
         String meeting_subjet = requestJson.getString("meeting_subjet");//会议名称
         String meeting_place = requestJson.getString("meeting_place");//会议地点
         String participant_ids = requestJson.getString("participant_ids");//领导id数组
         String remark = requestJson.getString("remark");//备注
         String createrId = requestJson.getString("createrId");//创建人id(登录人id)
-        JSONArray participant_id = JSONObject.parseArray(participant_ids);*/
+        JSONArray participant_id = JSONObject.parseArray(participant_ids);*//*
 
 
-    }
+    }*/
 
     /**
      * 根据会议id删除会议以及关联表新建删除
@@ -1639,5 +1639,146 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             return new ResponseMessage(Code.CODE_ERROR, "暂无审核数据");
         }
         return new ResponseMessage(Code.CODE_OK, "有代审核数据");
+    }
+    @Override
+    public ResponseMessage insertAllLeadershipAgenda(String requestBody) throws Exception {
+        //JSONObject requestJson = JSONObject.parseObject(requestBody);
+        JSONArray requestJson = JSONArray.parseArray(requestBody);
+        for (int i = 0; i < requestJson.size(); i++) {
+            Map map = (Map) requestJson.get(i);
+            String begin_time = map.get("begin_time").toString();//开始时间
+            String end_time = map.get("end_time").toString();//结束时间
+
+            List participant_ids = (List) map.get("participant_ids");//领导id数组
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //删除领导所有日程
+            for (Object participant_id : participant_ids) {
+                TXietongAgenda agenda = new TXietongAgenda();
+                if (!begin_time.isEmpty()) {
+                    String begin[] = begin_time.split(" ");
+                    String beginTime = begin[0] + " 00:00:00";
+                    agenda.setBeginTime(format.parse(beginTime));
+                }
+                if (!end_time.isEmpty()) {
+                    String begin[] = end_time.split(" ");
+                    String endTime = begin[0] + " 23:59:59";
+                    agenda.setEndTime(format.parse(endTime));
+                }
+
+                agenda.setRemark(participant_id.toString());
+
+                List<TXietongAgenda> agendas = agendaMapper.selectAgendaByTime(agenda);
+                for (TXietongAgenda agenda1 : agendas) {
+                    TXietongAgenda agenda2 = new TXietongAgenda();
+                    agenda2.setId(agenda1.getId());
+                    agenda2.setIsdelete(0);
+
+                    //删除日程表
+                    int update = agendaMapper.deleteByPrimaryKey(agenda1.getId());
+                    if (update != 1) {
+                        return new ResponseMessage(Code.CODE_ERROR, "新增失败");
+                    }
+                    TXietongAgendaHumanExample humanExample = new TXietongAgendaHumanExample();
+                    TXietongAgendaHumanExample.Criteria criteria = humanExample.createCriteria();
+                    criteria.andAgendaIdEqualTo(agenda1.getId());
+                    criteria.andIsdeleteEqualTo(1);
+                    TXietongAgendaHuman human = new TXietongAgendaHuman();
+                    human.setIsdelete(0);
+
+                    //删除领导表
+                    int update1 = agendaHumanMapper.updateByExampleSelective(human, humanExample);
+                    if (update1 != 1) {
+                        return new ResponseMessage( Code.CODE_ERROR, "新增失败");
+                    }
+                }
+
+            }
+        }
+
+        for (int i = 0; i < requestJson.size(); i++) {
+            Map map = (Map) requestJson.get(i);
+            String id  = map.get("id").toString();//开始时间
+            String begin_time = map.get("begin_time").toString();//开始时间
+            String end_time = map.get("end_time").toString();//结束时间
+            String meeting_subjet = map.get("meeting_subjet").toString();//会议名称
+            String meeting_place = map.get("meeting_place").toString();//会议地点
+            List participant_ids = (List) map.get("participant_ids");//领导id数组
+            String ispublish = map.get("ispublish").toString();//状态
+            String amPm = map.get("amPm").toString();//0上午1下午2全天
+            /*ArrayList participant_ids =(ArrayList)*/
+            String remark = map.get("remark").toString();//备注
+            String createrId = map.get("createrId").toString();//创建人id(登录人id)
+
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+            TXietongAgenda agenda = new TXietongAgenda();
+            if(id.isEmpty()){
+                agenda.setId(UUID.randomUUID().toString());
+            }else {
+                agenda.setId(id);
+            }
+
+
+            agenda.setBeginTime(format.parse(begin_time));
+            agenda.setEndTime(format.parse(end_time));
+            agenda.setMeetingPlace(meeting_place);
+            agenda.setMeetingSubject(meeting_subjet);
+            agenda.setRemark(remark);
+            agenda.setIsdelete(1);
+            if(ispublish.isEmpty()){
+                agenda.setIspublish(0);
+            }else {
+                agenda.setIspublish(Integer.valueOf(ispublish));
+            }
+
+
+
+            agenda.setCreaterid(createrId);
+            //agenda.setCreatetime(new java.util.Date());
+            agenda.setAmPm(Integer.valueOf(amPm));
+
+            /*TXietongAgendaExample example = new TXietongAgendaExample();
+            TXietongAgendaExample.Criteria criteria = example.createCriteria();
+            criteria.andMeetingSubjectEqualTo(meeting_subjet);
+            List<TXietongAgenda> agenda1 = agendaMapper.selectByExample(example);
+            if(!CollectionUtils.isEmpty(agenda1)){
+                return new ResponseMessage(Code.CODE_ERROR, "会议名称已存在");
+            }*/
+            //新增领导日程表
+            int sign = agendaMapper.insert(agenda);
+            if (sign != 1) {
+                return new ResponseMessage(Code.CODE_ERROR, "新增失败");
+            }
+            TXietongAgendaHuman agendaHuman = new TXietongAgendaHuman();
+            for (int j = 0; j < participant_ids.size(); j++) {
+                agendaHuman.setId(UUID.randomUUID().toString());
+                agendaHuman.setAgendaId(agenda.getId());
+                agendaHuman.setAmPm(agenda.getAmPm());
+                agendaHuman.setIsdelete(1);
+                String name_cn = userMapper.selectById(participant_ids.get(j).toString());
+                agendaHuman.setParticipantValue(name_cn);
+                agendaHuman.setParticipantId(participant_ids.get(j).toString());
+                //agendaHuman.setCreatetime(new java.util.Date());
+                agendaHuman.setBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(begin_time));
+                //新增领导表
+                int flag = agendaHumanMapper.insert(agendaHuman);
+                if (flag != 1) {
+                    return new ResponseMessage(Code.CODE_ERROR, "新增失败");
+                }
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK, "新增成功");
+        /*String begin_time = requestJson.getString("begin_time");//开始时间
+        String end_time = requestJson.getString("end_time");//结束时间
+        String meeting_subjet = requestJson.getString("meeting_subjet");//会议名称
+        String meeting_place = requestJson.getString("meeting_place");//会议地点
+        String participant_ids = requestJson.getString("participant_ids");//领导id数组
+        String remark = requestJson.getString("remark");//备注
+        String createrId = requestJson.getString("createrId");//创建人id(登录人id)
+        JSONArray participant_id = JSONObject.parseArray(participant_ids);*/
+
+
     }
 }

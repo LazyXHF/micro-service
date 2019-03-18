@@ -11,6 +11,7 @@ import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,10 +27,10 @@ public class PilotServiceImpl implements PilotService {
     @Autowired
     private PilotMapper pilotMapper;
     @Override
-    public ResponseMessage deleteByPrimaryKey(String id) {
+    public ResponseMessage deleteByPrimaryKey(List<String> id) {
         int count = 0;
         try {
-            count =  pilotMapper.deleteByPrimaryKey(id);
+            count =  pilotMapper.updateFalseDeletion(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,18 +57,23 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
-    public ResponseMessage insertSelective(String record) {
-        JSONObject requestJson = JSONObject.parseObject(record);
-        //组装bean
-        Pilot construction = JSONObject.toJavaObject(requestJson,Pilot.class);
+    public ResponseMessage insertSelective(Pilot construction) {
         if(StringUtils.isEmpty(construction.getProjectId())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目建设试点实施模块,projectId未传");
+            return new ResponseMessage(Code.CODE_ERROR , "添加项目试点实施模块,projectId未传");
         }
+        Pilot approval = new Pilot();
+        approval.setProjectId(construction.getProjectId());
+        List<Pilot> approvals = pilotMapper.selectByPrimaryKey(approval);
+        if(!CollectionUtils.isEmpty(approvals)){
+            approval.setEnable("1");
+            pilotMapper.updateByPrimaryKeySelective(approval);
+        }
+
         if(StringUtils.isEmpty(construction.getPlanStartTime().toString())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目建设试点实施模块,planStartTime未传");
+            return new ResponseMessage(Code.CODE_ERROR , "添加项目试点实施模块,planStartTime未传");
         }
         if(StringUtils.isEmpty(construction.getPlanEndTime().toString())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目建设试点实施模块,planEndTime未传");
+            return new ResponseMessage(Code.CODE_ERROR , "添加项目试点实施模块,planEndTime未传");
         }
         construction.setId(UUID.randomUUID().toString());
         construction.setCreater(UserUtils.getCurrentUser().getId());

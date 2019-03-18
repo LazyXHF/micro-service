@@ -21,10 +21,10 @@ public interface AnnexMapper {
     int insert(Annex record);
     /**
      * 条件插入
-     * @param record
+     * @param list
      * @return
      */
-    int insertSelective(Annex record);
+    int insertSelective(Annex list);
     /**
      * 根据annex，条件查询
      * @param record

@@ -333,7 +333,19 @@
         back_up10 = #{backUp10,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="backUp1 != null">
+      and back_up1 = #{backUp1,jdbcType=VARCHAR}
+    </if>
+    <if test="node != null">
+      and node = #{node,jdbcType=CHAR}
+    </if>
+    <if test="fileModule != null">
+      and file_module = #{fileModule,jdbcType=VARCHAR}
+    </if>
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Annex">
     update internal_annex

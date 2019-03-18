@@ -1,10 +1,13 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.Design;
+import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.DesignService;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.ArrayVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +30,10 @@ public class DesignController extends BaseController {
     @ResponseBody
     public ResponseMessage insertDesign(@RequestBody String responseBody){
         logger.debug(TAG+responseBody);
-        return designService.insertSelective(responseBody);
+        UnifiedExceptionHandler.method= responseBody + "insert-design==============================" + responseBody;
+        JSONObject requestJson = JSON.parseObject(responseBody);
+        Design annex = JSONObject.toJavaObject(requestJson, Design.class);
+        return designService.insertSelective(annex);
     }
 
     @LogInfo(methodName = "根据主键更新项目设计",modelName = "项目设计模块")
@@ -35,6 +41,7 @@ public class DesignController extends BaseController {
     @ResponseBody
     public ResponseMessage updateDesign(@RequestBody String responseBody){
         logger.debug(TAG+responseBody);
+        UnifiedExceptionHandler.method= responseBody + "update-design==============================" + responseBody;
         JSONObject requestJson = JSONObject.parseObject(responseBody);
         Design annex = JSONObject.toJavaObject(requestJson, Design.class);
         return designService.updateByPrimaryKeySelective(annex);
@@ -48,6 +55,13 @@ public class DesignController extends BaseController {
         JSONObject requestJson = JSONObject.parseObject(responseBody);
         Design annex = JSONObject.toJavaObject(requestJson, Design.class);
         return designService.selectByPrimaryKey(annex);
+    }
+    @LogInfo(methodName = "删除项目设计",modelName = "项目设计模块")
+    @RequestMapping("/delete-design")
+    @ResponseBody
+    public ResponseMessage deleteDesign(@RequestBody ArrayVO arrayVO){
+        logger.debug(TAG+arrayVO);
+        return designService.deleteByPrimaryKey(arrayVO.getList());
     }
 
 }
