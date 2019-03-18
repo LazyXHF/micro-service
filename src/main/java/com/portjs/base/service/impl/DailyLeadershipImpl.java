@@ -1203,12 +1203,12 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                         }
                     }
                     //根据时间和领导全量新增发布表
-                    /*if (agenda1.getIspublish() == 3) {*/
+                    if (agenda1.getIspublish() == 3) {
                         int insert = agendaReleaseMapper.insert(agenda1);
                         if (insert != 1) {
                             return new ResponseMessage(Code.CODE_ERROR, "发布失败");
                         }
-                    /*}*/
+                    }
                 }
             }
         }
@@ -1495,13 +1495,13 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             return new ResponseMessage(Code.CODE_ERROR, "暂无审核数据");
         }
 
-        TXietongDictionaryExample dictionaryExample = new TXietongDictionaryExample();
+        /*TXietongDictionaryExample dictionaryExample = new TXietongDictionaryExample();
         TXietongDictionaryExample.Criteria criteria = dictionaryExample.createCriteria();
         criteria.andTypeCodeEqualTo("31");
-        List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
+        List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);*/
 
 
-        if (!ownerId.equals(dictionaryList.get(0).getMidValue())) {
+        /*if (!ownerId.equals(dictionaryList.get(0).getMidValue())) {
 
             TXietongAgendaRecordExample example1 = new TXietongAgendaRecordExample();
             TXietongAgendaRecordExample.Criteria criteria2 = example1.createCriteria();
@@ -1554,7 +1554,35 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             if (update2 <= 0) {
                 return new ResponseMessage(Code.CODE_ERROR, "审核失败");
             }
+        }*/
+        if (records.size() <= 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "暂无审核数据");
+        }
 
+        TXietongAgendaRecordExample example1 = new TXietongAgendaRecordExample();
+        TXietongAgendaRecordExample.Criteria criteria2 = example1.createCriteria();
+        criteria2.andAgendaProcessIdEqualTo(records.get(0).getAgendaProcessId());
+        List<TXietongAgendaRecord> records1 = agendaRecordMapper.selectByExample(example1);
+        if (records1.size() <= 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "暂无审核数据");
+        }
+
+
+        //部委领导审核更新审核流程表和会议表
+        int update1 = agendaProcessMapper.updateProcess(records.get(0).getAgendaProcessId(), status);
+        if (update1 != 1) {
+            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
+        }
+
+        TXietongAgendaExample example2 = new TXietongAgendaExample();
+        TXietongAgendaExample.Criteria criteria5 = example2.createCriteria();
+        criteria5.andIspublishEqualTo(1);
+        criteria5.andIsdeleteEqualTo(1);
+        TXietongAgenda agenda1 = new TXietongAgenda();
+        agenda1.setIspublish(2);
+        int update2 = agendaMapper.updateByExampleSelective(agenda1, example2);
+        if (update2 <= 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
         }
         //更新审核记录表
         TXietongAgendaRecord record = new TXietongAgendaRecord();
