@@ -4,6 +4,7 @@ package com.portjs.base.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.InternalPact;
+import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.InternalPactService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
@@ -44,11 +45,11 @@ public class InternalPactController extends BaseController {
             int pageNo = pageVo.getPageNo();
             int pageSize = pageVo.getPageSize();
             String id = pageVo.getObject();
-            String names = pageVo.getName();
+            /*String names = pageVo.getName();
             String involvedUnits = pageVo.getInvolvedUnit();
             String tradeName = pageVo.getTradeNames();
-            String signStates = pageVo.getSignState();
-            responseMessage = internalPactService.queryAllPacts(id, pageNo, pageSize,names,involvedUnits,tradeName,signStates);
+            String signStates = pageVo.getSignState();*/
+            responseMessage = internalPactService.queryAllPacts(id, pageNo, pageSize);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("queryAllPactInfo() error...",e);
@@ -56,12 +57,12 @@ public class InternalPactController extends BaseController {
         return responseMessage;
     }
     /**
-     * 插入合同信息
+     * 添加合同信息
      * @param
      * @return
      */
     @RequestMapping("insert-pact-info")
-    @LogInfo(methodName = "插入合同信息")
+    @LogInfo(methodName = "添加合同信息")
     public ResponseMessage insertPactInfo(@RequestBody InternalPact internalPact) {
         logger.debug("insertPactInfo() begin...");
         try{
@@ -120,7 +121,7 @@ public class InternalPactController extends BaseController {
     @RequestMapping("delete-pact-info-by-id")
     @LogInfo(methodName = "删除合同信息")
     public ResponseMessage deleteByPrimaryKey(@RequestBody ArrayVO arrayVO) {
-        logger.debug("InternalPact-deleteByPrimaryKey() begin...");
+        /*logger.debug("InternalPact-deleteByPrimaryKey() begin...");
         try{
 
             responseMessage = internalPactService.deleteByPrimaryKey(arrayVO.getList());
@@ -128,6 +129,11 @@ public class InternalPactController extends BaseController {
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("InternalPact-deleteByPrimaryKey() error...",e);
         }
+        return responseMessage;*/
+
+        logger.debug(tag+arrayVO);
+        UnifiedExceptionHandler.method = tag + "deletePactInfoById============================" +arrayVO;
+        responseMessage = internalPactService.deleteByPrimaryKey(arrayVO.getList());
         return responseMessage;
     }
 

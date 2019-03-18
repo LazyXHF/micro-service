@@ -47,7 +47,7 @@
     *
     from internal_pact
     where project_id=#{id,jdbcType=VARCHAR}
-    <if test="involved_unit != null and involved_unit !=''">
+    <!--<if test="involved_unit != null and involved_unit !=''">
       AND involved_unit LIKE CONCAT('%',#{involved_unit},'%')
     </if>
     <if test="sign_state != null and sign_state !=''">
@@ -58,7 +58,7 @@
     </if>
     <if test="name != null and name !=''">
       AND name LIKE CONCAT('%',#{name},'%')
-    </if>
+    </if>-->
     order by upload_time asc limit #{pageNo},#{pageSize}
   </select>
 
@@ -69,7 +69,7 @@
     count(*)
     from internal_pact
     where project_id=#{id,jdbcType=VARCHAR}
-    <if test="involved_unit != null and involved_unit !=''">
+    <!--<if test="involved_unit != null and involved_unit !=''">
       AND involved_unit LIKE CONCAT('%',#{involved_unit},'%')
     </if>
     <if test="sign_state != null and sign_state !=''">
@@ -80,7 +80,7 @@
     </if>
     <if test="name != null and name !=''">
       AND name LIKE CONCAT('%',#{name},'%')
-    </if>
+    </if>-->
   </select>
 
   <delete id="deleteByPrimaryKey">
@@ -296,7 +296,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="tradeNames != null">
-        "trade_names" = #{tradeNames,jdbcType=VARCHAR},
+        trade_names = #{tradeNames,jdbcType=VARCHAR},
       </if>
       <if test="fileType != null">
         file_type = #{fileType,jdbcType=CHAR},

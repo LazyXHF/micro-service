@@ -41,4 +41,7 @@ public interface TDepartmentMapper {
 
 
     int SortDepartment(@Param("sort")int sort,@Param("id")String id);
+
+    //查找所有部门 可用的部门
+    List<TDepartment> findAllDepartment();
 }

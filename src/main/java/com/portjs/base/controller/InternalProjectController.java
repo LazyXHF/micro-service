@@ -57,7 +57,7 @@ public class InternalProjectController extends BaseController{
     }
 
     /**
-     * 所有项目信息(项目信息监控接口)
+     * 所有项目信息(项目信息监控接口)并按照
      * @return
      */
     @RequestMapping("query-all-project-info")

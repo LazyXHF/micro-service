@@ -29,15 +29,15 @@ public class InternalPactServiceImpl implements InternalPactService {
      * @param id  项目id
      * @param pageNo
      * @param pageSize
-     * @return
+     * @return（,String name,String signState,String involvedUnit,String tradeNames）
      */
     @Override
-    public ResponseMessage queryAllPacts(String id, int pageNo, int pageSize,String name,String signState,String involvedUnit,String tradeNames) {
+    public ResponseMessage queryAllPacts(String id, int pageNo, int pageSize) {
         Page<InternalPact> page = new Page<>();
-        int totalCount = internalPactMapper.pactCount(name,signState,involvedUnit,tradeNames);
+        int totalCount = internalPactMapper.pactCount();
         page.init(totalCount,pageNo,pageSize);
 
-        List<InternalPact> list = internalPactMapper.queryAllPacts(id, page.getRowNum(), page.getPageCount(),name,signState,involvedUnit,tradeNames);
+        List<InternalPact> list = internalPactMapper.queryAllPacts(id, page.getRowNum(), page.getPageCount());
         page.setList(list);
 
 
@@ -78,9 +78,9 @@ public class InternalPactServiceImpl implements InternalPactService {
             e.printStackTrace();
         }
         if(i>0){
-            return new ResponseMessage(Code.CODE_OK,"删除成功");
+            return new ResponseMessage(Code.CODE_OK,"删除成功",i);
         }
-        return new ResponseMessage(Code.CODE_ERROR,"删除失败");
+        return new ResponseMessage(Code.CODE_ERROR,"删除失败",i);
     }
 
     /**
