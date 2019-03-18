@@ -1,3 +1,4 @@
+/*
 package com.portjs.base.controller;
 
 
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+*/
 /**
  * 关于合同信息
- */
+ *//*
+
 @RequestMapping("internal-pact")
 @CrossOrigin
 @RestController
@@ -32,11 +35,13 @@ public class InternalPactController extends BaseController {
     @Autowired
     InternalPactService internalPactService;
 
-    /**
+    */
+/**
      * 查询所有合同信息
      * @param pageVo
      * @return
-     */
+     *//*
+
     @RequestMapping("query-all-pact-info")
     @LogInfo(methodName = "查询所有合同信息")
     public ResponseMessage selectAllProjectInfo(@RequestBody PageVo pageVo) {
@@ -45,10 +50,12 @@ public class InternalPactController extends BaseController {
             int pageNo = pageVo.getPageNo();
             int pageSize = pageVo.getPageSize();
             String id = pageVo.getObject();
-            /*String names = pageVo.getName();
+            */
+/*String names = pageVo.getName();
             String involvedUnits = pageVo.getInvolvedUnit();
             String tradeName = pageVo.getTradeNames();
-            String signStates = pageVo.getSignState();*/
+            String signStates = pageVo.getSignState();*//*
+
             responseMessage = internalPactService.queryAllPacts(id, pageNo, pageSize);
         }catch (Exception e){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
@@ -56,11 +63,13 @@ public class InternalPactController extends BaseController {
         }
         return responseMessage;
     }
-    /**
+    */
+/**
      * 添加合同信息
      * @param
      * @return
-     */
+     *//*
+
     @RequestMapping("insert-pact-info")
     @LogInfo(methodName = "添加合同信息")
     public ResponseMessage insertPactInfo(@RequestBody InternalPact internalPact) {
@@ -74,11 +83,13 @@ public class InternalPactController extends BaseController {
         return responseMessage;
     }
 
-    /**
+    */
+/**
      * 根据id查询合同信息
      * @param id
      * @return
-     */
+     *//*
+
     @RequestMapping("select-pact-info-by-id")
     @LogInfo(methodName = "根据id查询合同信息")
     public ResponseMessage selectByPrimaryKey(@RequestBody String id) {
@@ -94,11 +105,13 @@ public class InternalPactController extends BaseController {
         return responseMessage;
     }
 
-    /**
+    */
+/**
      * 更新合同信息
      * @param record
      * @return
-     */
+     *//*
+
     @RequestMapping("update-pact-info")
     @LogInfo(methodName = "更新合同信息")
     public ResponseMessage updatePactInfo(@RequestBody InternalPact record) {
@@ -113,15 +126,18 @@ public class InternalPactController extends BaseController {
         return responseMessage;
     }
 
-    /**
+    */
+/**
      * 根据id删除合同信息(批量删除)
      * @param
      * @return
-     */
+     *//*
+
     @RequestMapping("delete-pact-info-by-id")
     @LogInfo(methodName = "删除合同信息")
     public ResponseMessage deleteByPrimaryKey(@RequestBody ArrayVO arrayVO) {
-        /*logger.debug("InternalPact-deleteByPrimaryKey() begin...");
+        */
+/*logger.debug("InternalPact-deleteByPrimaryKey() begin...");
         try{
 
             responseMessage = internalPactService.deleteByPrimaryKey(arrayVO.getList());
@@ -129,7 +145,8 @@ public class InternalPactController extends BaseController {
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
             logger.error("InternalPact-deleteByPrimaryKey() error...",e);
         }
-        return responseMessage;*/
+        return responseMessage;*//*
+
 
         logger.debug(tag+arrayVO);
         UnifiedExceptionHandler.method = tag + "deletePactInfoById============================" +arrayVO;
@@ -140,3 +157,4 @@ public class InternalPactController extends BaseController {
 }
 
 
+*/

@@ -30,7 +30,7 @@ public interface InternalPactMapper {
 
     int insertSelective(InternalPact record);
 
-    InternalPact selectByPrimaryKey(String id);
+    List<InternalPact> selectByPrimaryKey(InternalPact record);
 
     int updateByPrimaryKeySelective(InternalPact record);
 

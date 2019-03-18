@@ -66,7 +66,8 @@ public class AcceptanceServiceImpl implements AcceptanceService {
         approval.setProjectId(construction.getProjectId());
         List<Acceptance> approvals = acceptanceMapper.selectByPrimaryKey(approval);
         if(!CollectionUtils.isEmpty(approvals)){
-            return new ResponseMessage(Code.CODE_ERROR , "此项目已添加过项目验收环节！");
+            approval.setEnable("1");
+            acceptanceMapper.updateByPrimaryKeySelective(approval);
         }
 
         construction.setId(UUID.randomUUID().toString());

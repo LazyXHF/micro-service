@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.portjs.base.entity.InternalPact;
 import com.portjs.base.util.ResponseMessage;
 import org.apache.ibatis.annotations.Param;
@@ -18,11 +19,11 @@ public interface InternalPactService {
    ResponseMessage queryAllPacts(String id, int pageNo,int pageSize);
 
     /**
-     * 添加合同信息
-     * @param record
+     * 批量添加合同信息
+     * @param requestJson
      * @return
      */
-    ResponseMessage insertSelective(InternalPact record);
+    ResponseMessage insertSelective(JSONArray requestJson);
 
     /**
      * 根据id删除合同信息
@@ -33,10 +34,10 @@ public interface InternalPactService {
 
     /**
      * 根据id查询合同信息
-     * @param id
+     * @param record
      * @return
      */
-    ResponseMessage selectByPrimaryKey(String id);
+    ResponseMessage selectByPrimaryKey(InternalPact record);
 
     /**
      * 根据id修改合同信息

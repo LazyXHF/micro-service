@@ -2,8 +2,6 @@ package com.portjs.base.service;
 
 import com.portjs.base.entity.Problem;
 import com.portjs.base.util.ResponseMessage;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

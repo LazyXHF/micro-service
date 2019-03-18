@@ -1,5 +1,7 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.InternalPactMapper;
 import com.portjs.base.dao.InternalProjectMapper;
 import com.portjs.base.entity.InternalPact;
@@ -11,6 +13,7 @@ import com.portjs.base.util.StringUtils.StringUtils;
 import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +27,8 @@ public class InternalPactServiceImpl implements InternalPactService {
     @Autowired
     InternalProjectMapper internalProjectMapper;
 
+    private String message = "";
+    private Integer code;
     /**
      * 查询所有合同信息
      * @param id  项目id
@@ -48,19 +53,38 @@ public class InternalPactServiceImpl implements InternalPactService {
 
     /**
      * 插入合同信息
-     * @param record
+     * @param requestJson
      * @return
      */
     @Override
-    public ResponseMessage insertSelective(InternalPact record) {
-//        InternalPact internalPact = new InternalPact();
-        record.setId(UUID.randomUUID().toString());
-
-        int i  = internalPactMapper.insertSelective(record);
-        if(i==0){
-            return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
+    public ResponseMessage insertSelective(JSONArray requestJson) {
+        int count =0;
+        for (int i =0;i<requestJson.size();i++){
+            JSONObject object = requestJson.getJSONObject(i);
+            InternalPact annex = JSONObject.toJavaObject(object, InternalPact.class);
+            if(StringUtils.isEmpty(annex.getProjectId())){
+                return new ResponseMessage(Code.CODE_ERROR , "项目合同,projectId未传");
+            }
+            //1.软删除库中数据2.插入
+            InternalPact coord = new InternalPact();
+            coord.setProjectId(annex.getProjectId());
+            List<InternalPact> list = internalPactMapper.selectByPrimaryKey(coord);
+            if(!CollectionUtils.isEmpty(list)){
+                coord.setEnable("1");
+                internalPactMapper.updateByPrimaryKeySelective(coord);
+            }
         }
-        return new ResponseMessage(Code.CODE_OK,"添加成功！",i);
+        for (int i =0;i<requestJson.size();i++){
+            JSONObject object = requestJson.getJSONObject(i);
+            InternalPact annex = JSONObject.toJavaObject(object, InternalPact.class);
+            //组建bean
+            annex.setId(UUID.randomUUID().toString());
+            annex.setUploader(UserUtils.getCurrentUser().getId());
+            count = internalPactMapper.insertSelective(annex);
+        }
+        message = count > 0?"插入成功":"插入失败";
+        code=count>0?Code.CODE_OK:Code.CODE_ERROR;
+        return new ResponseMessage(code , message);
     }
 
     /**
@@ -85,17 +109,22 @@ public class InternalPactServiceImpl implements InternalPactService {
 
     /**
      * 根据id查询合同信息
-     * @param id
+     * @param annex
      * @return
      */
     @Override
-    public ResponseMessage selectByPrimaryKey(String id) {
-        InternalPact internalPact = internalPactMapper.selectByPrimaryKey(id);
-        if(internalPact==null){
-            return new ResponseMessage(Code.CODE_ERROR,"查询失败！",internalPact);
+    public ResponseMessage selectByPrimaryKey(InternalPact annex) {
+        List<InternalPact> design = null;
+        try {
+            design  =  internalPactMapper.selectByPrimaryKey(annex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return new ResponseMessage(Code.CODE_OK,"查询成功！",internalPact);
+        message = design != null?"查询成功":"查询失败";
+        code = design != null?Code.CODE_OK:Code.CODE_ERROR;
+
+        return new ResponseMessage(code,message,design);
     }
 
     /**

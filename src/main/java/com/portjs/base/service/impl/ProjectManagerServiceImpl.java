@@ -1,3 +1,4 @@
+/*
 package com.portjs.base.service.impl;
 
 import com.portjs.base.dao.*;
@@ -19,41 +20,53 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
 
     ResponseMessage responseMessage = null;
 
-    /**
+    */
+/**
      * 节点--立项
-     */
+     *//*
+
     @Autowired
     InternalApprovalMapper internalApprovalMapper;
 
-    /**
+    */
+/**
      * 节点--合同签订
-     */
+     *//*
+
     @Autowired
     InternalPactMapper internalPactMapper;
 
-    /**
+    */
+/**
      * 节点--需求设计
-     */
+     *//*
+
     @Autowired
     InternalDesignMapper internalDesignMapper;
 
-    /**
+    */
+/**
      * 节点--开发测试
-     */
+     *//*
+
     @Autowired
     InternalConstructionMapper internalConstructionMapper;
 
-    /**
+    */
+/**
      * 节点--试运行
-     */
+     *//*
+
     @Autowired
     InternalPilotMapper internalPilotMapper;
 
-    /**
+    */
+/**
      * 根据项目id判断当前项目处于哪个节点位置（实际时间和计划时间的比较）
      * @param id
      * @return
-     */
+     *//*
+
     public ResponseMessage dealProjectTime(String id){
         InternalApproval internalApproval = null;
         InternalPact internalPact = null;
@@ -145,3 +158,4 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
     }
 
 }
+*/

@@ -3,7 +3,6 @@ package com.portjs.base.entity;
 import com.portjs.base.util.BaseEntity;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
