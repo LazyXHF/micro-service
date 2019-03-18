@@ -231,8 +231,8 @@
 
   <select id="selectAll" resultMap="BaseResultMap1" >
     select  u.* from t_user u,t_xietong_user_minister_relation r where
-    u.isdelete="1"
-    and r.status="0"
+   /* u.isdelete="1"*/
+    r.status="0"
     and u.id = r.minister_id
     GROUP BY r.minister_id
   </select>
