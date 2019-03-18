@@ -1,54 +1,49 @@
 package com.portjs.base.dao;
 
-import com.portjs.base.entity.Acceptance;
+import com.portjs.base.entity.Problem;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface AcceptanceMapper {
-    /**
-     * 根据id删除，可多条删除
-     * @param ids
-     * @return
-     */
-    int deleteByPrimaryKey(String[] ids);
-
+public interface ProblemMapper {
     /**
      * 软删除
      * @param id
      * @return
      */
     int updateFalseDeletion(@Param("id") List<String> id);
+
+    int deleteByPrimaryKey(String id);
     /**
-     * 插入
+     *  插入
      * @param record
      * @return
      */
-    int insert(Acceptance record);
+    int insert(Problem record);
     /**
      * 条件插入
      * @param record
      * @return
      */
-    int insertSelective(Acceptance record);
+    int insertSelective(Problem record);
     /**
-     * 根据annex，条件查询
+     * 根据record条件查询
      * @param record
      * @return
      */
-    List<Acceptance> selectByPrimaryKey(Acceptance record);
+    List<Problem> selectByPrimaryKey(Problem record);
     /**
-     * 条件更新
+     * 全更新
      * @param record
      * @return
      */
-    int updateByPrimaryKeySelective(Acceptance record);
+    int updateByPrimaryKeySelective(Problem record);
     /**
-     * 更新所有
+     * id更新
      * @param record
      * @return
      */
-    int updateByPrimaryKey(Acceptance record);
+    int updateByPrimaryKey(Problem record);
 }

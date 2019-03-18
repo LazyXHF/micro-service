@@ -82,6 +82,12 @@
     delete from internal_design
     where id = #{id,jdbcType=VARCHAR}
   </delete>
+  <update id="updateDesign" parameterType="list">
+    update internal_design SET enable = 1 WHERE  id IN
+    <foreach item="id" index="index" collection="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
   <insert id="insert" parameterType="com.portjs.base.entity.Design">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
@@ -336,9 +342,7 @@
       <if test="creater != null">
         creater = #{creater,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        update_time =  SYSDATE(),
       <if test="coordinationMatters != null">
         coordination_matters = #{coordinationMatters,jdbcType=VARCHAR},
       </if>
@@ -355,7 +359,13 @@
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="projectId != null">
+      and project_id = #{projectId,jdbcType=VARCHAR}
+    </if>
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.portjs.base.entity.Design">
     update internal_design

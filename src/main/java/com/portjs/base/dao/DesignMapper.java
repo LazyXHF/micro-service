@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.Design;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,15 @@ public interface DesignMapper {
      * @param id
      * @return
      */
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(@Param("id") List<String> id);
+
+    /**
+     * 批量更新 软删除
+     * @param id
+     * @return
+     */
+    int updateDesign(@Param("id") List<String> id);
+
 
     /**
      *  插入

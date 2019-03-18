@@ -1,8 +1,11 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.Annex;
+import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.AnnexService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
@@ -31,39 +34,27 @@ public class AnnexController extends BaseController{
     @Resource
     private AnnexService annexService;
 
-    @LogInfo(methodName = "添加附件资源",modelName = "附件模块")
+    @LogInfo(methodName = "批量添加附件资源",modelName = "附件模块")
     @RequestMapping("/insert-annex")
     @ResponseBody
-    public ResponseMessage insertDesign(String node,String fileModule,String fileType,String fileName, MultipartFile file){
+    public ResponseMessage insertDesign(@RequestBody String responseBody){
         //node 1:开发2:设计3:试点实施4:立项
-        if(StringUtils.isEmpty(node)){
-            return  new ResponseMessage(Code.CODE_ERROR , "添加附件资源模块,node未传");
-        }
-        if(StringUtils.isEmpty(fileType)){
-            return  new ResponseMessage(Code.CODE_ERROR , "添加附件资源模块,fileType未传");
-        }
-        if(StringUtils.isEmpty(fileName)){
-            return  new ResponseMessage(Code.CODE_ERROR , "添加附件资源模块,fileName未传");
-        }
-        Annex annex = new Annex();
-        annex.setNode(node);
-        annex.setFileModule(fileModule==null?"0":fileModule);
-        annex.setFileType(fileType);
-        annex.setFileName(fileName);
-        return annexService.insertSelective(annex,file);
+        logger.debug(TAG + responseBody);
+        UnifiedExceptionHandler.method= responseBody + "insert-approval==============================" + responseBody;
+        JSONArray requestJson = JSON.parseArray(responseBody);
+        return annexService.insertSelective(requestJson);
     }
 
-    @LogInfo(methodName = "根据主键更新附件资源",modelName = "附件模块")
+    @LogInfo(methodName = "根据主键批量更新附件资源",modelName = "附件模块")
     @RequestMapping("/update-annex")
     @ResponseBody
     public ResponseMessage updateDesign(@RequestBody String responseBody){
         logger.debug(TAG+responseBody);
-        JSONObject requestJson = JSONObject.parseObject(responseBody);
-        Annex annex = JSONObject.toJavaObject(requestJson, Annex.class);
-        return annexService.updateByPrimaryKeySelective(annex);
+        JSONArray requestJson = JSON.parseArray(responseBody);
+        return annexService.updateByPrimaryKeySelective(requestJson);
     }
 
-    @LogInfo(methodName = "查询附件资源",modelName = "附件模块")
+    @LogInfo(methodName = "查询所有附件资源",modelName = "附件模块")
     @RequestMapping("/select-annex")
     @ResponseBody
     public ResponseMessage selectDesign(@RequestBody String responseBody){
@@ -73,13 +64,13 @@ public class AnnexController extends BaseController{
         return annexService.selectByPrimaryKey(annex);
     }
 
-    @LogInfo(methodName = "删除附件资源",modelName = "附件模块")
+  /*  @LogInfo(methodName = "删除附件资源",modelName = "附件模块")
     @RequestMapping("/delete-annex")
     @ResponseBody
     public ResponseMessage deleteDesign(@RequestBody ArrayVO arrayVO){
         logger.debug(TAG+arrayVO);
         return annexService.deleteByPrimaryKey(arrayVO.getList());
-    }
+    }*/
     @LogInfo(methodName = "下载附件资源",modelName = "附件模块")
     @RequestMapping("/down-annex")
     @ResponseBody

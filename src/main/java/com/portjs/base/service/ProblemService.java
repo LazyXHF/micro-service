@@ -1,50 +1,42 @@
 package com.portjs.base.service;
 
-import com.portjs.base.entity.Pilot;
+import com.portjs.base.entity.Problem;
 import com.portjs.base.util.ResponseMessage;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface PilotService {
-    /**
-     * 删除 支持多条删除
-     * @param id
-     * @return
-     * TODO
-     */
-    ResponseMessage deleteByPrimaryKey(List<String> id);
+public interface ProblemService {
+    ResponseMessage deleteByPrimaryKey(List<String> record);
     /**
      *  插入
      * @param record
      * @return
-     * TODO
      */
-    ResponseMessage insert(Pilot record);
-
+    ResponseMessage insert(Problem record);
     /**
      * 条件插入
      * @param record
      * @return
      */
-    ResponseMessage insertSelective(Pilot record);
+    ResponseMessage insertSelective(Problem record);
     /**
      * 根据record条件查询
      * @param record
      * @return
      */
-    ResponseMessage selectByPrimaryKey(Pilot record);
+    ResponseMessage selectByPrimaryKey(Problem record);
     /**
      * 全更新
      * @param record
      * @return
      */
-    ResponseMessage updateByPrimaryKeySelective(Pilot record);
+    ResponseMessage updateByPrimaryKeySelective(Problem record);
     /**
      * id更新
      * @param record
      * @return
-     * TODO
      */
-    ResponseMessage updateByPrimaryKey(Pilot record);
+    ResponseMessage updateByPrimaryKey(Problem record);
 }

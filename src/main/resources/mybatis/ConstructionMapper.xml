@@ -75,6 +75,12 @@
         </if>
     </where>
   </select>
+  <update id="updateFalseDeletion" parameterType="list">
+    update internal_construction SET  enable=1 WHERE  id IN
+    <foreach item="id" index="index" collection="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from internal_construction
     where id = #{id,jdbcType=VARCHAR}
@@ -350,7 +356,13 @@
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="projectId != null">
+      and project_id = #{projectId,jdbcType=VARCHAR}
+    </if>
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.portjs.base.entity.Construction">
     update internal_construction

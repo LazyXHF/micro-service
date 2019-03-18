@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.Pilot;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,6 +14,13 @@ public interface PilotMapper {
      * @return
      */
     int deleteByPrimaryKey(String id);
+
+    /**
+     * 软删除
+     * @param id
+     * @return
+     */
+    int updateFalseDeletion(@Param("id") List<String> id);
     /**
      *  插入
      * @param record

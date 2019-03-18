@@ -11,6 +11,7 @@ import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,10 +28,10 @@ public class AcceptanceServiceImpl implements AcceptanceService {
     private AcceptanceMapper acceptanceMapper;
 
     @Override
-    public ResponseMessage deleteByPrimaryKey(String ids) {
+    public ResponseMessage deleteByPrimaryKey(List<String> id) {
         int count = 0;
         try {
-            count =  acceptanceMapper.deleteByPrimaryKey(Convert.toStrArray(ids));
+            count =  acceptanceMapper.updateFalseDeletion(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,14 +62,16 @@ public class AcceptanceServiceImpl implements AcceptanceService {
         if(StringUtils.isEmpty(construction.getProjectId())){
             return new ResponseMessage(Code.CODE_ERROR , "添加项目验收模块,projectId未传");
         }
+        Acceptance approval = new Acceptance();
+        approval.setProjectId(construction.getProjectId());
+        List<Acceptance> approvals = acceptanceMapper.selectByPrimaryKey(approval);
+        if(!CollectionUtils.isEmpty(approvals)){
+            return new ResponseMessage(Code.CODE_ERROR , "此项目已添加过项目验收环节！");
+        }
+
         construction.setId(UUID.randomUUID().toString());
         construction.setCreater(UserUtils.getCurrentUser().getId());
-        int count = 0;
-        try {
-            count =  acceptanceMapper.insertSelective(construction);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        int  count =  acceptanceMapper.insertSelective(construction);
         message = count > 0?"插入成功":"插入失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);

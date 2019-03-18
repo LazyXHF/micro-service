@@ -6,21 +6,21 @@ import java.util.Date;
 public class Coord implements Serializable {
     private String id;
 
-    private String coordination;
+    private String coordination;//协调事项
 
-    private String coordinator;
+    private String coordinator;//协调人
 
-    private String priority;
+    private String priority;//问题优先级
 
-    private String projectId;
+    private String projectId;//项目id
 
     private String enable;
 
-    private String nodeType;
+    private String nodeType;//1:立项2:设计3：开发4:试点实施5：验收。。。。
 
-    private String fileUrl;
+    private String fileUrl;//附件路径
 
-    private String fileName;
+    private String fileName;//附件名字
 
     private String backUp1;
 
@@ -50,7 +50,7 @@ public class Coord implements Serializable {
 
     private Date modifyTime;
 
-    private String description;
+    private String description;//协调事项描述
 
     private static final long serialVersionUID = 1L;
 

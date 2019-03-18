@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.Construction;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,14 @@ public interface ConstructionMapper {
      * @param id
      * @return
      */
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(@Param("id") List<String> id);
+
+    /**
+     * 软删除
+     * @param id
+     * @return
+     */
+    int updateFalseDeletion(@Param("id") List<String> id);
 
     /**
      *  插入

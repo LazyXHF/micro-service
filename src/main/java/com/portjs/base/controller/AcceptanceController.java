@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.Acceptance;
+import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.AcceptanceService;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.Convert;
@@ -28,18 +29,19 @@ public class AcceptanceController extends BaseController {
     @LogInfo(methodName = "删除项目验收",modelName = "项目验收模块")
     @RequestMapping("/delete-acceptance")
     @ResponseBody
-    public ResponseMessage deleteDesign(@RequestBody String ids){
-        logger.debug(TAG+ids);
-        return acceptanceService.deleteByPrimaryKey(ids);
+    public ResponseMessage deleteDesign(@RequestBody ArrayVO vo){
+        logger.debug(TAG+vo);
+        return acceptanceService.deleteByPrimaryKey(vo.getList());
     }
 
     @LogInfo(methodName = "添加项目验收",modelName = "项目验收模块")
     @RequestMapping("/insert-acceptance")
     @ResponseBody
     public ResponseMessage insertDesign(@RequestBody String responseBody){
+        logger.debug(TAG+responseBody);
+        UnifiedExceptionHandler.method= responseBody + "insert-acceptance==============================" + responseBody;
         JSONObject requestJson = JSONObject.parseObject(responseBody);
         Acceptance annex = JSONObject.toJavaObject(requestJson, Acceptance.class);
-        logger.debug(TAG+responseBody);
         return acceptanceService.insertSelective(annex);
     }
 

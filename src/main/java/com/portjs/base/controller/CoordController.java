@@ -1,8 +1,10 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.Coord;
+import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.CoordService;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
@@ -27,8 +29,12 @@ public class CoordController extends BaseController {
     @LogInfo(methodName = "添加协调事项",modelName = "协调事项")
     @RequestMapping("/insert-coord")
     @ResponseBody
-    public ResponseMessage insertDesign(String projectId,String nodeType,String coordination,String coordinator,String priority,String description, MultipartFile file){
-        return coordService.insertSelective(projectId,nodeType,coordination,coordinator,priority,description,file);
+    public ResponseMessage insertDesign(@RequestBody String responseBody){
+        logger.debug(TAG + responseBody);
+        UnifiedExceptionHandler.method= responseBody + "insert-coord==============================" + responseBody;
+        JSONObject requestJson = JSON.parseObject(responseBody);
+        Coord annex = JSONObject.toJavaObject(requestJson, Coord.class);
+        return coordService.insertSelective(annex);
     }
 
     @LogInfo(methodName = "根据主键更新协调事项",modelName = "协调事项")
@@ -50,12 +56,12 @@ public class CoordController extends BaseController {
         Coord annex = JSONObject.toJavaObject(requestJson, Coord.class);
         return coordService.selectByPrimaryKey(annex);
     }
-
+/*
     @LogInfo(methodName = "删除协调事项",modelName = "协调事项")
     @RequestMapping("/delete-coord")
     @ResponseBody
     public ResponseMessage deleteDesign(@RequestBody ArrayVO arrayVO){
         logger.debug(TAG+arrayVO);
         return coordService.deleteByPrimaryKey(arrayVO.getList());
-    }
+    }*/
 }

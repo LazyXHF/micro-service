@@ -37,7 +37,7 @@ public class Annex extends BaseEntity {
 
     private String enable;
 
-    private String backUp1;
+    private String backUp1;//项目id projectId
 
     private String backUp2;
 
@@ -58,4 +58,12 @@ public class Annex extends BaseEntity {
     private String backUp10;
 
     private static final long serialVersionUID = 1L;
+
+    public String getFileModule() {
+        return fileModule;
+    }
+
+    public void setFileModule(String fileModule) {
+        this.fileModule = fileModule.trim();
+    }
 }

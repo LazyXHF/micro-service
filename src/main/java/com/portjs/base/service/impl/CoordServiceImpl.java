@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,45 +63,27 @@ public class CoordServiceImpl implements CoordService {
     }
 
     @Override
-    public ResponseMessage insertSelective(String projectId,String nodeType,String coordination,String coordinator,String priority,String description, MultipartFile file) {
-        //先查询库中是否存在，不存在插入 存在更新
-        if(StringUtils.isEmpty(projectId)){
+    public ResponseMessage insertSelective(Coord annex) {
+        if(StringUtils.isEmpty(annex.getProjectId())){
             return new ResponseMessage(Code.CODE_ERROR , "添加协调事项,projectId未传");
         }
-        if(StringUtils.isEmpty(nodeType)){
+        if(StringUtils.isEmpty(annex.getNodeType())){
             return new ResponseMessage(Code.CODE_ERROR , "添加协调事项,nodeType未传");
         }
-        Coord construction = new Coord();
-        construction.setProjectId(projectId);
-        construction.setNodeType(nodeType);
-        if(file!=null){
-            String url = upload.uploadFlie(file);
-            if("1".equals(url)){
-                return new ResponseMessage(Code.CODE_ERROR ,"添加协调事项,文件上传失败");
-            }
-            construction.setFileUrl(url);
-        }
-        if(!StringUtils.isEmpty(coordination)){
-            construction.setCoordination(coordination);
-        }
-        if(!StringUtils.isEmpty(coordinator)){
-            construction.setCoordinator(coordinator);
-        }
-        if(!StringUtils.isEmpty(priority)){
-            construction.setPriority(priority);
-        }
-        if(!StringUtils.isEmpty(description)){
-            construction.setDescription(description);
-        }
-        int count = 0;
-        List<Coord> list =  coordMapper.selectByPrimaryKey(construction);
+        //1.软删除库中数据2.插入
+        Coord coord = new Coord();
+        coord.setProjectId(annex.getProjectId());
+        coord.setNodeType(annex.getNodeType());
+        List<Coord> list = coordMapper.selectByPrimaryKey(coord);
+        int  count =0;
         if(!CollectionUtils.isEmpty(list)){
-            count = coordMapper.updateByPrimaryKeySelective(construction);
-        }else {
-            construction.setId(UUID.randomUUID().toString());
-            construction.setUploader(UserUtils.getCurrentUser().getId());
-            count =  coordMapper.insertSelective(construction);
+            coord.setEnable("1");
+            coordMapper.updateByPrimaryKeySelective(coord);
         }
+
+        annex.setId(UUID.randomUUID().toString());
+        annex.setUploader(UserUtils.getCurrentUser().getId());
+        count =  coordMapper.insertSelective(annex);
         message = count > 0?"插入成功":"插入失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);

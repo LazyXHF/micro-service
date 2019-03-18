@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.ProblemMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.Problem">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="enable" jdbcType="CHAR" property="enable" />
+    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
+    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
+    <result column="back_up4" jdbcType="VARCHAR" property="backUp4" />
+    <result column="back_up5" jdbcType="VARCHAR" property="backUp5" />
+    <result column="back_up6" jdbcType="VARCHAR" property="backUp6" />
+    <result column="back_up7" jdbcType="VARCHAR" property="backUp7" />
+    <result column="back_up8" jdbcType="VARCHAR" property="backUp8" />
+    <result column="back_up9" jdbcType="VARCHAR" property="backUp9" />
+    <result column="back_up10" jdbcType="VARCHAR" property="backUp10" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="solution" jdbcType="VARCHAR" property="solution" />
+    <result column="problem_type" jdbcType="VARCHAR" property="problemType" />
+    <result column="proposed_time" jdbcType="TIMESTAMP" property="proposedTime" />
+    <result column="problem_priority" jdbcType="VARCHAR" property="problemPriority" />
+    <result column="proposer" jdbcType="VARCHAR" property="proposer" />
+    <result column="solve" jdbcType="VARCHAR" property="solve" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, creat_time, creater, update_time, updater, enable, back_up1, back_up2, 
+    back_up3, back_up4, back_up5, back_up6, back_up7, back_up8, back_up9, back_up10, 
+    describe, solution, problem_type, proposed_time, problem_priority, proposer, solve
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from internal_problem
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from internal_problem
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <update id="updateFalseDeletion" parameterType="java.util.List">
+    UPDATE internal_problem SET enable=1 WHERE id IN 
+    <foreach collection="id" item="id" open="(" close=")" separator="," index="index">
+      #{id}
+    </foreach>
+  </update>
+  <insert id="insert" parameterType="com.portjs.base.entity.Problem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into internal_problem (project_id, creat_time, creater, 
+      update_time, updater, enable, 
+      back_up1, back_up2, back_up3, 
+      back_up4, back_up5, back_up6, 
+      back_up7, back_up8, back_up9, 
+      back_up10, describe, solution, 
+      problem_type, proposed_time, problem_priority, 
+      proposer, solve)
+    values (#{projectId,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, #{enable,jdbcType=CHAR}, 
+      #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, #{backUp3,jdbcType=VARCHAR}, 
+      #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, #{backUp6,jdbcType=VARCHAR}, 
+      #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, 
+      #{backUp10,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{solution,jdbcType=VARCHAR}, 
+      #{problemType,jdbcType=VARCHAR}, #{proposedTime,jdbcType=TIMESTAMP}, #{problemPriority,jdbcType=VARCHAR}, 
+      #{proposer,jdbcType=VARCHAR}, #{solve,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.Problem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into internal_problem
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+        creat_time,
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+      <if test="backUp1 != null">
+        back_up1,
+      </if>
+      <if test="backUp2 != null">
+        back_up2,
+      </if>
+      <if test="backUp3 != null">
+        back_up3,
+      </if>
+      <if test="backUp4 != null">
+        back_up4,
+      </if>
+      <if test="backUp5 != null">
+        back_up5,
+      </if>
+      <if test="backUp6 != null">
+        back_up6,
+      </if>
+      <if test="backUp7 != null">
+        back_up7,
+      </if>
+      <if test="backUp8 != null">
+        back_up8,
+      </if>
+      <if test="backUp9 != null">
+        back_up9,
+      </if>
+      <if test="backUp10 != null">
+        back_up10,
+      </if>
+      <if test="describe != null">
+        describe,
+      </if>
+      <if test="solution != null">
+        solution,
+      </if>
+      <if test="problemType != null">
+        problem_type,
+      </if>
+      <if test="proposedTime != null">
+        proposed_time,
+      </if>
+      <if test="problemPriority != null">
+        problem_priority,
+      </if>
+      <if test="proposer != null">
+        proposer,
+      </if>
+      <if test="solve != null">
+        solve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      SYSDATE(),
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        #{backUp10,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="solution != null">
+        #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="problemType != null">
+        #{problemType,jdbcType=VARCHAR},
+      </if>
+      <if test="proposedTime != null">
+        #{proposedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="problemPriority != null">
+        #{problemPriority,jdbcType=VARCHAR},
+      </if>
+      <if test="proposer != null">
+        #{proposer,jdbcType=VARCHAR},
+      </if>
+      <if test="solve != null">
+        #{solve,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.Problem">
+    update internal_problem
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+        update_time =  SYSDATE(),
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=CHAR},
+      </if>
+      <if test="backUp1 != null">
+        back_up1 = #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        back_up2 = #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        back_up3 = #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        back_up4 = #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        back_up5 = #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        back_up6 = #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        back_up10 = #{backUp10,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="solution != null">
+        solution = #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="problemType != null">
+        problem_type = #{problemType,jdbcType=VARCHAR},
+      </if>
+      <if test="proposedTime != null">
+        proposed_time = #{proposedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="problemPriority != null">
+        problem_priority = #{problemPriority,jdbcType=VARCHAR},
+      </if>
+      <if test="proposer != null">
+        proposer = #{proposer,jdbcType=VARCHAR},
+      </if>
+      <if test="solve != null">
+        solve = #{solve,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Problem">
+    update internal_problem
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      creater = #{creater,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      updater = #{updater,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=CHAR},
+      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      back_up2 = #{backUp2,jdbcType=VARCHAR},
+      back_up3 = #{backUp3,jdbcType=VARCHAR},
+      back_up4 = #{backUp4,jdbcType=VARCHAR},
+      back_up5 = #{backUp5,jdbcType=VARCHAR},
+      back_up6 = #{backUp6,jdbcType=VARCHAR},
+      back_up7 = #{backUp7,jdbcType=VARCHAR},
+      back_up8 = #{backUp8,jdbcType=VARCHAR},
+      back_up9 = #{backUp9,jdbcType=VARCHAR},
+      back_up10 = #{backUp10,jdbcType=VARCHAR},
+      describe = #{describe,jdbcType=VARCHAR},
+      solution = #{solution,jdbcType=VARCHAR},
+      problem_type = #{problemType,jdbcType=VARCHAR},
+      proposed_time = #{proposedTime,jdbcType=TIMESTAMP},
+      problem_priority = #{problemPriority,jdbcType=VARCHAR},
+      proposer = #{proposer,jdbcType=VARCHAR},
+      solve = #{solve,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

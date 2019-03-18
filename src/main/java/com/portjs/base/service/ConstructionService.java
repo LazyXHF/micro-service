@@ -4,14 +4,15 @@ import com.portjs.base.entity.Construction;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 public interface ConstructionService {
     /**
      * 删除 支持多条删除
      * @param id
      * @return
-     * TODO
      */
-    ResponseMessage deleteByPrimaryKey(String id);
+    ResponseMessage deleteByPrimaryKey(List<String> id);
     /**
      *  插入
      * @param record
@@ -21,10 +22,10 @@ public interface ConstructionService {
     ResponseMessage insert(Construction record);
     /**
      * 条件插入
-     * @param record
+     * @param annex
      * @return
      */
-    ResponseMessage insertSelective(String record);
+    ResponseMessage insertSelective( Construction annex);
     /**
      * 根据record条件查询
      * @param record

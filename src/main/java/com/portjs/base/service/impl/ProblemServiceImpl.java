@@ -1,8 +1,8 @@
 package com.portjs.base.service.impl;
 
-import com.portjs.base.dao.DesignMapper;
-import com.portjs.base.entity.Design;
-import com.portjs.base.service.DesignService;
+import com.portjs.base.dao.ProblemMapper;
+import com.portjs.base.entity.Problem;
+import com.portjs.base.service.ProblemService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.StringUtils;
@@ -10,8 +10,6 @@ import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -20,32 +18,31 @@ import java.util.UUID;
  **/
 @Service
 @Transactional
-public class DesignServiceImpl  implements DesignService{
+public class ProblemServiceImpl   implements ProblemService {
     private String message = "";
     private Integer code;
     @Autowired
-    private DesignMapper designMapper;
+    private ProblemMapper problemMapper;
 
     @Override
     public ResponseMessage deleteByPrimaryKey(List<String> id) {
         int count = 0;
         try {
-           count =  designMapper.updateDesign(id);
+            count =  problemMapper.updateFalseDeletion(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         message = count > 0?"删除成功":"删除失败";
-        code=count>0?Code.CODE_OK:Code.CODE_ERROR;
+        code=count>0? Code.CODE_OK:Code.CODE_ERROR;
 
         return new ResponseMessage(code , message);
     }
 
     @Override
-    public ResponseMessage insert(Design record) {
+    public ResponseMessage insert(Problem record) {
         int count = 0;
         try {
-            count =  designMapper.insert(record);
+            count =  problemMapper.insert(record);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,41 +54,25 @@ public class DesignServiceImpl  implements DesignService{
     }
 
     @Override
-    public ResponseMessage insertSelective(Design construction) {
+    public ResponseMessage insertSelective(Problem construction) {
         //组装bean
         if(StringUtils.isEmpty(construction.getProjectId())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,projectId未传");
-        }
-        Design approval = new Design();
-        approval.setProjectId(construction.getProjectId());
-        List<Design> approvals = designMapper.selectByPrimaryKey(approval);
-        if(!CollectionUtils.isEmpty(approvals)){
-            approval.setEnable("1");
-            designMapper.updateByPrimaryKeySelective(approval);
-        }
-        if(StringUtils.isEmpty(construction.getUnit())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,unit未传");
-        }
-        if(StringUtils.isEmpty(construction.getPlanStartTime().toString())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,planStartTime未传");
-        }
-        if(StringUtils.isEmpty(construction.getPlanEndTime().toString())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,planEndTime未传");
+            return new ResponseMessage(Code.CODE_ERROR , "添加项目问题,projectId未传");
         }
         construction.setId(UUID.randomUUID().toString());
         construction.setCreater(UserUtils.getCurrentUser().getId());
 
-        int  count =  designMapper.insertSelective(construction);
+        int  count =  problemMapper.insertSelective(construction);
         message = count > 0?"插入成功":"插入失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);
     }
 
     @Override
-    public ResponseMessage selectByPrimaryKey(Design record) {
-       List<Design> design = null;
+    public ResponseMessage selectByPrimaryKey(Problem record) {
+        List<Problem> design = null;
         try {
-            design  =  designMapper.selectByPrimaryKey(record);
+            design  =  problemMapper.selectByPrimaryKey(record);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,14 +84,14 @@ public class DesignServiceImpl  implements DesignService{
     }
 
     @Override
-    public ResponseMessage updateByPrimaryKeySelective(Design record) {
+    public ResponseMessage updateByPrimaryKeySelective(Problem record) {
         int count = 0;
         try {
             if(StringUtils.isEmpty(record.getId())){
-                return new ResponseMessage(code , "更新项目设计模块,id未传");
+                return new ResponseMessage(code , "更新项目问题,id未传");
             }
             record.setUpdater(UserUtils.getCurrentUser().getId());
-            count =  designMapper.updateByPrimaryKeySelective(record);
+            count =  problemMapper.updateByPrimaryKeySelective(record);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,10 +101,10 @@ public class DesignServiceImpl  implements DesignService{
     }
 
     @Override
-    public ResponseMessage updateByPrimaryKey(Design record) {
+    public ResponseMessage updateByPrimaryKey(Problem record) {
         int count = 0;
         try {
-            count =  designMapper.updateByPrimaryKey(record);
+            count =  problemMapper.updateByPrimaryKey(record);
         } catch (Exception e) {
             e.printStackTrace();
         }

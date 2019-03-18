@@ -58,5 +58,13 @@ public class Approval extends BaseEntity{
 
     private String biddingContent;//招标内容
 
+    private Date planStartTime;//计划开始时间
+
+    private Date planEndTime;//计划结束时间
+
+    private Date actualStartTime;//实际开始时间
+
+    private Date actualEndTime;//实际结束时间
+
     private static final long serialVersionUID = 1L;
 }

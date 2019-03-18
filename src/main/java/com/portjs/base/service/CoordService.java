@@ -27,7 +27,7 @@ public interface CoordService {
      * @param
      * @return
      */
-    ResponseMessage insertSelective(String projectId,String nodeType,String coordination,String coordinator,String priority,String description, MultipartFile file);
+    ResponseMessage insertSelective(Coord annex);
     /**
      * record，条件查询
      * @param record

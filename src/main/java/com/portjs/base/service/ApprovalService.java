@@ -1,7 +1,9 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.portjs.base.entity.Approval;
 import com.portjs.base.util.ResponseMessage;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,9 +13,8 @@ public interface ApprovalService {
      * 删除 支持多条删除
      * @param id
      * @return
-     * TODO
      */
-    ResponseMessage deleteByPrimaryKey(String id);
+    ResponseMessage deleteByPrimaryKey(List<String> id);
     /**
      *  插入
      * @param record
@@ -23,10 +24,10 @@ public interface ApprovalService {
     ResponseMessage insert(Approval record);
     /**
      * 条件插入
-     * @param record
+     * @param construction
      * @return
      */
-    ResponseMessage insertSelective(String record);
+    ResponseMessage insertSelective(JSONArray construction);
     /**
      * 根据record条件查询
      * @param record

@@ -3,14 +3,15 @@ package com.portjs.base.service;
 import com.portjs.base.entity.Design;
 import com.portjs.base.util.ResponseMessage;
 
+import java.util.List;
+
 public interface DesignService {
     /**
      * 删除 支持多条删除
      * @param id
      * @return
-     * TODO
      */
-    ResponseMessage deleteByPrimaryKey(String id);
+    ResponseMessage deleteByPrimaryKey(List<String> id);
     /**
      *  插入
      * @param record
@@ -20,10 +21,10 @@ public interface DesignService {
     ResponseMessage insert(Design record);
     /**
      * 条件插入
-     * @param param
+     * @param record
      * @return
      */
-    ResponseMessage insertSelective(String param);
+    ResponseMessage insertSelective(Design record);
     /**
      * 根据record条件查询
      * @param record

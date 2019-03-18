@@ -1,5 +1,6 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.AnnexMapper;
 import com.portjs.base.entity.Annex;
@@ -63,22 +64,42 @@ public class AnnexServiceImpl implements AnnexService {
     }
 
     @Override
-    public ResponseMessage insertSelective(Annex record,MultipartFile file) {
-        int count = 0;
-        String url = upload.uploadFlie(file);
-        if("1".equals(url)){
-            return new ResponseMessage(Code.CODE_ERROR ,"添加附件资源模块,文件上传失败");
+    public ResponseMessage insertSelective(JSONArray data) {
+        int count =0;
+        for (int i =0;i<data.size();i++){
+           JSONObject object = data.getJSONObject(i);
+            Annex annex = JSONObject.toJavaObject(object, Annex.class);
+            if(StringUtils.isEmpty(annex.getBackUp1())){
+                return new ResponseMessage(Code.CODE_ERROR , "上传附件,backUp1未传");
+            }
+            if(StringUtils.isEmpty(annex.getFileUrl())){
+                return new ResponseMessage(Code.CODE_ERROR , "上传附件,fileUrl未传");
+            }
+            if(StringUtils.isEmpty(annex.getNode())){
+                return new ResponseMessage(Code.CODE_ERROR , "上传附件,node未传");
+            }
+            if(StringUtils.isEmpty(annex.getFileModule())){
+                return new ResponseMessage(Code.CODE_ERROR , "上传附件,fileModule未传");
+            }
+            //1.软删除库中数据2.插入
+            Annex coord = new Annex();
+            coord.setBackUp1(annex.getBackUp1());
+            coord.setNode(annex.getNode());
+            coord.setFileModule(annex.getFileModule());
+            List<Annex> list = annexMapper.selectByPrimaryKey(coord);
+            if(!CollectionUtils.isEmpty(list)){
+                coord.setEnable("1");
+                annexMapper.updateByPrimaryKeySelective(coord);
+            }
         }
-        //组建bean
-        record.setId(UUID.randomUUID().toString());
-        record.setFileUrl(url);
-        record.setUploader(UserUtils.getCurrentUser().getId());
-        try {
-            count =  annexMapper.insertSelective(record);
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int i =0;i<data.size();i++){
+            JSONObject object = data.getJSONObject(i);
+            Annex annex = JSONObject.toJavaObject(object, Annex.class);
+            //组建bean
+            annex.setId(UUID.randomUUID().toString());
+            annex.setUploader(UserUtils.getCurrentUser().getId());
+            count = annexMapper.insertSelective(annex);
         }
-
         message = count > 0?"插入成功":"插入失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);
@@ -87,8 +108,16 @@ public class AnnexServiceImpl implements AnnexService {
     @Override
     public ResponseMessage selectByPrimaryKey( Annex annex) {
         List<Annex> design = null;
+        if(StringUtils.isEmpty(annex.getBackUp1())){
+            return new ResponseMessage(Code.CODE_ERROR , "上传附件,backUp1未传");
+        }
+        Annex a = new Annex();
+        a.setBackUp1(annex.getBackUp1());
+        if(!StringUtils.isEmpty(annex.getNode())){
+            a.setNode(annex.getNode());
+        }
         try {
-            design  =  annexMapper.selectByPrimaryKey(annex);
+            design  =  annexMapper.selectByPrimaryKey(a);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,16 +129,29 @@ public class AnnexServiceImpl implements AnnexService {
     }
 
     @Override
-    public ResponseMessage updateByPrimaryKeySelective(Annex record) {
+    public ResponseMessage updateByPrimaryKeySelective(JSONArray requestJson) {
         int count = 0;
-        try {
-            if(StringUtils.isEmpty(record.getId())){
-                return new ResponseMessage(code , "更新附件资源模块,id未传");
+        for (int i =0;i<requestJson.size();i++){
+            JSONObject object = requestJson.getJSONObject(i);
+            Annex annex = JSONObject.toJavaObject(object, Annex.class);
+            if(StringUtils.isEmpty(annex.getBackUp1())){
+                return new ResponseMessage(Code.CODE_ERROR , "上传附件,backUp1未传");
             }
-            record.setUploader(UserUtils.getCurrentUser().getId());
-            count =  annexMapper.updateByPrimaryKeySelective(record);
-        } catch (Exception e) {
-            e.printStackTrace();
+            if(StringUtils.isEmpty(annex.getFileUrl())){
+                return new ResponseMessage(Code.CODE_ERROR , "上传附件,fileUrl未传");
+            }
+            if(StringUtils.isEmpty(annex.getNode())){
+                return new ResponseMessage(Code.CODE_ERROR , "上传附件,node未传");
+            }
+            if(StringUtils.isEmpty(annex.getId())){
+                //组建bean
+                annex.setId(UUID.randomUUID().toString());
+                annex.setUploader(UserUtils.getCurrentUser().getId());
+                count = annexMapper.insertSelective(annex);
+            }else{
+                annex.setUploader(UserUtils.getCurrentUser().getId());
+                count =  annexMapper.updateByPrimaryKeySelective(annex);
+            }
         }
         message = count > 0?"更新成功":"更新失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;

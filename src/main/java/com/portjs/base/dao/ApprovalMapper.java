@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.Approval;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,10 +10,17 @@ import java.util.List;
 public interface ApprovalMapper {
     /**
      * 删除 支持多条删除
+     * @param ids
+     * @return
+     */
+    int deleteByPrimaryKey(String[] ids);
+
+    /**
+     * 批量软删除
      * @param id
      * @return
      */
-    int deleteByPrimaryKey(String id);
+    int updateApprovals(@Param("id")List<String> id);
     /**
      *  插入
      * @param record
