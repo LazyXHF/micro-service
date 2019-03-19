@@ -26,6 +26,13 @@ public interface InternalPactService {
     ResponseMessage insertSelective(JSONArray requestJson);
 
     /**
+     * 单条添加
+     * @param record
+     * @return
+     */
+    ResponseMessage  insertPact(InternalPact record);
+
+    /**
      * 根据id删除合同信息
      * @param id
      * @return

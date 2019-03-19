@@ -278,12 +278,16 @@
       </if>
     </trim>
   </insert>
+  <update id="updateFalseDeletion" parameterType="list">
+    update internal_pact SET  enable=1 WHERE  id IN
+    <foreach item="id" index="index" collection="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.InternalPact">
     update internal_pact
     <set>
-      <if test="uploadTime != null">
-        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
-      </if>
+        upload_time = SYSDATE(),
       <if test="uploader != null">
         uploader = #{uploader,jdbcType=VARCHAR},
       </if>

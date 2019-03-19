@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+
 /**
  * @author gumingyang
  **/
@@ -35,5 +39,11 @@ public class FileuploadController extends BaseController {
          return  new ResponseMessage(Code.CODE_ERROR,"上传失败");
         }
         return new ResponseMessage(Code.CODE_OK , "上传成功",url);
+    }
+    @LogInfo(methodName = "下载文件",modelName = "下载文件")
+    @RequestMapping("/down-file")
+    @ResponseBody
+    public void downDesign(HttpServletRequest request, HttpServletResponse response, String fileName)throws UnsupportedEncodingException {
+        upload.downloadFile(request,response,fileName);
     }
 }

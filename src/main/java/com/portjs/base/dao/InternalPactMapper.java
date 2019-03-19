@@ -22,6 +22,12 @@ public interface InternalPactMapper {
     int deleteByPrimaryKey(@Param("ids") List<String> id);
 
     /**
+     * 软删除
+     * @param id
+     * @return
+     */
+    int updateFalseDeletion(@Param("id") List<String> id);
+    /**
      * 添加合同信息
      * @param record
      * @return

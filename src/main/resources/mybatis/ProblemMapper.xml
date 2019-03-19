@@ -19,7 +19,7 @@
     <result column="back_up8" jdbcType="VARCHAR" property="backUp8" />
     <result column="back_up9" jdbcType="VARCHAR" property="backUp9" />
     <result column="back_up10" jdbcType="VARCHAR" property="backUp10" />
-    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="describes" jdbcType="VARCHAR" property="describes" />
     <result column="solution" jdbcType="VARCHAR" property="solution" />
     <result column="problem_type" jdbcType="VARCHAR" property="problemType" />
     <result column="proposed_time" jdbcType="TIMESTAMP" property="proposedTime" />
@@ -30,13 +30,21 @@
   <sql id="Base_Column_List">
     id, project_id, creat_time, creater, update_time, updater, enable, back_up1, back_up2, 
     back_up3, back_up4, back_up5, back_up6, back_up7, back_up8, back_up9, back_up10, 
-    describe, solution, problem_type, proposed_time, problem_priority, proposer, solve
+    describes, solution, problem_type, proposed_time, problem_priority, proposer, solve
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from internal_problem
-    where id = #{id,jdbcType=VARCHAR}
+    <where>
+      enable = 0
+      <if test="id != null">
+        AND id = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="projectId != null">
+        AND project_id = #{projectId,jdbcType=VARCHAR}
+      </if>
+    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from internal_problem
@@ -57,7 +65,7 @@
       back_up1, back_up2, back_up3, 
       back_up4, back_up5, back_up6, 
       back_up7, back_up8, back_up9, 
-      back_up10, describe, solution, 
+      back_up10, describes, solution, 
       problem_type, proposed_time, problem_priority, 
       proposer, solve)
     values (#{projectId,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
@@ -65,7 +73,7 @@
       #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, #{backUp3,jdbcType=VARCHAR}, 
       #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, #{backUp6,jdbcType=VARCHAR}, 
       #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, 
-      #{backUp10,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, #{solution,jdbcType=VARCHAR}, 
+      #{backUp10,jdbcType=VARCHAR}, #{describes,jdbcType=VARCHAR}, #{solution,jdbcType=VARCHAR}, 
       #{problemType,jdbcType=VARCHAR}, #{proposedTime,jdbcType=TIMESTAMP}, #{problemPriority,jdbcType=VARCHAR}, 
       #{proposer,jdbcType=VARCHAR}, #{solve,jdbcType=VARCHAR})
   </insert>
@@ -124,8 +132,8 @@
       <if test="backUp10 != null">
         back_up10,
       </if>
-      <if test="describe != null">
-        describe,
+      <if test="describes != null">
+        describes,
       </if>
       <if test="solution != null">
         solution,
@@ -196,8 +204,8 @@
       <if test="backUp10 != null">
         #{backUp10,jdbcType=VARCHAR},
       </if>
-      <if test="describe != null">
-        #{describe,jdbcType=VARCHAR},
+      <if test="describes != null">
+        #{describes,jdbcType=VARCHAR},
       </if>
       <if test="solution != null">
         #{solution,jdbcType=VARCHAR},
@@ -268,8 +276,8 @@
       <if test="backUp10 != null">
         back_up10 = #{backUp10,jdbcType=VARCHAR},
       </if>
-      <if test="describe != null">
-        describe = #{describe,jdbcType=VARCHAR},
+      <if test="describes != null">
+        describes = #{describes,jdbcType=VARCHAR},
       </if>
       <if test="solution != null">
         solution = #{solution,jdbcType=VARCHAR},
@@ -290,7 +298,13 @@
         solve = #{solve,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="projectId != null">
+      and project_id = #{projectId,jdbcType=VARCHAR}
+    </if>
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Problem">
     update internal_problem
@@ -310,7 +324,7 @@
       back_up8 = #{backUp8,jdbcType=VARCHAR},
       back_up9 = #{backUp9,jdbcType=VARCHAR},
       back_up10 = #{backUp10,jdbcType=VARCHAR},
-      describe = #{describe,jdbcType=VARCHAR},
+      describes = #{describes,jdbcType=VARCHAR},
       solution = #{solution,jdbcType=VARCHAR},
       problem_type = #{problemType,jdbcType=VARCHAR},
       proposed_time = #{proposedTime,jdbcType=TIMESTAMP},

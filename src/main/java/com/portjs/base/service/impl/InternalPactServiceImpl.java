@@ -44,8 +44,6 @@ public class InternalPactServiceImpl implements InternalPactService {
 
         List<InternalPact> list = internalPactMapper.queryAllPacts(id, page.getRowNum(), page.getPageCount());
         page.setList(list);
-
-
         responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功！",page);
 
         return responseMessage;
@@ -87,6 +85,22 @@ public class InternalPactServiceImpl implements InternalPactService {
         return new ResponseMessage(code , message);
     }
 
+    @Override
+    public ResponseMessage insertPact(InternalPact record) {
+        int count = 0;
+        if(StringUtils.isEmpty(record.getProjectId())){
+            return new ResponseMessage(Code.CODE_ERROR , "项目合同,projectId未传");
+        }
+        //组建bean
+        record.setId(UUID.randomUUID().toString());
+        record.setUploader(UserUtils.getCurrentUser().getId());
+        count = internalPactMapper.insertSelective(record);
+
+        message = count > 0?"插入成功":"插入失败";
+        code=count>0?Code.CODE_OK:Code.CODE_ERROR;
+        return new ResponseMessage(code , message);
+    }
+
     /**
      * 根据id删除合同信息
      * @param
@@ -94,17 +108,16 @@ public class InternalPactServiceImpl implements InternalPactService {
      */
     @Override
     public ResponseMessage deleteByPrimaryKey(List<String> id) {
-        int i  = 0;
-
+        int count = 0;
         try {
-           i = internalPactMapper.deleteByPrimaryKey(id);
+            count =  internalPactMapper.updateFalseDeletion(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(i>0){
-            return new ResponseMessage(Code.CODE_OK,"删除成功",i);
-        }
-        return new ResponseMessage(Code.CODE_ERROR,"删除失败",i);
+        message = count > 0?"删除成功":"删除失败";
+        code=count>0? Code.CODE_OK:Code.CODE_ERROR;
+
+        return new ResponseMessage(code , message);
     }
 
     /**
@@ -137,16 +150,15 @@ public class InternalPactServiceImpl implements InternalPactService {
         int count = 0;
         try {
             if(StringUtils.isEmpty(record.getId())){
-                return new ResponseMessage(Code.CODE_ERROR , "更新项目开发模块,id未传");
+                return new ResponseMessage(Code.CODE_ERROR , "更新项目合同模块,id未传");
             }
             record.setUploader(UserUtils.getCurrentUser().getId());
             count =  internalPactMapper.updateByPrimaryKeySelective(record);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(count==0){
-            return new ResponseMessage(Code.CODE_ERROR,"更新失败！",count);
-        }
-        return new ResponseMessage(Code.CODE_OK,"更新成功！",count);
+        message = count > 0?"更新成功":"更新失败";
+        code=count>0?Code.CODE_OK:Code.CODE_ERROR;
+        return new ResponseMessage(code , message);
     }
 }

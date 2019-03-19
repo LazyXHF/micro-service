@@ -1,11 +1,24 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.portjs.base.entity.Problem;
 import com.portjs.base.util.ResponseMessage;
 
 import java.util.List;
 
 public interface ProblemService {
+    /**
+     * 单条插入
+     * @param record
+     * @return
+     */
+    ResponseMessage insertProblem(Problem record);
+
+    /**
+     * 软删除
+     * @param record
+     * @return
+     */
     ResponseMessage deleteByPrimaryKey(List<String> record);
     /**
      *  插入
@@ -15,10 +28,10 @@ public interface ProblemService {
     ResponseMessage insert(Problem record);
     /**
      * 条件插入
-     * @param record
+     * @param data
      * @return
      */
-    ResponseMessage insertSelective(Problem record);
+    ResponseMessage insertSelective(JSONArray data);
     /**
      * 根据record条件查询
      * @param record
