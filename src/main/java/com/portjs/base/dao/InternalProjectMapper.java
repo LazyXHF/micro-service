@@ -22,7 +22,19 @@ public interface InternalProjectMapper{
 
     InternalProject selectByPrimaryKey(String id);
 
+    /**
+     * 更新项目信息（报表页面）
+     * @param record
+     * @return
+     */
     int updateByPrimaryKeySelective(InternalProject record);
+
+    /**
+     * 更新项目信息（项目概览）
+     * @param internalProject
+     * @return
+     */
+    int updateSelective(InternalProject internalProject);
 
     int updateByPrimaryKey(InternalProject record);
 

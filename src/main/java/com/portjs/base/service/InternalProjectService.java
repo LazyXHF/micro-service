@@ -24,7 +24,26 @@ public interface InternalProjectService {
      * @return
      */
     ResponseMessage insertProjectInfo(InternalProject record);
+    /**
+     * 插入项目概览信息
+     * @param
+     * @return
+     */
+    ResponseMessage insertProjectInfoGailan(InternalProject internalProject);
+    /**
+     * 更新项目信息
+     * @param record
+     * @return
+     */
+    ResponseMessage updateByPrimaryKeySelective(InternalProject record);
 
+
+    /**
+     * 更新项目信息（项目概览）
+     * @param record
+     * @return
+     */
+    ResponseMessage updateSelective(InternalProject record);
 
 
 }

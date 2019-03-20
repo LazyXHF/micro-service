@@ -32,11 +32,29 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="queryAllPersionInfo" resultMap="BaseResultMap">
+    select
+    *
+    from internal_persons_resource where project_id = #{id} order by id asc limit #{pageNo},#{pageSize}
+  </select>
+  <select id="persionCounts"  resultType="Integer">
+    SELECT count(id)
+    from internal_persons_resource where project_id = #{id}
+  </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from internal_persons_resource
+
+  <update id="deleteByPrimaryKey" parameterType="java.lang.String">
+     update internal_persons_resource SET  enable =1
     where id = #{id,jdbcType=VARCHAR}
-  </delete>
+  </update>
+
+  <update id="updatePersionInfoByIds" parameterType="list">
+    update internal_persons_resource SET  enable =1 WHERE id IN
+    <foreach collection="id" index="index" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
   <insert id="insertPersionInfo" parameterType="com.portjs.base.entity.InternalPersionResource">
     insert into internal_persons_resource (id, project_id, persion_name, 
       unnit, type, status, 
@@ -161,6 +179,60 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.InternalPersionResource">
+    update internal_persons_resource
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="persionName != null">
+        persion_name = #{persionName,jdbcType=VARCHAR},
+      </if>
+      <if test="unnit != null">
+        unnit = #{unnit,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=CHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        back_up2 = #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        back_up3 = #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        back_up4 = #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        back_up5 = #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        back_up6 = #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        back_up10 = #{backUp10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePersionInfo" parameterType="com.portjs.base.entity.InternalPersionResource">
     update internal_persons_resource
     <set>
       <if test="projectId != null">

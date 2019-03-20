@@ -1,7 +1,6 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.InternalPact;
-import com.portjs.base.util.ResponseMessage;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +11,7 @@ import java.util.List;
  * 项目生命周期节点之---
  * 合同备案表（合同签订）
  */
+
 @Repository
 public interface InternalPactMapper {
     /**

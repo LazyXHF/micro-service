@@ -4,6 +4,7 @@ import com.portjs.base.entity.TDepartment;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
 import com.portjs.base.vo.SortVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,7 +34,6 @@ public interface TDepartmentService {
      */
     ResponseMessage deleteDepartmentByDids(String  id);
 
-
     /**
      * 查询所有部门  （不是树）
      * @return
@@ -53,4 +53,10 @@ public interface TDepartmentService {
      */
 
     ResponseMessage sortDepartment(List<SortVo> sortVos);
+
+    /**
+     * 查询所有部门
+     * @return
+     */
+    List<TDepartment> findAllDepartment();
 }

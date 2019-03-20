@@ -3,14 +3,14 @@ package com.portjs.base.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.InternalPersionResource;
+import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.InternalPersionResourceService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.ArrayVO;
+import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("internal-persion-resource")
 @CrossOrigin
@@ -40,7 +40,23 @@ public class InternalPersionResourceController extends BaseController{
         }
         return responseMessage;
     }
-
+    /**
+     * 查询项目相关人员信息
+     * @param pageVo
+     * @return
+     */
+    @LogInfo(methodName = "查询用户信息",modelName = "用户模块")
+    @RequestMapping("query-all-persion-info")
+    @ResponseBody
+    public ResponseMessage queryAllPersionInfo(@RequestBody PageVo pageVo){
+        logger.debug(tag+pageVo);
+        String id=pageVo.getObject();
+        int pageNo = pageVo.getPageNo();
+        int pageSize = pageVo.getPageSize();
+        UnifiedExceptionHandler.method= tag+"queryAllPersionInfo=============================="+pageVo;
+        responseMessage = internalPersionResourceService.queryAllPersionInfo(id,pageNo,pageSize);
+        return responseMessage;
+    }
     /**
      * 根据id查询人员信息
      * @param id
@@ -101,4 +117,17 @@ public class InternalPersionResourceController extends BaseController{
         return responseMessage;
     }
 
+    /**
+     * 根据id批量软删除人员信息
+     * @param
+     * @return
+     */
+    @RequestMapping("update-persion-info-by-ids")
+    @LogInfo(methodName = "根据id删除人员信息")
+    public ResponseMessage updatePersionInfoByIds(@RequestBody ArrayVO arrayVO) {
+        logger.debug(tag+arrayVO);
+        UnifiedExceptionHandler.method = tag + "updatePersionInfoByIds============================" +arrayVO;
+        responseMessage = internalPersionResourceService.updatePersionInfoByIds(arrayVO.getList());
+        return responseMessage;
+    }
 }

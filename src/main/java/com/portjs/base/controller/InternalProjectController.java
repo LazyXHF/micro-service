@@ -1,17 +1,16 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.InternalProject;
+import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -57,6 +56,7 @@ public class InternalProjectController extends BaseController{
     }
 
     /**
+     * 报表页面
      * 所有项目信息(项目信息监控接口)并按照
      * @return
      */
@@ -94,7 +94,7 @@ public class InternalProjectController extends BaseController{
      */
     @RequestMapping("insert-project-info")
     @LogInfo(methodName = "添加项目信息")
-    public ResponseMessage insertPactInfo(@RequestBody InternalProject internalProject) {
+    public ResponseMessage insertProjectInfo(@RequestBody InternalProject internalProject) {
         logger.debug("insertProjectInfo() begin...");
         try{
             responseMessage = internalProjectService.insertProjectInfo(internalProject);
@@ -103,6 +103,46 @@ public class InternalProjectController extends BaseController{
             logger.error("insertProjectInfo() error...",e);
         }
         return responseMessage;
+    }
+    /**
+     *  添加项目概览信息
+     * @param internalProject
+     * @return
+     */
+    @RequestMapping("insert-project-info-gailan")
+    @LogInfo(methodName = "添加项目信息")
+    public ResponseMessage insertProjectInfoGailan(@RequestBody InternalProject internalProject) {
+        logger.debug(tag+internalProject);
+        UnifiedExceptionHandler.method= internalProject + "insert-project-info-gailan==============================" + internalProject;
+        return internalProjectService.insertProjectInfoGailan(internalProject);
+    }
+
+    /**
+     * 更新项目信息（报表页面）
+     * @param record
+     * @return
+     */
+    @RequestMapping("update-project-info")
+    @LogInfo(methodName = "添加项目信息")
+    @ResponseBody
+    public ResponseMessage updateByPrimaryKeySelective(@RequestBody InternalProject record) {
+        logger.debug(tag+record);
+        UnifiedExceptionHandler.method= record + "insert-project-info==============================" + record;
+        return internalProjectService.updateByPrimaryKeySelective(record);
+    }
+
+    /**
+     * 更新项目信息（项目概览）
+     * @param record
+     * @return
+     */
+    @RequestMapping("update-project-info-gailan")
+    @LogInfo(methodName = "添加项目概览信息")
+    @ResponseBody
+    public ResponseMessage updateSelective(@RequestBody InternalProject record) {
+        logger.debug(tag+record);
+        UnifiedExceptionHandler.method= record + "insert-project-info-gailan==============================" + record;
+        return internalProjectService.updateByPrimaryKeySelective(record);
     }
 
 }

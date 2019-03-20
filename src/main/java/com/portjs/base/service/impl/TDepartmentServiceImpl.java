@@ -123,6 +123,15 @@ public class TDepartmentServiceImpl implements TDepartmentService {
         return responseMessage;
     }
 
+
+    /**
+     * 查询所有部门
+     * @return
+     */
+    @Override
+    public List<TDepartment> findAllDepartment() {
+        return departmentMapper.findAllDepartment();
+    }
     /**
      * 删除部门
      * @param id
