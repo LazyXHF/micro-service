@@ -5,7 +5,9 @@ import com.portjs.base.entity.TXietongUserMinisterRelation;
 import com.portjs.base.entity.TXietongUserMinisterRelationExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TXietongUserMinisterRelationMapper {
     int countByExample(TXietongUserMinisterRelationExample example);
 
@@ -29,5 +31,5 @@ public interface TXietongUserMinisterRelationMapper {
 
     int updateByPrimaryKey(TXietongUserMinisterRelation record);
 
-    List<TUser> selectAll();
+    List<TUser> selectAll(@Param("type") String type);
 }

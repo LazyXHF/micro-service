@@ -424,6 +424,76 @@ public class TXietongAgendaProcessExample {
             addCriterion("createtime not between", value1, value2, "createtime");
             return (Criteria) this;
         }
+
+        public Criteria andAgendaIdIsNull() {
+            addCriterion("agenda_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdIsNotNull() {
+            addCriterion("agenda_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdEqualTo(String value) {
+            addCriterion("agenda_id =", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdNotEqualTo(String value) {
+            addCriterion("agenda_id <>", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdGreaterThan(String value) {
+            addCriterion("agenda_id >", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdGreaterThanOrEqualTo(String value) {
+            addCriterion("agenda_id >=", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdLessThan(String value) {
+            addCriterion("agenda_id <", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdLessThanOrEqualTo(String value) {
+            addCriterion("agenda_id <=", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdLike(String value) {
+            addCriterion("agenda_id like", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdNotLike(String value) {
+            addCriterion("agenda_id not like", value, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdIn(List<String> values) {
+            addCriterion("agenda_id in", values, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdNotIn(List<String> values) {
+            addCriterion("agenda_id not in", values, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdBetween(String value1, String value2) {
+            addCriterion("agenda_id between", value1, value2, "agendaId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgendaIdNotBetween(String value1, String value2) {
+            addCriterion("agenda_id not between", value1, value2, "agendaId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

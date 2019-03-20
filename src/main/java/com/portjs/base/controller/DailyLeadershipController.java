@@ -392,19 +392,41 @@ public class DailyLeadershipController extends BaseController{
         }
     }
 
+    /**
+     *退回
+     * @param requestBody
+     * @return
+     */
+
+    @LogInfo(methodName = "退回")
+    @RequestMapping("returnExamine")
+    public ResponseMessage returnExamine (@RequestBody String requestBody)  {
+        logger.debug("returnExamine() begin...requestBody=",requestBody);
+        try {
+            ResponseMessage responseMessage=  dailyLeadershipService.returnExamine(requestBody);
+
+            return responseMessage;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("returnExamine() end...", e);
+            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+
+        }
+    }
+
 
     /**
-     *审核记录查询
+     *审核数据查询
      * @param
      * @return
      */
 
-    @LogInfo(methodName = "审核记录查询")
+    @LogInfo(methodName = "审核数据查询")
     @RequestMapping("selectExamine")
-    public ResponseMessage selectExamine ()  {
+    public ResponseMessage selectExamine (@RequestBody String requestBody)  {
         logger.debug("selectExamine() begin...requestBody=");
         try {
-            ResponseMessage responseMessage=  dailyLeadershipService.selectExamine();
+            ResponseMessage responseMessage=  dailyLeadershipService.selectExamine(requestBody);
 
             return responseMessage;
         } catch (Exception e) {
@@ -480,10 +502,10 @@ public class DailyLeadershipController extends BaseController{
      */
     @LogInfo(methodName = "领导日程可见人员范围配置查询")
     @RequestMapping("selectAgendaVisualHuanm")
-    public ResponseMessage selectAgendaVisualHuanm () {
+    public ResponseMessage selectAgendaVisualHuanm (@RequestBody String requestBody) {
         logger.debug("selectAgendaVisualHuanm() begin...file=");
         try {
-            ResponseMessage uploadResponse= dailyLeadershipService.selectAgendaVisualHuanm();
+            ResponseMessage uploadResponse= dailyLeadershipService.selectAgendaVisualHuanm(requestBody);
             return uploadResponse;
         } catch (Exception e) {
             e.printStackTrace();

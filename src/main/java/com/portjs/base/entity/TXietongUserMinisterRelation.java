@@ -9,6 +9,9 @@ public class TXietongUserMinisterRelation {
 
     private String status;
 
+    private String type;
+
+
     public String getId() {
         return id;
     }
@@ -39,5 +42,13 @@ public class TXietongUserMinisterRelation {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

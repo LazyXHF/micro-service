@@ -2,16 +2,15 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.TXietongAgendaProcess;
 import com.portjs.base.entity.TXietongAgendaProcessExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * Created by dengshuangzhen on 2019\2\17 0017
  */
 @Repository
-public interface TXietongAgendaProcessMapper {
+public interface    TXietongAgendaProcessMapper {
     int countByExample(TXietongAgendaProcessExample example);
 
     int deleteByExample(TXietongAgendaProcessExample example);

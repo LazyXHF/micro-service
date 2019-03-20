@@ -1,35 +1,27 @@
 package com.portjs.base.entity;
 
-import org.apache.ibatis.type.Alias;
-
-import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by dengshuangzhen on 2019\2\17 0017
- */
-@Entity
-@Table(name = "t_xietong_agenda_process")
-@Alias(value = "TXietongAgendaProcess")
 public class TXietongAgendaProcess {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     private Integer isdelete;
 
     private Integer status;
 
+    private String createrId;
+
     private Date createtime;
 
-    private String createrId;
+    private String agendaId;
+
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id == null ? null : id.trim();
     }
 
     public Integer getIsdelete() {
@@ -48,6 +40,14 @@ public class TXietongAgendaProcess {
         this.status = status;
     }
 
+    public String getCreaterId() {
+        return createrId;
+    }
+
+    public void setCreaterId(String createrId) {
+        this.createrId = createrId == null ? null : createrId.trim();
+    }
+
     public Date getCreatetime() {
         return createtime;
     }
@@ -56,22 +56,13 @@ public class TXietongAgendaProcess {
         this.createtime = createtime;
     }
 
-    public String getCreaterId() {
-        return createrId;
+    public String getAgendaId() {
+        return agendaId;
     }
 
-    public void setCreaterId(String createrId) {
-        this.createrId = createrId;
+    public void setAgendaId(String agendaId) {
+        this.agendaId = agendaId == null ? null : agendaId.trim();
     }
 
-    @Override
-    public String toString() {
-        return "TXietongAgendaProcess{" +
-                "id='" + id + '\'' +
-                ", isdelete=" + isdelete +
-                ", status=" + status +
-                ", createtime=" + createtime +
-                ", createrId='" + createrId + '\'' +
-                '}';
-    }
+
 }

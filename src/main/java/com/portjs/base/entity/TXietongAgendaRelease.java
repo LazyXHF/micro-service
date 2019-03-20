@@ -1,28 +1,13 @@
 package com.portjs.base.entity;
 
-import org.apache.ibatis.type.Alias;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by dengshuangzhen on 2019\1\31 0031
- */
-@Entity
-@Table(name = "t_xietong_agenda_release")
-@Alias(value = "TXietongAgendaRelease")
 public class TXietongAgendaRelease {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private String meetingSubject;
@@ -39,7 +24,6 @@ public class TXietongAgendaRelease {
 
     private String createrid;
 
-    @Transient
     private List<TXietongAgendaHuman> list;
 
     public List<TXietongAgendaHuman> getList() {
@@ -55,7 +39,7 @@ public class TXietongAgendaRelease {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id == null ? null : id.trim();
     }
 
     public Date getBeginTime() {
@@ -79,7 +63,7 @@ public class TXietongAgendaRelease {
     }
 
     public void setMeetingSubject(String meetingSubject) {
-        this.meetingSubject = meetingSubject;
+        this.meetingSubject = meetingSubject == null ? null : meetingSubject.trim();
     }
 
     public String getMeetingPlace() {
@@ -87,7 +71,7 @@ public class TXietongAgendaRelease {
     }
 
     public void setMeetingPlace(String meetingPlace) {
-        this.meetingPlace = meetingPlace;
+        this.meetingPlace = meetingPlace == null ? null : meetingPlace.trim();
     }
 
     public String getRemark() {
@@ -95,7 +79,7 @@ public class TXietongAgendaRelease {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark;
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public Integer getIsdelete() {
@@ -127,6 +111,6 @@ public class TXietongAgendaRelease {
     }
 
     public void setCreaterid(String createrid) {
-        this.createrid = createrid;
+        this.createrid = createrid == null ? null : createrid.trim();
     }
 }

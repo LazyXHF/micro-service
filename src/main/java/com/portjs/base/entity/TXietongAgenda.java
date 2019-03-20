@@ -37,12 +37,19 @@ public class TXietongAgenda {
 
     private String createrid;
 
+    private String type;
+
     @Transient
     private List<TXietongAgendaHuman> list;
+
+    @Transient
+    private TUser user;
     @Transient
     private Integer pageNum;//当前页数
     @Transient
     private Integer pageCount;//每页显示记录数
+
+
 
     public List<TXietongAgendaHuman> getList() {
         return list;
@@ -154,5 +161,21 @@ public class TXietongAgenda {
 
     public void setCreaterid(String createrid) {
         this.createrid = createrid == null ? null : createrid.trim();
+    }
+
+    public TUser getUser() {
+        return user;
+    }
+
+    public void setUser(TUser user) {
+        this.user = user;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TXietongAgendaExample {
+public class TXietongAgendaReleaseExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TXietongAgendaExample() {
+    public TXietongAgendaReleaseExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -685,66 +685,6 @@ public class TXietongAgendaExample {
             return (Criteria) this;
         }
 
-        public Criteria andIspublishIsNull() {
-            addCriterion("ispublish is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishIsNotNull() {
-            addCriterion("ispublish is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishEqualTo(Integer value) {
-            addCriterion("ispublish =", value, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishNotEqualTo(Integer value) {
-            addCriterion("ispublish <>", value, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishGreaterThan(Integer value) {
-            addCriterion("ispublish >", value, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishGreaterThanOrEqualTo(Integer value) {
-            addCriterion("ispublish >=", value, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishLessThan(Integer value) {
-            addCriterion("ispublish <", value, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishLessThanOrEqualTo(Integer value) {
-            addCriterion("ispublish <=", value, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishIn(List<Integer> values) {
-            addCriterion("ispublish in", values, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishNotIn(List<Integer> values) {
-            addCriterion("ispublish not in", values, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishBetween(Integer value1, Integer value2) {
-            addCriterion("ispublish between", value1, value2, "ispublish");
-            return (Criteria) this;
-        }
-
-        public Criteria andIspublishNotBetween(Integer value1, Integer value2) {
-            addCriterion("ispublish not between", value1, value2, "ispublish");
-            return (Criteria) this;
-        }
-
         public Criteria andCreateridIsNull() {
             addCriterion("createrid is null");
             return (Criteria) this;
@@ -812,76 +752,6 @@ public class TXietongAgendaExample {
 
         public Criteria andCreateridNotBetween(String value1, String value2) {
             addCriterion("createrid not between", value1, value2, "createrid");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeEqualTo(String value) {
-            addCriterion("type =", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotEqualTo(String value) {
-            addCriterion("type <>", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThan(String value) {
-            addCriterion("type >", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("type >=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThan(String value) {
-            addCriterion("type <", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(String value) {
-            addCriterion("type <=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<String> values) {
-            addCriterion("type in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotIn(List<String> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(String value1, String value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(String value1, String value2) {
-            addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
     }

@@ -34,7 +34,7 @@ public interface DailyLeadershipService {
 
     ResponseMessage insertAgendaVisualHuanm(String requestBody);
 
-    ResponseMessage selectAgendaVisualHuanm();
+    ResponseMessage selectAgendaVisualHuanm(String requestBody);
 
     ResponseMessage updateAgendaVisualHuanm(String requestBody);
 
@@ -72,7 +72,14 @@ public interface DailyLeadershipService {
 
     ResponseMessage examine(String requestBody) ;
 
-    ResponseMessage selectExamine();
+    /**
+     *退回
+     * @param requestBody
+     * @return
+     */
+    ResponseMessage returnExamine(String requestBody);
+
+    ResponseMessage selectExamine(String requestBody)  throws Exception;
 
     ResponseMessage selectDepartment(String requestBody);
 
@@ -81,4 +88,6 @@ public interface DailyLeadershipService {
     ResponseMessage updateOneAuditor(String requestBody);
 
     ResponseMessage selectScheduleAgency(String requestBody);
+
+
 }

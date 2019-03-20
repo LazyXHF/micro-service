@@ -6,6 +6,7 @@
     <result column="minister_id" property="ministerId" jdbcType="VARCHAR" />
     <result column="visual_id" property="visualId" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, minister_id, visual_id, status
+    id, minister_id, visual_id, status, type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongUserMinisterRelationExample" >
     select
@@ -83,7 +84,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_xietong_user_minister_relation
     where id = #{id,jdbcType=VARCHAR}
@@ -99,10 +100,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.TXietongUserMinisterRelation" >
-    insert into t_xietong_user_minister_relation (id, minister_id, visual_id, 
-      status)
-    values (#{id,jdbcType=VARCHAR}, #{ministerId,jdbcType=VARCHAR}, #{visualId,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR})
+    insert into t_xietong_user_minister_relation (id, minister_id, visual_id,
+      status, type)
+    values (#{id,jdbcType=VARCHAR}, #{ministerId,jdbcType=VARCHAR}, #{visualId,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.TXietongUserMinisterRelation" >
     insert into t_xietong_user_minister_relation
@@ -119,6 +120,9 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -132,6 +136,9 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -164,9 +174,10 @@
   <update id="updateByExample" parameterType="map" >
     update t_xietong_user_minister_relation
     set id = #{record.id,jdbcType=VARCHAR},
-      minister_id = #{record.ministerId,jdbcType=VARCHAR},
-      visual_id = #{record.visualId,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR}
+    minister_id = #{record.ministerId,jdbcType=VARCHAR},
+    visual_id = #{record.visualId,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=VARCHAR},
+    type = #{record.type,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +194,9 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -190,7 +204,8 @@
     update t_xietong_user_minister_relation
     set minister_id = #{ministerId,jdbcType=VARCHAR},
       visual_id = #{visualId,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR}
+      status = #{status,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
@@ -229,11 +244,13 @@
     <result column="name_cn" property="nameCn" jdbcType="VARCHAR" />
   </resultMap>
 
-  <select id="selectAll" resultMap="BaseResultMap1" >
+  <select id="selectAll" resultMap="BaseResultMap1" parameterType="String">
     select  u.* from t_user u,t_xietong_user_minister_relation r where
    /* u.isdelete="1"*/
     r.status="0"
+    and r.type =#{type}
     and u.id = r.minister_id
     GROUP BY r.minister_id
+    /*order by u.id*/
   </select>
 </mapper>
