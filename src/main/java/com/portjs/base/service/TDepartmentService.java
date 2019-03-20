@@ -4,7 +4,6 @@ import com.portjs.base.entity.TDepartment;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
 import com.portjs.base.vo.SortVo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -59,4 +58,16 @@ public interface TDepartmentService {
      * @return
      */
     List<TDepartment> findAllDepartment();
+
+
+//
+//    /**
+//     * 查询部门下所有用户
+//     * @return
+//     */
+//
+//
+//     ResponseMessage selectDepartmentUsers(String name);
+//
+
 }
