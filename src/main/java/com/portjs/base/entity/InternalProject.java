@@ -1,41 +1,44 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-public class InternalProject implements Serializable {
+@Data
+public class InternalProject extends BaseEntity{
     private String id;
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private String creater;
+    private String creater;//创建人
 
-    private Date modifyTime;
+    private Date modifyTime;//修改时间
 
-    private String modifer;
+    private String modifer;//修改人
 
-    private String type;
+    private String type;//项目等级
 
-    private String name;
+    private String name;//项目名称
 
-    private String leader;
+    private String leader;//负责人
 
-    private String leaderName;
+    private String leaderName;//负责人姓名
 
-    private String leaderTell;
+    private String leaderTell;//负责人联系方式
 
-    private String status;
+    private String status;//项目状态
 
-    private String responsibleUnit;
+    private String responsibleUnit;//责任单位
 
-    private String responsibleUnitId;
+    private String responsibleUnitId;//责任单位id
 
-    private String ranges;
+    private String ranges;//实施范围
 
-    private String meeting;
+    private String meeting;//启动会
 
-    private String content;
+    private String content;//项目内容
 
     private String enable;
 
@@ -57,9 +60,9 @@ public class InternalProject implements Serializable {
 
     private String backUp9;
 
-    private String projectType;
+    private String projectType;//项目类型
 
-    private List<InternalPersionResource> list;
+    /*private List<InternalPersionResource> list;
 
     public List<InternalPersionResource> getList() {
         return list;
@@ -285,5 +288,5 @@ public class InternalProject implements Serializable {
 
     public void setProjectType(String projectType) {
         this.projectType = projectType == null ? null : projectType.trim();
-    }
+    }*/
 }

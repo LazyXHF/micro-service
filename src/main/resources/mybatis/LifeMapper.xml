@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.LifeMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.Life">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="node" jdbcType="VARCHAR" property="node" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
+    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
+    <result column="back_up4" jdbcType="VARCHAR" property="backUp4" />
+    <result column="back_up5" jdbcType="VARCHAR" property="backUp5" />
+    <result column="back_up6" jdbcType="VARCHAR" property="backUp6" />
+    <result column="back_up7" jdbcType="VARCHAR" property="backUp7" />
+    <result column="back_up8" jdbcType="VARCHAR" property="backUp8" />
+    <result column="back_up9" jdbcType="VARCHAR" property="backUp9" />
+    <result column="back_up10" jdbcType="VARCHAR" property="backUp10" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="enable" jdbcType="CHAR" property="enable" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, node, status, create_time, creator, back_up1, back_up2, back_up3, 
+    back_up4, back_up5, back_up6, back_up7, back_up8, back_up9, back_up10, update_time, 
+    updater, enable
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.portjs.base.entity.Life" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from internal_life
+    <where>
+      enable = 0
+      <if test="id != null">
+        AND id = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="projectId != null">
+        AND project_id = #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="node != null">
+        AND node = #{node,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        AND status = #{status,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="sumLine" parameterType="com.portjs.base.entity.Life" resultMap="BaseResultMap">
+    SELECT
+	  project_id
+    FROM
+        internal_life
+    WHERE
+        ENABLE = "0"
+    GROUP BY
+        project_id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from internal_life
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.Life">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into internal_life (project_id, node, status, 
+      create_time, creator, back_up1, 
+      back_up2, back_up3, back_up4, 
+      back_up5, back_up6, back_up7, 
+      back_up8, back_up9, back_up10, 
+      update_time, updater, enable
+      )
+    values (#{projectId,jdbcType=VARCHAR}, #{node,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{backUp1,jdbcType=VARCHAR}, 
+      #{backUp2,jdbcType=VARCHAR}, #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, 
+      #{backUp5,jdbcType=VARCHAR}, #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, 
+      #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR}, #{enable,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.Life">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into internal_life
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="node != null">
+        node,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+        create_time,
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="backUp1 != null">
+        back_up1,
+      </if>
+      <if test="backUp2 != null">
+        back_up2,
+      </if>
+      <if test="backUp3 != null">
+        back_up3,
+      </if>
+      <if test="backUp4 != null">
+        back_up4,
+      </if>
+      <if test="backUp5 != null">
+        back_up5,
+      </if>
+      <if test="backUp6 != null">
+        back_up6,
+      </if>
+      <if test="backUp7 != null">
+        back_up7,
+      </if>
+      <if test="backUp8 != null">
+        back_up8,
+      </if>
+      <if test="backUp9 != null">
+        back_up9,
+      </if>
+      <if test="backUp10 != null">
+        back_up10,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updater != null">
+        updater,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="node != null">
+        #{node,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      SYSDATE(),
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp1 != null">
+        #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        #{backUp10,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updater != null">
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.Life">
+    update internal_life
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="node != null">
+        node = #{node,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp1 != null">
+        back_up1 = #{backUp1,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp2 != null">
+        back_up2 = #{backUp2,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp3 != null">
+        back_up3 = #{backUp3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp4 != null">
+        back_up4 = #{backUp4,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp5 != null">
+        back_up5 = #{backUp5,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp6 != null">
+        back_up6 = #{backUp6,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null">
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null">
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null">
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp10 != null">
+        back_up10 = #{backUp10,jdbcType=VARCHAR},
+      </if>
+        update_time = SYSDATE(),
+      <if test="updater != null">
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Life">
+    update internal_life
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      node = #{node,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      back_up2 = #{backUp2,jdbcType=VARCHAR},
+      back_up3 = #{backUp3,jdbcType=VARCHAR},
+      back_up4 = #{backUp4,jdbcType=VARCHAR},
+      back_up5 = #{backUp5,jdbcType=VARCHAR},
+      back_up6 = #{backUp6,jdbcType=VARCHAR},
+      back_up7 = #{backUp7,jdbcType=VARCHAR},
+      back_up8 = #{backUp8,jdbcType=VARCHAR},
+      back_up9 = #{backUp9,jdbcType=VARCHAR},
+      back_up10 = #{backUp10,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      updater = #{updater,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

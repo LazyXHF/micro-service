@@ -70,5 +70,10 @@ public interface InternalProjectMapper{
      */
     int projectCount(@Param("id") String id);
 
-
+    /**
+     * 根据record对象查询列表
+     * @param record
+     * @return
+     */
+    List<InternalProject> selectListByBackup1(InternalProject record);
 }
