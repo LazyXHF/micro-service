@@ -144,5 +144,17 @@ public class InternalProjectController extends BaseController{
         UnifiedExceptionHandler.method= record + "insert-project-info-gailan==============================" + record;
         return internalProjectService.updateByPrimaryKeySelective(record);
     }
-
+    /**
+     * 根据id查询项目信息
+     * @param internalProject
+     * @return
+     */
+    @RequestMapping("select-project-by-id")
+    @LogInfo(methodName = "添加项目概览信息")
+    @ResponseBody
+    public ResponseMessage selectByPrimaryKey(@RequestBody InternalProject internalProject) {
+        logger.debug(tag+internalProject);
+        UnifiedExceptionHandler.method= internalProject + "selectByPrimaryKey==============================" + internalProject;
+        return internalProjectService.selectByPrimaryKey(internalProject);
+    }
 }

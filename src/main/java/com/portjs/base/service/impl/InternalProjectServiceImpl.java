@@ -152,4 +152,18 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         return new ResponseMessage(code , message);
 
     }
+
+    /**
+     * 根据id查询项目信息
+     * @param internalProject
+     * @return
+     */
+    @Override
+    public ResponseMessage selectByPrimaryKey(InternalProject internalProject) {
+        InternalProject internalProjects = internalProjectMapper.selectByPrimaryKey(internalProject);
+        if(internalProjects==null){
+            return new ResponseMessage(Code.CODE_ERROR,"查询失败！",internalProjects);
+        }
+        return new ResponseMessage(Code.CODE_OK,"查询成功！",internalProjects);
+    }
 }

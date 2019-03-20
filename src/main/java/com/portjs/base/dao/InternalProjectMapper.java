@@ -20,7 +20,7 @@ public interface InternalProjectMapper{
      */
     int insertSelective(InternalProject record);
 
-    InternalProject selectByPrimaryKey(String id);
+    InternalProject selectByPrimaryKey(InternalProject internalProject);
 
     /**
      * 更新项目信息（报表页面）

@@ -46,4 +46,5 @@ public interface InternalProjectService {
     ResponseMessage updateSelective(InternalProject record);
 
 
+    ResponseMessage selectByPrimaryKey(InternalProject internalProject);
 }
