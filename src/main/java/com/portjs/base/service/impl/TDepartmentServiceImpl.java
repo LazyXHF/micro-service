@@ -132,6 +132,31 @@ public class TDepartmentServiceImpl implements TDepartmentService {
     public List<TDepartment> findAllDepartment() {
         return departmentMapper.findAllDepartment();
     }
+
+
+
+
+
+//    @Override
+//    public ResponseMessage selectDepartmentUsers(String name) {
+//
+//        List<TDepartment> departmentTrees = departmentMapper.selectAllDepartmentTree(name);
+//
+//        //将该部门下的用户加入到部门下
+//        for (int i=0;i<departmentTrees.size();i++){
+//            List<TUser> users = selectUsersByDepartmentId(departmentTrees.get(i).getId());
+//            departmentTrees.get(i).setUserList(users);
+//        }
+//        DepartmentTree departmentTree = new DepartmentTree();
+//        departmentTree = getDepartmentTree(departmentTrees,departmentTree);
+//        if (departmentTree == null){
+//            responseMessage = new ResponseMessage(Code.CODE_ERROR,"查询数据为空!");
+//        }else {
+//            responseMessage = new ResponseMessage(Code.CODE_OK,"查询数据成功!",departmentTree);
+//        }
+//        return responseMessage;
+//    }
+
     /**
      * 删除部门
      * @param id
@@ -187,7 +212,7 @@ public class TDepartmentServiceImpl implements TDepartmentService {
      * @return
      */
     @Override
-    public ResponseMessage selectAllDepartmentTree(String name) {
+            public ResponseMessage selectAllDepartmentTree(String name) {
         List<TDepartment> departmentTrees = departmentMapper.selectAllDepartmentTree(name);
 
         //将该部门下的用户加入到部门下
