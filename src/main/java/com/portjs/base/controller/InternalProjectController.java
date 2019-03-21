@@ -111,12 +111,12 @@ public class InternalProjectController extends BaseController{
      * @param internalProject
      * @return
      */
-    @RequestMapping("insert-project-info-gailan")
+    @RequestMapping("insert-project-info-overview")
     @LogInfo(methodName = "添加项目信息")
-    public ResponseMessage insertProjectInfoGailan(@RequestBody InternalProject internalProject) {
+    public ResponseMessage insertProjectInfoOverview(@RequestBody InternalProject internalProject) {
         logger.debug(tag+internalProject);
-        UnifiedExceptionHandler.method= internalProject + "insert-project-info-gailan==============================" + internalProject;
-        return internalProjectService.insertProjectInfoGailan(internalProject);
+        UnifiedExceptionHandler.method= internalProject + "insert-project-info-overview==============================" + internalProject;
+        return internalProjectService.insertProjectInfoOverview(internalProject);
     }
 
     /**
@@ -138,12 +138,12 @@ public class InternalProjectController extends BaseController{
      * @param record
      * @return
      */
-    @RequestMapping("update-project-info-gailan")
+    @RequestMapping("update-project-info-overview")
     @LogInfo(methodName = "添加项目概览信息")
     @ResponseBody
     public ResponseMessage updateSelective(@RequestBody InternalProject record) {
         logger.debug(tag+record);
-        UnifiedExceptionHandler.method= record + "insert-project-info-gailan==============================" + record;
+        UnifiedExceptionHandler.method= record + "insert-project-info-overview==============================" + record;
         return internalProjectService.updateByPrimaryKeySelective(record);
     }
     /**

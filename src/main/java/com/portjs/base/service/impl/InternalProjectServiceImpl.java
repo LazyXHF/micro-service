@@ -124,7 +124,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
      * @return
      */
     @Override
-    public ResponseMessage insertProjectInfoGailan(InternalProject internalProject) {
+    public ResponseMessage insertProjectInfoOverview(InternalProject internalProject) {
         internalProject.setId(UUID.randomUUID().toString());
         Date date=new java.util.Date();
         java.sql.Date  data1=new java.sql.Date(date.getTime());
