@@ -396,7 +396,13 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
         return new ResponseMessage(Code.CODE_OK, "新增成功");
     }
 
-  /*  //批量新增领导日程
+    /**
+     *
+     * 批量新增领导日程
+     * @param requestBody
+     * @return
+     * @throws Exception
+     */
     @Override
     public ResponseMessage insertAllLeadershipAgenda(String requestBody) throws Exception {
         //JSONObject requestJson = JSONObject.parseObject(requestBody);
@@ -431,21 +437,21 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                     agenda2.setIsdelete(0);
 
                     //删除日程表
-                    int update = agendaMapper.updateByPrimaryKeySelective(agenda2);
+                    int update = agendaMapper.deleteByPrimaryKey(agenda1.getId());
                     if (update != 1) {
                         return new ResponseMessage(Code.CODE_ERROR, "新增失败");
                     }
                     TXietongAgendaHumanExample humanExample = new TXietongAgendaHumanExample();
                     TXietongAgendaHumanExample.Criteria criteria = humanExample.createCriteria();
                     criteria.andAgendaIdEqualTo(agenda1.getId());
-
+                    criteria.andIsdeleteEqualTo(1);
                     TXietongAgendaHuman human = new TXietongAgendaHuman();
                     human.setIsdelete(0);
 
                     //删除领导表
                     int update1 = agendaHumanMapper.updateByExampleSelective(human, humanExample);
                     if (update1 != 1) {
-                        return new ResponseMessage(Code.CODE_ERROR, "新增失败");
+                        return new ResponseMessage( Code.CODE_ERROR, "新增失败");
                     }
                 }
 
@@ -454,6 +460,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
 
         for (int i = 0; i < requestJson.size(); i++) {
             Map map = (Map) requestJson.get(i);
+            String id  = map.get("id").toString();//开始时间
             String begin_time = map.get("begin_time").toString();//开始时间
             String end_time = map.get("end_time").toString();//结束时间
             String meeting_subjet = map.get("meeting_subjet").toString();//会议名称
@@ -461,7 +468,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             List participant_ids = (List) map.get("participant_ids");//领导id数组
             String ispublish = map.get("ispublish").toString();//状态
             String amPm = map.get("amPm").toString();//0上午1下午2全天
-            *//*ArrayList participant_ids =(ArrayList)*//*
+            /*ArrayList participant_ids =(ArrayList)*/
             String remark = map.get("remark").toString();//备注
             String createrId = map.get("createrId").toString();//创建人id(登录人id)
 
@@ -470,7 +477,12 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
 
 
             TXietongAgenda agenda = new TXietongAgenda();
-            agenda.setId(UUID.randomUUID().toString());
+            if(id.isEmpty()){
+                agenda.setId(UUID.randomUUID().toString());
+            }else {
+                agenda.setId(id);
+            }
+
 
             agenda.setBeginTime(format.parse(begin_time));
             agenda.setEndTime(format.parse(end_time));
@@ -490,13 +502,13 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             //agenda.setCreatetime(new java.util.Date());
             agenda.setAmPm(Integer.valueOf(amPm));
 
-            *//*TXietongAgendaExample example = new TXietongAgendaExample();
+            /*TXietongAgendaExample example = new TXietongAgendaExample();
             TXietongAgendaExample.Criteria criteria = example.createCriteria();
             criteria.andMeetingSubjectEqualTo(meeting_subjet);
             List<TXietongAgenda> agenda1 = agendaMapper.selectByExample(example);
             if(!CollectionUtils.isEmpty(agenda1)){
                 return new ResponseMessage(Code.CODE_ERROR, "会议名称已存在");
-            }*//*
+            }*/
             //新增领导日程表
             int sign = agendaMapper.insert(agenda);
             if (sign != 1) {
@@ -521,17 +533,17 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
             }
         }
         return new ResponseMessage(Code.CODE_OK, "新增成功");
-        *//*String begin_time = requestJson.getString("begin_time");//开始时间
+        /*String begin_time = requestJson.getString("begin_time");//开始时间
         String end_time = requestJson.getString("end_time");//结束时间
         String meeting_subjet = requestJson.getString("meeting_subjet");//会议名称
         String meeting_place = requestJson.getString("meeting_place");//会议地点
         String participant_ids = requestJson.getString("participant_ids");//领导id数组
         String remark = requestJson.getString("remark");//备注
         String createrId = requestJson.getString("createrId");//创建人id(登录人id)
-        JSONArray participant_id = JSONObject.parseArray(participant_ids);*//*
+        JSONArray participant_id = JSONObject.parseArray(participant_ids);*/
 
 
-    }*/
+    }
 
     /**
      * 根据会议id删除会议以及关联表新建删除
@@ -1532,8 +1544,21 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
     public ResponseMessage submitAudit(String requestBody) {
         JSONObject requestJson = JSONObject.parseObject(requestBody);
         JSONArray agenda_ids = requestJson.getJSONArray("agenda_ids");//会议id数组
-        String userId = requestJson.getString("userId");//一级审核员id
+        /*String userId = requestJson.getString("userId");//审核员id*/
         String loginId = requestJson.getString("loginId");//登录人id
+
+        TXietongDictionaryExample example = new TXietongDictionaryExample();
+        TXietongDictionaryExample.Criteria criteria = example.createCriteria();
+        criteria.andTypeCodeEqualTo("32");
+        List<TXietongDictionary> dictionarys = dictionaryMapper.selectByExample(example);
+        if(dictionarys.isEmpty()){
+            return new ResponseMessage(Code.CODE_ERROR, "暂未设置审核员");
+        }
+
+        /*TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+        TXietongDictionaryExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andTypeCodeEqualTo("31");
+        List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);*/
         //修改选中会议状态为一级审核员审核中
         if(!agenda_ids.isEmpty()){
             for (Object agenda_id : agenda_ids) {
@@ -1555,7 +1580,21 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 TXietongAgendaProcess process = new TXietongAgendaProcess();
                 process.setId(UUID.randomUUID().toString());
                 process.setIsdelete(1);
+                /*if(!dictionarys.isEmpty()&&!dictionaryList.isEmpty()){
+                    if(!dictionarys.get(0).getMidValue().isEmpty()&&!dictionaryList.get(0).getMidValue().isEmpty()){
+
+                    }else if(!dictionarys.isEmpty()||!dictionaryList.isEmpty()){
+                        process.setStatus(1);
+                    }else {
+                        return new ResponseMessage(Code.CODE_ERROR, "暂未设置审核员");
+                    }
+                }else if(!dictionarys.isEmpty()||!dictionaryList.isEmpty()){
+                    process.setStatus(1);
+                }else {
+                    return new ResponseMessage(Code.CODE_ERROR, "暂未设置审核员");
+                }*/
                 process.setStatus(0);
+
                 process.setCreaterId(loginId);
                 process.setAgendaId(agenda_id.toString());
                 int insert = agendaProcessMapper.insert(process);
@@ -1569,12 +1608,21 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 record.setIsdelete(1);
                 record.setCreatetime(new Date());
                 record.setRstatus("0");
-                record.setOwnerId(userId);
+                /*if(!dictionarys.isEmpty()&&!dictionaryList.isEmpty()){
+                    record.setOwnerId(dictionarys.get(0).getMidValue());
+                }else if(!dictionarys.isEmpty()||!dictionaryList.isEmpty()){
+                    record.setOwnerId(dictionaryList.get(0).getMidValue());
+                }else {
+                    return new ResponseMessage(Code.CODE_ERROR, "暂未设置审核员");
+                }*/
+                record.setOwnerId(dictionarys.get(0).getMidValue());
                 record.setAgendaProcessId(process.getId());
                 int i = agendaRecordMapper.insertSelective(record);
                 if(i!=1){
                     return new ResponseMessage(Code.CODE_ERROR, "提交失败");
                 }
+
+
 
             }
             return new ResponseMessage(Code.CODE_OK, "提交成功");
@@ -1606,197 +1654,128 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
         TXietongDictionaryExample.Criteria criteria = example.createCriteria();
         criteria.andTypeCodeEqualTo("32");
         List<TXietongDictionary> dictionarys = dictionaryMapper.selectByExample(example);
-        if(dictionarys.isEmpty()){
+        /*if(dictionarys.isEmpty()){
             return new ResponseMessage(Code.CODE_ERROR, "暂未设置一级审核员");
-        }
+        }*/
 
-        TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+        /*TXietongDictionaryExample example1 = new TXietongDictionaryExample();
         TXietongDictionaryExample.Criteria criteria1 = example1.createCriteria();
         criteria1.andTypeCodeEqualTo("31");
-        List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
-        if(dictionaryList.isEmpty()){
+        List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);*/
+        /*if(dictionaryList.isEmpty()){
             return new ResponseMessage(Code.CODE_ERROR, "暂未设置二级审核员");
-        }
+        }*/
 
-        //首先判断登录人是第几级审核员
-        if(ownerId.equals(dictionarys.get(0).getMidValue())){
-            //一级审核员提交审核时
-            for (Object agenda_id : agenda_ids) {
-                //去除会议退回标识
-                TXietongAgenda agenda = new TXietongAgenda();
-                agenda.setId(agenda_id.toString());
-                agenda.setType("");
-                agendaMapper.updateByPrimaryKeySelective(agenda);
 
-                //查询会议对应审核表一级审核待审核数据
-                TXietongAgendaProcessExample processExample = new TXietongAgendaProcessExample();
-                TXietongAgendaProcessExample.Criteria processCriteria = processExample.createCriteria();
-                processCriteria.andAgendaIdEqualTo(agenda_id.toString());
-                processCriteria.andStatusEqualTo(0);
-                //一个会议只有一条待审核的数据
-                List<TXietongAgendaProcess> processes = agendaProcessMapper.selectByExample(processExample);
-                if(processes.isEmpty()){
-                    return new ResponseMessage(Code.CODE_ERROR, "当前会议暂无一级待审核数据");
-                }
-                //修改当前待审核数据状态为二级审核员审核
-                TXietongAgendaProcess process = new TXietongAgendaProcess();
-                process.setId(processes.get(0).getId());
-                process.setStatus(1);
-                int update = agendaProcessMapper.updateByPrimaryKeySelective(process);
-                if(update!=1){
-                    return new ResponseMessage(Code.CODE_ERROR, "审核表修改失败");
-                }
-                //修改流程表状态为同意
-                TXietongAgendaRecordExample recordExample = new TXietongAgendaRecordExample();
-                TXietongAgendaRecordExample.Criteria recordCriteria = recordExample.createCriteria();
-                recordCriteria.andAgendaProcessIdEqualTo(process.getId());
-                recordCriteria.andRstatusEqualTo("0");
-                recordCriteria.andOwnerIdEqualTo(ownerId);
-                TXietongAgendaRecord record = new TXietongAgendaRecord();
-                record.setRstatus("1");
-                int i = agendaRecordMapper.updateByExampleSelective(record, recordExample);
-                if(i!=1){
-                    return new ResponseMessage(Code.CODE_ERROR, "流程表修改失败");
-                }
-                //新增二级审核员流程表记录
-                TXietongAgendaRecord agendaRecord = new TXietongAgendaRecord();
-                agendaRecord.setId(UUID.randomUUID().toString());
-                agendaRecord.setIsdelete(1);
-                agendaRecord.setCreatetime(new Date());
-                agendaRecord.setRstatus("0");
-                agendaRecord.setOwnerId(dictionaryList.get(0).getMidValue());
-                agendaRecord.setAgendaProcessId(process.getId());
-                int selective = agendaRecordMapper.insertSelective(agendaRecord);
-                if(selective!=1){
-                    return new ResponseMessage(Code.CODE_ERROR, "流程表新增失败");
-                }
+        if(!dictionarys.isEmpty()){
+            if(ownerId.equals(dictionarys.get(0).getMidValue())){
+                //一级审核员提交审核时
+                /*for (Object agenda_id : agenda_ids) {
+                    //去除会议退回标识
+                    TXietongAgenda agenda = new TXietongAgenda();
+                    agenda.setId(agenda_id.toString());
+                    agenda.setType("");
+                    agendaMapper.updateByPrimaryKeySelective(agenda);
 
+                    //查询会议对应审核表一级审核待审核数据
+                    TXietongAgendaProcessExample processExample = new TXietongAgendaProcessExample();
+                    TXietongAgendaProcessExample.Criteria processCriteria = processExample.createCriteria();
+                    processCriteria.andAgendaIdEqualTo(agenda_id.toString());
+                    processCriteria.andStatusEqualTo(0);
+                    //一个会议只有一条待审核的数据
+                    List<TXietongAgendaProcess> processes = agendaProcessMapper.selectByExample(processExample);
+                    if(processes.isEmpty()){
+                        return new ResponseMessage(Code.CODE_ERROR, "当前会议暂无一级待审核数据");
+                    }
+                    //修改当前待审核数据状态为二级审核员审核
+                    TXietongAgendaProcess process = new TXietongAgendaProcess();
+                    process.setId(processes.get(0).getId());
+                    process.setStatus(1);
+                    int update = agendaProcessMapper.updateByPrimaryKeySelective(process);
+                    if(update!=1){
+                        return new ResponseMessage(Code.CODE_ERROR, "审核表修改失败");
+                    }
+                    //修改流程表状态为同意
+                    TXietongAgendaRecordExample recordExample = new TXietongAgendaRecordExample();
+                    TXietongAgendaRecordExample.Criteria recordCriteria = recordExample.createCriteria();
+                    recordCriteria.andAgendaProcessIdEqualTo(process.getId());
+                    recordCriteria.andRstatusEqualTo("0");
+                    recordCriteria.andOwnerIdEqualTo(ownerId);
+                    TXietongAgendaRecord record = new TXietongAgendaRecord();
+                    record.setRstatus("1");
+                    int i = agendaRecordMapper.updateByExampleSelective(record, recordExample);
+                    if(i!=1){
+                        return new ResponseMessage(Code.CODE_ERROR, "流程表修改失败");
+                    }
+                    //新增二级审核员流程表记录
+                    TXietongAgendaRecord agendaRecord = new TXietongAgendaRecord();
+                    agendaRecord.setId(UUID.randomUUID().toString());
+                    agendaRecord.setIsdelete(1);
+                    agendaRecord.setCreatetime(new Date());
+                    agendaRecord.setRstatus("0");
+                    agendaRecord.setOwnerId(dictionaryList.get(0).getMidValue());
+                    agendaRecord.setAgendaProcessId(process.getId());
+                    int selective = agendaRecordMapper.insertSelective(agendaRecord);
+                    if(selective!=1){
+                        return new ResponseMessage(Code.CODE_ERROR, "流程表新增失败");
+                    }
+
+                }
+                return new ResponseMessage(Code.CODE_OK, "审核成功");*/
+                ResponseMessage model = model(ownerId, agenda_ids);
+                return model;
+
+            }else {
+                return new ResponseMessage(Code.CODE_OK, "当前登录人并无审核权限");
             }
-            return new ResponseMessage(Code.CODE_OK, "审核成功");
-
-        }else if(ownerId.equals(dictionaryList.get(0).getMidValue())){
-            //二级审核员提交审核时
-            for (Object agenda_id : agenda_ids) {
-                //首先修改会议状态为未发布 去除会议退回标识
-                TXietongAgenda agenda = new TXietongAgenda();
-                agenda.setId(agenda_id.toString());
-                agenda.setIspublish(2);
-                agenda.setType("");
-                int update = agendaMapper.updateByPrimaryKeySelective(agenda);
-
-                //查询会议对应审核表二级审核待审核数据
-                TXietongAgendaProcessExample processExample = new TXietongAgendaProcessExample();
-                TXietongAgendaProcessExample.Criteria processCriteria = processExample.createCriteria();
-                processCriteria.andAgendaIdEqualTo(agenda_id.toString());
-                processCriteria.andStatusEqualTo(1);
-                //一个会议只有一条二级待审核的数据
-                List<TXietongAgendaProcess> processes = agendaProcessMapper.selectByExample(processExample);
-                if(processes.isEmpty()){
-                    return new ResponseMessage(Code.CODE_ERROR, "当前会议暂无二级待审核数据");
-                }
-                //修改当前待审核数据状态为完成
-                TXietongAgendaProcess process = new TXietongAgendaProcess();
-                process.setId(processes.get(0).getId());
-                process.setStatus(2);
-                int i = agendaProcessMapper.updateByPrimaryKeySelective(process);
-                if(i!=1){
-                    return new ResponseMessage(Code.CODE_ERROR, "审核表修改失败");
-                }
-
-                //修改流程表状态为同意
-                TXietongAgendaRecordExample recordExample = new TXietongAgendaRecordExample();
-                TXietongAgendaRecordExample.Criteria recordCriteria = recordExample.createCriteria();
-                recordCriteria.andAgendaProcessIdEqualTo(process.getId());
-                recordCriteria.andRstatusEqualTo("0");
-                recordCriteria.andOwnerIdEqualTo(ownerId);
-                TXietongAgendaRecord record = new TXietongAgendaRecord();
-                record.setRstatus("1");
-                int selective = agendaRecordMapper.updateByExampleSelective(record, recordExample);
-                if(selective!=1){
-                    return new ResponseMessage(Code.CODE_ERROR, "流程表修改失败");
-                }
-            }
-            return new ResponseMessage(Code.CODE_OK, "审核成功");
-
-
         }else {
-            return new ResponseMessage(Code.CODE_OK, "当前登录人并无审核权限");
+            return new ResponseMessage(Code.CODE_OK, "当前未选择审核员");
         }
+    }
 
+    private ResponseMessage model(String ownerId, JSONArray agenda_ids){
+        //一级审核员提交审核时
+        for (Object agenda_id : agenda_ids) {
+            //首先修改会议状态为未发布 去除会议退回标识
+            TXietongAgenda agenda = new TXietongAgenda();
+            agenda.setId(agenda_id.toString());
+            agenda.setIspublish(2);
+            agenda.setType("");
+            int update = agendaMapper.updateByPrimaryKeySelective(agenda);
 
-
-
-
-        /*TXietongAgendaRecordExample example = new TXietongAgendaRecordExample();
-        TXietongAgendaRecordExample.Criteria criteria1 = example.createCriteria();
-        criteria1.andOwnerIdEqualTo(ownerId);
-        criteria1.andRstatusEqualTo("0");
-        List<TXietongAgendaRecord> records = agendaRecordMapper.selectByExample(example);
-        if (records.size() <= 0) {
-            return new ResponseMessage(Code.CODE_ERROR, "暂无审核数据");
-        }
-
-        //查询会议表中是否还有未删除的审核中数据
-        TXietongAgendaExample example3 = new TXietongAgendaExample();
-        TXietongAgendaExample.Criteria criteria3 = example3.createCriteria();
-        criteria3.andIsdeleteEqualTo(1);
-        criteria3.andIspublishEqualTo(1);
-        List<TXietongAgenda> agenda = agendaMapper.selectByExample(example3);
-        if (agenda.size() == 0) {
-            //如果不存在审核中的数据就直接结束流程
+            //查询会议对应审核表一级审核待审核数据
+            TXietongAgendaProcessExample processExample = new TXietongAgendaProcessExample();
+            TXietongAgendaProcessExample.Criteria processCriteria = processExample.createCriteria();
+            processCriteria.andAgendaIdEqualTo(agenda_id.toString());
+            processCriteria.andStatusEqualTo(0);
+            //一个会议只有一条一级待审核的数据
+            List<TXietongAgendaProcess> processes = agendaProcessMapper.selectByExample(processExample);
+            if(processes.isEmpty()){
+                return new ResponseMessage(Code.CODE_ERROR, "当前会议暂无一级待审核数据");
+            }
+            //修改当前待审核数据状态为完成
             TXietongAgendaProcess process = new TXietongAgendaProcess();
+            process.setId(processes.get(0).getId());
             process.setStatus(2);
-            process.setId(records.get(0).getAgendaProcessId());
-            agendaProcessMapper.updateByPrimaryKeySelective(process);
+            int i = agendaProcessMapper.updateByPrimaryKeySelective(process);
+            if(i!=1){
+                return new ResponseMessage(Code.CODE_ERROR, "审核表修改失败");
+            }
+
+            //修改流程表状态为同意
+            TXietongAgendaRecordExample recordExample = new TXietongAgendaRecordExample();
+            TXietongAgendaRecordExample.Criteria recordCriteria = recordExample.createCriteria();
+            recordCriteria.andAgendaProcessIdEqualTo(process.getId());
+            recordCriteria.andRstatusEqualTo("0");
+            recordCriteria.andOwnerIdEqualTo(ownerId);
             TXietongAgendaRecord record = new TXietongAgendaRecord();
-            record.setRstatus("2");
-            agendaRecordMapper.updateByExampleSelective(record,example);
-            return new ResponseMessage(Code.CODE_ERROR, "暂无审核数据");
+            record.setRstatus("1");
+            int selective = agendaRecordMapper.updateByExampleSelective(record, recordExample);
+            if(selective!=1){
+                return new ResponseMessage(Code.CODE_ERROR, "流程表修改失败");
+            }
         }
-
-        //查询详细流程表是否有审核中的数据
-        TXietongAgendaRecordExample example1 = new TXietongAgendaRecordExample();
-        TXietongAgendaRecordExample.Criteria criteria2 = example1.createCriteria();
-        criteria2.andAgendaProcessIdEqualTo(records.get(0).getAgendaProcessId());
-        List<TXietongAgendaRecord> records1 = agendaRecordMapper.selectByExample(example1);
-        if (records1.size() <= 0) {
-            return new ResponseMessage(Code.CODE_ERROR, "暂无审核数据");
-        }
-
-
-        //部委领导审核更新审核流程表和会议表
-        int update1 = agendaProcessMapper.updateProcess(records.get(0).getAgendaProcessId(), status);
-        if (update1 != 1) {
-            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
-        }
-
-        TXietongAgendaExample example2 = new TXietongAgendaExample();
-        TXietongAgendaExample.Criteria criteria5 = example2.createCriteria();
-        criteria5.andIspublishEqualTo(1);
-        criteria5.andIsdeleteEqualTo(1);
-        TXietongAgenda agenda1 = new TXietongAgenda();
-        if(status.equals("2")){
-            agenda1.setIspublish(0);
-        }else {
-            agenda1.setIspublish(2);
-        }
-
-        int update2 = agendaMapper.updateByExampleSelective(agenda1, example2);
-        if (update2 <= 0) {
-            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
-        }
-        //更新审核记录表
-        TXietongAgendaRecord record = new TXietongAgendaRecord();
-        *//* record.setDealTime(dateFormat.parse(dealTime));*//*
-        record.setRstatus(status);
-        int update = agendaRecordMapper.updateByExampleSelective(record, example);
-        if (update != 1) {
-            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
-        }
-        daibanUtil.UpdateDaibanRecord(record.getId());
-        return new ResponseMessage(Code.CODE_OK, "审核成功");*/
-
-
+        return new ResponseMessage(Code.CODE_OK, "审核成功");
     }
 
     /**
@@ -2177,145 +2156,5 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
         }
         return new ResponseMessage(Code.CODE_OK, "有代审核数据");
     }
-    @Override
-    public ResponseMessage insertAllLeadershipAgenda(String requestBody) throws Exception {
-        //JSONObject requestJson = JSONObject.parseObject(requestBody);
-        JSONArray requestJson = JSONArray.parseArray(requestBody);
-        for (int i = 0; i < requestJson.size(); i++) {
-            Map map = (Map) requestJson.get(i);
-            String begin_time = map.get("begin_time").toString();//开始时间
-            String end_time = map.get("end_time").toString();//结束时间
 
-            List participant_ids = (List) map.get("participant_ids");//领导id数组
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //删除领导所有日程
-            for (Object participant_id : participant_ids) {
-                TXietongAgenda agenda = new TXietongAgenda();
-                if (!begin_time.isEmpty()) {
-                    String begin[] = begin_time.split(" ");
-                    String beginTime = begin[0] + " 00:00:00";
-                    agenda.setBeginTime(format.parse(beginTime));
-                }
-                if (!end_time.isEmpty()) {
-                    String begin[] = end_time.split(" ");
-                    String endTime = begin[0] + " 23:59:59";
-                    agenda.setEndTime(format.parse(endTime));
-                }
-
-                agenda.setRemark(participant_id.toString());
-
-                List<TXietongAgenda> agendas = agendaMapper.selectAgendaByTime(agenda);
-                for (TXietongAgenda agenda1 : agendas) {
-                    TXietongAgenda agenda2 = new TXietongAgenda();
-                    agenda2.setId(agenda1.getId());
-                    agenda2.setIsdelete(0);
-
-                    //删除日程表
-                    int update = agendaMapper.deleteByPrimaryKey(agenda1.getId());
-                    if (update != 1) {
-                        return new ResponseMessage(Code.CODE_ERROR, "新增失败");
-                    }
-                    TXietongAgendaHumanExample humanExample = new TXietongAgendaHumanExample();
-                    TXietongAgendaHumanExample.Criteria criteria = humanExample.createCriteria();
-                    criteria.andAgendaIdEqualTo(agenda1.getId());
-                    criteria.andIsdeleteEqualTo(1);
-                    TXietongAgendaHuman human = new TXietongAgendaHuman();
-                    human.setIsdelete(0);
-
-                    //删除领导表
-                    int update1 = agendaHumanMapper.updateByExampleSelective(human, humanExample);
-                    if (update1 != 1) {
-                        return new ResponseMessage( Code.CODE_ERROR, "新增失败");
-                    }
-                }
-
-            }
-        }
-
-        for (int i = 0; i < requestJson.size(); i++) {
-            Map map = (Map) requestJson.get(i);
-            String id  = map.get("id").toString();//开始时间
-            String begin_time = map.get("begin_time").toString();//开始时间
-            String end_time = map.get("end_time").toString();//结束时间
-            String meeting_subjet = map.get("meeting_subjet").toString();//会议名称
-            String meeting_place = map.get("meeting_place").toString();//会议地点
-            List participant_ids = (List) map.get("participant_ids");//领导id数组
-            String ispublish = map.get("ispublish").toString();//状态
-            String amPm = map.get("amPm").toString();//0上午1下午2全天
-            /*ArrayList participant_ids =(ArrayList)*/
-            String remark = map.get("remark").toString();//备注
-            String createrId = map.get("createrId").toString();//创建人id(登录人id)
-
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-
-            TXietongAgenda agenda = new TXietongAgenda();
-            if(id.isEmpty()){
-                agenda.setId(UUID.randomUUID().toString());
-            }else {
-                agenda.setId(id);
-            }
-
-
-            agenda.setBeginTime(format.parse(begin_time));
-            agenda.setEndTime(format.parse(end_time));
-            agenda.setMeetingPlace(meeting_place);
-            agenda.setMeetingSubject(meeting_subjet);
-            agenda.setRemark(remark);
-            agenda.setIsdelete(1);
-            if(ispublish.isEmpty()){
-                agenda.setIspublish(0);
-            }else {
-                agenda.setIspublish(Integer.valueOf(ispublish));
-            }
-
-
-
-            agenda.setCreaterid(createrId);
-            //agenda.setCreatetime(new java.util.Date());
-            agenda.setAmPm(Integer.valueOf(amPm));
-
-            /*TXietongAgendaExample example = new TXietongAgendaExample();
-            TXietongAgendaExample.Criteria criteria = example.createCriteria();
-            criteria.andMeetingSubjectEqualTo(meeting_subjet);
-            List<TXietongAgenda> agenda1 = agendaMapper.selectByExample(example);
-            if(!CollectionUtils.isEmpty(agenda1)){
-                return new ResponseMessage(Code.CODE_ERROR, "会议名称已存在");
-            }*/
-            //新增领导日程表
-            int sign = agendaMapper.insert(agenda);
-            if (sign != 1) {
-                return new ResponseMessage(Code.CODE_ERROR, "新增失败");
-            }
-            TXietongAgendaHuman agendaHuman = new TXietongAgendaHuman();
-            for (int j = 0; j < participant_ids.size(); j++) {
-                agendaHuman.setId(UUID.randomUUID().toString());
-                agendaHuman.setAgendaId(agenda.getId());
-                agendaHuman.setAmPm(agenda.getAmPm());
-                agendaHuman.setIsdelete(1);
-                String name_cn = userMapper.selectById(participant_ids.get(j).toString());
-                agendaHuman.setParticipantValue(name_cn);
-                agendaHuman.setParticipantId(participant_ids.get(j).toString());
-                //agendaHuman.setCreatetime(new java.util.Date());
-                agendaHuman.setBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(begin_time));
-                //新增领导表
-                int flag = agendaHumanMapper.insert(agendaHuman);
-                if (flag != 1) {
-                    return new ResponseMessage(Code.CODE_ERROR, "新增失败");
-                }
-            }
-        }
-        return new ResponseMessage(Code.CODE_OK, "新增成功");
-        /*String begin_time = requestJson.getString("begin_time");//开始时间
-        String end_time = requestJson.getString("end_time");//结束时间
-        String meeting_subjet = requestJson.getString("meeting_subjet");//会议名称
-        String meeting_place = requestJson.getString("meeting_place");//会议地点
-        String participant_ids = requestJson.getString("participant_ids");//领导id数组
-        String remark = requestJson.getString("remark");//备注
-        String createrId = requestJson.getString("createrId");//创建人id(登录人id)
-        JSONArray participant_id = JSONObject.parseArray(participant_ids);*/
-
-
-    }
 }
