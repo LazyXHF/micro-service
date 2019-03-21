@@ -5,6 +5,7 @@ import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface InternalProjectService {
@@ -19,6 +20,8 @@ public interface InternalProjectService {
      * @return
      */
     Page<InternalProject> queryAllProjectInfo(int pageNo, int pageSize);
+
+    Page<Map<String,Object>> queryAllProjectInfos(int pageNo, int pageSize);
 
     /**
      * 插入项目信息

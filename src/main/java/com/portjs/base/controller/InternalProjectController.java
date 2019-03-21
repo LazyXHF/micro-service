@@ -12,6 +12,8 @@ import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 /**
  * 关于项目信息
@@ -73,7 +75,7 @@ public class InternalProjectController extends BaseController{
             if (pageSize == 0) {
                 pageSize = 10;
             }
-            Page<InternalProject> project = internalProjectService.queryAllProjectInfo(pageNo, pageSize);
+            Page<Map<String,Object>> project = internalProjectService.queryAllProjectInfos(pageNo, pageSize);
             if (project == null) {
                 responseMessage = new ResponseMessage(Code.CODE_ERROR, "查询数据为空");
                 return responseMessage;

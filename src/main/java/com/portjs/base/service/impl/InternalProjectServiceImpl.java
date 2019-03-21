@@ -1,7 +1,9 @@
 package com.portjs.base.service.impl;
 
 import com.portjs.base.dao.InternalProjectMapper;
+import com.portjs.base.dao.LifeMapper;
 import com.portjs.base.entity.InternalProject;
+import com.portjs.base.entity.Life;
 import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
@@ -10,12 +12,11 @@ import com.portjs.base.util.StringUtils.StringUtils;
 import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class InternalProjectServiceImpl implements InternalProjectService {
@@ -25,6 +26,8 @@ public class InternalProjectServiceImpl implements InternalProjectService {
 
     @Autowired
     InternalProjectMapper internalProjectMapper;
+    @Autowired
+    private LifeMapper lifeMapper;
 
     /**
      * 查询所有项目信息和相关人员信息
@@ -56,7 +59,44 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         return page;
 
     }
+    /**
+     * 查询所有项目信息包含生命周期和项目状态
+     * @return
+     */
+    @Override
+    public Page<Map<String,Object>> queryAllProjectInfos(int pageNo, int pageSize) {
+        Page<Map<String,Object>> page = new Page<>();
+        int totalCount = internalProjectMapper.projectCounts();
+        page.init(totalCount,pageNo,pageSize);
+        List<InternalProject> list = internalProjectMapper.queryAllProjectInfo(page.getRowNum(),page.getPageCount());
+        List<Map<String,Object>> dataList = new ArrayList<Map<String,Object>>();
+        Life record = new Life();
+        for(int i =0;i<list.size();i++){
+            Map<String,Object> map = new HashMap<String,Object>();
+            String projectId = list.get(i).getId();
+            record.setProjectId(projectId);
+            List<Life> lifes = lifeMapper.selectByPrimaryKey(record);
+            if(CollectionUtils.isEmpty(lifes)){
+                map.put("status","未开发");
+            }else if(lifes.size()<6){
+                map.put("status","已开发");
+            }else if(lifes.size()==6){
+                map.put("status","已开发");
+                for (int k=0;k<lifes.size();k++){
+                    if("6".equals(lifes.get(k).getNode())&& "3".equals(lifes.get(k).getStatus())){
+                        map.put("status","已完成");
+                        break;
+                    }
+                }
+            }
+            map.put("proiect",list.get(i));
+            map.put("lifes",lifes);
+            dataList.add(map);
+        }
+        page.setList(dataList);
+        return page;
 
+    }
     /**
      * 报表页面
      * 添加项目信息
