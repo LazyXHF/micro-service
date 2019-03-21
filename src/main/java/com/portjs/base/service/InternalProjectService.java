@@ -4,6 +4,8 @@ import com.portjs.base.entity.InternalProject;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 
+import java.util.List;
+
 
 public interface InternalProjectService {
     /**
@@ -47,4 +49,11 @@ public interface InternalProjectService {
 
 
     ResponseMessage selectByPrimaryKey(InternalProject internalProject);
+
+    /**
+     * 根据对象查询列表
+     * @param record
+     * @return
+     */
+    List<InternalProject> selectListByBackup1(InternalProject record);
 }

@@ -166,4 +166,9 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         }
         return new ResponseMessage(Code.CODE_OK,"查询成功！",internalProjects);
     }
+
+    @Override
+    public List<InternalProject> selectListByBackup1(InternalProject record) {
+        return internalProjectMapper.selectListByBackup1(record);
+    }
 }

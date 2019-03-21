@@ -82,6 +82,22 @@
     from internal_project
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="selectListByBackup1" parameterType="com.portjs.base.entity.InternalProject" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from internal_project
+    <where> 1=1 AND  enable="0"
+      <if test="id != null">
+        AND id=#{id,jdbcType=VARCHAR}
+      </if>
+      <if test="backUp1 != null">
+        AND back_up1= #{backUp1,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        AND create_time > #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from internal_project
     where id = #{id,jdbcType=VARCHAR}

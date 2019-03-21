@@ -279,10 +279,12 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
     public ResponseMessage selectLeader(String requestBody) {
         JSONObject requestJson = JSONObject.parseObject(requestBody);
         String visualId = requestJson.getString("visualId");//可见人id
+        String type =  requestJson.getString("type");//可见人id
 
         TXietongUserMinisterRelationExample example1 = new TXietongUserMinisterRelationExample();
         TXietongUserMinisterRelationExample.Criteria criteria2 = example1.createCriteria();
         criteria2.andVisualIdEqualTo(visualId);
+        criteria2.andTypeEqualTo(type);
         criteria2.andStatusEqualTo("0");
         List<TXietongUserMinisterRelation> relations = userMinisterRelationMapper.selectByExample(example1);
 
@@ -954,7 +956,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
     public ResponseMessage updateAgendaVisualHuanm(String requestBody) {
         JSONObject requestJson = JSONObject.parseObject(requestBody);
         String ministerId = requestJson.getString("ministerId");//领导人id
-        String type = requestJson.getString("ministerId");//类型
+        String type = requestJson.getString("type");//类型
         JSONArray visualIds = requestJson.getJSONArray("visualIds");//可见人id
 
 
