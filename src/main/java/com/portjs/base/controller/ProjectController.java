@@ -52,10 +52,7 @@ public class ProjectController extends BaseController {
         BigDecimal bigDecimal = lifeService.sumMoney();
 
         //异常项目查询
-        InternalProject internalProject =new InternalProject();
-        internalProject.setBackUp1("1");
-        List<InternalProject> list = internalProjectService.selectListByBackup1(internalProject);
-
+        List<InternalProject> list = lifeService.abnormalProjects();
 
         //获取当前年份
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -75,9 +72,9 @@ public class ProjectController extends BaseController {
            String projectId = thisYearList.get(i).getId();
            approval.setProjectId(projectId);
            List<Approval> dataList = approvalService.selectByPrimaryKey(approval);
-            if(!CollectionUtils.isEmpty(dataList)&&dataList.get(0).getAmount()!=null){
+           if(!CollectionUtils.isEmpty(dataList)&&dataList.get(0).getAmount()!=null){
                 bigDecimalThisYear = bigDecimalThisYear.add(dataList.get(0).getAmount());
-            }
+           }
         }
 
         Map<String,Object> datamap = new HashMap<String,Object>();
