@@ -7,7 +7,7 @@
     <result column="creater" jdbcType="VARCHAR" property="creater" />
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="modifer" jdbcType="VARCHAR" property="modifer" />
-    <result column="type" jdbcType="CHAR" property="type" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="leader" jdbcType="VARCHAR" property="leader" />
     <result column="leader_name" jdbcType="VARCHAR" property="leaderName" />
@@ -73,7 +73,11 @@
     from internal_project
   </select>
 
-
+  <select id="queryProjectNums" resultMap="BaseResultMap">
+    select
+    back_up2
+    from internal_project
+  </select>
 
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -114,7 +118,7 @@
       back_up8, back_up9, project_type
       )
     values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{modifer,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{modifer,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{leader,jdbcType=VARCHAR}, #{leaderName,jdbcType=VARCHAR}, 
       #{leaderTell,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{responsibleUnit,jdbcType=VARCHAR}, 
       #{responsibleUnitId,jdbcType=VARCHAR}, #{ranges,jdbcType=VARCHAR}, #{meeting,jdbcType=VARCHAR},
@@ -226,7 +230,7 @@
         #{modifer,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        #{type,jdbcType=CHAR},
+        #{type,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -309,7 +313,7 @@
         modifer = #{modifer,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=CHAR},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -395,7 +399,7 @@
         modifer = #{modifer,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=CHAR},
+        type = #{type,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -470,7 +474,7 @@
       creater = #{creater,jdbcType=VARCHAR},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP},
       modifer = #{modifer,jdbcType=VARCHAR},
-      type = #{type,jdbcType=CHAR},
+      type = #{type,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       leader = #{leader,jdbcType=VARCHAR},
       leader_name = #{leaderName,jdbcType=VARCHAR},

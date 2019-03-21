@@ -110,7 +110,13 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         java.sql.Date  data1=new java.sql.Date(date.getTime());
         record.setCreateTime(data1);
         record.setCreater(UserUtils.getCurrentUser().getUsername());
-
+       /* List<InternalProject> list = internalProjectMapper.queryProjectNums();
+        //项目编号不需要了
+        for (InternalProject lists:list) {
+            if(record.getBackUp2().equals(lists)){
+                return new ResponseMessage(Code.CODE_ERROR,"项目编号已存在");
+            }
+        }*/
         int i  = internalProjectMapper.insertSelective(record);
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
@@ -118,7 +124,6 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         return new ResponseMessage(Code.CODE_OK,"添加成功！",i);
     }
     /**
-     * 报表页面
      * 添加项目概览信息
      * @param
      * @return

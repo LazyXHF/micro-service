@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-@Data
+
 public class InternalProject extends BaseEntity{
     private String id;
 
@@ -62,24 +62,12 @@ public class InternalProject extends BaseEntity{
 
     private String projectType;//项目类型
 
-    /*private List<InternalPersionResource> list;
-
-    public List<InternalPersionResource> getList() {
-        return list;
-    }
-
-    public void setList(List<InternalPersionResource> list) {
-        this.list = list;
-    }
-
-    private static final long serialVersionUID = 1L;
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public Date getCreateTime() {
@@ -95,7 +83,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setCreater(String creater) {
-        this.creater = creater == null ? null : creater.trim();
+        this.creater = creater;
     }
 
     public Date getModifyTime() {
@@ -111,7 +99,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setModifer(String modifer) {
-        this.modifer = modifer == null ? null : modifer.trim();
+        this.modifer = modifer;
     }
 
     public String getType() {
@@ -119,7 +107,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+        this.type = type;
     }
 
     public String getName() {
@@ -127,7 +115,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getLeader() {
@@ -135,7 +123,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setLeader(String leader) {
-        this.leader = leader == null ? null : leader.trim();
+        this.leader = leader;
     }
 
     public String getLeaderName() {
@@ -143,7 +131,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setLeaderName(String leaderName) {
-        this.leaderName = leaderName == null ? null : leaderName.trim();
+        this.leaderName = leaderName;
     }
 
     public String getLeaderTell() {
@@ -151,7 +139,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setLeaderTell(String leaderTell) {
-        this.leaderTell = leaderTell == null ? null : leaderTell.trim();
+        this.leaderTell = leaderTell;
     }
 
     public String getStatus() {
@@ -159,7 +147,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+        this.status = status;
     }
 
     public String getResponsibleUnit() {
@@ -167,7 +155,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setResponsibleUnit(String responsibleUnit) {
-        this.responsibleUnit = responsibleUnit == null ? null : responsibleUnit.trim();
+        this.responsibleUnit = responsibleUnit;
     }
 
     public String getResponsibleUnitId() {
@@ -175,7 +163,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setResponsibleUnitId(String responsibleUnitId) {
-        this.responsibleUnitId = responsibleUnitId == null ? null : responsibleUnitId.trim();
+        this.responsibleUnitId = responsibleUnitId;
     }
 
     public String getRanges() {
@@ -183,7 +171,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setRanges(String ranges) {
-        this.ranges = ranges == null ? null : ranges.trim();
+        this.ranges = ranges;
     }
 
     public String getMeeting() {
@@ -191,7 +179,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setMeeting(String meeting) {
-        this.meeting = meeting == null ? null : meeting.trim();
+        this.meeting = meeting;
     }
 
     public String getContent() {
@@ -199,7 +187,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content;
     }
 
     public String getEnable() {
@@ -207,7 +195,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setEnable(String enable) {
-        this.enable = enable == null ? null : enable.trim();
+        this.enable = enable;
     }
 
     public String getBackUp1() {
@@ -215,7 +203,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp1(String backUp1) {
-        this.backUp1 = backUp1 == null ? null : backUp1.trim();
+        this.backUp1 = backUp1;
     }
 
     public String getBackUp2() {
@@ -223,7 +211,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp2(String backUp2) {
-        this.backUp2 = backUp2 == null ? null : backUp2.trim();
+        this.backUp2 = backUp2;
     }
 
     public String getBackUp3() {
@@ -231,7 +219,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp3(String backUp3) {
-        this.backUp3 = backUp3 == null ? null : backUp3.trim();
+        this.backUp3 = backUp3;
     }
 
     public String getBackUp4() {
@@ -239,7 +227,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp4(String backUp4) {
-        this.backUp4 = backUp4 == null ? null : backUp4.trim();
+        this.backUp4 = backUp4;
     }
 
     public String getBackUp5() {
@@ -247,7 +235,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp5(String backUp5) {
-        this.backUp5 = backUp5 == null ? null : backUp5.trim();
+        this.backUp5 = backUp5;
     }
 
     public String getBackUp6() {
@@ -255,7 +243,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp6(String backUp6) {
-        this.backUp6 = backUp6 == null ? null : backUp6.trim();
+        this.backUp6 = backUp6;
     }
 
     public String getBackUp7() {
@@ -263,7 +251,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp7(String backUp7) {
-        this.backUp7 = backUp7 == null ? null : backUp7.trim();
+        this.backUp7 = backUp7;
     }
 
     public String getBackUp8() {
@@ -271,7 +259,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp8(String backUp8) {
-        this.backUp8 = backUp8 == null ? null : backUp8.trim();
+        this.backUp8 = backUp8;
     }
 
     public String getBackUp9() {
@@ -279,7 +267,7 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setBackUp9(String backUp9) {
-        this.backUp9 = backUp9 == null ? null : backUp9.trim();
+        this.backUp9 = backUp9;
     }
 
     public String getProjectType() {
@@ -287,6 +275,6 @@ public class InternalProject extends BaseEntity{
     }
 
     public void setProjectType(String projectType) {
-        this.projectType = projectType == null ? null : projectType.trim();
-    }*/
+        this.projectType = projectType;
+    }
 }

@@ -308,6 +308,114 @@
     select t.main_value from t_xietong_dictionary t where t.type_code='1'
    </select>
 
+
+    <!--人员配置信息-->
+    <select id="queryPersionModelInfo" resultMap="BaseResultMap">
+    select * from t_xietong_dictionary t where t.type_code='18081' and TYPE_ID='10' order by CAST(VALUE_SORT AS SIGNED INTEGER)
+   </select>
+
+    <update id="updatePersionModelInfo" parameterType="com.portjs.base.entity.TXietongDictionary">
+        update  t_xietong_dictionary
+        <set>
+            <if test="typeCode != null">
+                TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="typeDesc != null">
+                TYPE_DESC = #{typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="mainValue != null">
+                MAIN_VALUE = #{mainValue,jdbcType=VARCHAR},
+            </if>
+            <if test="midValue != null">
+                MID_VALUE = #{midValue,jdbcType=VARCHAR},
+            </if>
+            <if test="subValue != null">
+                SUB_VALUE = #{subValue,jdbcType=VARCHAR},
+            </if>
+            <if test="valueSort != null">
+                VALUE_SORT = #{valueSort,jdbcType=VARCHAR},
+            </if>
+            <if test="valueDesc != null">
+                VALUE_DESC = #{valueDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="typeId != null">
+                TYPE_ID = #{typeId,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+
+    <insert id="insertPersionModelInfo" parameterType="com.portjs.base.entity.TXietongDictionary">
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      values (#{id,jdbcType=VARCHAR},'18081', '人员分类',#{mainValue,jdbcType=VARCHAR},#{midValue,jdbcType=VARCHAR},
+      #{subValue,jdbcType=VARCHAR},#{valueSort,jdbcType=VARCHAR}, '人员分类配置', #{remark,jdbcType=VARCHAR},'10'
+      )
+    </insert>
+
+    <delete id="deletePersionModelInfo">
+        delete from t_xietong_dictionary where TYPE_CODE='18081' and TYPE_ID='10' and ID=#{id}
+    </delete>
+
+    <!--资源配置信息-->
+    <select id="queryResourceModelInfo" resultMap="BaseResultMap">
+    select * from t_xietong_dictionary t where t.type_code='18081' and TYPE_ID='11' order by CAST(VALUE_SORT AS SIGNED INTEGER)
+   </select>
+
+    <update id="updateResourceModelInfo" parameterType="com.portjs.base.entity.TXietongDictionary">
+        update  t_xietong_dictionary
+        <set>
+            <if test="typeCode != null">
+                TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="typeDesc != null">
+                TYPE_DESC = #{typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="mainValue != null">
+                MAIN_VALUE = #{mainValue,jdbcType=VARCHAR},
+            </if>
+            <if test="midValue != null">
+                MID_VALUE = #{midValue,jdbcType=VARCHAR},
+            </if>
+            <if test="subValue != null">
+                SUB_VALUE = #{subValue,jdbcType=VARCHAR},
+            </if>
+            <if test="valueSort != null">
+                VALUE_SORT = #{valueSort,jdbcType=VARCHAR},
+            </if>
+            <if test="valueDesc != null">
+                VALUE_DESC = #{valueDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="typeId != null">
+                TYPE_ID = #{typeId,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertResourceModelInfo" parameterType="com.portjs.base.entity.TXietongDictionary">
+      insert into t_xietong_dictionary (ID, TYPE_CODE, TYPE_DESC,
+      MAIN_VALUE, MID_VALUE, SUB_VALUE,
+      VALUE_SORT, VALUE_DESC, REMARK,
+      TYPE_ID)
+      values (#{id,jdbcType=VARCHAR},'18081', '资源分类',#{mainValue,jdbcType=VARCHAR},#{midValue,jdbcType=VARCHAR},
+      #{subValue,jdbcType=VARCHAR},#{valueSort,jdbcType=VARCHAR}, '资源分类配置', #{remark,jdbcType=VARCHAR},'11'
+      )
+    </insert>
+
+    <delete id="deleteResourceModelInfo">
+        delete from t_xietong_dictionary where TYPE_CODE='18081' and TYPE_ID='11' and ID=#{id}
+    </delete>
+
+
     <!--字典表类型查询-->
     <select id="selectDictionaryType" resultMap="BaseResultMap">
         select TYPE_DESC,TYPE_CODE,TYPE_ID from t_xietong_dictionary GROUP BY TYPE_DESC

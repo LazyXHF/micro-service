@@ -117,4 +117,68 @@ public interface TXietongDictionaryMapper {
     Long queryCaiGouYuanId();
 
     TXietongDictionary selectgongwuyuan();
+
+/**
+ * TODO   分割线===========================================================================================================================================================
+ */
+
+
+    /**
+     * 查询人员配置信息
+     * @return
+     */
+    List<TXietongDictionary> queryPersionModelInfo();
+
+    /**
+     * 添加人员配置信息
+     * @param dictionary
+     * @return
+     */
+    int insertPersionModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 修改人员配置信息
+     * @param dictionary
+     * @return
+     */
+    int updatePersionModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 删除人员配置信息
+     * @param dictionary
+     * @return
+     */
+    int deletePersionModelInfo(TXietongDictionary dictionary);
+
+/**
+ * TODO   分割线===========================================================================================================================================================
+ */
+
+    /**
+     * 查询资源配置信息
+     * @return
+     */
+    List<TXietongDictionary> queryResourceModelInfo();
+
+    /**
+     * 添加资源配置信息
+     * @param dictionary
+     * @return
+     */
+    int insertResourceModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 修改资源配置信息
+     * @param dictionary
+     * @return
+     */
+    int updateResourceModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 删除资源配置信息
+     * @param dictionary
+     * @return
+     */
+    int deleteResourceModelInfo(TXietongDictionary dictionary);
+
 }
