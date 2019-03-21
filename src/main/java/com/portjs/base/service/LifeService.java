@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.portjs.base.entity.InternalProject;
 import com.portjs.base.entity.Life;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.stereotype.Repository;
@@ -38,4 +39,10 @@ public interface LifeService {
      * @return
      */
     BigDecimal sumMoney();
+
+    /**
+     * 异常项目
+     * @return
+     */
+    List<InternalProject> abnormalProjects();
 }

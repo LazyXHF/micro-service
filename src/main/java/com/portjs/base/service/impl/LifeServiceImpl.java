@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,8 @@ public class LifeServiceImpl implements LifeService {
     private  PilotMapper pilotMapper;
     @Autowired
     private AcceptanceMapper acceptanceMapper;
-
+    @Autowired
+    private InternalProjectMapper  internalProjectMapper;
     @Override
     public ResponseMessage insertSelective(List<Life> record) {
         int count = 0;
@@ -180,5 +182,29 @@ public class LifeServiceImpl implements LifeService {
             }
         }
         return count;
+    }
+
+    @Override
+    public List<InternalProject> abnormalProjects() {
+        List<InternalProject> internalProjects = new ArrayList<InternalProject>();
+        //滞后项目查询
+        List<Life> list = lifeMapper.sumLine();
+        String status="1";
+        Life life = new Life();
+        InternalProject project = new InternalProject();
+        for(int i=0;i<list.size();i++){
+            String projectId = list.get(i).getProjectId();
+            life.setProjectId(projectId);
+            life.setStatus(status);
+            List<Life> lifes = lifeMapper.selectByPrimaryKey(life);
+            if(!CollectionUtils.isEmpty(lifes)){
+                project.setId(projectId);
+                InternalProject internalProject =  internalProjectMapper.selectByPrimaryKey(project);
+                if(internalProject!=null){
+                    internalProjects.add(internalProject);
+                }
+            }
+        }
+        return internalProjects;
     }
 }
