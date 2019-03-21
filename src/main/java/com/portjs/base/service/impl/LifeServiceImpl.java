@@ -174,7 +174,7 @@ public class LifeServiceImpl implements LifeService {
                 Approval approval = new Approval();
                 approval.setProjectId(projectId);
                 List<Approval> approvals = approvalMapper.selectByPrimaryKey(approval);
-                if(!CollectionUtils.isEmpty(approvals)){
+                if(!CollectionUtils.isEmpty(approvals)&&approvals.get(0).getAmount()!=null){
                     count = count.add(approvals.get(0).getAmount());
                 }
             }

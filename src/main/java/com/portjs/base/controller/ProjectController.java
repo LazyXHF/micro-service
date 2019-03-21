@@ -68,17 +68,15 @@ public class ProjectController extends BaseController {
         internal.setCreateTime(date);
         //今年新增项目列表
         List<InternalProject> thisYearList = internalProjectService.selectListByBackup1(internal);
-        //在建项目总金额
+        //今年新增项目总金额
         BigDecimal bigDecimalThisYear = new BigDecimal(0);
         Approval approval = new Approval();
         for (int i=0;i<thisYearList.size();i++){
            String projectId = thisYearList.get(i).getId();
-            approval.setProjectId(projectId);
+           approval.setProjectId(projectId);
            List<Approval> dataList = approvalService.selectByPrimaryKey(approval);
-            if(!CollectionUtils.isEmpty(dataList)){
-                if(dataList.get(0).getAmount()!=null){
-                    bigDecimalThisYear = bigDecimalThisYear.add(dataList.get(0).getAmount());
-                }
+            if(!CollectionUtils.isEmpty(dataList)&&dataList.get(0).getAmount()!=null){
+                bigDecimalThisYear = bigDecimalThisYear.add(dataList.get(0).getAmount());
             }
         }
 
@@ -91,8 +89,11 @@ public class ProjectController extends BaseController {
         }else{
             datamap.put("totalAbnormal",0);//异常项目个数
         }
-
-        datamap.put("thisYearTotal",thisYearList.size());//今年的新增项目个数
+        if(!CollectionUtils.isEmpty(thisYearList)){
+            datamap.put("thisYearTotal",thisYearList.size());//今年的新增项目个数
+        }else{
+            datamap.put("thisYearTotal",0);//今年的新增项目个数
+        }
         datamap.put("thisYearList",thisYearList);//今年新增项目列表
         datamap.put("bigDecimalThisYear",bigDecimalThisYear);//今年新增项目总额
         return new ResponseMessage(Code.CODE_OK,"查询成功",datamap);
