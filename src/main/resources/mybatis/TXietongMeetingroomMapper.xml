@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongMeetingroomMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongMeetingroom" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="building" property="building" jdbcType="INTEGER" />
+    <result column="floor" property="floor" jdbcType="VARCHAR" />
+    <result column="room_num" property="roomNum" jdbcType="VARCHAR" />
+    <result column="room_description" property="roomDescription" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="room_name" property="roomName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="palce" property="palce" jdbcType="VARCHAR" />
+    <result column="apply" property="apply" jdbcType="VARCHAR" />
+    <result column="galleryful" property="galleryful" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, building, floor, room_num, room_description, isdelete, createtime, room_name, 
+    type, remark, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongMeetingroomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xietong_meetingroom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_meetingroom
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_meetingroom
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TXietongMeetingroomExample" >
+    delete from t_xietong_meetingroom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TXietongMeetingroom" >
+    insert into t_xietong_meetingroom (ID, building, floor, 
+      room_num, room_description, isdelete, 
+      createtime, room_name, type, 
+      remark, status)
+    values (#{id,jdbcType=VARCHAR}, #{building,jdbcType=INTEGER}, #{floor,jdbcType=VARCHAR}, 
+      #{roomNum,jdbcType=VARCHAR}, #{roomDescription,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, 
+      now(), #{roomName,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TXietongMeetingroom" >
+    insert into t_xietong_meetingroom
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="building != null" >
+        building,
+      </if>
+      <if test="floor != null" >
+        floor,
+      </if>
+      <if test="roomNum != null" >
+        room_num,
+      </if>
+      <if test="roomDescription != null" >
+        room_description,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+        createtime,
+      <if test="roomName != null" >
+        room_name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+       <if test="palce != null" >
+        palce,
+      </if>
+      <if test="apply != null" >
+        apply,
+      </if>
+      <if test="galleryful != null" >
+        galleryful,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="building != null" >
+        #{building,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null" >
+        #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNum != null" >
+        #{roomNum,jdbcType=VARCHAR},
+      </if>
+      <if test="roomDescription != null" >
+        #{roomDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      now(),
+      <if test="roomName != null" >
+        #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="palce != null" >
+        #{palce,jdbcType=VARCHAR},
+      </if>
+      <if test="apply != null" >
+        #{apply,jdbcType=VARCHAR},
+      </if>
+      <if test="galleryful != null" >
+        #{galleryful,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TXietongMeetingroomExample" resultType="java.lang.Integer" >
+    select count(*) from t_xietong_meetingroom
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xietong_meetingroom
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.building != null" >
+        building = #{record.building,jdbcType=INTEGER},
+      </if>
+      <if test="record.floor != null" >
+        floor = #{record.floor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomNum != null" >
+        room_num = #{record.roomNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomDescription != null" >
+        room_description = #{record.roomDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdelete != null" >
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.roomName != null" >
+        room_name = #{record.roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xietong_meetingroom
+    set ID = #{record.id,jdbcType=VARCHAR},
+      building = #{record.building,jdbcType=INTEGER},
+      floor = #{record.floor,jdbcType=VARCHAR},
+      room_num = #{record.roomNum,jdbcType=VARCHAR},
+      room_description = #{record.roomDescription,jdbcType=VARCHAR},
+      isdelete = #{record.isdelete,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      room_name = #{record.roomName,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TXietongMeetingroom" >
+    update t_xietong_meetingroom
+    <set >
+      <if test="building != null" >
+        building = #{building,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNum != null" >
+        room_num = #{roomNum,jdbcType=VARCHAR},
+      </if>
+      <if test="roomDescription != null" >
+        room_description = #{roomDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomName != null" >
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TXietongMeetingroom" >
+    update t_xietong_meetingroom
+    set building = #{building,jdbcType=INTEGER},
+      floor = #{floor,jdbcType=VARCHAR},
+      room_num = #{roomNum,jdbcType=VARCHAR},
+      room_description = #{roomDescription,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      room_name = #{roomName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--根据可见范围获取会议室-->
+  <select id="selectMeetingRoomByDepartmentId" resultMap="BaseResultMap">
+  select * from t_xietong_meetingroom where apply like '%${deptName}%' and apply like '%${deptId}%'  and isdelete!=0 
+  <if test="status!=null and status!='' ">
+  and status=#{status}
+  </if>
+  <if test="room_id!=null and room_id!=''">
+  and id=#{room_id}
+  </if>
+  </select>
+  <!--根据id获取会议室信息-->
+  <select id="selectMeetingRoomById" resultMap="BaseResultMap">
+   select * from t_xietong_meetingroom where id!=#{id}
+  </select>
+  <!--修改会议室信息-->
+  <update id="updateTXietongMeetingroom" parameterType="com.portjs.base.entity.TXietongMeetingroom">
+    update t_xietong_meetingroom
+    <set >
+      <if test="building != null" >
+        building = #{building,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null" >
+        floor = #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="roomNum != null" >
+        room_num = #{roomNum,jdbcType=VARCHAR},
+      </if>
+      <if test="roomDescription != null" >
+        room_description = #{roomDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomName != null" >
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+       <if test="palce != null" >
+        palce = #{palce,jdbcType=INTEGER},
+      </if>
+      <if test="apply != null" >
+        apply = #{apply,jdbcType=INTEGER},
+      </if>
+      <if test="galleryful != null" >
+        galleryful = #{galleryful,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--查询有无重复名-->
+  <select id="selectMeetingroomById" resultMap="BaseResultMap">
+  select * from t_xietong_meetingroom where id!=#{id}
+  </select>
+</mapper>
