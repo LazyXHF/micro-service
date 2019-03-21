@@ -29,7 +29,7 @@ public interface InternalProjectService {
      * @param
      * @return
      */
-    ResponseMessage insertProjectInfoGailan(InternalProject internalProject);
+    ResponseMessage insertProjectInfoOverview(InternalProject internalProject);
     /**
      * 更新项目信息
      * @param record
