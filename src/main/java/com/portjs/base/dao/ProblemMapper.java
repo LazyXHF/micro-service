@@ -34,6 +34,13 @@ public interface ProblemMapper {
      * @return
      */
     List<Problem> selectByPrimaryKey(Problem record);
+
+    /**
+     * 条件查询
+     * @param
+     * @return
+     */
+    List<Problem> queryBySomeThing(@Param("id")String id,@Param("projectId")String projectId,@Param("beginTime")String beginTime,@Param("endTime")String endTime,@Param("problemType")String problemType,@Param("problemPriority")String problemPriority,@Param("proposer")String proposer,@Param("solve")String solve);
     /**
      * 全更新
      * @param record

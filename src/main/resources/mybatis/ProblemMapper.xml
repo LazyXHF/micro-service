@@ -32,7 +32,7 @@
     back_up3, back_up4, back_up5, back_up6, back_up7, back_up8, back_up9, back_up10, 
     describes, solution, problem_type, proposed_time, problem_priority, proposer, solve
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from internal_problem
@@ -43,6 +43,43 @@
       </if>
       <if test="projectId != null">
         AND project_id = #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="creat_time != null">
+        AND creat_time >= #{beginTime,jdbcType=TIMESTAMP}
+        AND creat_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+
+    </where>
+  </select>
+  <select id="queryBySomeThing" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from internal_problem
+    <where>
+      enable = 0
+      <if test="id != null">
+        AND id = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="projectId != null">
+        AND project_id = #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="beginTime != null">
+        AND proposed_time >= #{beginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        AND proposed_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="problemType != null">
+        AND problem_type = #{problemType,jdbcType=TIMESTAMP}
+      </if>
+      <if test="problemPriority != null">
+        AND problem_priority = #{problemPriority,jdbcType=TIMESTAMP}
+      </if>
+      <if test="proposer != null">
+        AND proposer = #{proposer,jdbcType=TIMESTAMP}
+      </if>
+      <if test="solve != null">
+        AND solve = #{solve,jdbcType=TIMESTAMP}
       </if>
     </where>
   </select>

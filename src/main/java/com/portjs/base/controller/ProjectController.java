@@ -60,22 +60,30 @@ public class ProjectController extends BaseController {
         try {
           date = new SimpleDateFormat("yyyy").parse(year+"");
         }catch (Exception e){
+            e.printStackTrace();
         }
+
         InternalProject internal =new InternalProject();
         internal.setCreateTime(date);
         //今年新增项目列表
-        List<InternalProject> thisYearList = internalProjectService.selectListByBackup1(internal);
+        List<Map<String,Object>> thisYearList = internalProjectService.selectListByBackup1(internal);
         //今年新增项目总金额
         BigDecimal bigDecimalThisYear = new BigDecimal(0);
         Approval approval = new Approval();
         for (int i=0;i<thisYearList.size();i++){
-           String projectId = thisYearList.get(i).getId();
-           approval.setProjectId(projectId);
-           List<Approval> dataList = approvalService.selectByPrimaryKey(approval);
-           if(!CollectionUtils.isEmpty(dataList)&&dataList.get(0).getAmount()!=null){
-                bigDecimalThisYear = bigDecimalThisYear.add(dataList.get(0).getAmount());
-           }
+            Map<String,Object> map =thisYearList.get(i);
+            if(map.get("project")!=null){
+                InternalProject internalProject =(InternalProject)map.get("project");
+                String projectId = internalProject.getId();
+                approval.setProjectId(projectId);
+                List<Approval> dataList = approvalService.selectByPrimaryKey(approval);
+                if(!CollectionUtils.isEmpty(dataList)&&dataList.get(0).getAmount()!=null){
+                    bigDecimalThisYear = bigDecimalThisYear.add(dataList.get(0).getAmount());
+                }
+            }
         }
+        //在建项目列表
+        List<Map<String,Object>> onlineList = lifeService.onlineList();
 
         Map<String,Object> datamap = new HashMap<String,Object>();
         datamap.put("sumProject",sumLine);//在建的项目总个数
@@ -91,6 +99,7 @@ public class ProjectController extends BaseController {
         }else{
             datamap.put("thisYearTotal",0);//今年的新增项目个数
         }
+        datamap.put("onlineList",onlineList);//在建项目列表
         datamap.put("thisYearList",thisYearList);//今年新增项目列表
         datamap.put("bigDecimalThisYear",bigDecimalThisYear);//今年新增项目总额
         return new ResponseMessage(Code.CODE_OK,"查询成功",datamap);

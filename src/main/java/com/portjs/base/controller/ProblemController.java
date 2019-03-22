@@ -66,9 +66,7 @@ public class ProblemController extends BaseController {
     @ResponseBody
     public ResponseMessage selectDesign(@RequestBody String responseBody){
         logger.debug(TAG+responseBody);
-        JSONObject requestJson = JSONObject.parseObject(responseBody);
-        Problem annex = JSONObject.toJavaObject(requestJson, Problem.class);
-        return problemService.selectByPrimaryKey(annex);
+        return problemService.selectByPrimaryKey(responseBody);
     }
     @LogInfo(methodName = "删除问题",modelName = "问题模块")
     @RequestMapping("/delete-problem")

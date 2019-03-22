@@ -14,9 +14,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author gumingyang
@@ -206,5 +204,36 @@ public class LifeServiceImpl implements LifeService {
             }
         }
         return internalProjects;
+    }
+
+    @Override
+    public List<Map<String, Object>> onlineList() {
+        List<Map<String,Object>> dataList = new ArrayList<Map<String,Object>>();
+        List<Life> list = lifeMapper.sumLine();
+        for(int i=0;i<list.size();i++){
+            String projectId = list.get(i).getProjectId();
+            Life life = new Life();
+            life.setProjectId(projectId);
+            life.setNode("6");
+            life.setStatus("3");
+            List<Life> lifeList =lifeMapper.selectByPrimaryKey(life);
+            if(CollectionUtils.isEmpty(lifeList)){
+                Map<String,Object> map = new HashMap<String,Object>();
+               //在建项目
+                InternalProject internalProject = new InternalProject();
+                internalProject.setId(projectId);
+                List<InternalProject> internalProjects = internalProjectMapper.selectListByBackup1(internalProject);
+                if(!CollectionUtils.isEmpty(internalProjects)){
+                    life.setNode(null);
+                    life.setStatus(null);
+                    List<Life> lifes =lifeMapper.selectByPrimaryKey(life);
+                    map.put("project",internalProjects.get(0));
+                    map.put("status","已开发");
+                    map.put("lifes",lifes);
+                    dataList.add(map);
+                }
+            }
+        }
+        return dataList;
     }
 }

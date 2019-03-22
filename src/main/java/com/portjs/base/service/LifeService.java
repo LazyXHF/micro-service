@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 public interface LifeService {
 
@@ -45,4 +46,10 @@ public interface LifeService {
      * @return
      */
     List<InternalProject> abnormalProjects();
+
+    /**
+     * 在建项目
+     * @return
+     */
+    List<Map<String,Object>>  onlineList();
 }

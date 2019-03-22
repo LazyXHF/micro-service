@@ -34,10 +34,10 @@ public interface ProblemService {
     ResponseMessage insertSelective(JSONArray data);
     /**
      * 根据record条件查询
-     * @param record
+     * @param responseBody
      * @return
      */
-    ResponseMessage selectByPrimaryKey(Problem record);
+    ResponseMessage selectByPrimaryKey(String responseBody);
     /**
      * 全更新
      * @param record

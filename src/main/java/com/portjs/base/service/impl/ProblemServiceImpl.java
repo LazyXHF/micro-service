@@ -102,6 +102,30 @@ public class ProblemServiceImpl   implements ProblemService {
     }
 
     @Override
+    public ResponseMessage selectByPrimaryKey(String responseBody) {
+        JSONObject requestJson = JSONObject.parseObject(responseBody);
+        String id=requestJson.getString("id");
+        String projectId=requestJson.getString("projectId");
+        String beginTime=requestJson.getString("beginTime");
+        String problemType=requestJson.getString("problemType");
+        String problemPriority=requestJson.getString("problemPriority");
+        String proposer=requestJson.getString("proposer");
+        String solve=requestJson.getString("solve");
+        String endTime=requestJson.getString("endTime");
+        List<Problem> design = null;
+        try {
+            design  =  problemMapper.queryBySomeThing(id,projectId,beginTime,endTime,problemType,problemPriority,proposer,solve);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        message = design != null?"查询成功":"查询失败";
+        code = design != null?Code.CODE_OK:Code.CODE_ERROR;
+
+        return new ResponseMessage(code , message,design);
+    }
+/*
+    @Override
     public ResponseMessage selectByPrimaryKey(Problem record) {
         List<Problem> design = null;
         try {
@@ -114,7 +138,7 @@ public class ProblemServiceImpl   implements ProblemService {
         code = design != null?Code.CODE_OK:Code.CODE_ERROR;
 
         return new ResponseMessage(code , message,design);
-    }
+    }*/
 
     @Override
     public ResponseMessage updateByPrimaryKeySelective(Problem record) {

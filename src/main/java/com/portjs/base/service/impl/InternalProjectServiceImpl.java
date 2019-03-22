@@ -213,7 +213,35 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     }
 
     @Override
-    public List<InternalProject> selectListByBackup1(InternalProject record) {
-        return internalProjectMapper.selectListByBackup1(record);
+    public  List<Map<String,Object>> selectListByBackup1(InternalProject record) {
+        List<InternalProject> internalProjects = internalProjectMapper.selectListByBackup1(record);
+        List<Map<String,Object>> dataList = new ArrayList<Map<String,Object>>();
+        Life records = new Life();
+        if(!CollectionUtils.isEmpty(internalProjects)){
+            //加入生命周期
+            for(int i =0;i<internalProjects.size();i++){
+                Map<String,Object> map = new HashMap<String,Object>();
+                String projectId = internalProjects.get(i).getId();
+                records.setProjectId(projectId);
+                List<Life> lifes = lifeMapper.selectByPrimaryKey(records);
+                if(CollectionUtils.isEmpty(lifes)){
+                    map.put("status","已开发");
+                }else if(lifes.size()<6){
+                    map.put("status","已开发");
+                }else if(lifes.size()==6){
+                    map.put("status","已开发");
+                    for (int k=0;k<lifes.size();k++){
+                        if("6".equals(lifes.get(k).getNode())&& "3".equals(lifes.get(k).getStatus())){
+                            map.put("status","已完成");
+                            break;
+                        }
+                    }
+                }
+                map.put("proiect",internalProjects.get(i));
+                map.put("lifes",lifes);
+                dataList.add(map);
+            }
+        }
+        return dataList;
     }
 }

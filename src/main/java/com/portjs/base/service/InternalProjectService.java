@@ -58,5 +58,5 @@ public interface InternalProjectService {
      * @param record
      * @return
      */
-    List<InternalProject> selectListByBackup1(InternalProject record);
+    List<Map<String,Object>> selectListByBackup1(InternalProject record);
 }
