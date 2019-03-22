@@ -1,9 +1,6 @@
 package com.portjs.base.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
-import com.portjs.base.entity.Construction;
 import com.portjs.base.entity.TXietongDictionary;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.DictionaryService;
@@ -32,11 +29,6 @@ public class DictionaryController extends  BaseController{
     @RequestMapping("query-persion-model-info")
     @ResponseBody
     public ResponseMessage queryPersionModelInfo(){
-        /*logger.debug(tag+responseBody);
-        UnifiedExceptionHandler.method= responseBody + "insert-construction==============================" + responseBody;
-        JSONObject requestJson = JSON.parseObject(responseBody);
-        Construction annex = JSONObject.toJavaObject(requestJson, Construction.class);
-        return constructionService.insertSelective(annex);*/
         logger.debug(tag);
         UnifiedExceptionHandler.method = "queryPersionModelInfo==============================" ;
         ResponseMessage responseMessage = dictionaryService.queryPersionModelInfo();
@@ -96,11 +88,6 @@ public class DictionaryController extends  BaseController{
     @RequestMapping("query-resource-model-info")
     @ResponseBody
     public ResponseMessage queryResourceModelInfo(){
-        /*logger.debug(tag+responseBody);
-        UnifiedExceptionHandler.method= responseBody + "insert-construction==============================" + responseBody;
-        JSONObject requestJson = JSON.parseObject(responseBody);
-        Construction annex = JSONObject.toJavaObject(requestJson, Construction.class);
-        return constructionService.insertSelective(annex);*/
         logger.debug(tag);
         UnifiedExceptionHandler.method = "queryResourceModelInfo==============================" ;
         ResponseMessage responseMessage = dictionaryService.queryResourceModelInfo();
