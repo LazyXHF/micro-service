@@ -53,7 +53,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             e.printStackTrace();
         }
 
-        message = count > 0?"插入成功":"插入失败";
+        message = count > 0?"保存成功":"保存失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
 
         return new ResponseMessage(code , message);
@@ -84,7 +84,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             annex.setCreater(UserUtils.getCurrentUser().getId());
             count = approvalMapper.insertSelective(annex);
         }
-        message = count > 0?"插入成功":"插入失败";
+        message = count > 0?"保存成功":"保存失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
 
         return new ResponseMessage(code , message);

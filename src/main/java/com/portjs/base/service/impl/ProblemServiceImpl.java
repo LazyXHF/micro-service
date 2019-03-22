@@ -35,7 +35,7 @@ public class ProblemServiceImpl   implements ProblemService {
         record.setCreater(UserUtils.getCurrentUser().getId());
         count = problemMapper.insertSelective(record);
 
-        message = count > 0?"插入成功":"插入失败";
+        message = count > 0?"保存成功":"保存失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
 
         return new ResponseMessage(code , message);
@@ -64,7 +64,7 @@ public class ProblemServiceImpl   implements ProblemService {
             e.printStackTrace();
         }
 
-        message = count > 0?"插入成功":"插入失败";
+        message = count > 0?"保存成功":"保存失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
 
         return new ResponseMessage(code , message);
@@ -96,7 +96,7 @@ public class ProblemServiceImpl   implements ProblemService {
             annex.setCreater(UserUtils.getCurrentUser().getId());
             count = problemMapper.insertSelective(annex);
         }
-        message = count > 0?"插入成功":"插入失败";
+        message = count > 0?"保存成功":"保存失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);
     }
