@@ -20,6 +20,13 @@ public interface InternalProjectMapper{
      */
     int insertSelective(InternalProject record);
 
+    /**
+     * 查询项目编号
+     * @return
+     */
+    List<InternalProject> queryProjectNums();
+
+
     InternalProject selectByPrimaryKey(InternalProject internalProject);
 
     /**

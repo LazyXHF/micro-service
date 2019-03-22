@@ -1,6 +1,7 @@
 package com.portjs.base.service;
 
 import com.portjs.base.entity.TXietongDictionary;
+import com.portjs.base.util.Response;
 import com.portjs.base.util.ResponseMessage;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -91,6 +92,70 @@ public interface DictionaryService {
 	ResponseMessage selectDispatchTypeByTypeId(String requestBody);
     //统一配置
 	ResponseMessage updateDictionaryByCodeAndId(String requestBody);
-    
-	
+
+/**
+ * TODO   分割线===========================================================================================================================================================
+ */
+
+    /**
+     * 查询人员配置信息
+     * @return
+     */
+	ResponseMessage queryPersionModelInfo();
+
+    /**
+     * 添加人员配置信息
+     * @param dictionary
+     * @return
+     */
+	ResponseMessage insertPersionModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 修改人员配置信息
+     * @param dictionary
+     * @return
+     */
+	ResponseMessage updatePersionModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 删除人员配置信息
+     * @param dictionary
+     * @return
+     */
+	ResponseMessage deletePersionModelInfo(TXietongDictionary dictionary);
+
+
+/**
+ * TODO   分割线===========================================================================================================================================================
+ */
+
+    /**
+     * 查询资源配置信息
+     * @return
+     */
+    ResponseMessage queryResourceModelInfo();
+
+    /**
+     * 添加资源配置信息
+     * @param dictionary
+     * @return
+     */
+    ResponseMessage insertResourceModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 修改资源配置信息
+     * @param dictionary
+     * @return
+     */
+    ResponseMessage updateResourceModelInfo(TXietongDictionary dictionary);
+
+    /**
+     * 删除资源配置信息
+     * @param dictionary
+     * @return
+     */
+    ResponseMessage deleteResourceModelInfo(TXietongDictionary dictionary);
+
+
+
 }

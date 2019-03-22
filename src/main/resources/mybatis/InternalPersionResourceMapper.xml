@@ -29,17 +29,17 @@
     select 
     *
     from internal_persons_resource
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR} and enable='0'
   </select>
 
   <select id="queryAllPersionInfo" resultMap="BaseResultMap">
     select
     *
-    from internal_persons_resource where project_id = #{id} order by id asc limit #{pageNo},#{pageSize}
+    from internal_persons_resource where project_id = #{id} and enable='0' order by id asc limit #{pageNo},#{pageSize}
   </select>
   <select id="persionCounts"  resultType="Integer">
     SELECT count(id)
-    from internal_persons_resource where project_id = #{id}
+    from internal_persons_resource where project_id = #{id} and enable='0'
   </select>
 
 

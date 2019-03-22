@@ -26,7 +26,7 @@ public class TXietongDictionary {
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public String getTypeCode() {
@@ -34,7 +34,7 @@ public class TXietongDictionary {
     }
 
     public void setTypeCode(String typeCode) {
-        this.typeCode = typeCode == null ? null : typeCode.trim();
+        this.typeCode = typeCode;
     }
 
     public String getTypeDesc() {
@@ -42,7 +42,7 @@ public class TXietongDictionary {
     }
 
     public void setTypeDesc(String typeDesc) {
-        this.typeDesc = typeDesc == null ? null : typeDesc.trim();
+        this.typeDesc = typeDesc;
     }
 
     public String getMainValue() {
@@ -50,7 +50,7 @@ public class TXietongDictionary {
     }
 
     public void setMainValue(String mainValue) {
-        this.mainValue = mainValue == null ? null : mainValue.trim();
+        this.mainValue = mainValue;
     }
 
     public String getMidValue() {
@@ -58,7 +58,7 @@ public class TXietongDictionary {
     }
 
     public void setMidValue(String midValue) {
-        this.midValue = midValue == null ? null : midValue.trim();
+        this.midValue = midValue;
     }
 
     public String getSubValue() {
@@ -66,7 +66,7 @@ public class TXietongDictionary {
     }
 
     public void setSubValue(String subValue) {
-        this.subValue = subValue == null ? null : subValue.trim();
+        this.subValue = subValue;
     }
 
     public String getValueSort() {
@@ -74,7 +74,7 @@ public class TXietongDictionary {
     }
 
     public void setValueSort(String valueSort) {
-        this.valueSort = valueSort == null ? null : valueSort.trim();
+        this.valueSort = valueSort;
     }
 
     public String getValueDesc() {
@@ -82,7 +82,7 @@ public class TXietongDictionary {
     }
 
     public void setValueDesc(String valueDesc) {
-        this.valueDesc = valueDesc == null ? null : valueDesc.trim();
+        this.valueDesc = valueDesc;
     }
 
     public String getRemark() {
@@ -90,7 +90,7 @@ public class TXietongDictionary {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public String getTypeId() {
@@ -98,8 +98,9 @@ public class TXietongDictionary {
     }
 
     public void setTypeId(String typeId) {
-        this.typeId = typeId == null ? null : typeId.trim();
+        this.typeId = typeId;
     }
+
 
     @Override
     public String toString() {

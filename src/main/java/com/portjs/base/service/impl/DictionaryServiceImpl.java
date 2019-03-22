@@ -828,6 +828,134 @@ public class DictionaryServiceImpl extends LogUtil implements DictionaryService 
         }
 	}
 }
-	
+
+    /**
+     *  TODO 人员配置模块
+     * @return
+     */
+    @Override
+    public ResponseMessage queryPersionModelInfo() {
+        List<TXietongDictionary> tXietongDictionaries = dictionaryMapper.queryPersionModelInfo();
+        if(tXietongDictionaries==null){
+            new ResponseMessage(Code.CODE_ERROR,"查询失败！",tXietongDictionaries);
+        }
+        return new ResponseMessage(Code.CODE_OK,"查询成功！",tXietongDictionaries);
+    }
+
+    @Override
+    public ResponseMessage insertPersionModelInfo(TXietongDictionary dictionary) {
+        dictionary.setId(UUID.randomUUID().toString());
+        List<TXietongDictionary> dictionaries = dictionaryMapper.queryPersionModelInfo();
+        for (TXietongDictionary dictionary1 : dictionaries) {
+            if (dictionary.getMainValue().equals(dictionary1.getMainValue())) {
+                return new ResponseMessage(Code.CODE_ERROR, "配置已存在","配置已存在");
+            }
+        }
+        int i = dictionaryMapper.insertPersionModelInfo(dictionary);
+        if (i > 0) {
+            return new ResponseMessage(Code.CODE_OK, "添加成功",i);
+        }
+        return new ResponseMessage(Code.CODE_ERROR, "添加失败",i);
+    }
+
+    @Override
+    public ResponseMessage updatePersionModelInfo(TXietongDictionary dictionary) {
+        /*List<TXietongDictionary> tXietongDictionaries = dictionaryMapper.queryPersionModelInfo();
+        for (TXietongDictionary list: tXietongDictionaries) {
+            if(dictionary.getMidValue().equals(list.getMidValue())){
+                return  new ResponseMessage(Code.CODE_ERROR,"配置已存在",dictionary.getMidValue());
+            }else if(dictionary.getMainValue().equals(list.getMainValue())){
+                return  new ResponseMessage(Code.CODE_ERROR,"配置已存在",dictionary.getMainValue());
+            }
+        }*/
+        if(com.portjs.base.util.StringUtils.StringUtils.isEmpty(dictionary.getId())){
+            return new ResponseMessage(Code.CODE_ERROR , "更新人员分类模块,id未传");
+        }
+        int i = dictionaryMapper.updatePersionModelInfo(dictionary);
+        if (i < 0) {
+            responseMessage = new ResponseMessage(Code.CODE_ERROR, "修改失败",i);
+            return responseMessage;
+        }
+        responseMessage = new ResponseMessage(Code.CODE_OK, "修改成功",i);
+        return responseMessage;
+
+    }
+
+    @Override
+    public ResponseMessage deletePersionModelInfo(TXietongDictionary dictionary) {
+        if(com.portjs.base.util.StringUtils.StringUtils.isEmpty(dictionary.getId())){
+            return new ResponseMessage(Code.CODE_ERROR, "id未传！", "删除失败");
+        }
+        int i = dictionaryMapper.deletePersionModelInfo(dictionary);
+        if (i != 1) {
+            return new ResponseMessage(Code.CODE_ERROR, "删除失败！", i);
+        }
+        return new ResponseMessage(Code.CODE_OK, "删除成功！", i);
+    }
+
+    /**
+     *  TODO 资源配置模块
+     * @return
+     */
+    @Override
+    public ResponseMessage queryResourceModelInfo() {
+        List<TXietongDictionary> tXietongDictionaries = dictionaryMapper.queryResourceModelInfo();
+        if(tXietongDictionaries==null){
+            new ResponseMessage(Code.CODE_ERROR,"查询失败！",tXietongDictionaries);
+        }
+        return new ResponseMessage(Code.CODE_OK,"查询成功！",tXietongDictionaries);
+    }
+
+    @Override
+    public ResponseMessage insertResourceModelInfo(TXietongDictionary dictionary) {
+        dictionary.setId(UUID.randomUUID().toString());
+        List<TXietongDictionary> dictionaries = dictionaryMapper.queryResourceModelInfo();
+        for (TXietongDictionary dictionary1 : dictionaries) {
+            if (dictionary.getMainValue().equals(dictionary1.getMainValue())) {
+                return new ResponseMessage(Code.CODE_ERROR, "配置已存在","配置已存在");
+            }
+        }
+        int i = dictionaryMapper.insertResourceModelInfo(dictionary);
+        if (i > 0) {
+            return new ResponseMessage(Code.CODE_OK, "添加成功",i);
+        }
+        return new ResponseMessage(Code.CODE_ERROR, "添加失败",i);
+    }
+
+    @Override
+    public ResponseMessage updateResourceModelInfo(TXietongDictionary dictionary) {
+        /*List<TXietongDictionary> tXietongDictionaries1 = dictionaryMapper.queryResourceModelInfo();
+        for (TXietongDictionary lists: tXietongDictionaries1) {
+            if(dictionary.getMidValue().equals(lists.getMidValue())){
+                return  new ResponseMessage(Code.CODE_ERROR,"配置已存在",dictionary.getMidValue());
+            }else if(dictionary.getMainValue().equals(lists.getMainValue())){
+                return  new ResponseMessage(Code.CODE_ERROR,"配置已存在",dictionary.getMainValue());
+            }
+        }*/
+        if(com.portjs.base.util.StringUtils.StringUtils.isEmpty(dictionary.getId())){
+            return new ResponseMessage(Code.CODE_ERROR , "更新资源分类模块,id未传");
+        }
+        int i = dictionaryMapper.updateResourceModelInfo(dictionary);
+        if (i < 0) {
+            responseMessage = new ResponseMessage(Code.CODE_ERROR, "修改失败",i);
+            return responseMessage;
+        }
+        responseMessage = new ResponseMessage(Code.CODE_OK, "修改成功",i);
+        return responseMessage;
+
+    }
+
+    @Override
+    public ResponseMessage deleteResourceModelInfo(TXietongDictionary dictionary) {
+        if(com.portjs.base.util.StringUtils.StringUtils.isEmpty(dictionary.getId())){
+            return new ResponseMessage(Code.CODE_ERROR, "id未传！", "删除失败");
+        }
+        int i = dictionaryMapper.deleteResourceModelInfo(dictionary);
+        if (i != 1) {
+            return new ResponseMessage(Code.CODE_ERROR, "删除失败！", i);
+        }
+        return new ResponseMessage(Code.CODE_OK, "删除成功！", i);
+    }
+
 
 }
