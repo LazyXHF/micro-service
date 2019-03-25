@@ -59,4 +59,10 @@ public interface InternalProjectService {
      * @return
      */
     List<Map<String,Object>> selectListByBackup1(InternalProject record);
+
+    /**
+     * 查询所有项目
+     * @return
+     */
+    ResponseMessage  queryAllProjects();
 }

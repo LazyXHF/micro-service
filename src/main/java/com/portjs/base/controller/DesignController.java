@@ -32,8 +32,7 @@ public class DesignController extends BaseController {
         logger.debug(TAG+responseBody);
         UnifiedExceptionHandler.method= responseBody + "insert-design==============================" + responseBody;
         JSONObject requestJson = JSON.parseObject(responseBody);
-        Design annex = JSONObject.toJavaObject(requestJson, Design.class);
-        return designService.insertSelective(annex);
+        return designService.insertSelective(requestJson);
     }
 
     @LogInfo(methodName = "根据主键更新项目设计",modelName = "项目设计模块")

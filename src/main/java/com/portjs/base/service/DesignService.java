@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.entity.Design;
 import com.portjs.base.util.ResponseMessage;
 
@@ -21,10 +22,10 @@ public interface DesignService {
     ResponseMessage insert(Design record);
     /**
      * 条件插入
-     * @param record
+     * @param requestJson
      * @return
      */
-    ResponseMessage insertSelective(Design record);
+    ResponseMessage insertSelective(JSONObject requestJson);
     /**
      * 根据record条件查询
      * @param record

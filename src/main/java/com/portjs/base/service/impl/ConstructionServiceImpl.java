@@ -1,7 +1,13 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.portjs.base.dao.AnnexMapper;
 import com.portjs.base.dao.ConstructionMapper;
+import com.portjs.base.dao.CoordMapper;
+import com.portjs.base.entity.Annex;
 import com.portjs.base.entity.Construction;
+import com.portjs.base.entity.Coord;
 import com.portjs.base.service.ConstructionService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
@@ -19,12 +25,16 @@ import java.util.UUID;
  * @author gumingyang
  **/
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class ConstructionServiceImpl implements ConstructionService {
     private String message = "";
     private Integer code;
     @Autowired
     private ConstructionMapper constructionMapper;
+    @Autowired
+    private CoordMapper coordMapper;
+    @Autowired
+    private AnnexMapper annexMapper;
 
     @Override
     public ResponseMessage deleteByPrimaryKey(List<String> id) {
@@ -57,32 +67,101 @@ public class ConstructionServiceImpl implements ConstructionService {
     }
 
     @Override
-    public ResponseMessage insertSelective(Construction construction) {
+    public ResponseMessage insertSelective(JSONObject requestJson) {
+        int count =0;
+        try {
+            JSONObject constructionJson = requestJson.getJSONObject("Construction");
+            Construction construction = JSONObject.toJavaObject(constructionJson, Construction.class);
+            if (StringUtils.isEmpty(construction.getProjectId())) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加项目开发模块,projectId未传");
+            }
+            Construction approval = new Construction();
+            approval.setProjectId(construction.getProjectId());
+            List<Construction> approvals = constructionMapper.selectByPrimaryKey(approval);
+            if (!CollectionUtils.isEmpty(approvals)) {
+                approval.setEnable("1");
+                constructionMapper.updateByPrimaryKeySelective(approval);
+            }
+            if (StringUtils.isEmpty(construction.getDevUnit())) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加项目开发模块,devUnit未传");
+            }
+            if (StringUtils.isEmpty(construction.getPlanStartTime().toString())) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加项目开发模块,planStartTime未传");
+            }
+            if (StringUtils.isEmpty(construction.getPlanEndTime().toString())) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加项目开发模块,planEndTime未传");
+            }
+            construction.setId(UUID.randomUUID().toString());
+            construction.setCreater(UserUtils.getCurrentUser().getId());
 
-        if(StringUtils.isEmpty(construction.getProjectId())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,projectId未传");
-        }
-        Construction approval = new Construction();
-        approval.setProjectId(construction.getProjectId());
-        List<Construction> approvals = constructionMapper.selectByPrimaryKey(approval);
-        if(!CollectionUtils.isEmpty(approvals)){
-            approval.setEnable("1");
-            constructionMapper.updateByPrimaryKeySelective(approval);
-        }
-        if(StringUtils.isEmpty(construction.getDevUnit())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,devUnit未传");
-        }
-        if(StringUtils.isEmpty(construction.getPlanStartTime().toString())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,planStartTime未传");
-        }
-        if(StringUtils.isEmpty(construction.getPlanEndTime().toString())){
-            return new ResponseMessage(Code.CODE_ERROR , "添加项目开发模块,planEndTime未传");
-        }
-        construction.setId(UUID.randomUUID().toString());
-        construction.setCreater(UserUtils.getCurrentUser().getId());
+            count  = constructionMapper.insertSelective(construction);
+            if (count == 0) {
+                throw new Exception();
+            }
 
-        int   count =  constructionMapper.insertSelective(construction);
-
+            //保存附件
+            JSONArray data = requestJson.getJSONArray("Annexs");
+            for (int i = 0; i < data.size(); i++) {
+                JSONObject object = data.getJSONObject(i);
+                Annex annex = JSONObject.toJavaObject(object, Annex.class);
+                if (StringUtils.isEmpty(annex.getBackUp1())) {
+                    return new ResponseMessage(Code.CODE_ERROR, "上传附件,backUp1未传");
+                }
+                if (StringUtils.isEmpty(annex.getNode())) {
+                    return new ResponseMessage(Code.CODE_ERROR, "上传附件,node未传");
+                }
+                if (StringUtils.isEmpty(annex.getFileModule())) {
+                    return new ResponseMessage(Code.CODE_ERROR, "上传附件,fileModule未传");
+                }
+                //1.软删除库中数据2.插入
+                Annex coord = new Annex();
+                coord.setBackUp1(annex.getBackUp1());
+                coord.setNode(annex.getNode());
+                coord.setFileModule(annex.getFileModule());
+                List<Annex> list = annexMapper.selectByPrimaryKey(coord);
+                if (!CollectionUtils.isEmpty(list)) {
+                    coord.setEnable("1");
+                    annexMapper.updateByPrimaryKeySelective(coord);
+                }
+            }
+            for (int i = 0; i < data.size(); i++) {
+                JSONObject object = data.getJSONObject(i);
+                Annex annex = JSONObject.toJavaObject(object, Annex.class);
+                //组建bean
+                annex.setId(UUID.randomUUID().toString());
+                annex.setUploader(UserUtils.getCurrentUser().getId());
+                count = annexMapper.insertSelective(annex);
+                if(count==0){
+                    throw new Exception();
+                }
+            }
+            //保存协调事项
+            JSONObject coord = requestJson.getJSONObject("Coord");
+            Coord annex = JSONObject.toJavaObject(coord, Coord.class);
+            if (StringUtils.isEmpty(annex.getProjectId())) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加协调事项,projectId未传");
+            }
+            if (StringUtils.isEmpty(annex.getNodeType())) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加协调事项,nodeType未传");
+            }
+            //1.软删除库中数据2.插入
+            Coord coo = new Coord();
+            coo.setProjectId(annex.getProjectId());
+            coo.setNodeType(annex.getNodeType());
+            List<Coord> list = coordMapper.selectByPrimaryKey(coo);
+            if (!CollectionUtils.isEmpty(list)) {
+                coo.setEnable("1");
+                coordMapper.updateByPrimaryKeySelective(coo);
+            }
+            annex.setId(UUID.randomUUID().toString());
+            annex.setUploader(UserUtils.getCurrentUser().getId());
+            count = coordMapper.insertSelective(annex);
+            if (count == 0) {
+                throw new Exception();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         message = count > 0?"保存成功":"保存失败";
         code = count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);

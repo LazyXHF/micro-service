@@ -1,6 +1,7 @@
 package com.portjs.base.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.entity.Approval;
 import com.portjs.base.util.ResponseMessage;
 
@@ -25,7 +26,7 @@ public interface ApprovalService {
      * @param construction
      * @return
      */
-    ResponseMessage insertSelective(JSONArray construction);
+    ResponseMessage insertSelective(JSONObject construction);
     /**
      * 根据record条件查询
      * @param record

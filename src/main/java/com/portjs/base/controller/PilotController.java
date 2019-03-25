@@ -35,8 +35,7 @@ public class PilotController extends BaseController {
         logger.debug(TAG + responseBody);
         UnifiedExceptionHandler.method= responseBody + "insert-pilot==============================" + responseBody;
         JSONObject requestJson = JSON.parseObject(responseBody);
-        Pilot annex = JSONObject.toJavaObject(requestJson, Pilot.class);
-        return pilotService.insertSelective(annex);
+        return pilotService.insertSelective(requestJson);
     }
 
     @LogInfo(methodName = "根据主键更新项目建设试点实施",modelName = "项目建设试点实施模块")

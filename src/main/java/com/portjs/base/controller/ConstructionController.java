@@ -37,8 +37,7 @@ public class ConstructionController extends BaseController {
         logger.debug(TAG+responseBody);
         UnifiedExceptionHandler.method= responseBody + "insert-construction==============================" + responseBody;
         JSONObject requestJson = JSON.parseObject(responseBody);
-        Construction annex = JSONObject.toJavaObject(requestJson, Construction.class);
-        return constructionService.insertSelective(annex);
+        return constructionService.insertSelective(requestJson);
     }
 
     @LogInfo(methodName = "根据主键更新项目开发",modelName = "项目开发模块")

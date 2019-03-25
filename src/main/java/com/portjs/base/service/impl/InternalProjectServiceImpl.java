@@ -244,4 +244,17 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         }
         return dataList;
     }
+
+    @Override
+    public ResponseMessage queryAllProjects() {
+        List<InternalProject> design = null;
+        try {
+            design  =   internalProjectMapper.selectListByBackup1(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        message = design != null?"查询成功":"查询失败";
+        code = design != null?Code.CODE_OK:Code.CODE_ERROR;
+        return new ResponseMessage(code , message,design);
+    }
 }

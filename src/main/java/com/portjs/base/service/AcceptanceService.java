@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.entity.Acceptance;
 import com.portjs.base.util.ResponseMessage;
 
@@ -23,10 +24,10 @@ public interface AcceptanceService {
     ResponseMessage insert(Acceptance record);
     /**
      * 条件插入
-     * @param record
+     * @param requestJson
      * @return
      */
-    ResponseMessage insertSelective(Acceptance record);
+    ResponseMessage insertSelective(JSONObject requestJson);
     /**
      * 根据annex，条件查询
      * @param record
