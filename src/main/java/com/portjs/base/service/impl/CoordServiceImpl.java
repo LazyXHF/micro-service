@@ -84,7 +84,7 @@ public class CoordServiceImpl implements CoordService {
         annex.setId(UUID.randomUUID().toString());
         annex.setUploader(UserUtils.getCurrentUser().getId());
         count =  coordMapper.insertSelective(annex);
-        message = count > 0?"插入成功":"插入失败";
+        message = count > 0?"保存成功":"保存失败";
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
         return new ResponseMessage(code , message);
     }
