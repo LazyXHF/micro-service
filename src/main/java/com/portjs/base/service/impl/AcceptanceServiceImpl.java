@@ -26,7 +26,7 @@ import java.util.UUID;
  * @author gumingyang
  **/
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class AcceptanceServiceImpl implements AcceptanceService {
     private String message = "";
     private Integer code;
