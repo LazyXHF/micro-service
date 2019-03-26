@@ -22,6 +22,7 @@ import java.util.*;
 @Service
 @Transactional
 public class LifeServiceImpl implements LifeService {
+    ResponseMessage responseMessage=null;
     private String message = "";
     private Integer code;
     @Autowired
@@ -159,6 +160,34 @@ public class LifeServiceImpl implements LifeService {
         }
         return count;
     }
+
+    /**
+     * 查询所有在建项目id
+     * @return
+     */
+    @Override
+    public List<Life> sumLines() {
+        //List<Life> map = new ArrayList<>();
+        List<Life> lifeList = null;
+        List<Life> list = lifeMapper.sumLines();
+        for(int i=0;i<list.size();i++){
+            String projectId = list.get(i).getProjectId();
+            Life life = new Life();
+            life.setProjectId(projectId);
+            life.setNode("6");
+            life.setStatus("3");
+
+            lifeList =lifeMapper.selectByPrimaryKey(life);
+
+            if(CollectionUtils.isEmpty(lifeList)){
+
+                list.get(i).getProjectId();
+                continue;
+            }
+        }
+        return list;
+    }
+
 
     @Override
     public BigDecimal sumMoney() {
