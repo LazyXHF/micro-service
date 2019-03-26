@@ -104,6 +104,7 @@ public class LifeServiceImpl implements LifeService {
                         return new ResponseMessage(Code.CODE_ERROR , "请填写项目验收后进行审核");
                     }
                     break;
+                default:
             }
             //查询库中是否存在,存在更新,不存在插入
             Life life = new Life();

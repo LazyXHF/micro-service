@@ -100,41 +100,19 @@ public class ConstructionServiceImpl implements ConstructionService {
             }
 
             //保存附件
-            JSONArray data = requestJson.getJSONArray("Annexs");
-            for (int i = 0; i < data.size(); i++) {
-                JSONObject object = data.getJSONObject(i);
-                Annex annex = JSONObject.toJavaObject(object, Annex.class);
-                if (StringUtils.isEmpty(annex.getBackUp1())) {
-                    return new ResponseMessage(Code.CODE_ERROR, "上传附件,backUp1未传");
-                }
-                if (StringUtils.isEmpty(annex.getNode())) {
-                    return new ResponseMessage(Code.CODE_ERROR, "上传附件,node未传");
-                }
-                if (StringUtils.isEmpty(annex.getFileModule())) {
-                    return new ResponseMessage(Code.CODE_ERROR, "上传附件,fileModule未传");
-                }
-                //1.软删除库中数据2.插入
-                Annex coord = new Annex();
-                coord.setBackUp1(annex.getBackUp1());
-                coord.setNode(annex.getNode());
-                coord.setFileModule(annex.getFileModule());
-                List<Annex> list = annexMapper.selectByPrimaryKey(coord);
-                if (!CollectionUtils.isEmpty(list)) {
-                    coord.setEnable("1");
-                    annexMapper.updateByPrimaryKeySelective(coord);
-                }
-            }
-            for (int i = 0; i < data.size(); i++) {
-                JSONObject object = data.getJSONObject(i);
-                Annex annex = JSONObject.toJavaObject(object, Annex.class);
-                //组建bean
-                annex.setId(UUID.randomUUID().toString());
-                annex.setUploader(UserUtils.getCurrentUser().getId());
-                count = annexMapper.insertSelective(annex);
-                if(count==0){
-                    throw new Exception();
-                }
-            }
+            JSONObject datas = requestJson.getJSONObject("Annexs");
+            JSONArray data1 = datas.getJSONArray("table1");//附件一
+            JSONArray data2 = datas.getJSONArray("table2");//附件二
+            JSONArray data3 = datas.getJSONArray("table3");//附件三
+            JSONArray data4 = datas.getJSONArray("table4");//附件四
+            JSONArray data5 = datas.getJSONArray("table5");//附件五
+            JSONArray data6 = datas.getJSONArray("table6");//附件六
+            insertAnnex(data1);
+            insertAnnex(data2);
+            insertAnnex(data3);
+            insertAnnex(data4);
+            insertAnnex(data5);
+            insertAnnex(data6);
             //保存协调事项
             JSONObject coord = requestJson.getJSONObject("Coord");
             Coord annex = JSONObject.toJavaObject(coord, Coord.class);
@@ -226,5 +204,47 @@ public class ConstructionServiceImpl implements ConstructionService {
         code=count>0?Code.CODE_OK:Code.CODE_ERROR;
 
         return new ResponseMessage(code , message);
+    }
+    /**
+     * 保存附件
+     * @param data
+     * @throws Exception
+     */
+    public void insertAnnex(JSONArray data) throws Exception{
+        int count =0;
+        for (int i = 0; i < data.size(); i++) {
+            JSONObject object = data.getJSONObject(i);
+            Annex annex = JSONObject.toJavaObject(object, Annex.class);
+            if (StringUtils.isEmpty(annex.getBackUp1())) {
+                throw new Exception();
+            }
+            if (StringUtils.isEmpty(annex.getNode())) {
+                throw new Exception();
+            }
+            if (StringUtils.isEmpty(annex.getFileModule())) {
+                throw new Exception();
+            }
+            //1.软删除库中数据2.插入
+            Annex coord = new Annex();
+            coord.setBackUp1(annex.getBackUp1());
+            coord.setNode(annex.getNode());
+            coord.setFileModule(annex.getFileModule());
+            List<Annex> list = annexMapper.selectByPrimaryKey(coord);
+            if (!CollectionUtils.isEmpty(list)) {
+                coord.setEnable("1");
+                annexMapper.updateByPrimaryKeySelective(coord);
+            }
+        }
+        for (int i = 0; i < data.size(); i++) {
+            JSONObject object = data.getJSONObject(i);
+            Annex annex = JSONObject.toJavaObject(object, Annex.class);
+            //组建bean
+            annex.setId(UUID.randomUUID().toString());
+            annex.setUploader(UserUtils.getCurrentUser().getId());
+            count = annexMapper.insertSelective(annex);
+            if(count==0){
+                throw new Exception();
+            }
+        }
     }
 }
