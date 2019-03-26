@@ -41,8 +41,7 @@ public class AcceptanceController extends BaseController {
         logger.debug(TAG+responseBody);
         UnifiedExceptionHandler.method= responseBody + "insert-acceptance==============================" + responseBody;
         JSONObject requestJson = JSONObject.parseObject(responseBody);
-        Acceptance annex = JSONObject.toJavaObject(requestJson, Acceptance.class);
-        return acceptanceService.insertSelective(annex);
+        return acceptanceService.insertSelective(requestJson);
     }
 
     @LogInfo(methodName = "根据主键更新项目验收",modelName = "项目验收模块")

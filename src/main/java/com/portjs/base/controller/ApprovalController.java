@@ -35,7 +35,7 @@ public class ApprovalController extends BaseController {
     public ResponseMessage insertDesign(@RequestBody String responseBody){
         logger.debug(TAG + responseBody);
         UnifiedExceptionHandler.method= responseBody + "insert-approval==============================" + responseBody;
-        JSONArray requestJson = JSON.parseArray(responseBody);
+        JSONObject requestJson = JSONObject.parseObject(responseBody);
         return approvalService.insertSelective( requestJson);
     }
 

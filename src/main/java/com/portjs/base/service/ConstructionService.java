@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.entity.Construction;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.stereotype.Repository;
@@ -22,10 +23,10 @@ public interface ConstructionService {
     ResponseMessage insert(Construction record);
     /**
      * 条件插入
-     * @param annex
+     * @param requestJson
      * @return
      */
-    ResponseMessage insertSelective( Construction annex);
+    ResponseMessage insertSelective(JSONObject requestJson);
     /**
      * 根据record条件查询
      * @param record

@@ -8,6 +8,7 @@ import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 /**
  * 统一模块化配置
  */
@@ -20,7 +21,10 @@ public class DictionaryController extends  BaseController{
 
     @Autowired
     DictionaryService dictionaryService;
-
+ /*   @Resource
+    InternalProjectService  internalProjectService;
+    @Resource
+    ManagerService managerService;*/
     /**
      * 查询人员配置信息
      * @return
@@ -138,4 +142,71 @@ public class DictionaryController extends  BaseController{
         ResponseMessage responseMessage = dictionaryService.deleteResourceModelInfo(dictionary);
         return responseMessage;
     }
+   /* @LogInfo(methodName = "查询所有项目",modelName = "统一模块配置")
+    @RequestMapping("query-all-projects")
+    @ResponseBody
+    public ResponseMessage queryAllProjects(){
+        UnifiedExceptionHandler.method ="queryAllProjects==============================";
+        return internalProjectService.queryAllProjects();
+    }
+    @LogInfo(methodName = "新增项目的人员配置",modelName = "统一模块配置")
+    @RequestMapping("add-staffing-project")
+    @ResponseBody
+    public ResponseMessage add(@RequestBody String responseBody){
+        UnifiedExceptionHandler.method ="add-staffing-project==============================";
+        return managerService.insertStaffing(responseBody);
+    }
+    @LogInfo(methodName = "修改项目的人员配置",modelName = "统一模块配置")
+    @RequestMapping("update-staffing-project")
+    @ResponseBody
+    public ResponseMessage update(){
+        UnifiedExceptionHandler.method ="update-staffing-project==============================";
+        // ResponseMessage responseMessage = internalProjectService.queryAllProjects();
+        return null;
+    }
+    @LogInfo(methodName = "删除项目的人员配置",modelName = "统一模块配置")
+    @RequestMapping("delete-staffing-project")
+    @ResponseBody
+    public ResponseMessage delete(){
+        UnifiedExceptionHandler.method ="delete-staffing-project==============================";
+        // ResponseMessage responseMessage = internalProjectService.queryAllProjects();
+        return null;
+    }*//* @LogInfo(methodName = "查询所有项目",modelName = "统一模块配置")
+    @RequestMapping("query-all-projects")
+    @ResponseBody
+    public ResponseMessage queryAllProjects(){
+        UnifiedExceptionHandler.method ="queryAllProjects==============================";
+        return internalProjectService.queryAllProjects();
+    }
+    @LogInfo(methodName = "新增项目的人员配置",modelName = "统一模块配置")
+    @RequestMapping("add-staffing-project")
+    @ResponseBody
+    public ResponseMessage add(@RequestBody String responseBody){
+        UnifiedExceptionHandler.method ="add-staffing-project==============================";
+        return managerService.insertStaffing(responseBody);
+    }
+    @LogInfo(methodName = "修改项目的人员配置",modelName = "统一模块配置")
+    @RequestMapping("update-staffing-project")
+    @ResponseBody
+    public ResponseMessage update(){
+        UnifiedExceptionHandler.method ="update-staffing-project==============================";
+        // ResponseMessage responseMessage = internalProjectService.queryAllProjects();
+        return null;
+    }
+    @LogInfo(methodName = "删除项目的人员配置",modelName = "统一模块配置")
+    @RequestMapping("delete-staffing-project")
+    @ResponseBody
+    public ResponseMessage delete(){
+        UnifiedExceptionHandler.method ="delete-staffing-project==============================";
+        // ResponseMessage responseMessage = internalProjectService.queryAllProjects();
+        return null;
+    }*/
+   /* @LogInfo(methodName = "查询项目的人员配置",modelName = "统一模块配置")
+    @RequestMapping("query-staffing-project")
+    @ResponseBody
+    public ResponseMessage query(){
+        UnifiedExceptionHandler.method ="query-staffing-project==============================";
+        // ResponseMessage responseMessage = internalProjectService.queryAllProjects();
+        return null;
+    }*/
 }
