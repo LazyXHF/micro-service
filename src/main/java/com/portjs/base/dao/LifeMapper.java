@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.Life;
+import com.portjs.base.util.ResponseMessage;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,4 +36,10 @@ public interface LifeMapper {
      * @return
      */
     List<Life> sumLine();
+
+    /**
+     * 查询在建项目id
+     * @return
+     */
+    List<Life> sumLines();
 }

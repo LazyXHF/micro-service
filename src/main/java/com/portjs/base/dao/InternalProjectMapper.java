@@ -83,4 +83,19 @@ public interface InternalProjectMapper{
      * @return
      */
     List<InternalProject> selectListByBackup1(InternalProject record);
+
+    /**
+     * 分页查询列表
+     * @param
+     * @return
+     */
+    List<InternalProject> selectListsByBackup1(@Param("createTime")String createTime,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+
+    /**
+     * 查询所有在建项目并分页
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    List<InternalProject> queryConstructionProjects(@Param("id")List<String> id,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 }

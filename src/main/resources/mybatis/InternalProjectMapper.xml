@@ -78,7 +78,17 @@
     back_up2
     from internal_project
   </select>
-
+  <!--查询所有在建项目并分页-->
+  <select id="queryConstructionProjects" resultMap="BaseResultMap">
+    select
+    *
+    from internal_project
+    where id in
+    <foreach collection="id" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    order by create_time asc limit #{pageNo},#{pageSize}
+  </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -102,6 +112,19 @@
       </if>
     </where>
   </select>
+
+  <select id="selectListsByBackup1" parameterType="com.portjs.base.entity.InternalProject" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from internal_project
+    <where> 1=1 AND  enable="0"
+      <if test="createTime != null">
+        AND create_time > #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    limit #{pageNo},#{pageSize}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from internal_project
     where id = #{id,jdbcType=VARCHAR}

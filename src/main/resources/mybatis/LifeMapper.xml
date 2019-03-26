@@ -57,6 +57,17 @@
     GROUP BY
         project_id
   </select>
+
+  <select id="sumLines" parameterType="com.portjs.base.entity.Life" resultMap="BaseResultMap">
+    SELECT
+	  project_id
+    FROM
+        internal_life
+    WHERE
+        ENABLE = "0"
+    GROUP BY
+        project_id
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from internal_life
     where id = #{id,jdbcType=VARCHAR}

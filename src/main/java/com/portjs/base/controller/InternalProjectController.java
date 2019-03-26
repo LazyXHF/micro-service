@@ -3,8 +3,10 @@ package com.portjs.base.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.InternalProject;
+import com.portjs.base.entity.Life;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.InternalProjectService;
+import com.portjs.base.service.LifeService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
@@ -12,6 +14,10 @@ import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,6 +32,10 @@ public class InternalProjectController extends BaseController{
 
     @Autowired
     InternalProjectService internalProjectService;
+
+    @Autowired
+    LifeService lifeService;
+
 
     ResponseMessage responseMessage=null;
 
@@ -89,6 +99,84 @@ public class InternalProjectController extends BaseController{
         return responseMessage;
     }
 
+    /**
+     * 报表页面
+     * 所有新增项目列表分页查询
+     * @return
+     */
+    @RequestMapping("query-new-project-info")
+    @LogInfo(methodName = "所有新增项目列表分页查询")
+    public ResponseMessage queryNewProjectInfo(@RequestBody PageVo pageVo){
+        logger.debug("queryNewProjectInfo() begin...");
+        try{
+            int pageNo =   pageVo.getPageNo();
+            int pageSize = pageVo.getPageSize();
+            if (pageNo == 0) {
+                pageNo = 0;
+            }
+            if (pageSize == 0) {
+                pageSize = 10;
+            }
+            //获取当前年份
+            Integer year = Calendar.getInstance().get(Calendar.YEAR);
+            ResponseMessage responseMessage = internalProjectService.selectListsByBackup1(year.toString(),pageNo, pageSize);
+            if (responseMessage == null) {
+                this.responseMessage = new ResponseMessage(Code.CODE_ERROR, "查询数据为空");
+                return this.responseMessage;
+            }
+            this.responseMessage = new ResponseMessage(Code.CODE_OK, "查询成功", responseMessage);
+        }catch (Exception e){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
+            logger.error("queryNewProjectInfo() error...",e);
+
+        }
+        return responseMessage;
+    }
+
+    /**
+     * 报表页面
+     * 所有在建项目列表分页查询
+     * @return
+     */
+    @RequestMapping("query-construction-projects")
+    @LogInfo(methodName = "所有在建项目列表分页查询")
+    public ResponseMessage queryConstructionProjects(@RequestBody PageVo pageVo){
+        logger.debug("queryConstructionProjects() begin...");
+        String ids = null;
+        String  id = null;
+        List<String> list = new ArrayList<>();
+        try{
+
+            int pageNo =   pageVo.getPageNo();
+            int pageSize = pageVo.getPageSize();
+            List<Life> list1 = lifeService.sumLines();//查询所有在建项目id
+            for(int i=0;i<list1.size();i++) {
+                ids = list1.get(i).getProjectId();
+                pageVo.setObject(ids);
+                id = pageVo.getObject();
+                list.add(id);
+            }
+            ResponseMessage responseMessage = internalProjectService.queryConstructionProjects(list,pageNo, pageSize);
+            if (pageNo == 0) {
+                pageNo = 0;
+            }
+            if (pageSize == 0) {
+                pageSize = 10;
+            }
+
+            if (responseMessage == null) {
+                this.responseMessage = new ResponseMessage(Code.CODE_ERROR, "查询数据为空");
+                return this.responseMessage;
+            }
+            this.responseMessage = new ResponseMessage(Code.CODE_OK, "查询成功", responseMessage);
+
+        }catch (Exception e){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"服务器异常"+e);
+            logger.error("queryConstructionProjects() error...",e);
+
+        }
+        return responseMessage;
+    }
     /**
      *  添加项目信息
      * @param internalProject

@@ -3,6 +3,7 @@ package com.portjs.base.service;
 import com.portjs.base.entity.InternalProject;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -59,4 +60,21 @@ public interface InternalProjectService {
      * @return
      */
     List<Map<String,Object>> selectListByBackup1(InternalProject record);
+
+
+    /**
+     * 分页查询今年项目列表
+     * @param
+     * @return
+     */
+    ResponseMessage selectListsByBackup1(String createTime, int pageNo, int pageSize);
+
+
+    /**
+     * 查询所有在建项目并分页
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    ResponseMessage queryConstructionProjects(List<String> id ,int pageNo,  int pageSize);
 }

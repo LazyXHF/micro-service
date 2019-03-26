@@ -40,7 +40,7 @@ public class InternalPersionResourceServiceImpl implements InternalPersionResour
         int i = 0;
         try {
             if(StringUtils.isEmpty(record.getProjectId())){
-                return new ResponseMessage(Code.CODE_ERROR , "更新项目人员信息,项目id未传");
+                return new ResponseMessage(Code.CODE_ERROR , "添加项目人员信息,项目id未传");
             }
             i = internalPersionResourceMapper.insertPersionInfo(record);
         } catch (Exception e) {

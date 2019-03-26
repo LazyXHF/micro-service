@@ -36,6 +36,12 @@ public interface LifeService {
     int sumLine();
 
     /**
+     * 查询在建项目id
+     * @return
+     */
+    List<Life> sumLines();
+
+    /**
      * 计算在建项目的总金额
      * @return
      */
