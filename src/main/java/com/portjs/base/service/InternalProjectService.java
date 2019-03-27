@@ -82,4 +82,11 @@ public interface InternalProjectService {
      * 项目概览保存
      */
     ResponseMessage updatesProject(String responseBody);
+
+    /**
+     * 新的项目概览查询
+     * @param internalProject
+     * @return
+     */
+    ResponseMessage queryProjectsByLoginer(InternalProject internalProject);
 }

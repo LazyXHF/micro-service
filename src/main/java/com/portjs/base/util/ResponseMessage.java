@@ -1,7 +1,5 @@
 package com.portjs.base.util;
 
-import com.portjs.base.entity.InternalProject;
-
 import java.util.List;
 
 /**

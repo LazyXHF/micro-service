@@ -346,6 +346,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
         if (name == null || name.isEmpty())
         {
             // 没必要转换
+
             return "";
         }
         else if (!name.contains("_"))

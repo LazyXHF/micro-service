@@ -16,6 +16,7 @@ import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.service.LifeService;
 import com.portjs.base.util.StringUtils.StringUtils;
 import com.portjs.base.util.UserUtils;
+import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -292,10 +293,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
                 return new ResponseMessage(Code.CODE_ERROR , "保存失败");
             }
             //删除person表
-            count = internalPersionResourceMapper.deletePersons(internalProject.getId());
-            if(count <=0){
-                return new ResponseMessage(Code.CODE_ERROR , "保存失败");
-            }
+                internalPersionResourceMapper.deletePersons(internalProject.getId());
             //保存
             for(int i=0;i<personJSONArray.size();i++){
                 JSONObject object = personJSONArray.getJSONObject(i);
@@ -311,6 +309,24 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             e.printStackTrace();
         }
         return  new ResponseMessage(Code.CODE_OK , "保存成功");
+    }
+
+    @Override
+    public ResponseMessage queryProjectsByLoginer(InternalProject internalProject) {
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        if(StringUtils.isEmpty(internalProject.getParams())){
+
+
+        }
+        PageVo pageVo =  new PageVo();
+
+        List<InternalProject> list = internalProjectMapper.queryProjectsByLoginer(internalProject);
+        if(StringUtils.isEmpty(internalProject.getParams())){
+            int totalCount = internalProjectMapper.projectCounts();
+            dataMap.put("PageCount",totalCount);
+        }
+        dataMap.put("InternalProjects",list);
+        return null;
     }
 
     @Override

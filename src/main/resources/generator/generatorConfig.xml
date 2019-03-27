@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!--指定特定数据库的jdbc驱动jar包的位置-->
-    <classPathEntry location="E:/mavenjar/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar"/>
+    <classPathEntry location="D:/MavenRepository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar"/>
     <context id="MySQL2Tables" targetRuntime="MyBatis3"
              defaultModelType="flat">
         <property name="javaFileEncoding" value="UTF-8"/>
@@ -60,12 +60,12 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名 -->
-        <table tableName="internal_project" domainObjectName="InternalProject"
+        <table tableName="internal_manager" domainObjectName="Manager"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
                enableDeleteByPrimaryKey="true">
             <!-- 需要插入时返回主键值，请将此属性打开，column值为主键的列明 -->
-            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>
 </generatorConfiguration>

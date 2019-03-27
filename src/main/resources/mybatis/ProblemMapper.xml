@@ -33,24 +33,23 @@
     describes, solution, problem_type, proposed_time, problem_priority, proposer, solve
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from internal_problem
-    <where>
-      enable = 0
-      <if test="id != null">
-        AND id = #{id,jdbcType=VARCHAR}
-      </if>
-      <if test="projectId != null">
-        AND project_id = #{projectId,jdbcType=VARCHAR}
-      </if>
-      <if test="creat_time != null">
-        AND creat_time >= #{beginTime,jdbcType=TIMESTAMP}
-        AND creat_time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-
-    </where>
-  </select>
+  select
+  <include refid="Base_Column_List" />
+  from internal_problem
+  <where>
+    enable = 0
+    <if test="id != null">
+      AND id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="projectId != null">
+      AND project_id = #{projectId,jdbcType=VARCHAR}
+    </if>
+    <if test="creat_time != null">
+      AND creat_time >= #{beginTime,jdbcType=TIMESTAMP}
+      AND creat_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    </if>
+  </where>
+</select>
   <select id="queryBySomeThing" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

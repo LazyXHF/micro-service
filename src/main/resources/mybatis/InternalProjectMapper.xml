@@ -57,6 +57,25 @@
     from internal_project ip LEFT JOIN internal_persons_resource ipr ON ip.id = ipr.project_id where ip.id = #{id,jdbcType=VARCHAR}
     ORDER BY  ipCreateTime  ASC  limit #{pageNo},#{pageSize}
   </select>
+  <select id="queryProjectsByLoginer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from internal_project
+    <where> 1=1 AND  enable="0"
+      <if test="id != null">
+        AND id=#{id,jdbcType=VARCHAR}
+      </if>
+      <if test="backUp1 != null">
+        AND back_up1= #{backUp1,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        AND create_time > #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params != null">
+        order by create_time asc limit #{params.pageNo},#{params.pageSize}
+      </if>
+    </where>
+  </select>
   <select id="projectCount"  resultType="Integer">
     SELECT count(ip.id)
     from internal_project ip  where ip.id = #{id,jdbcType=VARCHAR}
@@ -70,7 +89,7 @@
   </select>
   <select id="projectCounts"  resultType="Integer">
     SELECT count(id)
-    from internal_project
+    from internal_project WHERE enable="0"
   </select>
 
   <select id="queryProjectNums" resultMap="BaseResultMap">

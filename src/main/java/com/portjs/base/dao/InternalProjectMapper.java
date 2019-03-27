@@ -98,4 +98,11 @@ public interface InternalProjectMapper{
      * @return
      */
     List<InternalProject> queryConstructionProjects(@Param("id")List<String> id,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+
+    /**
+     * 分页查询支持对象全查询
+     * @param record
+     * @return
+     */
+    List<InternalProject> queryProjectsByLoginer(InternalProject record);
 }

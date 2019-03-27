@@ -13,6 +13,7 @@ import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.service.LifeService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.PageVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -131,5 +132,15 @@ public class ProjectController extends BaseController {
         logger.debug(TAG + responseBody);
         UnifiedExceptionHandler.method= responseBody + "updates-project==============================" + responseBody;
         return internalProjectService.updatesProject(responseBody);
+    }
+    @LogInfo(methodName = "登录人的项目查询",modelName = "项目概览")
+    @RequestMapping("/query-projects-by-loginer")
+    @ResponseBody
+    public ResponseMessage queryProjectsByLoginer(@RequestBody String responseBody){
+        UnifiedExceptionHandler.method= responseBody + "queryProjectsByLoginer==============================" + responseBody;
+        logger.debug(TAG + responseBody);
+        JSONObject jsonObject = JSONObject.parseObject(responseBody);
+        InternalProject internalProject = JSONObject.toJavaObject(jsonObject,InternalProject.class);
+        return internalProjectService.queryProjectsByLoginer(internalProject);
     }
 }
