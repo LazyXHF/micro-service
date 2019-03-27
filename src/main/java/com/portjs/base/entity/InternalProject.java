@@ -1,6 +1,8 @@
 package com.portjs.base.entity;
 
 import com.portjs.base.util.BaseEntity;
+import com.portjs.base.util.Page;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -61,6 +63,12 @@ public class InternalProject extends BaseEntity{
     private String backUp9;
 
     private String projectType;//项目类型
+    
+    private Page<InternalPersionResource> page;
+    
+    private List<InternalTodo> internalToDo;
+    
+    private List<InternalWorkflowstep>internalWorkflowstep;
 
     public String getId() {
         return id;
@@ -277,4 +285,29 @@ public class InternalProject extends BaseEntity{
     public void setProjectType(String projectType) {
         this.projectType = projectType;
     }
+
+	public Page<InternalPersionResource> getPage() {
+		return page;
+	}
+
+	public void setPage(Page<InternalPersionResource> page) {
+		this.page = page;
+	}
+
+	public List<InternalTodo> getInternalToDo() {
+		return internalToDo;
+	}
+
+	public void setInternalToDo(List<InternalTodo> internalToDo) {
+		this.internalToDo = internalToDo;
+	}
+
+	public List<InternalWorkflowstep> getInternalWorkflowstep() {
+		return internalWorkflowstep;
+	}
+
+	public void setInternalWorkflowstep(List<InternalWorkflowstep> internalWorkflowstep) {
+		this.internalWorkflowstep = internalWorkflowstep;
+	}
+    
 }

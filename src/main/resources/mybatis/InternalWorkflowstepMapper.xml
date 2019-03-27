@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.InternalWorkflowstepMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.InternalWorkflowstep" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="relateddomain" property="relateddomain" jdbcType="VARCHAR" />
+    <result column="relateddomain_id" property="relateddomainId" jdbcType="VARCHAR" />
+    <result column="prestep_id" property="prestepId" jdbcType="VARCHAR" />
+    <result column="step_desc" property="stepDesc" jdbcType="VARCHAR" />
+    <result column="actionuser_id" property="actionuserId" jdbcType="VARCHAR" />
+    <result column="action_time" property="actionTime" jdbcType="TIMESTAMP" />
+    <result column="action_result" property="actionResult" jdbcType="INTEGER" />
+    <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+    <result column="file_description" property="fileDescription" jdbcType="VARCHAR" />
+    <result column="action_comment" property="actionComment" jdbcType="VARCHAR" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="project_coding" property="projectCoding" jdbcType="VARCHAR" />
+    <result column="backup_3" property="backup3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, relateddomain, relateddomain_id, prestep_id, step_desc, actionuser_id, action_time, 
+    action_result, file_url, file_description, action_comment, delete_time, status, project_coding, 
+    backup_3
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.InternalWorkflowstepExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from internal_workflowstep
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from internal_workflowstep
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from internal_workflowstep
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.InternalWorkflowstepExample" >
+    delete from internal_workflowstep
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.InternalWorkflowstep" >
+    insert into internal_workflowstep (id, relateddomain, relateddomain_id, 
+      prestep_id, step_desc, actionuser_id, 
+      action_time, action_result, file_url, 
+      file_description, action_comment, delete_time, 
+      status, project_coding, backup_3
+      )
+    values (#{id,jdbcType=VARCHAR}, #{relateddomain,jdbcType=VARCHAR}, #{relateddomainId,jdbcType=VARCHAR}, 
+      #{prestepId,jdbcType=VARCHAR}, #{stepDesc,jdbcType=VARCHAR}, #{actionuserId,jdbcType=VARCHAR}, 
+      #{actionTime,jdbcType=TIMESTAMP}, #{actionResult,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{fileDescription,jdbcType=VARCHAR}, #{actionComment,jdbcType=VARCHAR}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=VARCHAR}, #{projectCoding,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.InternalWorkflowstep" >
+    insert into internal_workflowstep
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="relateddomain != null" >
+        relateddomain,
+      </if>
+      <if test="relateddomainId != null" >
+        relateddomain_id,
+      </if>
+      <if test="prestepId != null" >
+        prestep_id,
+      </if>
+      <if test="stepDesc != null" >
+        step_desc,
+      </if>
+      <if test="actionuserId != null" >
+        actionuser_id,
+      </if>
+      <if test="actionTime != null" >
+        action_time,
+      </if>
+      <if test="actionResult != null" >
+        action_result,
+      </if>
+      <if test="fileUrl != null" >
+        file_url,
+      </if>
+      <if test="fileDescription != null" >
+        file_description,
+      </if>
+      <if test="actionComment != null" >
+        action_comment,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="projectCoding != null" >
+        project_coding,
+      </if>
+      <if test="backup3 != null" >
+        backup_3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="relateddomain != null" >
+        #{relateddomain,jdbcType=VARCHAR},
+      </if>
+      <if test="relateddomainId != null" >
+        #{relateddomainId,jdbcType=VARCHAR},
+      </if>
+      <if test="prestepId != null" >
+        #{prestepId,jdbcType=VARCHAR},
+      </if>
+      <if test="stepDesc != null" >
+        #{stepDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="actionuserId != null" >
+        #{actionuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionTime != null" >
+        #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionResult != null" >
+        #{actionResult,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null" >
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDescription != null" >
+        #{fileDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="actionComment != null" >
+        #{actionComment,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCoding != null" >
+        #{projectCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null" >
+        #{backup3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.InternalWorkflowstepExample" resultType="java.lang.Integer" >
+    select count(*) from internal_workflowstep
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update internal_workflowstep
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relateddomain != null" >
+        relateddomain = #{record.relateddomain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relateddomainId != null" >
+        relateddomain_id = #{record.relateddomainId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prestepId != null" >
+        prestep_id = #{record.prestepId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stepDesc != null" >
+        step_desc = #{record.stepDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionuserId != null" >
+        actionuser_id = #{record.actionuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionTime != null" >
+        action_time = #{record.actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.actionResult != null" >
+        action_result = #{record.actionResult,jdbcType=INTEGER},
+      </if>
+      <if test="record.fileUrl != null" >
+        file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileDescription != null" >
+        file_description = #{record.fileDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionComment != null" >
+        action_comment = #{record.actionComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleteTime != null" >
+        delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCoding != null" >
+        project_coding = #{record.projectCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backup3 != null" >
+        backup_3 = #{record.backup3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update internal_workflowstep
+    set id = #{record.id,jdbcType=VARCHAR},
+      relateddomain = #{record.relateddomain,jdbcType=VARCHAR},
+      relateddomain_id = #{record.relateddomainId,jdbcType=VARCHAR},
+      prestep_id = #{record.prestepId,jdbcType=VARCHAR},
+      step_desc = #{record.stepDesc,jdbcType=VARCHAR},
+      actionuser_id = #{record.actionuserId,jdbcType=VARCHAR},
+      action_time = #{record.actionTime,jdbcType=TIMESTAMP},
+      action_result = #{record.actionResult,jdbcType=INTEGER},
+      file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      file_description = #{record.fileDescription,jdbcType=VARCHAR},
+      action_comment = #{record.actionComment,jdbcType=VARCHAR},
+      delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      project_coding = #{record.projectCoding,jdbcType=VARCHAR},
+      backup_3 = #{record.backup3,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.InternalWorkflowstep" >
+    update internal_workflowstep
+    <set >
+      <if test="relateddomain != null" >
+        relateddomain = #{relateddomain,jdbcType=VARCHAR},
+      </if>
+      <if test="relateddomainId != null" >
+        relateddomain_id = #{relateddomainId,jdbcType=VARCHAR},
+      </if>
+      <if test="prestepId != null" >
+        prestep_id = #{prestepId,jdbcType=VARCHAR},
+      </if>
+      <if test="stepDesc != null" >
+        step_desc = #{stepDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="actionuserId != null" >
+        actionuser_id = #{actionuserId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionTime != null" >
+        action_time = #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionResult != null" >
+        action_result = #{actionResult,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null" >
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDescription != null" >
+        file_description = #{fileDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="actionComment != null" >
+        action_comment = #{actionComment,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCoding != null" >
+        project_coding = #{projectCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null" >
+        backup_3 = #{backup3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.InternalWorkflowstep" >
+    update internal_workflowstep
+    set relateddomain = #{relateddomain,jdbcType=VARCHAR},
+      relateddomain_id = #{relateddomainId,jdbcType=VARCHAR},
+      prestep_id = #{prestepId,jdbcType=VARCHAR},
+      step_desc = #{stepDesc,jdbcType=VARCHAR},
+      actionuser_id = #{actionuserId,jdbcType=VARCHAR},
+      action_time = #{actionTime,jdbcType=TIMESTAMP},
+      action_result = #{actionResult,jdbcType=INTEGER},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      file_description = #{fileDescription,jdbcType=VARCHAR},
+      action_comment = #{actionComment,jdbcType=VARCHAR},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      project_coding = #{projectCoding,jdbcType=VARCHAR},
+      backup_3 = #{backup3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
