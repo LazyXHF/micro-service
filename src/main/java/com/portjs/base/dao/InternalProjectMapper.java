@@ -105,4 +105,11 @@ public interface InternalProjectMapper{
      * @return
      */
     List<InternalProject> queryProjectsByLoginer(InternalProject record);
+
+    /**
+     * 条件分页
+     * @param record
+     * @return
+     */
+    int queryByPage(InternalProject record);
 }

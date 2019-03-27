@@ -1,8 +1,10 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
+
 import java.util.Date;
 
-public class InternalTodo {
+public class InternalTodo  extends BaseEntity{
     private String id;
 
     private String currentstepId;

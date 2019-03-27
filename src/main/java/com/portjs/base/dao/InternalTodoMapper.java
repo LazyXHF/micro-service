@@ -20,6 +20,13 @@ public interface InternalTodoMapper {
 
     InternalTodo selectByPrimaryKey(String id);
 
+    /**
+     * 条件查询
+     * @param example
+     * @return
+     */
+    List<InternalTodo> selectByObject(InternalTodo example);
+
     int updateByExampleSelective(@Param("record") InternalTodo record, @Param("example") InternalTodoExample example);
 
     int updateByExample(@Param("record") InternalTodo record, @Param("example") InternalTodoExample example);

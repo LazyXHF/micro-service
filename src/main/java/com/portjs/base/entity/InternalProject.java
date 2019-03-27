@@ -44,7 +44,7 @@ public class InternalProject extends BaseEntity{
 
     private String enable;
 
-    private String backUp1;
+    private String backUp1;//项目编号
 
     private String backUp2;
 

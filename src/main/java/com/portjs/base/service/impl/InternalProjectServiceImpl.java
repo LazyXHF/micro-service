@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.InternalPersionResourceMapper;
 import com.portjs.base.dao.InternalProjectMapper;
+import com.portjs.base.dao.InternalTodoMapper;
 import com.portjs.base.dao.LifeMapper;
-import com.portjs.base.entity.Annex;
-import com.portjs.base.entity.InternalPersionResource;
-import com.portjs.base.entity.InternalProject;
-import com.portjs.base.entity.Life;
+import com.portjs.base.entity.*;
 import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
@@ -41,6 +39,8 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     private InternalPersionResourceMapper internalPersionResourceMapper;
     @Autowired
     LifeService lifeService;
+    @Autowired
+    private InternalTodoMapper internalTodoMapper;
     /**
      * 查询所有项目信息和相关人员信息
      * @return
@@ -313,20 +313,42 @@ public class InternalProjectServiceImpl implements InternalProjectService {
 
     @Override
     public ResponseMessage queryProjectsByLoginer(InternalProject internalProject) {
-        Map<String,Object> dataMap = new HashMap<String,Object>();
-        if(StringUtils.isEmpty(internalProject.getParams())){
-
-
+        //分页查询
+        Page<Map<String,Object>> page =null;
+        if(!StringUtils.isEmpty(internalProject.getParams())){
+            page = new Page<Map<String,Object>>();
+            int totalCount = internalProjectMapper.queryByPage(internalProject);
+            page.init(totalCount,Integer.parseInt(internalProject.getParams().get("pageNo").toString()),Integer.parseInt(internalProject.getParams().get("pageSize").toString()));
+            Map<String,Object> map = new HashMap<String,Object>();
+            map.put("pageNo",page.getRowNum());
+            map.put("pageSize",page.getPageCount());
+            internalProject.setParams(map);
         }
-        PageVo pageVo =  new PageVo();
 
         List<InternalProject> list = internalProjectMapper.queryProjectsByLoginer(internalProject);
-        if(StringUtils.isEmpty(internalProject.getParams())){
-            int totalCount = internalProjectMapper.projectCounts();
-            dataMap.put("PageCount",totalCount);
+
+        //筛选审核的项目
+        List<Map<String,Object>> dataList = new ArrayList<Map<String,Object>>();
+        InternalTodo todo = new InternalTodo();
+        for (int i =0;i<list.size();i++){
+            Map<String,Object> map = new HashMap<String, Object>();
+            todo.setReceiverId(UserUtils.getCurrentUser().getId());
+            todo.setRelateddomainId(list.get(i).getId());
+            //未审核的数据
+            todo.setStatus("0");
+            List<InternalTodo> todos = internalTodoMapper.selectByObject(todo);
+            if(CollectionUtils.isEmpty(todos)){
+                  map.put("Review","");
+             }else{
+                map.put("Review","审核");
+            }
+            map.put("InternalProject",list.get(i));
+            dataList.add(map);
         }
-        dataMap.put("InternalProjects",list);
-        return null;
+        if(page!=null){
+            page.setList(dataList);
+        }
+        return  new ResponseMessage(Code.CODE_OK,"查询成功！",page);
     }
 
     @Override
