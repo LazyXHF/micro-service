@@ -99,6 +99,55 @@
     from internal_todo
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="selectByObject" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from internal_todo
+    <where>
+      <if test="id != null" >
+        AND id = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="currentstepId != null" >
+        AND currentstep_id = #{currentstepId,jdbcType=VARCHAR}
+      </if>
+      <if test="stepDesc != null" >
+        AND step_desc=#{stepDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="relateddomain != null" >
+        AND relateddomain=#{relateddomain,jdbcType=VARCHAR}
+      </if>
+      <if test="relateddomainId != null" >
+        AND relateddomain_id=#{relateddomainId,jdbcType=VARCHAR}
+      </if>
+      <if test="senderId != null" >
+        AND sender_id=#{senderId,jdbcType=VARCHAR}
+      </if>
+      <if test="senderTime != null" >
+        AND sender_time=#{senderTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="receiverId != null" >
+        AND receiver_id=#{receiverId,jdbcType=VARCHAR}
+      </if>
+      <if test="todoType != null" >
+        AND todo_type=#{todoType,jdbcType=VARCHAR}
+      </if>
+      <if test="actiontime != null" >
+        AND actiontime=#{actiontime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="deletetime != null" >
+        AND deletetime=#{deletetime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="status != null" >
+        AND  status=#{status,jdbcType=VARCHAR}
+      </if>
+      <if test="backup2 != null" >
+        AND backup_2=#{backup2,jdbcType=VARCHAR}
+      </if>
+      <if test="backup3 != null" >
+        AND backup_3=#{backup3,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from internal_todo
     where id = #{id,jdbcType=VARCHAR}
