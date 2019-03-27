@@ -11,7 +11,7 @@ import java.util.List;
 public interface InternalPersionResourceMapper {
 
     int deleteByPrimaryKey(String id);
-
+    int deletePersons(String projectId);
     /**
      * 批量删除人员信息
      * @return

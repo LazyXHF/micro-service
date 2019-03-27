@@ -1,18 +1,24 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.portjs.base.dao.InternalPersionResourceMapper;
 import com.portjs.base.dao.InternalProjectMapper;
 import com.portjs.base.dao.LifeMapper;
+import com.portjs.base.entity.Annex;
+import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.entity.InternalProject;
 import com.portjs.base.entity.Life;
 import com.portjs.base.service.InternalProjectService;
-import com.portjs.base.service.LifeService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.service.LifeService;
 import com.portjs.base.util.StringUtils.StringUtils;
 import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
@@ -20,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class InternalProjectServiceImpl implements InternalProjectService {
     private Integer code;
     private String message = "";
@@ -30,8 +37,9 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     @Autowired
     private LifeMapper lifeMapper;
     @Autowired
+    private InternalPersionResourceMapper internalPersionResourceMapper;
+    @Autowired
     LifeService lifeService;
-
     /**
      * 查询所有项目信息和相关人员信息
      * @return
@@ -246,6 +254,63 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             }
         }
         return dataList;
+    }
+
+    @Override
+    public ResponseMessage queryAllProjects() {
+        List<InternalProject> design = null;
+        try {
+            design  =   internalProjectMapper.selectListByBackup1(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        message = design != null?"查询成功":"查询失败";
+        code = design != null?Code.CODE_OK:Code.CODE_ERROR;
+        return new ResponseMessage(code , message,design);
+    }
+
+    @Override
+    public ResponseMessage updatesProject(String responseBody) {
+        //转化必要的参数
+        JSONObject requestJson =JSONObject.parseObject(responseBody);
+        //人员
+        JSONArray personJSONArray =  requestJson.getJSONArray("Persons");
+        JSONObject projectObject =requestJson.getJSONObject("Project");
+        InternalProject internalProject = JSONObject.toJavaObject(projectObject, InternalProject.class);
+        int count = 0;
+        try {
+            if(StringUtils.isEmpty(internalProject.getId())){
+                return new ResponseMessage(Code.CODE_ERROR , "更新项目模块,id未传");
+            }
+            //如果创建时间已经存在，之后每次修改都是修改时间
+            Date date=new java.util.Date();
+            java.sql.Date  data1=new java.sql.Date(date.getTime());
+            internalProject.setModifyTime(data1);
+            internalProject.setModifer(UserUtils.getCurrentUser().getId());
+            count =  internalProjectMapper.updateByPrimaryKeySelective(internalProject);
+            if(count <=0){
+                return new ResponseMessage(Code.CODE_ERROR , "保存失败");
+            }
+            //删除person表
+            count = internalPersionResourceMapper.deletePersons(internalProject.getId());
+            if(count <=0){
+                return new ResponseMessage(Code.CODE_ERROR , "保存失败");
+            }
+            //保存
+            for(int i=0;i<personJSONArray.size();i++){
+                JSONObject object = personJSONArray.getJSONObject(i);
+                InternalPersionResource annex = JSONObject.toJavaObject(object, InternalPersionResource.class);
+                //组建bean
+                annex.setId(UUID.randomUUID().toString());
+                count = internalPersionResourceMapper.insertPersionInfo(annex);
+                if(count==0){
+                    return  new ResponseMessage(Code.CODE_ERROR , "保存失败");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  new ResponseMessage(Code.CODE_OK , "保存成功");
     }
 
     @Override

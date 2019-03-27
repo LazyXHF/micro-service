@@ -10,16 +10,16 @@ import java.util.Date;
 @Data
 public class Problem extends BaseEntity {
     private String id;
-
-    private String projectId;//项目id
-
-    private Date creatTime;//创建时间
-
-    private String creater;//创建人
-
-    private Date updateTime;//更新时间
-
-    private String updater;//更新人
+    //项目id
+    private String projectId;
+    //创建时间
+    private Date creatTime;
+    //创建人
+    private String creater;
+    //更新时间
+    private Date updateTime;
+    //更新人
+    private String updater;
 
     private String enable;
 
@@ -42,20 +42,20 @@ public class Problem extends BaseEntity {
     private String backUp9;
 
     private String backUp10;
-
-    private String describes;//问题描述
-
-    private String solution;//解决方案
-
-    private String problemType;//问题分类
-
-    private Date proposedTime;//提出时间
-
-    private String problemPriority;//问题优先级
-
-    private String proposer;//提出人
-
-    private String solve;//是否解决
+    //问题描述
+    private String describes;
+    //解决方案
+    private String solution;
+    //问题分类
+    private String problemType;
+    //提出时间
+    private Date proposedTime;
+    //问题优先级
+    private String problemPriority;
+    //提出人
+    private String proposer;
+    //是否解决
+    private String solve;
 
     private static final long serialVersionUID = 1L;
 }

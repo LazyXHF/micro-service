@@ -34,7 +34,6 @@ public interface ProblemMapper {
      * @return
      */
     List<Problem> selectByPrimaryKey(Problem record);
-
     /**
      * 条件查询
      * @param

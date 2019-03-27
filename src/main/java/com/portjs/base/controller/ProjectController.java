@@ -9,7 +9,6 @@ import com.portjs.base.entity.Approval;
 import com.portjs.base.entity.InternalProject;
 import com.portjs.base.entity.Life;
 import com.portjs.base.exception.UnifiedExceptionHandler;
-import com.portjs.base.service.ApprovalService;
 import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.service.LifeService;
 import com.portjs.base.util.Code;
@@ -39,6 +38,7 @@ public class ProjectController extends BaseController {
     private LifeService lifeService;
     @Resource
     private InternalProjectService internalProjectService;
+
     @Resource
     private ApprovalMapper approvalService;
     @LogInfo(methodName = "动态跟踪",modelName = "首页动态跟踪")
@@ -123,5 +123,13 @@ public class ProjectController extends BaseController {
         JSONObject jsonObject = JSONObject.parseObject(responseBody);
         Life record = JSONObject.toJavaObject(jsonObject,Life.class);
         return lifeService.selectByPrimaryKey(record);
+    }
+    @LogInfo(methodName = "项目概览增加",modelName = "项目概览")
+    @RequestMapping("/updates-project")
+    @ResponseBody
+    public ResponseMessage addProject(@RequestBody String responseBody){
+        logger.debug(TAG + responseBody);
+        UnifiedExceptionHandler.method= responseBody + "updates-project==============================" + responseBody;
+        return internalProjectService.updatesProject(responseBody);
     }
 }
