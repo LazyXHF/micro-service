@@ -326,6 +326,24 @@ public class TMenuResourceServiceImpl implements TMenuResourceService {
     }
 
 
+    /**
+     *  查询用户的首页菜单
+     * @param arrayVO
+     * @return
+     */
+    @Override
+    public ResponseMessage selectHomePageMenuByRids(ArrayVO arrayVO) {
+        if (CollectionUtils.isEmpty(arrayVO.getList())){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"请求参数为空");
+        }else {
+            List<TMenuResource> menuResources = menuResourceMapper.selectHomePageMenuByRids(arrayVO.getList());
+            responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",menuResources);
+        }
+
+        return responseMessage;
+    }
+
+
     //改变叶子的状态
     public void updateLeafByMenuId(TMenuResource resource,int leaf){
         if (leaf == 0){

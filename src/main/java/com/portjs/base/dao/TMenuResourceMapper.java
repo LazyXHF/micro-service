@@ -65,4 +65,8 @@ public interface TMenuResourceMapper {
     List<TMenuResource> selectMenuAndResource();
 
 
+    //查询所有菜单根据角色id
+    List<TMenuResource> selectHomePageMenuByRids(@Param("rids") List<String> rids);
+
+
 }

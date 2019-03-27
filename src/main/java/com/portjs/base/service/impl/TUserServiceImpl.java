@@ -1,11 +1,13 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.TUserMapper;
 import com.portjs.base.dao.TUserRoleMapper;
 import com.portjs.base.entity.TUser;
 import com.portjs.base.entity.TUserExample;
 import com.portjs.base.entity.TUserRole;
 import com.portjs.base.entity.TUserRoleExample;
+import com.portjs.base.service.TErrcodeInfoService;
 import com.portjs.base.service.TUserService;
 import com.portjs.base.util.*;
 import com.portjs.base.vo.*;
@@ -38,7 +40,8 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
     @Autowired
     private TUserRoleMapper userRoleMapper;
 
-
+    @Autowired
+    private TErrcodeInfoService errcodeInfoService;
 
 
 
@@ -52,12 +55,8 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserUtils.USER_NAME_ACCOUNT = s;
-
-
         TUser user = userMapper.loginUserByAccount(s);
-
-
-
+        user.setPasswdWrongCount(0);
         return user;
     }
 
@@ -84,9 +83,12 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         user.setId(UUID.randomUUID().toString());
         user.setCreatetime(new Date());
         user.setSort(sort);
-        user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getLoginName()));
+//        user.setNameCn(user.getLoginName());
+        user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getNameCn()));
         user.setLastUpdPasswdTime(new Date());
         user.setPasswdWrongCount(0);
+        //重置密码周期
+        user.setPasswordModifyCycle(90);
         //删除所有角色信息
         deleteUserRole(user.getId());
 
@@ -150,14 +152,17 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
             StringBuilder sb = new StringBuilder();
             user.setLastUpdPasswdTime(new Date());
             //计算周期
-            int days = (int) ((new Date().getTime() - lastPasswordTime.getTime() ) / (1000*3600*24));
+//            int days = (int) ((new Date().getTime() - lastPasswordTime.getTime() ) / (1000*3600*24));
 
-            user.setPasswordModifyCycle(days);
+            //重置密码周期
+            user.setPasswordModifyCycle(90);
+
             sb.append(user.getLoginPassword()+","+historyPassword);
             user.setHistoryPassword(sb.toString());
         }
         //更新用户信息
-         user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getLoginName()));
+//        user.setNameCn(user.getLoginName());
+         user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getNameCn()));
         int i =   userMapper.updateByPrimaryKeySelective(user);
         if (i<0){
             responseMessage = new ResponseMessage(Code.CODE_ERROR, "修改失败");
@@ -278,6 +283,34 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
 
         return responseMessage;
     }
+
+
+    @Override
+    public ResponseMessage userPassword(String requestBody) {
+        JSONObject jsonObj = JSONObject.parseObject(requestBody);
+        String id = jsonObj.getString("id");
+        String loginPassword = jsonObj.getString("loginPassword");
+        TUser user = userMapper.selectByPrimaryKey(id);
+        user.setLoginPassword(loginPassword);
+        user.setLastUpdPasswdTime(new Date());
+        StringBuilder historyPassword = new StringBuilder();
+        String hp = user.getHistoryPassword();
+        if (hp!=null && !hp.equals("")){
+            historyPassword = historyPassword.append(hp);
+        }
+        historyPassword = historyPassword.append(loginPassword).append(",");
+        user.setHistoryPassword(String.valueOf(historyPassword));
+        user.setPasswordModifyCycle(90);
+        int i = userMapper.updateByPrimaryKeySelective(user);
+        if (i < 0) {
+            String errorMsg = errcodeInfoService.getErrorMsg("10001", "10140001");
+            responseMessage = new ResponseMessage(Code.CODE_ERROR, errorMsg,"10140001");
+        } else {
+            responseMessage = new ResponseMessage(Code.CODE_OK, "修改密码成功","");
+        }
+        return responseMessage;
+    }
+
 
 
     //根据用户名查找用户

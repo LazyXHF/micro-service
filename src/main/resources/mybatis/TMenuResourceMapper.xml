@@ -490,6 +490,14 @@ AND r.`id` IN
  AND mr.`resource_menu`="0" ORDER BY mr.`sort`
 </select>
 
+  <select id="selectMenuTree" resultMap="BaseResultMap">
+    SELECT DISTINCT mr.* FROM t_menu_resource mr
+    WHERE FIND_IN_SET(mr.`id`,getMeunChild((SELECT mr.`id` FROM t_menu_resource mr WHERE mr.`name` = "菜单树")))
+    AND mr.`resource_menu`="0" ORDER BY mr.`sort`
+  </select>
+
+
+
   <select id="selectResourcesRis" resultMap="BaseResultMap">
     SELECT DISTINCT mr.* FROM t_menu_resource mr
     INNER JOIN t_role_menu rm ON mr.`id` = rm.`menu_id`
@@ -524,11 +532,7 @@ AND r.`id` IN
 
 
 
-  <select id="selectMenuTree" resultMap="BaseResultMap">
-    SELECT DISTINCT mr.* FROM t_menu_resource mr
-    WHERE FIND_IN_SET(mr.`id`,getMeunChild((SELECT mr.`id` FROM t_menu_resource mr WHERE mr.`name` = "菜单树")))
-    AND mr.`resource_menu`="0" ORDER BY mr.`sort`
-  </select>
+
 
   <update id="updateSort">
    UPDATE t_menu_resource m SET m.`sort` = #{sort} WHERE m.`id`=#{id}
@@ -539,5 +543,18 @@ AND r.`id` IN
     SELECT DISTINCT mr.* FROM t_menu_resource mr
     WHERE FIND_IN_SET(mr.`id`,getMeunChild((SELECT mr.`id` FROM t_menu_resource mr WHERE mr.`name` = "菜单树")))
     ORDER BY mr.`sort`
+  </select>
+
+
+  <select id="selectHomePageMenuByRids"  resultMap="BaseResultMap">
+    SELECT DISTINCT mr.* FROM t_menu_resource mr
+    INNER JOIN t_role_menu rm ON mr.`id` = rm.`menu_id`
+    INNER JOIN t_role r ON rm.`role_id` = r.`id`
+    WHERE
+    r.`id`  IN
+    <foreach item="rids" index="index" collection="rids" open="(" separator="," close=")">
+      #{rids}
+    </foreach>
+   AND mr.`resource_menu`="0" ORDER BY mr.`sort`
   </select>
 </mapper>

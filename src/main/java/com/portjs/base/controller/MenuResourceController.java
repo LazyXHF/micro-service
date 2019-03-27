@@ -178,6 +178,21 @@ public class MenuResourceController extends BaseController {
 
 
 
+    /**
+     * 查询用户的首页菜单
+     * @param
+     * @return
+     */
+    @LogInfo(methodName = "查询用户的首页菜单",modelName = "菜单模块")
+    @RequestMapping("select-page-home")
+    @ResponseBody
+    public ResponseMessage selectHomePageMenuByRids(@RequestBody ArrayVO arrayVO){
+        logger.debug(tag+arrayVO);
+        UnifiedExceptionHandler.method= tag+"selectHomePageMenuByRids=============================="+arrayVO ;
+        responseMessage = menuResourceService.selectHomePageMenuByRids(arrayVO);
+        return responseMessage;
+    }
+
 
 
 }

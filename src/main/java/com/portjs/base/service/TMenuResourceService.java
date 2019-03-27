@@ -76,4 +76,14 @@ public interface TMenuResourceService {
     ResponseMessage selectMenuAndResource();
 
 
+
+
+
+    /**
+     *   首页查询用户的首页菜单
+     * @param arrayVO
+     * @return
+     */
+    ResponseMessage selectHomePageMenuByRids(ArrayVO arrayVO);
+
 }

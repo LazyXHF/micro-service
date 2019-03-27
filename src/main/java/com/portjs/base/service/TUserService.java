@@ -56,4 +56,8 @@ public interface TUserService {
      * @return
      */
     ResponseMessage updateUserStatus(TUser user);
+
+
+
+    ResponseMessage userPassword(String requestBody);
 }

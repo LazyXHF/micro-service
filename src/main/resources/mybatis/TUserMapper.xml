@@ -705,7 +705,7 @@
     <result column="reserved9" property="reserved9" jdbcType="VARCHAR" />
     <result column="reserved10" property="reserved10" jdbcType="VARCHAR" />
     <result column="leaderId" property="leaderId" jdbcType="VARCHAR" />
-
+    <result column="name_cn" property="nameCn" jdbcType="VARCHAR" />
     <collection property="roles" ofType="com.portjs.base.entity.TRole">
       <result column="rid" property="id" jdbcType="VARCHAR"/>
       <result column="roleName" property="roleName" jdbcType="VARCHAR"/>
