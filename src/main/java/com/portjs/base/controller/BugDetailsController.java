@@ -102,7 +102,7 @@ public class BugDetailsController extends BaseController{
      * @return
      */
     @RequestMapping("query-bug-infos")
-    @LogInfo(methodName = "添加Bug信息")
+    @LogInfo(methodName = "查询Bug信息")
     public ResponseMessage queryBugInfos() {
         logger.debug(TAG);
         UnifiedExceptionHandler.method= "query-bug-infos==============================";

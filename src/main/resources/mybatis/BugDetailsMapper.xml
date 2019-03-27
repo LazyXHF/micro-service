@@ -61,6 +61,14 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="queryAllBugInfos" resultMap="BaseResultMap">
+    select distinct
+    result,projected_name,designated_persion
+    from t_mgt_bug
+
+  </select>
+
+
   <select id="queryAllBugInfo" resultMap="BaseResultMap">
     select
     *

@@ -50,6 +50,5 @@ public interface BugDetailsMapper {
      * 查询所有bug信息
      * @return
      */
-    @Select("select DISTINCT modules, designated_persion, projected_name from t_mgt_bug")
     List<BugDetails> queryAllBugInfos();
 }
