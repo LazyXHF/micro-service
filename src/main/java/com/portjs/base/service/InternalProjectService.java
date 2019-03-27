@@ -77,4 +77,9 @@ public interface InternalProjectService {
      * @return
      */
     ResponseMessage queryConstructionProjects(List<String> id ,int pageNo,  int pageSize);
+    ResponseMessage  queryAllProjects();
+    /**
+     * 项目概览保存
+     */
+    ResponseMessage updatesProject(String responseBody);
 }

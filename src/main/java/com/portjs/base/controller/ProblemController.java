@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
+import com.portjs.base.dao.ProblemMapper;
 import com.portjs.base.entity.Problem;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProblemService;
@@ -27,7 +28,8 @@ public class ProblemController extends BaseController {
     static final  String TAG = "ProblemController================>";
     @Resource
     private ProblemService problemService;
-
+    @Resource
+    private ProblemMapper problemMapper;
     @LogInfo(methodName = "批量添加问题",modelName = "问题模块")
     @RequestMapping("/insert-problems")
     @ResponseBody
