@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.BugDetailsMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.BugDetails">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="bug_number" jdbcType="VARCHAR" property="bugNumber" />
+    <result column="projected_name" jdbcType="VARCHAR" property="projectedName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="modules" jdbcType="VARCHAR" property="modules" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="priority" jdbcType="VARCHAR" property="priority" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="version_number" jdbcType="VARCHAR" property="versionNumber" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="designated_persion" jdbcType="VARCHAR" property="designatedPersion" />
+    <result column="accepter" jdbcType="VARCHAR" property="accepter" />
+    <result column="accept_time" jdbcType="TIMESTAMP" property="acceptTime" />
+    <result column="bug_create_time" jdbcType="TIMESTAMP" property="bugCreateTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="solution" jdbcType="VARCHAR" property="solution" />
+    <result column="solution_result" jdbcType="INTEGER" property="solutionResult" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="result" jdbcType="INTEGER" property="result" />
+    <result column="backUp1" jdbcType="VARCHAR" property="backup1" />
+    <result column="backUp2" jdbcType="VARCHAR" property="backup2" />
+    <result column="backUp3" jdbcType="VARCHAR" property="backup3" />
+    <result column="backUp4" jdbcType="VARCHAR" property="backup4" />
+    <result column="backUp5" jdbcType="VARCHAR" property="backup5" />
+    <result column="backUp6" jdbcType="VARCHAR" property="backup6" />
+    <result column="backUp7" jdbcType="VARCHAR" property="backup7" />
+    <result column="backUp8" jdbcType="VARCHAR" property="backup8" />
+    <result column="backUp9" jdbcType="VARCHAR" property="backup9" />
+    <result column="backUp10" jdbcType="VARCHAR" property="backup10" />
+    <result column="backUp11" jdbcType="VARCHAR" property="backup11" />
+    <result column="backUp12" jdbcType="VARCHAR" property="backup12" />
+    <result column="backUp13" jdbcType="VARCHAR" property="backup13" />
+    <result column="backUp14" jdbcType="VARCHAR" property="backup14" />
+    <result column="backUp15" jdbcType="VARCHAR" property="backup15" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.portjs.base.entity.BugDetails">
+    <result column="reappear_method" jdbcType="LONGVARCHAR" property="reappearMethod" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, bug_number, projected_name, type, modules, title, content, priority, 
+    status, version_number, file_url, designated_persion, accepter, accept_time, bug_create_time, 
+    end_time, solution, solution_result, remark, result, backUp1, backUp2, backUp3, backUp4, 
+    backUp5, backUp6, backUp7, backUp8, backUp9, backUp10, backUp11, backUp12, backUp13, 
+    backUp14, backUp15
+  </sql>
+  <sql id="Blob_Column_List">
+    reappear_method
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_mgt_bug
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryAllBugInfo" resultMap="BaseResultMap">
+    select
+    *
+    from t_mgt_bug where  project_id = #{projectId} and
+    result = #{result,jdbcType=INTEGER}
+    <if test="modules != null">
+      and    modules like concat('%',#{modules},'%')
+    </if>
+    <if test="projected_name != null">
+      and  projected_name like concat('%',#{projected_name},'%')
+    </if>
+    <if test="designatedPersion != null">
+      and  designated_persion like concat('%',#{designatedPersion},'%')
+    </if>
+    order by bug_create_time DESC   LIMIT  #{pageNo},#{pageSize}
+  </select>
+
+
+  <select id="bugCounts"  resultType="Integer">
+    SELECT count(*)
+    from t_mgt_bug where 1=1
+
+     and project_id = #{projectId} and
+    result = #{result,jdbcType=INTEGER}
+    <if test="modules != null">
+      and    modules like concat('%',#{modules},'%')
+    </if>
+    <if test="projected_name != null">
+      and  projected_name like concat('%',#{projected_name},'%')
+    </if>
+    <if test="designatedPersion != null">
+      and  designated_persion like concat('%',#{designatedPersion},'%')
+    </if>
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_mgt_bug
+    where id IN
+    <foreach collection="id" index="index" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.BugDetails">
+    insert into t_mgt_bug (id, project_id, bug_number, 
+      projected_name, type, modules, 
+      title, content, priority, 
+      status, version_number, file_url, 
+      designated_persion, accepter, accept_time, 
+      bug_create_time, end_time, solution, 
+      solution_result, remark, result, 
+      backUp1, backUp2, backUp3, 
+      backUp4, backUp5, backUp6, 
+      backUp7, backUp8, backUp9, 
+      backUp10, backUp11, backUp12, 
+      backUp13, backUp14, backUp15, 
+      reappear_method)
+    values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{bugNumber,jdbcType=VARCHAR}, 
+      #{projectedName,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{modules,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{priority,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{versionNumber,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{designatedPersion,jdbcType=VARCHAR}, #{accepter,jdbcType=VARCHAR}, #{acceptTime,jdbcType=TIMESTAMP}, 
+      #{bugCreateTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{solution,jdbcType=VARCHAR}, 
+      #{solutionResult,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{result,jdbcType=INTEGER}, 
+      #{backup1,jdbcType=VARCHAR}, #{backup2,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}, 
+      #{backup4,jdbcType=VARCHAR}, #{backup5,jdbcType=VARCHAR}, #{backup6,jdbcType=VARCHAR}, 
+      #{backup7,jdbcType=VARCHAR}, #{backup8,jdbcType=VARCHAR}, #{backup9,jdbcType=VARCHAR}, 
+      #{backup10,jdbcType=VARCHAR}, #{backup11,jdbcType=VARCHAR}, #{backup12,jdbcType=VARCHAR}, 
+      #{backup13,jdbcType=VARCHAR}, #{backup14,jdbcType=VARCHAR}, #{backup15,jdbcType=VARCHAR}, 
+      #{reappearMethod,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.BugDetails">
+    insert into t_mgt_bug
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="bugNumber != null">
+        bug_number,
+      </if>
+      <if test="projectedName != null">
+        projected_name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="modules != null">
+        modules,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="versionNumber != null">
+        version_number,
+      </if>
+      <if test="fileUrl != null">
+        file_url,
+      </if>
+      <if test="designatedPersion != null">
+        designated_persion,
+      </if>
+      <if test="accepter != null">
+        accepter,
+      </if>
+      <if test="acceptTime != null">
+        accept_time,
+      </if>
+      <if test="bugCreateTime != null">
+        bug_create_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="solution != null">
+        solution,
+      </if>
+      <if test="solutionResult != null">
+        solution_result,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="backup1 != null">
+        backUp1,
+      </if>
+      <if test="backup2 != null">
+        backUp2,
+      </if>
+      <if test="backup3 != null">
+        backUp3,
+      </if>
+      <if test="backup4 != null">
+        backUp4,
+      </if>
+      <if test="backup5 != null">
+        backUp5,
+      </if>
+      <if test="backup6 != null">
+        backUp6,
+      </if>
+      <if test="backup7 != null">
+        backUp7,
+      </if>
+      <if test="backup8 != null">
+        backUp8,
+      </if>
+      <if test="backup9 != null">
+        backUp9,
+      </if>
+      <if test="backup10 != null">
+        backUp10,
+      </if>
+      <if test="backup11 != null">
+        backUp11,
+      </if>
+      <if test="backup12 != null">
+        backUp12,
+      </if>
+      <if test="backup13 != null">
+        backUp13,
+      </if>
+      <if test="backup14 != null">
+        backUp14,
+      </if>
+      <if test="backup15 != null">
+        backUp15,
+      </if>
+      <if test="reappearMethod != null">
+        reappear_method,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="bugNumber != null">
+        #{bugNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="projectedName != null">
+        #{projectedName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="modules != null">
+        #{modules,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNumber != null">
+        #{versionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="designatedPersion != null">
+        #{designatedPersion,jdbcType=VARCHAR},
+      </if>
+      <if test="accepter != null">
+        #{accepter,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bugCreateTime != null">
+        #{bugCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="solution != null">
+        #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="solutionResult != null">
+        #{solutionResult,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="backup1 != null">
+        #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="backup2 != null">
+        #{backup2,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null">
+        #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backup4 != null">
+        #{backup4,jdbcType=VARCHAR},
+      </if>
+      <if test="backup5 != null">
+        #{backup5,jdbcType=VARCHAR},
+      </if>
+      <if test="backup6 != null">
+        #{backup6,jdbcType=VARCHAR},
+      </if>
+      <if test="backup7 != null">
+        #{backup7,jdbcType=VARCHAR},
+      </if>
+      <if test="backup8 != null">
+        #{backup8,jdbcType=VARCHAR},
+      </if>
+      <if test="backup9 != null">
+        #{backup9,jdbcType=VARCHAR},
+      </if>
+      <if test="backup10 != null">
+        #{backup10,jdbcType=VARCHAR},
+      </if>
+      <if test="backup11 != null">
+        #{backup11,jdbcType=VARCHAR},
+      </if>
+      <if test="backup12 != null">
+        #{backup12,jdbcType=VARCHAR},
+      </if>
+      <if test="backup13 != null">
+        #{backup13,jdbcType=VARCHAR},
+      </if>
+      <if test="backup14 != null">
+        #{backup14,jdbcType=VARCHAR},
+      </if>
+      <if test="backup15 != null">
+        #{backup15,jdbcType=VARCHAR},
+      </if>
+      <if test="reappearMethod != null">
+        #{reappearMethod,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.BugDetails">
+    update t_mgt_bug
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="bugNumber != null">
+        bug_number = #{bugNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="projectedName != null">
+        projected_name = #{projectedName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="modules != null">
+        modules = #{modules,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNumber != null">
+        version_number = #{versionNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="designatedPersion != null">
+        designated_persion = #{designatedPersion,jdbcType=VARCHAR},
+      </if>
+      <if test="accepter != null">
+        accepter = #{accepter,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bugCreateTime != null">
+        bug_create_time = #{bugCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="solution != null">
+        solution = #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="solutionResult != null">
+        solution_result = #{solutionResult,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=INTEGER},
+      </if>
+      <if test="backup1 != null">
+        backUp1 = #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="backup2 != null">
+        backUp2 = #{backup2,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null">
+        backUp3 = #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backup4 != null">
+        backUp4 = #{backup4,jdbcType=VARCHAR},
+      </if>
+      <if test="backup5 != null">
+        backUp5 = #{backup5,jdbcType=VARCHAR},
+      </if>
+      <if test="backup6 != null">
+        backUp6 = #{backup6,jdbcType=VARCHAR},
+      </if>
+      <if test="backup7 != null">
+        backUp7 = #{backup7,jdbcType=VARCHAR},
+      </if>
+      <if test="backup8 != null">
+        backUp8 = #{backup8,jdbcType=VARCHAR},
+      </if>
+      <if test="backup9 != null">
+        backUp9 = #{backup9,jdbcType=VARCHAR},
+      </if>
+      <if test="backup10 != null">
+        backUp10 = #{backup10,jdbcType=VARCHAR},
+      </if>
+      <if test="backup11 != null">
+        backUp11 = #{backup11,jdbcType=VARCHAR},
+      </if>
+      <if test="backup12 != null">
+        backUp12 = #{backup12,jdbcType=VARCHAR},
+      </if>
+      <if test="backup13 != null">
+        backUp13 = #{backup13,jdbcType=VARCHAR},
+      </if>
+      <if test="backup14 != null">
+        backUp14 = #{backup14,jdbcType=VARCHAR},
+      </if>
+      <if test="backup15 != null">
+        backUp15 = #{backup15,jdbcType=VARCHAR},
+      </if>
+      <if test="reappearMethod != null">
+        reappear_method = #{reappearMethod,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.portjs.base.entity.BugDetails">
+    update t_mgt_bug
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      bug_number = #{bugNumber,jdbcType=VARCHAR},
+      projected_name = #{projectedName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      modules = #{modules,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      version_number = #{versionNumber,jdbcType=VARCHAR},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      designated_persion = #{designatedPersion,jdbcType=VARCHAR},
+      accepter = #{accepter,jdbcType=VARCHAR},
+      accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      bug_create_time = #{bugCreateTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      solution = #{solution,jdbcType=VARCHAR},
+      solution_result = #{solutionResult,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      result = #{result,jdbcType=INTEGER},
+      backUp1 = #{backup1,jdbcType=VARCHAR},
+      backUp2 = #{backup2,jdbcType=VARCHAR},
+      backUp3 = #{backup3,jdbcType=VARCHAR},
+      backUp4 = #{backup4,jdbcType=VARCHAR},
+      backUp5 = #{backup5,jdbcType=VARCHAR},
+      backUp6 = #{backup6,jdbcType=VARCHAR},
+      backUp7 = #{backup7,jdbcType=VARCHAR},
+      backUp8 = #{backup8,jdbcType=VARCHAR},
+      backUp9 = #{backup9,jdbcType=VARCHAR},
+      backUp10 = #{backup10,jdbcType=VARCHAR},
+      backUp11 = #{backup11,jdbcType=VARCHAR},
+      backUp12 = #{backup12,jdbcType=VARCHAR},
+      backUp13 = #{backup13,jdbcType=VARCHAR},
+      backUp14 = #{backup14,jdbcType=VARCHAR},
+      backUp15 = #{backup15,jdbcType=VARCHAR},
+      reappear_method = #{reappearMethod,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.BugDetails">
+    update t_mgt_bug
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      bug_number = #{bugNumber,jdbcType=VARCHAR},
+      projected_name = #{projectedName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      modules = #{modules,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      version_number = #{versionNumber,jdbcType=VARCHAR},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      designated_persion = #{designatedPersion,jdbcType=VARCHAR},
+      accepter = #{accepter,jdbcType=VARCHAR},
+      accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      bug_create_time = #{bugCreateTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      solution = #{solution,jdbcType=VARCHAR},
+      solution_result = #{solutionResult,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      result = #{result,jdbcType=INTEGER},
+      backUp1 = #{backup1,jdbcType=VARCHAR},
+      backUp2 = #{backup2,jdbcType=VARCHAR},
+      backUp3 = #{backup3,jdbcType=VARCHAR},
+      backUp4 = #{backup4,jdbcType=VARCHAR},
+      backUp5 = #{backup5,jdbcType=VARCHAR},
+      backUp6 = #{backup6,jdbcType=VARCHAR},
+      backUp7 = #{backup7,jdbcType=VARCHAR},
+      backUp8 = #{backup8,jdbcType=VARCHAR},
+      backUp9 = #{backup9,jdbcType=VARCHAR},
+      backUp10 = #{backup10,jdbcType=VARCHAR},
+      backUp11 = #{backup11,jdbcType=VARCHAR},
+      backUp12 = #{backup12,jdbcType=VARCHAR},
+      backUp13 = #{backup13,jdbcType=VARCHAR},
+      backUp14 = #{backup14,jdbcType=VARCHAR},
+      backUp15 = #{backup15,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
