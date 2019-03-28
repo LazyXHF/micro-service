@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongSupplyRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongSupplyRecord" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="supply_id" property="supplyId" jdbcType="VARCHAR" />
+    <result column="supply_name" property="supplyName" jdbcType="VARCHAR" />
+    <result column="supply_type" property="supplyType" jdbcType="VARCHAR" />
+    <result column="receiptor_id" property="receiptorId" jdbcType="VARCHAR" />
+    <result column="receiptor_depart_id" property="receiptorDepartId" jdbcType="VARCHAR" />
+    <result column="reamark" property="reamark" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="amount" property="amount" jdbcType="VARCHAR" />
+    <result column="receiptor_name" property="receiptorName" jdbcType="VARCHAR" />
+    <result column="receiptor_depart_name" property="receiptorDepartName" jdbcType="VARCHAR" />
+    <result column="record_creator_id" property="recordCreatorId" jdbcType="VARCHAR" />
+    <result column="record_creator_name" property="recordCreatorName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, supply_id, supply_name, supply_type, receiptor_id, receiptor_depart_id, reamark, 
+    isdelete, createtime, amount, receiptor_name, receiptor_depart_name
+  </sql>
+  <!--领用记录Sql-->
+  <select id="getRecordCount" parameterType="TXietongSupplyRecord" resultType="int">
+    select  count(*) from t_xietong_supply_record
+    <where>
+      <if test="supplyName!=null and supplyName!=''">
+        supply_name=#{supplyName}
+      </if>
+      <if test="receiptorName!=null and receiptorName!=''">
+        and  receiptor_name=#{receiptorName}
+      </if>
+    </where>
+  </select>
+  <select id="getSupplyRecordList" parameterType="TXietongSupplyRecord" resultMap="BaseResultMap">
+    select * from t_xietong_supply_record
+  where supply_id=#{supplyId} and supply_type=#{supplyType}
+  order by createtime desc
+  </select>
+
+  <insert id="addSupplyRecord" parameterType="com.portjs.base.entity.TXietongSupplyRecord" >
+    insert into t_xietong_supply_record (ID, supply_id, supply_name,
+    supply_type, receiptor_id, receiptor_depart_id,
+    reamark, isdelete, createtime,
+    amount, receiptor_name, receiptor_depart_name,price
+    )
+    values (#{id,jdbcType=VARCHAR}, #{supplyId,jdbcType=VARCHAR}, #{supplyName,jdbcType=VARCHAR},
+    #{supplyType,jdbcType=VARCHAR}, #{receiptorId,jdbcType=VARCHAR}, #{receiptorDepartId,jdbcType=VARCHAR},
+    #{reamark,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP},
+    #{amount}, #{receiptorName,jdbcType=VARCHAR}, #{receiptorDepartName,jdbcType=VARCHAR}, #{price,jdbcType=TIMESTAMP}
+    )
+  </insert>
+  <delete id="deleteSupplyRecord" parameterType="String">
+    delete from t_xietong_supply_record where supply_name=#{name} and supply_type=#{type}
+  </delete>
+
+
+  <select id="queryAllSupplyNames" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select supply_name
+    from t_xietong_supply_record GROUP  BY supply_name
+  </select>
+
+  <select id="queryAllDepartNames" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select receiptor_depart_name
+    from t_xietong_supply_record GROUP  BY receiptor_depart_name
+  </select>
+
+  <select id="querySupplyYears" resultType="String" >
+  SELECT DATE_FORMAT(createtime,"%Y") AS years from  t_xietong_supply_record GROUP BY years ORDER BY years
+  </select>
+  <!--办公用品统计分析-->
+  <select id="querySupplyRecord"  resultMap="BaseResultMap" parameterType="TXietongSupplyRecord">
+    select  * from t_xietong_supply_record a
+    <where>
+    <if test="supplyName !=null and supplyName!=''">
+      and  a.supply_name like "%" #{supplyName} "%"
+    </if>
+    <if test="departName !=null and departName!=''">
+      and  a.receiptor_depart_name like "%" #{departName} "%"
+    </if>
+    <if test="ym !=null and ym!=''">
+      and  DATE_FORMAT(createtime,'%Y%m%d%') like "%" #{ym} "%"
+    </if>
+    </where>
+  </select>
+
+
+
+
+
+
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongSupplyRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xietong_supply_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_supply_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_supply_record
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TXietongSupplyRecordExample" >
+    delete from t_xietong_supply_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TXietongSupplyRecord" >
+    insert into t_xietong_supply_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="supplyId != null" >
+        supply_id,
+      </if>
+      <if test="supplyName != null" >
+        supply_name,
+      </if>
+      <if test="supplyType != null" >
+        supply_type,
+      </if>
+      <if test="receiptorId != null" >
+        receiptor_id,
+      </if>
+      <if test="receiptorDepartId != null" >
+        receiptor_depart_id,
+      </if>
+      <if test="reamark != null" >
+        reamark,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="receiptorName != null" >
+        receiptor_name,
+      </if>
+      <if test="receiptorDepartName != null" >
+        receiptor_depart_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyId != null" >
+        #{supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyName != null" >
+        #{supplyName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyType != null" >
+        #{supplyType,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorId != null" >
+        #{receiptorId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorDepartId != null" >
+        #{receiptorDepartId,jdbcType=VARCHAR},
+      </if>
+      <if test="reamark != null" >
+        #{reamark,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorName != null" >
+        #{receiptorName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorDepartName != null" >
+        #{receiptorDepartName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TXietongSupplyRecordExample" resultType="java.lang.Integer" >
+    select count(*) from t_xietong_supply_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xietong_supply_record
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplyId != null" >
+        supply_id = #{record.supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplyName != null" >
+        supply_name = #{record.supplyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplyType != null" >
+        supply_type = #{record.supplyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiptorId != null" >
+        receiptor_id = #{record.receiptorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiptorDepartId != null" >
+        receiptor_depart_id = #{record.receiptorDepartId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reamark != null" >
+        reamark = #{record.reamark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdelete != null" >
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiptorName != null" >
+        receiptor_name = #{record.receiptorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiptorDepartName != null" >
+        receiptor_depart_name = #{record.receiptorDepartName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xietong_supply_record
+    set ID = #{record.id,jdbcType=VARCHAR},
+      supply_id = #{record.supplyId,jdbcType=VARCHAR},
+      supply_name = #{record.supplyName,jdbcType=VARCHAR},
+      supply_type = #{record.supplyType,jdbcType=VARCHAR},
+      receiptor_id = #{record.receiptorId,jdbcType=VARCHAR},
+      receiptor_depart_id = #{record.receiptorDepartId,jdbcType=VARCHAR},
+      reamark = #{record.reamark,jdbcType=VARCHAR},
+      isdelete = #{record.isdelete,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      amount = #{record.amount,jdbcType=VARCHAR},
+      receiptor_name = #{record.receiptorName,jdbcType=VARCHAR},
+      receiptor_depart_name = #{record.receiptorDepartName,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TXietongSupplyRecord" >
+    update t_xietong_supply_record
+    <set >
+      <if test="supplyId != null" >
+        supply_id = #{supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyName != null" >
+        supply_name = #{supplyName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyType != null" >
+        supply_type = #{supplyType,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorId != null" >
+        receiptor_id = #{receiptorId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorDepartId != null" >
+        receiptor_depart_id = #{receiptorDepartId,jdbcType=VARCHAR},
+      </if>
+      <if test="reamark != null" >
+        reamark = #{reamark,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorName != null" >
+        receiptor_name = #{receiptorName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptorDepartName != null" >
+        receiptor_depart_name = #{receiptorDepartName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TXietongSupplyRecord" >
+    update t_xietong_supply_record
+    set supply_id = #{supplyId,jdbcType=VARCHAR},
+      supply_name = #{supplyName,jdbcType=VARCHAR},
+      supply_type = #{supplyType,jdbcType=VARCHAR},
+      receiptor_id = #{receiptorId,jdbcType=VARCHAR},
+      receiptor_depart_id = #{receiptorDepartId,jdbcType=VARCHAR},
+      reamark = #{reamark,jdbcType=VARCHAR},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      amount = #{amount,jdbcType=VARCHAR},
+      receiptor_name = #{receiptorName,jdbcType=VARCHAR},
+      receiptor_depart_name = #{receiptorDepartName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

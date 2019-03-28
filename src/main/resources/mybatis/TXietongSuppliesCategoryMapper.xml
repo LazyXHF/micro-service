@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongSuppliesCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongSuppliesCategory" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="addCategory" parameterType="TXietongSuppliesCategory">
+    insert into t_xietong_supplies_category
+    set id=#{id}, category=#{category}
+  </insert>
+  <select id="queryCategory" resultType="int">
+    SELECT count(*) from t_xietong_supplies_category
+    where category=#{category}
+  </select>
+  <select id="queryCategories" resultType="TXietongSuppliesCategory">
+    SELECT * from t_xietong_supplies_category
+  </select>
+  <delete id="deleteCategory" parameterType="String" >
+    delete  from t_xietong_supplies_category where id=#{id}
+  </delete>
+  <select id="queryCategoryClass" resultType="TXietongSuppliesCategory">
+    SELECT * from t_xietong_supplies_category where category=#{category}
+  </select>
+  <insert id="insertCategory" parameterType="TXietongSuppliesCategory">
+    insert into t_xietong_supplies_category
+    set id=#{categoryid2}, category=#{category}
+  </insert>
+</mapper>

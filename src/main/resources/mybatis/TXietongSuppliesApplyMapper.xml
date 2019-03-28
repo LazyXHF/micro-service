@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongSuppliesApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongSuppliesApply" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="next_approver" property="nextApprover" jdbcType="VARCHAR" />
+    <result column="next_approver_id" property="nextApproverId" jdbcType="VARCHAR" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="supply_type" property="supplyType" jdbcType="VARCHAR" />
+    <result column="supply_id" property="supplyId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="apply_name" property="applyName" jdbcType="VARCHAR" />
+    <result column="apply_dep_id" property="applyDepId" jdbcType="VARCHAR" />
+    <result column="apply_dep_name" property="applyDepName" jdbcType="VARCHAR" />
+    <result column="apply_count" property="applyCount" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="next_record_ids" property="nextRecordIds" jdbcType="VARCHAR" />
+    <result column="supply_name" property="supplyName" jdbcType="VARCHAR" />
+    <result column="request_type" property="requestType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, STATUS, isdelete, createtime, next_approver, next_approver_id, endtime, supply_type, 
+    supply_id, apply_id, apply_name, apply_dep_id, apply_dep_name, apply_count, content, 
+    next_record_ids, supply_name
+  </sql>
+
+  <insert id="addSuppliedApply" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    insert into t_xietong_supplies_apply (ID, STATUS, isdelete,
+    createtime, next_approver, next_approver_id,
+    endtime, supply_type, supply_id,
+    apply_id, apply_name, apply_dep_id,
+    apply_dep_name, apply_count, content,
+    next_record_ids, supply_name,request_type,pstatus,rstatus,bstatus,user,user_id,category,category_id,code,isApplying)
+    values (#{id,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER},
+    #{createtime,jdbcType=TIMESTAMP}, #{nextApprover,jdbcType=VARCHAR}, #{nextApproverId,jdbcType=VARCHAR},
+    #{endtime,jdbcType=TIMESTAMP}, #{supplyType,jdbcType=VARCHAR}, #{supplyId,jdbcType=VARCHAR},
+    #{applyId,jdbcType=VARCHAR}, #{applyName,jdbcType=VARCHAR}, #{applyDepId,jdbcType=VARCHAR},
+    #{applyDepName,jdbcType=VARCHAR}, #{applyCount,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR},
+    #{nextRecordIds,jdbcType=VARCHAR}, #{supplyName,jdbcType=VARCHAR}, #{requestType,jdbcType=VARCHAR},
+    #{pstatus,jdbcType=VARCHAR}, #{rstatus,jdbcType=VARCHAR}, #{bstatus,jdbcType=VARCHAR},
+     #{user,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR},#{code}, #{isApplying,jdbcType=INTEGER})
+  </insert>
+
+
+
+
+  <!--
+  注意这里只是查询所有正申请的记录
+  -->
+  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.TXietongSuppliesApply" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="nextApprover" property="nextApprover" jdbcType="VARCHAR" />
+    <result column="nextApproverId" property="nextApproverId" jdbcType="VARCHAR" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="supplyType" property="supplyType" jdbcType="VARCHAR" />
+    <result column="supplyId" property="supplyId" jdbcType="VARCHAR" />
+    <result column="applyId" property="applyId" jdbcType="VARCHAR" />
+    <result column="applyName" property="applyName" jdbcType="VARCHAR" />
+    <result column="applyDepId" property="applyDepId" jdbcType="VARCHAR" />
+    <result column="applyDepName" property="applyDepName" jdbcType="VARCHAR" />
+    <result column="applyCount" property="applyCount" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="nextRecordIds" property="nextRecordIds" jdbcType="VARCHAR" />
+    <result column="supplyName" property="supplyName" jdbcType="VARCHAR" />
+    <result column="requestType" property="requestType" jdbcType="VARCHAR" />
+    <result column="rstatus" property="rstatus" jdbcType="VARCHAR" />
+    <result column="pstatus" property="pstatus" jdbcType="VARCHAR" />
+    <result column="bstatus" property="bstatus" jdbcType="VARCHAR" />
+    <result column="user" property="user" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="categoryId" property="categoryId" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="INTEGER" />
+    <collection property="suppliesApplyRecords" ofType="TXietongSuppliesApplyRecord" column="id">
+      <result column="arid" property="id" jdbcType="VARCHAR" />
+      <result column="ownerId" property="ownerId" jdbcType="INTEGER" />
+      <result column="arStatus" property="status" jdbcType="INTEGER" />
+      <result column="reccommnet" property="recComment" jdbcType="VARCHAR" />
+      <result column="aropinion" property="opinion" jdbcType="INTEGER" />
+      <result column="arApplyType" property="applyType" jdbcType="INTEGER" />
+      <result column="ownerName" property="ownerName" jdbcType="INTEGER" />
+      <result column="arCreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    </collection>
+  </resultMap>
+  <select id="getApplyCount2" resultType="int" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select count(*) from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      ar.apply_type=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+  <select id="queryApplying2" resultMap="BaseResultMap2" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,a.user,a.user_id as userId,a.category,a.category_id as categoryId,a.code,
+    ar.id as arid, ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion, ar.apply_type as arApplyType,ar.owner_name as ownerName ,ar.createtime as arCreateTime from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+     ar.apply_type=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by bstatus,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+  <select id="getApplyCount" resultType="int" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select count(*) from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.id=#{ID}  and  ar.apply_type=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+  <select id="queryApplying" resultMap="BaseResultMap2" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,a.user,a.user_id as userId,a.category,a.category_id as categoryId,a.code,
+   ar.id as arid, ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion, ar.apply_type as arApplyType ,ar.owner_name as ownerName ,ar.createtime as arCreateTime from t_xietong_supplies_apply a  left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+     a.id=#{ID}  and  ar.apply_type=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by bstatus,code,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+
+  <!--<select id="queryApplying" resultType="com.portjs.base.entity.TXietongSuppliesApply" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,a.user,a.user_id as userId,a.category,a.category_id as categoryId,a.code from t_xietong_supplies_apply a
+    <where>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by bstatus,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>-->
+
+
+  <select id="getApplyCountDaiBan" resultType="int" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select count(*) from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.id=#{ID}  and  ar.apply_type=0 and   ar.status=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+  <select id="queryApplyingDaiBan"  resultMap="BaseResultMap2" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,a.user,a.user_id as userId,a.category,a.category_id as categoryId,a.code,
+    ar.id as arid, ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion, ar.apply_type as arApplyType ,ar.owner_name as ownerName ,ar.createtime as arCreateTime from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.id=#{ID}  and  ar.apply_type=0 and   ar.status=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by bstatus,code,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+  <select id="queryApplying1" resultType="com.portjs.base.entity.TXietongSuppliesApply" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      <if test="ownerId !=null and ownerId!=''">
+        and  ar.owner_id=#{ownerId}
+      </if>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by ar.status,createtime desc
+
+  </select>
+
+  <select id="getSupplyApplyingCount" resultType="int">
+    select count(*) from t_xietong_supplies_apply
+    where  request_type='1'  and apply_id=#{ownerId}
+  </select>
+
+  <select id="querySupplyApplyingList" resultType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.pstatus as pstatus,a.rstatus as rstatus,a.bstatus  as bstatus ,a.user,ar.opinion  as opinion from t_xietong_supplies_apply a
+    left join t_xietong_supplies_apply_record ar  on a.id=ar.apply_id
+    where a.request_type='1' and a.apply_id=#{ownerId} and  ar.owner_id=#{bangongId1} and ar.apply_type=1
+     order by bstatus,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+<!--  <select id="queryBanGongXiangqing" parameterType="com.portjs.base.entity.TXietongSuppliesApplyRecord" resultMap="BaseResultMap">
+    SELECT  * from t_xietong_supplies_apply_record
+    where apply_id=#{id} and owner_id=#{ownerId} and apply_type=0
+  </select>-->
+  <select id="getSupplyApplyingCount1" resultType="int">
+    select count(*) from t_xietong_supplies_apply
+   where request_type='2' and isApplying=0
+  </select>
+  <select id="querySupplyApplyingRepository" resultType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName ,a.pstatus as pstatus,a.rstatus as rstatus,a.user,a.category,a.category_id as categoryId ,a.code from t_xietong_supplies_apply a
+    where request_type='2' and isApplying=0
+    order by   rstatus, a.createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+  <!--  本来查看详情是当前人 现在是所有人and a.apply_id=#{ownerId}-->
+  <update id="consoleApplying" parameterType="String">
+    update t_xietong_supplies_apply
+    set rstatus='3'
+    where id=#{id}
+  </update>
+
+  <update id="updateSuppliesApply" parameterType="String">
+    update  t_xietong_supplies_apply
+    set status=2
+    where id=#{id}
+  </update>
+<select id="queryApplyById" parameterType="String" resultMap="BaseResultMap">
+  SELECT * from  t_xietong_supplies_apply where id=#{id}
+</select>
+<insert id="insertHisApply" parameterType="com.portjs.base.entity.TXietongSuppliesApply">
+   insert into t_xietong_supplies_apply_his (ID, STATUS, isdelete,
+    createtime, next_approver, next_approver_id,
+    endtime, supply_type, supply_id,
+    apply_id, apply_name, apply_dep_id,
+    apply_dep_name, apply_count, content,
+    next_record_ids, supply_name,request_type)
+    values (#{id,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isdelete,jdbcType=INTEGER},
+    #{createtime,jdbcType=TIMESTAMP}, #{nextApprover,jdbcType=VARCHAR}, #{nextApproverId,jdbcType=VARCHAR},
+    #{endtime,jdbcType=TIMESTAMP}, #{supplyType,jdbcType=VARCHAR}, #{supplyId,jdbcType=VARCHAR},
+    #{applyId,jdbcType=VARCHAR}, #{applyName,jdbcType=VARCHAR}, #{applyDepId,jdbcType=VARCHAR},
+    #{applyDepName,jdbcType=VARCHAR}, #{applyCount,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR},
+    #{nextRecordIds,jdbcType=VARCHAR}, #{supplyName,jdbcType=VARCHAR}, #{requestType,jdbcType=VARCHAR})
+</insert>
+<delete id="deleteApplyById" parameterType="String" >
+  delete  from t_xietong_supplies_apply where id=#{id}
+</delete>
+
+
+
+  <select id="queryResultCountDaiBan" resultType="INTEGER">
+    select count(*)
+    from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record b
+    on a.id=b.apply_id
+    <where>
+      a.rstatus=1 and
+      a.request_type='1'
+      and b.apply_type=1 and
+      b.owner_id=#{ownerId}
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+
+
+  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.TXietongSuppliesApply" >
+    <id column="aid" property="id" jdbcType="VARCHAR" />
+    <result column="acreatetime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="supply_type" property="supplyType" jdbcType="VARCHAR" />
+    <result column="supply_id" property="supplyId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="apply_name" property="applyName" jdbcType="VARCHAR" />
+    <result column="apply_dep_id" property="applyDepId" jdbcType="VARCHAR" />
+    <result column="apply_dep_name" property="applyDepName" jdbcType="VARCHAR" />
+    <result column="apply_count" property="applyCount" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="next_record_ids" property="nextRecordIds" jdbcType="VARCHAR" />
+    <result column="supply_name" property="supplyName" jdbcType="VARCHAR" />
+    <result column="pstatus" property="pstatus" jdbcType="VARCHAR" />
+    <result column="rstatus" property="rstatus" jdbcType="VARCHAR" />
+    <result column="requestType" property="requestType" jdbcType="VARCHAR" />
+    <result column="user" property="user" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <association property="record" javaType="com.portjs.base.entity.TXietongSuppliesApplyRecord">
+      <id column="bid" property="id" jdbcType="VARCHAR" />
+    <result column="bapplyid" property="applyId" jdbcType="VARCHAR" />
+    <result column="owner_id" property="ownerId" jdbcType="VARCHAR" />
+    <result column="rec_comment" property="recComment" jdbcType="VARCHAR" />
+    <result column="bcreatetime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="record_creator_id" property="creatorId" jdbcType="VARCHAR" />
+    <result column="record_creator_name" property="creatorName" jdbcType="VARCHAR" />
+    <result column="opinion" property="opinion" jdbcType="INTEGER" />
+      <result column="dep_name" property="departName" jdbcType="VARCHAR" />
+      <result column="bstatus" property="status" jdbcType="INTEGER" />
+      <result column="iscc" property="iscc" jdbcType="INTEGER" />
+      <result column="apply_type" property="applyType" jdbcType="INTEGER" />
+    </association>
+  </resultMap>
+  <select id="queryCountAll" resultType="int">
+    select count(*)
+    from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record b
+    on a.id=b.apply_id
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap1">
+  select a.ID as aid,
+    a.createtime as acreatetime, a.supply_type, a.supply_id,
+    a.apply_id, a.apply_name, a.apply_dep_id,
+    a.apply_dep_name, a.apply_count, a.content, a.supply_name,a.pstatus,a.rstatus,a.request_type as requestType,a.user,a.user_id as userId,a.code,
+   b.ID as bid, b.apply_id as bapplyid, b.owner_id, b.rec_comment, b.createtime as bcreatetime,
+    b.record_creator_id, b.record_creator_name, b.opinion,b.dep_name,b.status as bstatus ,b.iscc,b.apply_type
+     from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record b
+    on a.id=b.apply_id   order by  b.status , a.createtime desc
+      limit #{rowNum},#{pageCount}
+  </select>
+  <select id="queryResult" resultMap="BaseResultMap1">
+    select a.ID as aid,
+    a.createtime as acreatetime, a.supply_type, a.supply_id,
+    a.apply_id, a.apply_name, a.apply_dep_id,
+    a.apply_dep_name, a.apply_count, a.content, a.supply_name,a.pstatus,a.rstatus,a.request_type as requestType,a.user,a.user_id as userId,a.code,
+   b.ID as bid, b.apply_id as bapplyid, b.owner_id, b.rec_comment, b.createtime as bcreatetime,
+    b.record_creator_id, b.record_creator_name, b.opinion,b.dep_name,b.status as bstatus ,b.iscc,b.apply_type
+     from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record b
+    on a.id=b.apply_id
+    <where>
+      a.request_type='1' and b.apply_type=1 and b.owner_id=#{ownerId}
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by a.rstatus, b.status , a.createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+  <select id="queryResultCount" resultType="INTEGER">
+    select count(*)
+    from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record b
+    on a.id=b.apply_id
+    <where>
+      a.request_type='1' and b.apply_type=1 and b.owner_id=#{ownerId}
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+  <select id="queryResultDaiBan" resultMap="BaseResultMap1">
+    select a.ID as aid,
+    a.createtime as acreatetime, a.supply_type, a.supply_id,
+    a.apply_id, a.apply_name, a.apply_dep_id,
+    a.apply_dep_name, a.apply_count, a.content, a.supply_name,a.pstatus,a.rstatus,a.request_type as requestType,a.user,a.user_id as userId,a.code,
+    b.ID as bid, b.apply_id as bapplyid, b.owner_id, b.rec_comment, b.createtime as bcreatetime,
+    b.record_creator_id, b.record_creator_name, b.opinion,b.dep_name,b.status as bstatus ,b.iscc,b.apply_type
+    from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record b
+    on a.id=b.apply_id
+    <where>
+      a.rstatus=1 and
+      a.request_type='1'
+      and b.apply_type=1 and
+      b.owner_id=#{ownerId}
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by  b.status , a.createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+  <select id="getApplyCountDaiBan2" resultType="int" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select count(*) from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.bstatus=0 and  ar.apply_type=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+  <select id="queryApplyingDaiBan2" resultMap="BaseResultMap2" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,a.user,a.user_id as userId,a.category,a.category_id as categoryId,a.code,
+    ar.id as arid, ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion, ar.apply_type as arApplyType,ar.owner_name as ownerName ,ar.createtime as arCreateTime from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.bstatus=0 and  ar.apply_type=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by bstatus,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_supplies_apply
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_supplies_apply
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TXietongSuppliesApplyExample" >
+    delete from t_xietong_supplies_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    insert into t_xietong_supplies_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="nextApprover != null" >
+        next_approver,
+      </if>
+      <if test="nextApproverId != null" >
+        next_approver_id,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="supplyType != null" >
+        supply_type,
+      </if>
+      <if test="supplyId != null" >
+        supply_id,
+      </if>
+      <if test="applyId != null" >
+        apply_id,
+      </if>
+      <if test="applyName != null" >
+        apply_name,
+      </if>
+      <if test="applyDepId != null" >
+        apply_dep_id,
+      </if>
+      <if test="applyDepName != null" >
+        apply_dep_name,
+      </if>
+      <if test="applyCount != null" >
+        apply_count,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="nextRecordIds != null" >
+        next_record_ids,
+      </if>
+      <if test="supplyName != null" >
+        supply_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextApprover != null" >
+        #{nextApprover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextApproverId != null" >
+        #{nextApproverId,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supplyType != null" >
+        #{supplyType,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyId != null" >
+        #{supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyName != null" >
+        #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDepId != null" >
+        #{applyDepId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDepName != null" >
+        #{applyDepName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCount != null" >
+        #{applyCount,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="nextRecordIds != null" >
+        #{nextRecordIds,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyName != null" >
+        #{supplyName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.TXietongSuppliesApplyExample" resultType="java.lang.Integer" >
+    select count(*) from t_xietong_supplies_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_xietong_supplies_apply
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isdelete != null" >
+        isdelete = #{record.isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.nextApprover != null" >
+        next_approver = #{record.nextApprover,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextApproverId != null" >
+        next_approver_id = #{record.nextApproverId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endtime != null" >
+        endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.supplyType != null" >
+        supply_type = #{record.supplyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplyId != null" >
+        supply_id = #{record.supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyId != null" >
+        apply_id = #{record.applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyName != null" >
+        apply_name = #{record.applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyDepId != null" >
+        apply_dep_id = #{record.applyDepId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyDepName != null" >
+        apply_dep_name = #{record.applyDepName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyCount != null" >
+        apply_count = #{record.applyCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nextRecordIds != null" >
+        next_record_ids = #{record.nextRecordIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplyName != null" >
+        supply_name = #{record.supplyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_xietong_supplies_apply
+    set ID = #{record.id,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      isdelete = #{record.isdelete,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=TIMESTAMP},
+      next_approver = #{record.nextApprover,jdbcType=VARCHAR},
+      next_approver_id = #{record.nextApproverId,jdbcType=VARCHAR},
+      endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      supply_type = #{record.supplyType,jdbcType=VARCHAR},
+      supply_id = #{record.supplyId,jdbcType=VARCHAR},
+      apply_id = #{record.applyId,jdbcType=VARCHAR},
+      apply_name = #{record.applyName,jdbcType=VARCHAR},
+      apply_dep_id = #{record.applyDepId,jdbcType=VARCHAR},
+      apply_dep_name = #{record.applyDepName,jdbcType=VARCHAR},
+      apply_count = #{record.applyCount,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      next_record_ids = #{record.nextRecordIds,jdbcType=VARCHAR},
+      supply_name = #{record.supplyName,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    update t_xietong_supplies_apply
+    <set >
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextApprover != null" >
+        next_approver = #{nextApprover,jdbcType=VARCHAR},
+      </if>
+      <if test="nextApproverId != null" >
+        next_approver_id = #{nextApproverId,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supplyType != null" >
+        supply_type = #{supplyType,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyId != null" >
+        supply_id = #{supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        apply_id = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyName != null" >
+        apply_name = #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDepId != null" >
+        apply_dep_id = #{applyDepId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDepName != null" >
+        apply_dep_name = #{applyDepName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCount != null" >
+        apply_count = #{applyCount,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="nextRecordIds != null" >
+        next_record_ids = #{nextRecordIds,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyName != null" >
+        supply_name = #{supplyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSupplyStatus" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    update t_xietong_supplies_apply
+    set RSTATUS = #{rstatus,jdbcType=VARCHAR},
+      endtime = #{endtime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePstatus" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    update t_xietong_supplies_apply
+    set PSTATUS = #{pstatus,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateBnGongshiStatus" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    update t_xietong_supplies_apply
+    set bSTATUS = #{bstatus,jdbcType=VARCHAR}
+    where ID = #{applyId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateRepositoryStatus" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    update t_xietong_supplies_apply
+    set RSTATUS = #{rstatus,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getCaiGouCount" resultType="int" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select count(*) from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.request_type='2'
+      <if test="ownerId !=null and ownerId!=''">
+        and    ar.owner_id=#{ownerId}
+      </if>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+  <select id="getCaiGouCountDaiBan" resultType="int" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select count(*) from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.pstatus=-1 and
+      a.request_type='2' and ar.apply_type=2
+      <if test="ownerId !=null and ownerId!=''">
+        and  ar.owner_id=#{ownerId}
+      </if>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+
+  <!--注意这里只是查询所有采购员的记录-->
+  <select id="queryCaiGouList" resultType="com.portjs.base.entity.TXietongSuppliesApply" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion,ar.apply_type as arApplyType from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.request_type='2' and ar.apply_type=2
+      <if test="ownerId !=null and ownerId!=''">
+        and  ar.owner_id=#{ownerId}
+      </if>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by pstatus,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+<!--查询未处理的采购代办  状态码-1-->
+  <select id="queryCaiGouListDaiBan" resultType="com.portjs.base.entity.TXietongSuppliesApply" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion,ar.apply_type as arApplyType from t_xietong_supplies_apply a left join t_xietong_supplies_apply_record ar
+    on a.id=ar.apply_id
+    <where>
+      a.pstatus=-1 and
+      a.request_type='2' and ar.apply_type=2
+      <if test="ownerId !=null and ownerId!=''">
+        and  ar.owner_id=#{ownerId}
+      </if>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+    order by pstatus,createtime desc
+    limit #{rownum},#{pagecount}
+  </select>
+
+  <select id="queryRequestType" resultType="String" parameterType="java.lang.String" >
+    select
+    request_type
+    from t_xietong_supplies_apply
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateSypplyApply" parameterType="TXietongSuppliesApply">
+    update  t_xietong_supplies_apply
+    set code=#{code},isApplying=#{isApplying}
+    where id=#{id}
+  </update>
+  <select id="print" resultType="com.portjs.base.entity.TXietongSuppliesApply" parameterType="com.portjs.base.entity.TXietongSuppliesApply" >
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus from t_xietong_supplies_apply a
+    <where>
+      <if test="id !=null and id!=''">
+        and a.id=#{id}
+      </if>
+    </where>
+
+  </select>
+
+
+  <select id="selectCountAll" resultType="int">
+    select count(*) from
+    (SELECT * FROM t_xietong_supplies_apply b
+    WHERE b.id in(select apply_id from t_xietong_supplies_apply_record ar where owner_id=#{ownerId} and  ar.apply_type=0))as a
+    <where>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+  <select id="selectCountAllDaiBan" resultType="int">
+    select count(*) from
+    (SELECT * FROM t_xietong_supplies_apply b
+    WHERE b.id in(select apply_id from t_xietong_supplies_apply_record ar where owner_id=#{ownerId} and  ar.apply_type=0 and  ar.status=0))as a
+    <where>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectAll" resultMap="BaseResultMap2"  parameterType="com.portjs.base.entity.TXietongSuppliesApply">
+  select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+  a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+  a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,a.user,a.user_id as userId,a.category,a.category_id as categoryId,a.code,
+  ar.id as arid, ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion, ar.apply_type as arApplyType ,ar.owner_name as ownerName ,ar.createtime as arCreateTime
+    from (SELECT b.* FROM t_xietong_supplies_apply b
+  WHERE b.id in(select apply_id from t_xietong_supplies_apply_record ar where owner_id=#{ownerId} and ar.apply_type=0)  limit #{rownum},#{pagecount})as a
+  left join t_xietong_supplies_apply_record  ar on a.id=ar.apply_id
+  <where>
+    ar.apply_type=0
+    <if test="supplyName !=null and supplyName!=''">
+     and   a.supply_name like "%" #{supplyName} "%"
+    </if>
+    <if test="applyName !=null and applyName!=''">
+      and   a.apply_name like "%" #{applyName} "%"
+    </if>
+  </where>
+    order by bstatus,code,a.createtime desc,ar.createtime desc
+</select>
+  <select id="selectAllDaiBan" resultMap="BaseResultMap2"  parameterType="com.portjs.base.entity.TXietongSuppliesApply">
+    select a.ID, a.STATUS, a.isdelete, a.createtime, a.next_approver as nextApprover , a.next_approver_id as nextApproverId, a.endtime, a.supply_type as supplyType,
+    a.supply_id as supplyId , a.apply_id as applyId, a.apply_name as applyName, a.apply_dep_id as applyDepId , a.apply_dep_name as applyDepName, a.apply_count as applyCount , a.content,
+    a.next_record_ids as nextRecordIds , a.supply_name as supplyName,a.request_type as requestType,a.rstatus,a.pstatus,a.bstatus,a.user,a.user_id as userId,a.category,a.category_id as categoryId,a.code,
+    ar.id as arid, ar.owner_id as ownerId ,ar.status as arStatus,ar.rec_comment as reccommnet ,ar.opinion as aropinion, ar.apply_type as arApplyType ,ar.owner_name as ownerName ,ar.createtime as arCreateTime  from (SELECT b.* FROM t_xietong_supplies_apply b
+    WHERE b.id in(select apply_id from t_xietong_supplies_apply_record d where owner_id=#{ownerId} and d.status=0) limit #{rownum},#{pagecount})as a
+    left join t_xietong_supplies_apply_record  ar on a.id=ar.apply_id
+    <where>
+      ar.apply_type=0
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.supply_name like "%" #{supplyName} "%"
+      </if>
+      <if test="applyName !=null and applyName!=''">
+        and a.apply_name like "%" #{applyName} "%"
+      </if>
+      order by createtime desc
+      </where>
+  </select>
+
+  <select id="queryAttributeFromApply" resultType="String">
+    select next_record_ids from t_xietong_supplies_apply a
+    where   a.supply_name=#{supplyName}
+        and a.supply_type=#{supplyType}
+  </select>
+</mapper>

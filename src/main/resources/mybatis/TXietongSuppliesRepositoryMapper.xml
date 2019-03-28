@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.TXietongSuppliesRepositoryMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongSuppliesRepository" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="addBanGongName" parameterType="TXietongSuppliesRepository">
+    insert into t_xietong_supplies_repository
+    set name=#{supplyName},category_id=#{categoryId}
+  </insert>
+
+  <insert id="addBanGongType" parameterType="TXietongSuppliesRepository">
+    insert into t_xietong_supplies_repository
+    set type=#{type},type_id=#{id}
+  </insert>
+  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.TXietongSuppliesRepository" >
+  <id column="ID" property="id" jdbcType="VARCHAR" />
+  <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="querySupplyName" parameterType="TXietongSuppliesRepository" resultMap="BaseResultMap1">
+    select id,name from  t_xietong_supplies_repository where category_id=#{categoryId};
+  </select>
+  <select id="querySupplyType" parameterType="TXietongSuppliesRepository" resultMap="BaseResultMap">
+    select * from t_xietong_supplies_repository where type_id=#{id}
+  </select>
+  <select id="queryChongFu" resultType="int">
+    SELECT count(*) from t_xietong_supplies_repository
+    where name=#{supplyName}
+  </select>
+
+  <select id="queryTypeId" parameterType="TXietongSuppliesRepository" resultType="int">
+    select id from t_xietong_supplies_repository where name=#{supplyName}
+  </select>
+  <select id="queryChongFuType" resultType="int">
+    SELECT count(*) from t_xietong_supplies_repository
+    where type=#{type}
+  </select>
+  <select id="queryType" parameterType="TXietongSuppliesRepository" resultType="int">
+    select count(*)  from t_xietong_supplies_repository
+    where type=#{type} and type_id=#{typeId}
+  </select>
+  <delete id="deleteName" parameterType="TXietongSuppliesRepository">
+    DELETE  FROM t_xietong_supplies_repository
+    where id=#{id}
+  </delete>
+  <delete id="deleteType" parameterType="TXietongSuppliesRepository">
+    DELETE  FROM t_xietong_supplies_repository
+    where type_id=#{typeId}
+  </delete>
+  <!--SELECT * from t_xietong_supplies_repository group by name
+  where name=#{name}-->
+  <select id="queryRepository" resultType="TXietongSuppliesRepository">
+    select  * from(SELECT * from t_xietong_supplies_repository
+   where name=#{name} order by id) as a GROUP BY a.name
+  </select>
+
+  <insert id="insertSupply" parameterType="TXietongSuppliesRepository">
+    insert into t_xietong_supplies_repository
+    set name=#{name},category_id=#{categoryid2}
+  </insert>
+
+  <select id="queryNameId" resultType="int">
+    SELECT id from t_xietong_supplies_repository
+    where name=#{name} and category_id=#{categoryid2}
+  </select>
+
+  <insert id="insertType" parameterType="TXietongSuppliesRepository">
+    insert into t_xietong_supplies_repository(type,type_id)
+    VALUES (#{type},#{typeId})
+  </insert>
+
+  <update id="updateRepository" parameterType="TXietongSuppliesRepository">
+    update t_xietong_supplies_repository
+    SET name=#{name},category_id=#{categoryid2}
+    where name=#{name}
+  </update>
+
+  <select id="queryRepositoryType" resultType="int">
+    SELECT count(*) from t_xietong_supplies_repository
+    where type=#{type} and type_id=#{typeId}
+  </select>
+
+  <select id="queryCategorySupply" resultType="int">
+    SELECT count(*) from t_xietong_supplies_repository
+    where name=#{name} and category_id=#{categoryId}
+  </select>
+</mapper>

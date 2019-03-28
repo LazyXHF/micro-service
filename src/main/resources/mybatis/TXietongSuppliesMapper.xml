@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.BanGongManagerDao" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TXietongSupplies" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="total_number" property="totalnumber" jdbcType="VARCHAR" />
+    <result column="reamark" property="reamark" jdbcType="VARCHAR" />
+    <result column="name_id" property="nameId" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="category_id" property="categoryId" jdbcType="VARCHAR" />
+    <result column="encode" property="encode" jdbcType="VARCHAR" />
+    <result column="attribute" property="attribute" jdbcType="INTEGER" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, name, type, price, stock, createtime, isdelete, total_number, reamark, name_id, 
+    type_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TXietongSuppliesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_xietong_supplies
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_xietong_supplies
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_xietong_supplies
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TXietongSuppliesExample" >
+    delete from t_xietong_supplies
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="addBanGong" parameterType="com.portjs.base.entity.TXietongSupplies" >
+    insert into t_xietong_supplies (ID, name, type, 
+      price, stock, createtime, 
+      isdelete, total_number, reamark, 
+      name_id, type_id,category,category_id,encode,attribute,file_path)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{stock,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP},
+      #{isdelete,jdbcType=INTEGER}, #{totalnumber,jdbcType=VARCHAR}, #{reamark,jdbcType=VARCHAR},
+      #{nameId,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{encode,jdbcType=VARCHAR}, #{attribute,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="getCount" parameterType="TXietongSupplies" resultType="int">
+  select  count(*) from t_xietong_supplies
+  <where>
+    <if test="content!=null and content!=''">
+   and   name like  "%"#{content}"%"
+    </if>
+    <if test="category!=null and category!=''">
+      and  category=#{category}
+    </if>
+    <!--<if test="nameId!=null and nameId!=''">
+      name_id=#{nameId}
+    </if>
+    <if test="typeId!=null and typeId!=''">
+    and  type_id=#{typeId}
+    </if>-->
+  </where>
+  </select>
+
+
+  <select id="getSupplies" parameterType="TXietongSupplies" resultMap="BaseResultMap">
+    select * from t_xietong_supplies
+    <where>
+      <if test="content!=null and content!=''">
+      and  name like  "%"#{content}"%"
+      </if>
+      <if test="category!=null and category!=''">
+       and  category = #{category}
+      </if>
+
+      <!--<if test="nameId!=null and nameId!=''">
+        name_id=#{nameId}
+      </if>
+      <if test="typeId!=null and typeId!=''">
+      and  type_id=#{typeId}
+      </if>-->
+    </where>
+    order by createtime desc
+    limit #{rownum},#{pagecount}
+
+  </select>
+  <select id="getCount1" parameterType="TXietongSupplies" resultType="Integer">
+    select  count(*) from t_xietong_supplies
+    <where>
+      attribute=0
+      <if test="content!=null and content!=''">
+        and  name like  "%"#{content}"%"
+      </if>
+      <if test="category!=null and category!=''">
+        and  category like  "%"#{category}"%"
+      </if>
+    </where>
+  </select>
+  <select id="getSupplies1" parameterType="TXietongSupplies" resultMap="BaseResultMap">
+    select * from t_xietong_supplies
+    <where>
+      attribute=0
+      <if test="content!=null and content!=''">
+        and  name like  "%"#{content}"%"
+      </if>
+      <if test="category!=null and category!=''">
+        and  category like  "%"#{category}"%"
+      </if>
+
+      <!--<if test="nameId!=null and nameId!=''">
+        name_id=#{nameId}
+      </if>
+      <if test="typeId!=null and typeId!=''">
+      and  type_id=#{typeId}
+      </if>-->
+    </where>
+    order by createtime desc
+    limit #{rownum},#{pagecount}
+
+  </select>
+<select id="queryStock" parameterType="TXietongSupplies" resultType="int">
+   select IFNULL(max(stock),0) from  t_xietong_supplies where name=#{supplyName} and type=#{supplyType}
+</select>
+<update id="updateSupplies">
+  update t_xietong_supplies
+  set stock=#{newStock}, attribute=#{attribute}
+  where name=#{supplyName} and type=#{supplyType}
+</update>
+  <update id="updateSupplies1">
+    update t_xietong_supplies
+    set stock=#{newStock}
+    where name=#{supplyName} and type=#{supplyType}
+  </update>
+<select id="queryAllSupplies" resultMap="BaseResultMap">
+  select * from t_xietong_supplies
+</select>
+  <update id="updateStock">
+    update t_xietong_supplies
+    set stock=#{newStock}
+    where name=#{name} and type_id=#{typeId}
+  </update>
+<select id="selectRight" resultMap="BaseResultMap" >
+  select * from t_xietong_supplies
+  <where>
+    <if test="name != null" >
+      name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null" >
+  and  type= #{type,jdbcType=VARCHAR}
+  </if>
+  </where>
+</select>
+  <!--<update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TXietongSupplies" >
+    update t_xietong_supplies
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="totalNumber != null" >
+        total_number = #{totalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="reamark != null" >
+        reamark = #{reamark,jdbcType=VARCHAR},
+      </if>
+      <if test="nameId != null" >
+        name_id = #{nameId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>-->
+  <update id="updateBanGong" parameterType="com.portjs.base.entity.TXietongSupplies" >
+    update t_xietong_supplies
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      stock = #{stock,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=INTEGER},
+      total_number = #{totalnumber,jdbcType=VARCHAR},
+      reamark = #{reamark,jdbcType=VARCHAR},
+      name_id = #{nameId,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=VARCHAR},
+      attribute=#{attribute},
+      category=#{category},
+      category_id=#{categoryId},
+      encode=#{encode},
+      file_path=#{filePath}
+      where id=#{id}
+  </update>
+  <delete id="deleteRepository" parameterType="String">
+    delete from t_xietong_supplies where id=#{id}
+  </delete>
+  <select id="querySupplysById"   resultMap="BaseResultMap">
+    SELECT * from t_xietong_supplies where id=#{id}
+  </select>
+  <select id="querySupply" resultType="int" >
+  select count(*) from t_xietong_supplies
+   where name= #{supplyName,jdbcType=VARCHAR}
+      and  type = #{supplyType,jdbcType=VARCHAR}
+  </select>
+  <select id="querySupplyId" resultType="String" >
+    select id from t_xietong_supplies
+     where
+     category = #{category}
+     and name = #{supplyName,jdbcType=VARCHAR}
+    and  type = #{supplyType,jdbcType=VARCHAR}
+  </select>
+  <select id="queryPrice"  resultType="Double" parameterType="TXietongSupplies">
+    select  price from t_xietong_supplies a
+    <where>
+      <if test="supplyName !=null and supplyName!=''">
+        and  a.name=#{supplyName}
+      </if>
+      <if test="supplyType !=null and supplyType!=''">
+        and  a.type like "%" #{supplyType} "%"
+      </if>
+
+    </where>
+  </select>
+  <select id="querySupplyByName" resultType="int" parameterType="com.portjs.base.entity.TXietongSupplies" >
+    select count(*) from t_xietong_supplies ar
+    <where>
+      ar.name = #{supplyName}
+      <if test="supplyType !=null and supplyType!=''">
+        and  ar.type = #{supplyType}
+      </if>
+    </where>
+  </select>
+
+  <select id="querySupplyCategories" resultType="String"  >
+    select category from t_xietong_supplies ar GROUP BY category having category!=''or category!=null
+  </select>
+
+  <select id="queryAttribute" resultType="Integer">
+    select attribute from t_xietong_supplies
+    where name=#{name} and type=#{type}
+  </select>
+</mapper>
