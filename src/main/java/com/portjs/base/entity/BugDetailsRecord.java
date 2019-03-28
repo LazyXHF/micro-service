@@ -1,9 +1,13 @@
 package com.portjs.base.entity;
 
+import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class BugDetailsRecord implements Serializable {
+@Repository
+public class BugDetailsRecord {
     private String id;
 
     private String bugId;//bug表关联id
@@ -44,14 +48,14 @@ public class BugDetailsRecord implements Serializable {
 
     private String backup10;
 
-    private static final long serialVersionUID = 1L;
+
 
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        this.id = id;
     }
 
     public String getBugId() {
@@ -59,7 +63,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBugId(String bugId) {
-        this.bugId = bugId == null ? null : bugId.trim();
+        this.bugId = bugId;
     }
 
     public String getCreaterId() {
@@ -67,7 +71,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setCreaterId(String createrId) {
-        this.createrId = createrId == null ? null : createrId.trim();
+        this.createrId = createrId;
     }
 
     public String getFileUrl() {
@@ -75,7 +79,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl == null ? null : fileUrl.trim();
+        this.fileUrl = fileUrl;
     }
 
     public String getRemark() {
@@ -83,7 +87,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public Integer getRepeatCount() {
@@ -107,7 +111,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId == null ? null : ownerId.trim();
+        this.ownerId = ownerId;
     }
 
     public Integer getIsAgree() {
@@ -131,7 +135,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup1(String backup1) {
-        this.backup1 = backup1 == null ? null : backup1.trim();
+        this.backup1 = backup1;
     }
 
     public String getBackup2() {
@@ -139,7 +143,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup2(String backup2) {
-        this.backup2 = backup2 == null ? null : backup2.trim();
+        this.backup2 = backup2;
     }
 
     public String getBackup3() {
@@ -147,7 +151,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup3(String backup3) {
-        this.backup3 = backup3 == null ? null : backup3.trim();
+        this.backup3 = backup3;
     }
 
     public String getBackup4() {
@@ -155,7 +159,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup4(String backup4) {
-        this.backup4 = backup4 == null ? null : backup4.trim();
+        this.backup4 = backup4;
     }
 
     public String getBackup5() {
@@ -163,7 +167,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup5(String backup5) {
-        this.backup5 = backup5 == null ? null : backup5.trim();
+        this.backup5 = backup5;
     }
 
     public String getBackup6() {
@@ -171,7 +175,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup6(String backup6) {
-        this.backup6 = backup6 == null ? null : backup6.trim();
+        this.backup6 = backup6;
     }
 
     public String getBackup7() {
@@ -179,7 +183,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup7(String backup7) {
-        this.backup7 = backup7 == null ? null : backup7.trim();
+        this.backup7 = backup7;
     }
 
     public String getBackup8() {
@@ -187,7 +191,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup8(String backup8) {
-        this.backup8 = backup8 == null ? null : backup8.trim();
+        this.backup8 = backup8;
     }
 
     public String getBackup9() {
@@ -195,7 +199,7 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup9(String backup9) {
-        this.backup9 = backup9 == null ? null : backup9.trim();
+        this.backup9 = backup9;
     }
 
     public String getBackup10() {
@@ -203,8 +207,6 @@ public class BugDetailsRecord implements Serializable {
     }
 
     public void setBackup10(String backup10) {
-        this.backup10 = backup10 == null ? null : backup10.trim();
+        this.backup10 = backup10;
     }
-
-
 }

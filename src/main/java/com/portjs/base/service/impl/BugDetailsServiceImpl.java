@@ -2,19 +2,25 @@ package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.BugDetailsMapper;
+import com.portjs.base.dao.InternalProjectMapper;
 import com.portjs.base.entity.BugDetails;
 import com.portjs.base.entity.InternalPersionResource;
+import com.portjs.base.entity.InternalProject;
 import com.portjs.base.service.BugDetailsService;
+import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.Bug;
+import com.portjs.base.vo.BugSearchDO;
+import com.portjs.base.vo.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BugDetailsServiceImpl implements BugDetailsService {
@@ -22,6 +28,9 @@ public class BugDetailsServiceImpl implements BugDetailsService {
 
     @Autowired
     BugDetailsMapper bugDetailsMapper;
+
+    @Autowired
+    private InternalProjectMapper projectMapper;
 
 
     /**
@@ -91,16 +100,16 @@ public class BugDetailsServiceImpl implements BugDetailsService {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         String projectId = jsonObject.getString("projectId");
         String modules = jsonObject.getString("modules");
-        String title = jsonObject.getString("title");
+        String projectedName = jsonObject.getString("projectedName");
         String designatedPersion = jsonObject.getString("designatedPersion");
         int result = jsonObject.getInteger("result");
         int pageNo = jsonObject.getInteger("pageNo");
         int pageSize = jsonObject.getInteger("pageSize");
 
         Page page = new Page();
-        int totelCount = bugDetailsMapper.bugCounts(projectId,modules,title,designatedPersion,result);
+        int totelCount = bugDetailsMapper.bugCounts(projectId,result,modules,projectedName,designatedPersion);
         page.init(totelCount, pageNo, pageSize);
-        List<BugDetails> list = bugDetailsMapper.queryAllBugInfo(projectId,modules ,title ,designatedPersion,result ,page.getRowNum(), page.getPageCount());
+        List<BugDetails> list = bugDetailsMapper.queryAllBugInfo(projectId,result,modules ,projectedName ,designatedPersion, page.getRowNum(), page.getPageCount());
 
         if (CollectionUtils.isEmpty(list)) {
             return new ResponseMessage(Code.CODE_ERROR, "查询失败");
@@ -147,13 +156,59 @@ public class BugDetailsServiceImpl implements BugDetailsService {
         return new ResponseMessage(Code.CODE_OK,"更新成功！",count);
     }
 
-    @Override
+    /*@Override
     public ResponseMessage queryAllBugInfos() {
-        List<BugDetails> bugDetails = bugDetailsMapper.queryAllBugInfos();
+        List<BugDetails> bugDetails = bugDetailsMapper.queryAllBugIf();
         if(CollectionUtils.isEmpty(bugDetails)){
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"查询失败！",bugDetails);
         }
 
         return  responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功！",bugDetails);
+    }*/
+
+    /**
+     * 级联查询
+     * @param id
+     * @return
+     */
+    @Override
+    public ResponseMessage queryAllBugAndRecordInfo( String id) {
+        List<BugDetails> bugDetails = bugDetailsMapper.queryAllBugAndRecordInfo(id);
+        if(CollectionUtils.isEmpty(bugDetails)){
+
+            return new ResponseMessage(Code.CODE_ERROR,"查询失败",bugDetails);
+        }
+
+        return new ResponseMessage(Code.CODE_OK,"查询成功",bugDetails);
     }
+
+    /**
+     * bug查询条件
+     * @return
+     */
+    @Override
+    public ResponseMessage queryBugSearch() {
+        BugSearchDO searchDO = new BugSearchDO();
+//        List<InternalProject> projects = projectMapper.selectProjectAll();
+
+        List<Bug> bugs = bugDetailsMapper.queryAllBugIf();
+
+        List<Project> projects = projectMapper.selectProjectAll();
+        Map map = new HashMap();
+        map.put("value","1");
+        map.put("value","2");
+        map.put("value","3");
+        map.put("value","4");
+        map.put("value","5");
+
+        searchDO.setBugDetailsList(bugs);
+        searchDO.setProjectList(projects);
+        searchDO.setSituation(map);
+        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",searchDO);
+
+
+        return responseMessage;
+    }
+
+
 }

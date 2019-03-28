@@ -2,6 +2,7 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.BugDetails;
 import com.portjs.base.entity.InternalPersionResource;
+import com.portjs.base.vo.Bug;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -30,19 +31,19 @@ public interface BugDetailsMapper {
      * @param projectId
      * @return
      */
-    int bugCounts(@Param("projectId")String projectId,@Param("modules")String modules,@Param("title")String title,
-                  @Param("designatedPersion")String designatedPersion,@Param("result")int result);
+    int bugCounts(@Param("projectId")String projectId,@Param("result")int result,@Param("modules")String modules,@Param("projectedName")String projectedName,
+                  @Param("designatedPersion")String designatedPersion);
 
     /**
      * bug分页列表
      * @param modules  模块
-     * @param title   标题
+     * @param projectedName   项目名称
      * @param designatedPersion  指派人
      * @param result    处理结果
      * @return
      */
-    List<BugDetails> queryAllBugInfo(@Param("projectId")String projectId,@Param("modules")String modules,@Param("title")String title,
-                                                  @Param("designatedPersion")String designatedPersion,@Param("result")int result,
+    List<BugDetails> queryAllBugInfo(@Param("projectId")String projectId,@Param("result")int result,@Param("modules")String modules,@Param("projectedName")String projectedName,
+                                                  @Param("designatedPersion")String designatedPersion,
                                                   @Param("pageNo")int pageNo,@Param("pageSize")int pageSize);
 
 
@@ -50,5 +51,12 @@ public interface BugDetailsMapper {
      * 查询所有bug信息
      * @return
      */
-    List<BugDetails> queryAllBugInfos();
+    @Select("select status,type,priority from t_mgt_bug")
+    List<Bug> queryAllBugIf();
+
+    /**
+     * 级联查询
+     * @return
+     */
+    List<BugDetails> queryAllBugAndRecordInfo(@Param("id") String id);
 }

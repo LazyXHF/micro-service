@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.InternalProject;
+import com.portjs.base.vo.Project;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -112,4 +113,6 @@ public interface InternalProjectMapper{
      * @return
      */
     int queryByPage(InternalProject record);
+    @Select("select name,id from internal_project")
+    List<Project> selectProjectAll();
 }

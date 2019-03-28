@@ -1,10 +1,11 @@
 package com.portjs.base.entity;
 
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class BugDetails implements Serializable {
+public class BugDetails  {
     private String id;
 
     private String projectId;//项目id
@@ -79,17 +80,17 @@ public class BugDetails implements Serializable {
 
     private String reappearMethod;//重现方法
 
-    private List<BugDetailsRecord> list;
+    @OneToMany
+    private List<BugDetailsRecord> bugDetailsRecordList;
 
-    public List<BugDetailsRecord> getList() {
-        return list;
+
+    public List<BugDetailsRecord> getBugDetailsRecordList() {
+        return bugDetailsRecordList;
     }
 
-    public void setList(List<BugDetailsRecord> list) {
-        this.list = list;
+    public void setBugDetailsRecordList(List<BugDetailsRecord> bugDetailsRecordList) {
+        this.bugDetailsRecordList = bugDetailsRecordList;
     }
-
-    private static final long serialVersionUID = 1L;
 
     public String getId() {
         return id;

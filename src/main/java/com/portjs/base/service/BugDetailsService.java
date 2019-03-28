@@ -36,7 +36,19 @@ public interface BugDetailsService {
      */
     ResponseMessage queryAllBugInfo(String requestBody);
 
-    ResponseMessage queryAllBugInfos();
+    //ResponseMessage queryAllBugInfos();
+
+    /**
+     * 级联查询
+     * @return
+     */
+    ResponseMessage queryAllBugAndRecordInfo(String id);
+
+    /**
+     * bug查询条件
+     * @return
+     */
+    ResponseMessage queryBugSearch();
 
     //int updateByPrimaryKeyWithBLOBs(BugDetails record);
 

@@ -98,16 +98,49 @@ public class BugDetailsController extends BaseController{
     }
 
     /**
-     * TODO 查询所有Bug信息
+     * 查询所有Bug信息
      * @return
      */
-    @RequestMapping("query-bug-infos")
+    /*@RequestMapping("query-bug-infos")
     @LogInfo(methodName = "查询Bug信息")
     public ResponseMessage queryBugInfos() {
         logger.debug(TAG);
         UnifiedExceptionHandler.method= "query-bug-infos==============================";
         responseMessage = bugDetailsService.queryAllBugInfos();
         return responseMessage;
+    }*/
+
+    /**
+     * TODO 级联查询
+     * @return
+     */
+    @RequestMapping("query-bug-and-record-infos")
+    @LogInfo(methodName = "查询Bug信息")
+    public ResponseMessage queryAllBugAndRecordInfo(@RequestBody String id) {
+        logger.debug(TAG+id);
+        UnifiedExceptionHandler.method= id+ "queryAllBugAndRecordInfo==============================" + id;
+        JSONObject ids = JSONObject.parseObject(id);
+        String is = ids.getString("id");
+
+        responseMessage = bugDetailsService.queryAllBugAndRecordInfo(is);
+        return responseMessage;
     }
+
+
+    /**
+     * bug查询条件
+     * @param
+     * @return
+     */
+    @RequestMapping("query-bug-search")
+    @LogInfo(methodName = "bug查询条件")
+    public ResponseMessage queryBugSearch() {
+
+        UnifiedExceptionHandler.method=  "queryBugSearch==============================";
+        responseMessage = bugDetailsService.queryBugSearch();
+        return responseMessage;
+    }
+
+
 
 }

@@ -39,6 +39,8 @@
     <result column="backUp14" jdbcType="VARCHAR" property="backup14" />
     <result column="backUp15" jdbcType="VARCHAR" property="backup15" />
   </resultMap>
+
+
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.portjs.base.entity.BugDetails">
     <result column="reappear_method" jdbcType="LONGVARCHAR" property="reappearMethod" />
   </resultMap>
@@ -61,12 +63,88 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <select id="queryAllBugInfos" resultMap="BaseResultMap">
-    select distinct
-    result,projected_name,designated_persion
+
+  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.BugDetails">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="projectId" jdbcType="VARCHAR" property="projectId" />
+    <result column="bugNumber" jdbcType="VARCHAR" property="bugNumber" />
+    <result column="projectedName" jdbcType="VARCHAR" property="projectedName" />
+    <result column="type1" jdbcType="VARCHAR" property="type" />
+    <result column="modules1" jdbcType="VARCHAR" property="modules" />
+    <result column="title1" jdbcType="VARCHAR" property="title" />
+    <result column="content1" jdbcType="VARCHAR" property="content" />
+    <result column="priority1" jdbcType="VARCHAR" property="priority" />
+    <result column="status1" jdbcType="VARCHAR" property="status" />
+    <result column="versionNumber" jdbcType="VARCHAR" property="versionNumber" />
+    <result column="fileUrl" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="designatedPersion" jdbcType="VARCHAR" property="designatedPersion" />
+    <result column="accepter1" jdbcType="VARCHAR" property="accepter" />
+    <result column="acceptTime" jdbcType="TIMESTAMP" property="acceptTime" />
+    <result column="bugCreateTime" jdbcType="TIMESTAMP" property="bugCreateTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="solution1" jdbcType="VARCHAR" property="solution" />
+    <result column="solutionResult" jdbcType="INTEGER" property="solutionResult" />
+    <result column="remark1" jdbcType="VARCHAR" property="remark" />
+    <result column="result1" jdbcType="INTEGER" property="result" />
+    <result column="backUp1" jdbcType="VARCHAR" property="backup1" />
+    <result column="backUp2" jdbcType="VARCHAR" property="backup2" />
+    <result column="backUp3" jdbcType="VARCHAR" property="backup3" />
+    <result column="backUp4" jdbcType="VARCHAR" property="backup4" />
+    <result column="backUp5" jdbcType="VARCHAR" property="backup5" />
+    <result column="backUp6" jdbcType="VARCHAR" property="backup6" />
+    <result column="backUp7" jdbcType="VARCHAR" property="backup7" />
+    <result column="backUp8" jdbcType="VARCHAR" property="backup8" />
+    <result column="backUp9" jdbcType="VARCHAR" property="backup9" />
+    <result column="backUp10" jdbcType="VARCHAR" property="backup10" />
+    <result column="backUp11" jdbcType="VARCHAR" property="backup11" />
+    <result column="backUp12" jdbcType="VARCHAR" property="backup12" />
+    <result column="backUp13" jdbcType="VARCHAR" property="backup13" />
+    <result column="backUp14" jdbcType="VARCHAR" property="backup14" />
+    <result column="backUp15" jdbcType="VARCHAR" property="backup15" />
+    <collection property="bugDetailsRecordList" ofType="com.portjs.base.entity.BugDetailsRecord">
+      <id column="recordId" jdbcType="VARCHAR" property="id" />
+      <result column="bugId" jdbcType="VARCHAR" property="bugId" />
+      <result column="createrId" jdbcType="VARCHAR" property="createrId" />
+      <result column="fileUrl1" jdbcType="VARCHAR" property="fileUrl" />
+      <result column="remark2" jdbcType="VARCHAR" property="remark" />
+      <result column="repeatCount" jdbcType="INTEGER" property="repeatCount" />
+      <result column="status2" jdbcType="INTEGER" property="status" />
+      <result column="ownerId2" jdbcType="VARCHAR" property="ownerId" />
+      <result column="isAgree" jdbcType="INTEGER" property="isAgree" />
+      <result column="recordTime1" jdbcType="TIMESTAMP" property="recordTime" />
+      <result column="backUp11" jdbcType="VARCHAR" property="backup1" />
+      <result column="backUp12" jdbcType="VARCHAR" property="backup2" />
+      <result column="backUp13" jdbcType="VARCHAR" property="backup3" />
+      <result column="backUp14" jdbcType="VARCHAR" property="backup4" />
+      <result column="backUp15" jdbcType="VARCHAR" property="backup5" />
+      <result column="backUp16" jdbcType="VARCHAR" property="backup6" />
+      <result column="backUp17" jdbcType="VARCHAR" property="backup7" />
+      <result column="backUp18" jdbcType="VARCHAR" property="backup8" />
+      <result column="backUp19" jdbcType="VARCHAR" property="backup9" />
+      <result column="backUp100" jdbcType="VARCHAR" property="backup10" />
+    </collection>
+  </resultMap>
+  <!--级联查询-->
+  <select id="queryAllBugAndRecordInfo" resultMap="BaseResultMap1">
+    select tb.id as id ,tb.project_id as projectId,tb.file_url as fileUrl,tb.bug_number as bugNumber,tb.projected_name as projectedName,tb.type as type1,
+    tb.modules as modules1,tb.title as title1,tb.content as content1,tb.priority as priority1,tb.status as status1,tb.version_number as versionNumber,tb.backUp2 as backUp2,
+    tb.designated_persion as designatedPersion,tb.accepter as accepter,tb.accept_time as acceptTime,tb.bug_create_time as bugCreateTime,tb.end_time as endTime,
+    tb.solution as solution,tb.solution_result as solutionResult,tb.remark as remark1,tb.result as result1,tb.backUp1 as backUp1,tb.backUp2 as backUp2,
+    tbr.id as recordId,tbr.bug_id as bugId,
+    tbr.creater_id as createrId,tbr.file_url as fileUrl1,tbr.remark as remark2,tbr.repeat_count as repeatCount,tbr.status as status2,tbr.owner_id as ownerId2,
+    tbr.is_agree as isAgree,tbr.record_time as recordTime1,tbr.backUp1 as backUp11,tbr.backUp2 as backUp12,tbr.backUp3 as backUp13,tbr.backUp4 as backUp14,
+    tbr.backUp3 as backUp13,tbr.backUp4 as backUp14,tbr.backUp5 as backUp15,tbr.backUp6 as backUp16,tbr.backUp7 as backUp18,tbr.backUp9 as backUp19,tbr.backUp10 as backUp100
+    from t_mgt_bug tb inner join t_mgt_bug_record tbr
+    on tb.id=tbr.bug_id
+    where tb.id=#{id}
+  </select>
+
+  <!--<select id="queryAllBugIf" resultMap="BaseResultMap">
+    select
+    status,type,priority
     from t_mgt_bug
 
-  </select>
+  </select>-->
 
 
   <select id="queryAllBugInfo" resultMap="BaseResultMap">
@@ -77,27 +155,25 @@
     <if test="modules != null">
       and    modules like concat('%',#{modules},'%')
     </if>
-    <if test="projected_name != null">
-      and  projected_name like concat('%',#{projected_name},'%')
+    <if test="projectedName != null">
+      and  projected_name like concat('%',#{projectedName},'%')
     </if>
     <if test="designatedPersion != null">
       and  designated_persion like concat('%',#{designatedPersion},'%')
     </if>
-    order by bug_create_time DESC   LIMIT  #{pageNo},#{pageSize}
+    order by bug_create_time,status DESC   LIMIT  #{pageNo},#{pageSize}
   </select>
 
 
   <select id="bugCounts"  resultType="Integer">
     SELECT count(*)
-    from t_mgt_bug where 1=1
-
-     and project_id = #{projectId} and
+    from t_mgt_bug where project_id = #{projectId} and
     result = #{result,jdbcType=INTEGER}
     <if test="modules != null">
       and    modules like concat('%',#{modules},'%')
     </if>
-    <if test="projected_name != null">
-      and  projected_name like concat('%',#{projected_name},'%')
+    <if test="projectedName != null">
+      and  projected_name like concat('%',#{projectedName},'%')
     </if>
     <if test="designatedPersion != null">
       and  designated_persion like concat('%',#{designatedPersion},'%')
