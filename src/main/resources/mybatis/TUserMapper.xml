@@ -725,6 +725,8 @@
     UPDATE t_user u SET u.`SORT` = #{sort} WHERE u.`ID` = #{uid}
   </update>
 
-
+  <select id="queryUserInfo" resultMap="BaseResultMap">
+    select * from t_user
+  </select>
 
 </mapper>

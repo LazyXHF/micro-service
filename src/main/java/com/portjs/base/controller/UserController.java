@@ -1,9 +1,13 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
+import com.portjs.base.dao.InternalTodo;
+import com.portjs.base.dao.TUserMapper;
 import com.portjs.base.entity.TUser;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.TUserService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
 import com.portjs.base.vo.PageVo;
@@ -12,7 +16,9 @@ import com.portjs.base.vo.UserRoleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户
@@ -114,5 +120,38 @@ public class UserController extends BaseController  {
         responseMessage = tUserService.updateUserStatus(user);
         return responseMessage;
     }
+
+    @Autowired
+    TUserMapper userMapper;
+    @RequestMapping("/queryUserInfo")
+    @ResponseBody
+    public ResponseMessage queryUserInfo(){
+        List<TUser> list=userMapper.queryUserInfo();
+        if(list.isEmpty()){
+
+            return  new ResponseMessage(Code.CODE_OK,"人员信息为空");
+        }
+        return new ResponseMessage(Code.CODE_OK,"人员信息",list);
+    }
+    @Autowired
+    InternalTodo internalTodoMapper;
+    @RequestMapping("/isShenHe")
+    @ResponseBody
+    public Map<String,Integer> isShenHe(@RequestBody String requestBody) {
+        JSONObject requestJson = JSONObject.parseObject(requestBody);
+        String id = requestJson.getString("id");
+        String ownerId = requestJson.getString("ownerId");
+        int code = internalTodoMapper.isShenHe(id, ownerId);
+        Map<String, Integer> map = new HashMap<>();
+        if (code == 0) {
+            map.put("shenhe", code);
+            return map;
+        } else {
+            map.put("shenhe",1);
+            return map;
+        }
+    }
+
+
 
 }
