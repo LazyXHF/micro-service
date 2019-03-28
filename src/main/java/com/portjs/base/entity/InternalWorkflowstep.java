@@ -1,35 +1,37 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
+
 import java.util.Date;
 
-public class InternalWorkflowstep {
+public class InternalWorkflowstep extends BaseEntity{
     private String id;
 
-    private String relateddomain;
+    private String relateddomain;//对应的业务模块
 
-    private String relateddomainId;
+    private String relateddomainId;//业务单ID
 
-    private String prestepId;
+    private String prestepId;//上一步流程id
 
-    private String stepDesc;
+    private String stepDesc;//步骤描述
 
-    private String actionuserId;
+    private String actionuserId;//处理人id
 
-    private Date actionTime;
+    private Date actionTime;//处理时间
 
-    private Integer actionResult;
+    private Integer actionResult;//处理结果,0:同意1:不同意
 
-    private String fileUrl;
+    private String fileUrl;//附件路径
 
-    private String fileDescription;
+    private String fileDescription;//附件描述
 
-    private String actionComment;
+    private String actionComment;//处理意见
 
     private Date deleteTime;
 
-    private String status;
+    private String status;//状态 0 ： 未审核   1：已审核
 
-    private String projectCoding;
+    private String projectCoding;//项目编码
 
     private String backup3;
 

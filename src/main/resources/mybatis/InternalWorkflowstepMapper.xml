@@ -91,9 +91,10 @@
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
+    order by backup_3
+    <!--<if test="orderByClause != null" >
+      , ${orderByClause}
+    </if>-->
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -120,7 +121,7 @@
       )
     values (#{id,jdbcType=VARCHAR}, #{relateddomain,jdbcType=VARCHAR}, #{relateddomainId,jdbcType=VARCHAR}, 
       #{prestepId,jdbcType=VARCHAR}, #{stepDesc,jdbcType=VARCHAR}, #{actionuserId,jdbcType=VARCHAR}, 
-      #{actionTime,jdbcType=TIMESTAMP}, #{actionResult,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR}, 
+     SYSDATE(), #{actionResult,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR},
       #{fileDescription,jdbcType=VARCHAR}, #{actionComment,jdbcType=VARCHAR}, #{deleteTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=VARCHAR}, #{projectCoding,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}
       )

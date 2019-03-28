@@ -166,7 +166,7 @@
       backup_2, backup_3)
     values (#{id,jdbcType=VARCHAR}, #{currentstepId,jdbcType=VARCHAR}, #{stepDesc,jdbcType=VARCHAR}, 
       #{relateddomain,jdbcType=VARCHAR}, #{relateddomainId,jdbcType=VARCHAR}, #{senderId,jdbcType=VARCHAR}, 
-      #{senderTime,jdbcType=TIMESTAMP}, #{receiverId,jdbcType=VARCHAR}, #{todoType,jdbcType=VARCHAR}, 
+      SYSDATE(), #{receiverId,jdbcType=VARCHAR}, #{todoType,jdbcType=VARCHAR},
       #{actiontime,jdbcType=TIMESTAMP}, #{deletetime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
       #{backup2,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR})
   </insert>

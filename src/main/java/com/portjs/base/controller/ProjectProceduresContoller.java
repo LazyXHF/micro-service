@@ -12,34 +12,35 @@ import com.portjs.base.util.ResponseMessage;
 
 @CrossOrigin
 @RestController
-@RequestMapping("projectProcedures")
+@RequestMapping("/projectProcedures")
 public class ProjectProceduresContoller extends BaseController {
 	static final String tag = "ProjectProceduresService===>";
    @Autowired
    private ProjectProceduresService projectProceduresService;
-   @RequestMapping("createProjectProcedures")
+   //提交
+   @RequestMapping("/create-project-procedures")
    public ResponseMessage createProjectProcedures(@RequestBody Map<String, Object> requestBody) {
-	   logger.debug("createProjectProcedures()begin......"+requestBody);
+	   logger.debug("create-project-procedures()begin......"+requestBody);
 	   try {
 		   return projectProceduresService.createProjectProcedures(requestBody);
-	} catch (Exception e) {
-		logger.error("createProjectProcedures()error....",e);
+		} catch (Exception e) {
+		logger.error("create-project-procedures()error....",e);
 		throw new RuntimeException();
-	}
+		}
 	
    }
-   @RequestMapping("selectProjectProcedures")
+   @RequestMapping("/select-project-procedures")
    //展示立项阶段的页面基本信息
    public ResponseMessage selectProjectProcedures(@RequestBody String requestBody) {
-	   logger.debug("selectProjectProcedures()begin......"+requestBody);
+	   logger.debug("select-project-procedures()begin......"+requestBody);
 	   try {
 		return projectProceduresService.selectProjectProcedures(requestBody);
 	} catch (Exception e) {
-		logger.error("selectProjectProcedures()error....",e);
+		logger.error("select-project-procedures()error....",e);
 		throw new RuntimeException();
 	}
    }
-   @RequestMapping("insertProjectProcedures")
+   @RequestMapping("/insert-project-procedures")
    //项目立项过程中的审核流转
    public ResponseMessage insertProjectProcedures(@RequestBody String requestBody) {
 	   logger.debug("insertProjectProcedures()begin......"+requestBody);
@@ -50,7 +51,7 @@ public class ProjectProceduresContoller extends BaseController {
 		throw new RuntimeException();
 	}   
    }
-   @RequestMapping("projectProceduresArchive")
+   @RequestMapping("/project-procedures-archive")
    //立项阶段的归档操作
    public ResponseMessage projectProceduresArchive(@RequestBody String requestBody) {
 	
