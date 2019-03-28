@@ -46,4 +46,17 @@ public interface BugDetailsRecordMapper {
     int updateByPrimaryKeySelective(BugDetailsRecord record);
 
     int updateByPrimaryKey(BugDetailsRecord record);
+
+    /**
+     * 根据登录人id查询代办事项
+     * @param owner_id
+     * @return
+     */
+    List<BugDetailsRecord> selectByOwnerId(@Param("owner_id") String owner_id,@Param("pageNo") int pageNo,@Param("pageSize") int pageSize);
+    /**
+     * 根据登录人id查询代办事项总数
+     * @param owner_id
+     * @return
+     */
+    int selectByOwnerIdCount(String owner_id);
 }

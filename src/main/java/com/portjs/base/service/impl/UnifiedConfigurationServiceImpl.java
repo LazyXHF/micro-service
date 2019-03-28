@@ -109,7 +109,7 @@ public class UnifiedConfigurationServiceImpl implements UnifiedConfigurationServ
      * @param requestBody
      * @return
      */
-    @Override
+    /*@Override
     public ResponseMessage deleteProjectLevel(String requestBody) {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         String id = jsonObject.getString("id");//项目等级id
@@ -118,7 +118,7 @@ public class UnifiedConfigurationServiceImpl implements UnifiedConfigurationServ
             return new ResponseMessage(Code.CODE_ERROR, "删除失败");
         }
         return new ResponseMessage(Code.CODE_OK, "删除成功");
-    }
+    }*/
 
 
 
@@ -207,7 +207,7 @@ public class UnifiedConfigurationServiceImpl implements UnifiedConfigurationServ
      * @param requestBody
      * @return
      */
-    @Override
+    /*@Override
     public ResponseMessage deleteProjectType(String requestBody) {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         String id = jsonObject.getString("id");//项目类型id
@@ -216,6 +216,6 @@ public class UnifiedConfigurationServiceImpl implements UnifiedConfigurationServ
             return new ResponseMessage(Code.CODE_ERROR, "删除失败");
         }
         return new ResponseMessage(Code.CODE_OK, "删除成功");
-    }
+    }*/
 
 }

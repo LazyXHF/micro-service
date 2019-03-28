@@ -331,4 +331,27 @@
       backUp10 = #{backup10,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <!--根据登录人id查询代办事项-->
+    <select id="selectByOwnerId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mgt_bug_record
+        <where>
+            status="1"
+            and owner_id =#{owner_id,jdbcType=VARCHAR}
+        </where>
+        limit #{pageNo},#{pageSize}
+    </select>
+
+  <!--根据登录人id查询代办事项总数-->
+  <select id="selectByOwnerIdCount" parameterType="java.lang.String" resultType="int">
+    select
+    count(*)
+    from t_mgt_bug_record
+    <where>
+      status="1"
+      and owner_id =#{owner_id,jdbcType=VARCHAR}
+    </where>
+  </select>
 </mapper>

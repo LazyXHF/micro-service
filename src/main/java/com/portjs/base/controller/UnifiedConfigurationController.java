@@ -68,14 +68,14 @@ public class UnifiedConfigurationController extends BaseController {
      * @param requestBody
      * @return
      */
-    @LogInfo(methodName = "统一模块删除项目等级")
+    /*@LogInfo(methodName = "统一模块删除项目等级")
     @RequestMapping("delete-project-level")
     public ResponseMessage deleteProjectLevel (@RequestBody String requestBody)  {
         logger.debug("deleteProjectLevel() begin body={}",requestBody);
         UnifiedExceptionHandler.method= tag+"deleteProjectLevel=============================="+requestBody;
         ResponseMessage responseMessage=  unifiedConfigurationService.deleteProjectLevel(requestBody);
         return responseMessage;
-    }
+    }*/
 
 
 
@@ -126,14 +126,14 @@ public class UnifiedConfigurationController extends BaseController {
      * @param requestBody
      * @return
      */
-    @LogInfo(methodName = "统一模块删除项目类型")
+    /*@LogInfo(methodName = "统一模块删除项目类型")
     @RequestMapping("delete-project-type")
     public ResponseMessage deleteProjectType (@RequestBody String requestBody)  {
         logger.debug("deleteProjectType() begin body={}",requestBody);
         UnifiedExceptionHandler.method= tag+"deleteProjectType=============================="+requestBody;
         ResponseMessage responseMessage=  unifiedConfigurationService.deleteProjectType(requestBody);
         return responseMessage;
-    }
+    }*/
 
 
 }

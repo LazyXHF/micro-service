@@ -1,13 +1,17 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.TXietongDictionary;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.DictionaryService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
 
 /**
  * 统一模块化配置
@@ -25,6 +29,41 @@ public class DictionaryController extends  BaseController{
     InternalProjectService  internalProjectService;
     @Resource
     ManagerService managerService;*/
+    /*@Resource
+    ManagerService managerService;*/
+
+    @LogInfo(methodName = "字典表查询通用类")
+    @RequestMapping("/selectDictionary")
+    @ResponseBody
+    public ResponseMessage selectDictionary(@RequestBody String request) {
+        logger.debug("selectDictionary() begin===>");
+        try {
+            JSONObject msg = JSONObject.parseObject(request);
+            String code = msg.getString("code");
+            List<TXietongDictionary> list = dictionaryService.selectDictionary(code);
+            return new ResponseMessage(Code.CODE_OK, "success", list);
+        } catch (Exception e) {
+            logger.error(tag + "selectDictionary() end===>" + e);
+            return new ResponseMessage(Code.CODE_ERROR, "error", "查询失败");
+        }
+
+    }
+
+    //查询发文中的配置项
+    @RequestMapping("selectDispatchTypeByTypeId")
+    @ResponseBody
+    public ResponseMessage selectDispatchTypeByTypeId(@RequestBody String requestBody) {
+        return  dictionaryService.selectDispatchTypeByTypeId(requestBody);
+    }
+
+    //统一配置项
+    @RequestMapping("updateDictionaryByCodeAndId")
+    @ResponseBody
+    public ResponseMessage updateDictionaryByCodeAndId(@RequestBody String requestBody) {
+        return dictionaryService.updateDictionaryByCodeAndId(requestBody);
+    }
+
+
     /**
      * 查询人员配置信息
      * @return

@@ -19,6 +19,8 @@ import java.util.UUID;
 @Service
 public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
     ResponseMessage responseMessage;
+
+
     @Autowired
     BugDetailsRecordMapper bugDetailsRecordMapper;
     /**
