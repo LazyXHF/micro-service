@@ -203,8 +203,7 @@ public class TXietongConferenceRoomImp extends BaseController implements TXieton
 	public ResponseMessage updateAfterCheckConferenceRoom(String requestBody) {
 		try {
 			JSONObject requestJson = JSONObject.parseObject(requestBody);
-			String opinion="";
-			opinion = requestJson.getString("opinion");
+			String opinion = requestJson.getString("opinion");
 			String rec_comment = requestJson.getString("rec_comment");
 			String mrRecordId = requestJson.getString("mrRecordId");
 			String nextApproverId = requestJson.getString("nextApproverId");

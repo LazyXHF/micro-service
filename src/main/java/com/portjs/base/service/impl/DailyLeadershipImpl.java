@@ -913,10 +913,18 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 ArrayList arrayList = new ArrayList();
                 for (TXietongUserMinisterRelation relation : relations) {
                     TUser user1 = userMapper.selectByPrimaryKey(relation.getVisualId());
-                    if (StringUtils.isEmpty(user1)) {
-                        return new ResponseMessage(Code.CODE_ERROR, "查询失败");
+
+                    if (!StringUtils.isEmpty(user1)) {
+                        arrayList.add(user1);
+                    }else {
+                        TXietongUserMinisterRelation relation1 = new TXietongUserMinisterRelation();
+                        relation1.setStatus("1");
+                        TXietongUserMinisterRelationExample example1 = new TXietongUserMinisterRelationExample();
+                        TXietongUserMinisterRelationExample.Criteria criteria1 = example1.createCriteria();
+                        criteria1.andVisualIdEqualTo(relation.getVisualId());
+                        userMinisterRelationMapper.updateByExampleSelective(relation1, example1);
                     }
-                    arrayList.add(user1);
+
                 }
                 user.setUsers(arrayList);
             }

@@ -362,7 +362,7 @@
   </update>
   <!--  -->
   <select id="selectMrApplyByMrApplyId" resultMap="BaseResultMap">
-  select r.*,u.name_cn as name from t_xietong_mr_apply_record r,t_xietong_user u 
+  select r.*,u.name_cn as name from t_xietong_mr_apply_record r,t_user u
   where r.apply_id=#{apply_id} and r.status=1 and u.id=r.owner_id
   </select>
 </mapper>
