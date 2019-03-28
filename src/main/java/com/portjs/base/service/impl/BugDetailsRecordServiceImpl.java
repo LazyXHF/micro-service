@@ -81,9 +81,9 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
     public ResponseMessage selectByPrimaryKey(String id) {
         BugDetailsRecord bugDetailsRecord = bugDetailsRecordMapper.selectByPrimaryKey(id);
         if(StringUtils.isEmpty(bugDetailsRecord)){
-            return new ResponseMessage(Code.CODE_ERROR,"添加失败！",bugDetailsRecord);
+            return new ResponseMessage(Code.CODE_ERROR,"查询失败！",bugDetailsRecord);
         }
-        return  new ResponseMessage(Code.CODE_OK,"添加成功！",bugDetailsRecord);
+        return  new ResponseMessage(Code.CODE_OK,"查询成功！",bugDetailsRecord);
     }
 
     /**
