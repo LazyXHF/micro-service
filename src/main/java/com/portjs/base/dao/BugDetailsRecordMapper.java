@@ -59,4 +59,9 @@ public interface BugDetailsRecordMapper {
      * @return
      */
     int selectByOwnerIdCount(String owner_id);
+
+    @Update("UPDATE t_mgt_bug_record SET STATUS = #{status} WHERE  id = #{id}")
+    int updateStatusByOwnerIDAndBugId(@Param("status") String status,@Param("id")String id);
+
+
 }

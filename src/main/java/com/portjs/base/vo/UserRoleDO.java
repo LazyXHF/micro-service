@@ -57,7 +57,7 @@ public class UserRoleDO  {
     private String pingyin;
 
 
-
+    private String nameCn;
 
 
 
@@ -91,6 +91,15 @@ public class UserRoleDO  {
     private String leaderId;
 //    //部门负责人id
 //    private String leaderName;
+
+
+    public String getNameCn() {
+        return nameCn;
+    }
+
+    public void setNameCn(String nameCn) {
+        this.nameCn = nameCn;
+    }
 
     public String getLeaderId() {
         return leaderId;

@@ -1,7 +1,11 @@
 package com.portjs.base.service.impl;
 
+import com.portjs.base.dao.BugDetailsMapper;
 import com.portjs.base.dao.BugDetailsRecordMapper;
+import com.portjs.base.dao.TUserMapper;
+import com.portjs.base.dao.TUserRoleMapper;
 import com.portjs.base.entity.BugDetailsRecord;
+import com.portjs.base.entity.TUser;
 import com.portjs.base.service.BugDetailsRecordService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +28,12 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
 
     @Autowired
     BugDetailsRecordMapper bugDetailsRecordMapper;
+
+    @Autowired
+    private TUserMapper tUserMapper;
+
+    @Autowired
+    private BugDetailsMapper detailsMapper;
     /**
      * 根据id删除bug审批信息（可批量删除）
      * @param ids
@@ -56,21 +67,82 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         //SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd :hh:mm:ss");
         record.setRecordTime(date);
 
-        int i = 0;
-        try {
-            if(StringUtils.isEmpty(record.getBugId())){
-                return new ResponseMessage(Code.CODE_ERROR , "添加Bug审批信息,Bug id未传");
-            }
-            if(StringUtils.isEmpty(record.getCreaterId())){
-                record.setCreaterId(UserUtils.getCurrentUser().getId());
-            }
-            i = bugDetailsRecordMapper.insertSelective(record);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if(StringUtils.isEmpty(record.getBugId())){
+            return new ResponseMessage(Code.CODE_ERROR , "添加Bug审批信息,Bug id未传");
         }
-        if(i==0){
+
+        if(StringUtils.isEmpty(record.getCreaterId())){
+//            record.setCreaterId(UserUtils.getCurrentUser().getId());
+            return new ResponseMessage(Code.CODE_ERROR , "创建人员Id为空");
+        }
+
+        //指派人id
+        String ownerId = record.getOwnerId();
+        //经理角色id
+        String managerId = "c2582665-3730-4b4b-896c-e50242e9471b";
+        //开发人员角色
+        String developerId = "565ecec0-6ed3-4f44-bd8d-faa6fe6c744e";
+        //测试人员角色
+        String testID = "d3bcbe76-604e-4d89-93e6-e19438daad96";
+        //bugId
+        String bugId = record.getBugId();
+
+
+        //如果有指派人
+        if (!StringUtils.isEmpty(record.getOwnerId())){
+            //经理用户
+            List<TUser> managerUsers = tUserMapper.selectUserByRoleId(managerId);
+            if (CollectionUtils.isEmpty(managerUsers)){
+                return  new ResponseMessage(Code.CODE_ERROR,"该经理角色下无用户");
+            }
+            //开发人员用户
+            List<TUser> developerUsers = tUserMapper.selectUserByRoleId(developerId);
+            if (CollectionUtils.isEmpty(developerUsers)){
+                return  new ResponseMessage(Code.CODE_ERROR,"该开发角色下无用户");
+            }
+            //测试人员角色
+            List<TUser> testUsers = tUserMapper.selectUserByRoleId(testID);
+            if (CollectionUtils.isEmpty(testUsers)){
+                return  new ResponseMessage(Code.CODE_ERROR,"该测试角色下无用户");
+            }
+            //result  1  开发   2 经理   3 测试
+
+
+
+
+            //判断指派人是否是开发人员
+            for (int j=0;j<developerUsers.size();j++){
+                String developerIds = developerUsers.get(j).getId();
+                if (developerIds.equals(ownerId)){
+                    detailsMapper.updateStatusById("1",bugId);
+                }
+            }
+
+            //判断指派人是否是经理
+            for (int i=0;i<managerUsers.size();i++){
+                String managerIds = managerUsers.get(i).getId();
+                if (managerIds.equals(ownerId)){
+                    detailsMapper.updateStatusById("2",bugId);
+                }
+            }
+            //判断指派人是否是测试人员
+            for (int i=0;i<testUsers.size();i++){
+                String testIds = testUsers.get(i).getId();
+                if (testIds.equals(ownerId)){
+                    detailsMapper.updateStatusById("3",bugId);
+                }
+            }
+
+        }else {
+            //结束此单
+            detailsMapper.updateStatusById("4",bugId);
+            bugDetailsRecordMapper.updateStatusByOwnerIDAndBugId("0",record.getId());
+        }
+          int i = bugDetailsRecordMapper.insertSelective(record);
+            if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
-        }
+            }
         return  new ResponseMessage(Code.CODE_OK,"添加成功！",i);
     }
 
@@ -130,6 +202,8 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         }
         return new ResponseMessage(Code.CODE_OK,"更新成功！",count);
     }
+
+
 
 
 }

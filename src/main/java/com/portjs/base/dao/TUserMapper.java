@@ -4,6 +4,7 @@ import com.portjs.base.entity.TUser;
 import com.portjs.base.entity.TUserExample;
 import com.portjs.base.vo.UserRoleDO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
@@ -59,5 +60,8 @@ public interface TUserMapper {
     String selectById(@Param("id") String id);
 
     List<TUser> queryUserInfo();
+
+    @Select("SELECT u.* FROM t_user u LEFT JOIN t_user_role ur ON u.`ID` = ur.`user_id` WHERE ur.`role_id` = #{rid}")
+    List<TUser> selectUserByRoleId(String rid);
 
 }

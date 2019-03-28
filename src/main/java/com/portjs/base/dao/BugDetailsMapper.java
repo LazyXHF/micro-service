@@ -5,6 +5,7 @@ import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.vo.Bug;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -59,4 +60,10 @@ public interface BugDetailsMapper {
      * @return
      */
     List<BugDetails> queryAllBugAndRecordInfo(@Param("id") String id);
+
+
+
+    //修改主表状态
+    @Update("UPDATE  t_mgt_bug SET result=#{result} WHERE id = #{id}")
+    int updateStatusById(@Param("result") String result,@Param("id")String id);
 }
