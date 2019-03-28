@@ -51,8 +51,8 @@ public interface BugDetailsMapper {
      * 查询所有bug信息
      * @return
      */
-    @Select("select status,type,priority from t_mgt_bug")
-    List<Bug> queryAllBugIf();
+//    @Select("select  DISTINCT status,type,priority from t_mgt_bug where status is not null and type is not null and priority is not null")
+//    List<Bug> queryAllBugIf();
 
     /**
      * 级联查询

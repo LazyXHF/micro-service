@@ -189,19 +189,50 @@ public class BugDetailsServiceImpl implements BugDetailsService {
     @Override
     public ResponseMessage queryBugSearch() {
         BugSearchDO searchDO = new BugSearchDO();
-//        List<InternalProject> projects = projectMapper.selectProjectAll();
 
-        List<Bug> bugs = bugDetailsMapper.queryAllBugIf();
+       /* List<Bug> bugs = bugDetailsMapper.queryAllBugIf();
+        List<Bug> bugList = new ArrayList<>();
+        Bug bug = new Bug();
+        for(int i=0;i<bugs.size();i++){
+            bug = bugs.get(i);
+            String type = bug.getType();
+            String status = bug.getStatus();
+            String priority = bug.getPriority();
+            for(int j = 0 ;j<bugList.size();j++){
+
+                if(bugList.get(j).getStatus()==type){
+
+                }
+
+            }*/
+
+
+            /*if(!(bugList.contains(type)){
+
+//                if(!bugList.contains(status)){
+//
+//                    if(!bugList.contains(priority)){
+//                        bug.setPriority(priority);
+//                        bug.setStatus(status);
+                        bug.setType(type);
+                        bugList.add(bug);
+//                    }
+//                }
+            }*/
+
+
+//        }
+
 
         List<Project> projects = projectMapper.selectProjectAll();
         Map map = new HashMap();
-        map.put("value","1");
-        map.put("value","2");
-        map.put("value","3");
-        map.put("value","4");
-        map.put("value","5");
+        map.put("1","1");
+        map.put("2","2");
+        map.put("3","3");
+        map.put("4","4");
+        map.put("5","5");
 
-        searchDO.setBugDetailsList(bugs);
+//        searchDO.setBugDetailsList(bugList);
         searchDO.setProjectList(projects);
         searchDO.setSituation(map);
         responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",searchDO);

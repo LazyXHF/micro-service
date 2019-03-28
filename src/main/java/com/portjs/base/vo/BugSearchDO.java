@@ -11,18 +11,18 @@ public class BugSearchDO {
 
     private List<Project> projectList;
 
-    private List<Bug> bugDetailsList;
+    //private List<Bug> bugDetailsList;
 
     private Map situation;
 
 
-    public List<Bug> getBugDetailsList() {
+    /*public List<Bug> getBugDetailsList() {
         return bugDetailsList;
     }
 
     public void setBugDetailsList(List<Bug> bugDetailsList) {
         this.bugDetailsList = bugDetailsList;
-    }
+    }*/
 
     public List<Project> getProjectList() {
         return projectList;
