@@ -28,15 +28,15 @@ public class BugDetailsRecord {
 
     private Date recordTime;//记录创建时间
 
-    private String backup1;
+    private String backup1;//解决方案
 
-    private String backup2;
+    private String backup2;//解决结果
 
-    private String backup3;
+    private String backup3;//指派人
 
-    private String backup4;
+    private String backup4;//文件名
 
-    private String backup5;
+    private String backup5;//身份标识
 
     private String backup6;
 
