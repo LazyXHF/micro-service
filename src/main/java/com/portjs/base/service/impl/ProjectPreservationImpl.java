@@ -1,5 +1,6 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
@@ -13,6 +14,7 @@ import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.naming.spi.DirStateFactory;
 import java.text.SimpleDateFormat;
@@ -38,6 +40,9 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     @Autowired
     private TTodoMapper todoMapper;
 
+    //返参信息
+    public final static String PARAM_MESSAGE_1 = "未传";
+    public final static String PARAM_MESSAGE_2 = "已存在";
     /**
      * 立项暂存/提交
      * @param responseBody
@@ -45,94 +50,112 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      */
     @Override
     public ResponseMessage insertStorage(String responseBody) {
+        JSONObject jsonObject = JSONObject.parseObject(responseBody);
+        String status = jsonObject.getString("Status");//0暂存7提交
+        String userId = jsonObject.getString("UserId");//登录用户
+        JSONObject application1JSON = jsonObject.getJSONObject("Application");
+        JSONArray arrayJSON = jsonObject.getJSONArray("Persons");
+        JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
+        JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
+
+        if(StringUtils.isEmpty(status)){
+            return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);
+        }
+        if(StringUtils.isEmpty(userId)){
+            return new ResponseMessage(Code.CODE_ERROR,"UserId"+PARAM_MESSAGE_1);
+        }
+        if(StringUtils.isEmpty(application1JSON)){
+            return new ResponseMessage(Code.CODE_ERROR,"Application"+PARAM_MESSAGE_1);
+        }
+        if(CollectionUtils.isEmpty(arrayJSON)){
+            return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);
+        }
+        if(CollectionUtils.isEmpty(resourcesJSON)){
+            return new ResponseMessage(Code.CODE_ERROR,"Files"+PARAM_MESSAGE_1);
+        }
         try {
-            JSONObject jsonObject = JSONObject.parseObject(responseBody);
+            String message1="";
+            String message2="";
+            //0暂存
+            if(status.equals("0")){
+                message1="暂存失败";
+                message2="更新失败";
+                //暂存状态，不用接收负责人
+                nextViewJSON.clear();
+            }else{
+              //提交
+                message1="提交失败";
+                message2="提交失败";
+            }
             //项目基本信息
-            String project_name = jsonObject.getString("project_name");//项目名称
-            String project_type = jsonObject.getString("project_type");//项目类型
-            String leval = jsonObject.getString("leval");//项目等级
-            String organization = jsonObject.getString("organization");//责任单位
-            String range = jsonObject.getString("range");//实施范围
-            String kickoff_date = jsonObject.getString("kickoff_date");//启动日期
-            String project_desc = jsonObject.getString("project_desc");//项目描述
-            String file_url1 = jsonObject.getString("file_url1");//立项附件
-            //项目人员
-            String name = jsonObject.getString("name");//人员名称
-            String type = jsonObject.getString("type");//资源分类
-            String sort = jsonObject.getString("sort");//人员分类
-            String unit = jsonObject.getString("unit");//单位
-            //立项文件
-            String file_type = jsonObject.getString("file_type");//文件类型
-            String file_name = jsonObject.getString("file_name");//文件名称
-            String file_url = jsonObject.getString("file_url");//文件路径
-            //审批流程
-            String id = jsonObject.getString("id");//部门负责人id
-            //当前登录人
-            String user_id = jsonObject.getString("user_id");
-            //项目状态（0暂存1提交）
-            String status = jsonObject.getString("status");
-
-            //首先新增项目基本信息
-            ProjectApplication application = new ProjectApplication();
-            application.setId(String.valueOf(IDUtils.genItemId()));
-            application.setProjectName(project_name);
-            application.setProjectType(project_type);
-            application.setLeval(leval);
-            application.setOrganization(organization);
-            application.setRange1(range);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            application.setKickoffDate(format.parse(kickoff_date));
-            application.setCreater(user_id);
-            application.setProjectDesc(project_desc);
-            application.setFileUrl(file_url1);
+            ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
             application.setStatus(status);
-            int i = applicationMapper.insertSelective(application);
-            if(i!=1){
-                return new ResponseMessage(Code.CODE_ERROR,"暂存失败");
-            }
-            //然后新增项目人员信息
-            ProjectMembers members = new ProjectMembers();
-            members.setId(String.valueOf(IDUtils.genItemId()));
-            members.setApplicationId(application.getId());
-            members.setName(name);
-            members.setType(type);
-            members.setSort(sort);
-            members.setUnit(unit);
-            members.setCreater(user_id);
-            members.setCreateTime(new Date());
-            int i1 = membersMapper.insertSelective(members);
-            if(i1!=1){
-                return new ResponseMessage(Code.CODE_ERROR,"暂存失败");
-            }
-            //接下来新增立项文件信息
-            InternalAttachment attachment = new InternalAttachment();
-            attachment.setId(String.valueOf(IDUtils.genItemId()));
-            attachment.setUploadTime(new Date());
-            attachment.setUploader(user_id);
-            attachment.setRelateddomain("项目立项");
-            attachment.setFileUrl(file_url);
-            attachment.setRelateddomainId(application.getId());
-            attachment.setFileType(file_type);
-            attachment.setFileName(file_name);
-            int i2 = attachmentMapper.insertSelective(attachment);
-            if(i2!=1){
-                return new ResponseMessage(Code.CODE_ERROR,"暂存失败");
-            }
-            if("1".equals(status)){
-                //当项目状态为提交时首先判断登录人id和部门负责人id是否为空
-                if(StringUtils.isEmpty(user_id)||StringUtils.isEmpty(id)){
-                    return new ResponseMessage(Code.CODE_ERROR,"登录人id或者部门负责人id不能为空");
+            //插入还是更新
+            if(StringUtils.isEmpty(application.getId())){
+                application.setId(String.valueOf(IDUtils.genItemId()));
+                application.setCreater(userId);
+                int i = applicationMapper.insertSelective(application);
+                if(i!=1){
+                    return new ResponseMessage(Code.CODE_ERROR,message1);
                 }
+            }else{
+                application.setUpdateTime(new Date());
+                int i = applicationMapper.updateByPrimaryKeySelective(application);
+                if(i!=1){
+                    return new ResponseMessage(Code.CODE_ERROR,message2);
+                }
+            }
+            //新增人员 先删除后增加
+            ProjectMembersExample exampleMem = new ProjectMembersExample();
+            ProjectMembersExample.Criteria criteriaMem = exampleMem.createCriteria();
+            criteriaMem.andApplicationIdEqualTo(application.getId());
+            membersMapper.deleteByExample(exampleMem);
+            //增加人员
+            for(int i=0;i<arrayJSON.size();i++){
+                JSONObject object = arrayJSON.getJSONObject(i);
+                ProjectMembers projectMembers = JSONObject.toJavaObject(object,ProjectMembers.class);
+                projectMembers.setId(String.valueOf(IDUtils.genItemId()));
+                projectMembers.setApplicationId(application.getId());
+                projectMembers.setCreater(userId);
+                projectMembers.setCreateTime(new Date());
+                int num = membersMapper.insertSelective(projectMembers);
+                if(num<=0){
+                    return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+                }
+            }
+            //新增立项 先删除后增加
+            InternalAttachmentExample exampleIn = new InternalAttachmentExample();
+            InternalAttachmentExample.Criteria criteriaIn = exampleIn.createCriteria();
+            criteriaIn.andRelateddomainIdEqualTo(application.getId());
+            attachmentMapper.deleteByExample(exampleIn);
+            //增加附件
+            for(int i=0;i<resourcesJSON.size();i++){
+                JSONObject object = resourcesJSON.getJSONObject(i);
+                InternalAttachment projectMembers = JSONObject.toJavaObject(object,InternalAttachment.class);
+                projectMembers.setId(String.valueOf(IDUtils.genItemId()));
+                projectMembers.setUploadTime(new Date());
+                projectMembers.setUploader(userId);
+                projectMembers.setRelateddomain("项目立项模块");
+                projectMembers.setRelateddomainId(application.getId());
+                int num = attachmentMapper.insertSelective(projectMembers);
+                if(num<=0){
+                    return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+                }
+            }
+
+            //进入审核
+            for(int i=0;i<nextViewJSON.size();i++){
                 //然后新增一条当前登录人的流程记录
                 TWorkflowstep workflowstep = new TWorkflowstep();
                 workflowstep.setId(String.valueOf(IDUtils.genItemId()));
                 workflowstep.setRelateddomain("项目立项");
+                workflowstep.setPrestepId("0");
                 workflowstep.setRelateddomainId(application.getId());
                 workflowstep.setStepDesc("项目负责人提交");
-                workflowstep.setActionuserId(user_id);
+                workflowstep.setActionuserId(userId);
                 workflowstep.setActionTime(new Date());
                 workflowstep.setStatus("1");
+                workflowstep.setBackup3("1");
 
                 int i3 = workflowstepMapper.insertSelective(workflowstep);
                 if(i3!=1){
@@ -145,9 +168,10 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 tWorkflowstep.setRelateddomainId(application.getId());
                 tWorkflowstep.setPrestepId(workflowstep.getId());
                 tWorkflowstep.setStepDesc("部门负责人审核");
-                tWorkflowstep.setActionuserId(id);
+                tWorkflowstep.setActionuserId(nextViewJSON.getString(i));
                 tWorkflowstep.setActionTime(new Date());
                 tWorkflowstep.setStatus("0");
+                tWorkflowstep.setBackup3("2");
 
                 int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
                 if(i4!=1){
@@ -157,12 +181,12 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 TTodo todo = new TTodo();
                 todo.setId(String.valueOf(IDUtils.genItemId()));
                 todo.setCurrentstepId(tWorkflowstep.getId());
-                todo.setStepDesc("提交审核");
+                todo.setStepDesc("项目负责人提交");
                 todo.setRelateddomain("项目立项");
                 todo.setRelateddomainId(application.getId());
-                todo.setSenderId(user_id);
+                todo.setSenderId(userId);
                 todo.setSenderTime(new Date());
-                todo.setReceiverId(id);
+                todo.setReceiverId(nextViewJSON.getString(i));
                 //查询代办类型
                 TXietongDictionaryExample example = new TXietongDictionaryExample();
                 TXietongDictionaryExample.Criteria criteria = example.createCriteria();
@@ -170,6 +194,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 criteria.andTypeCodeEqualTo("38");
                 criteria.andMidValueEqualTo("1");
                 List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
+                //查询待办类型
                 todo.setTodoType(dictionaryList.get(0).getMainValue());
                 todo.setStatus("0");
                 int i5 = todoMapper.insertSelective(todo);
@@ -178,12 +203,11 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 }
                 return new ResponseMessage(Code.CODE_OK,"提交成功");
             }
-
-            return new ResponseMessage(Code.CODE_OK,"暂存成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseMessage(Code.CODE_ERROR,"服务器异常");
         }
+        return new ResponseMessage(Code.CODE_OK,"操作成功");
     }
 
     /**

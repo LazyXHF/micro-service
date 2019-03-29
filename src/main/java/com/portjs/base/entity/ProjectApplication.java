@@ -5,27 +5,27 @@ import java.util.Date;
 public class ProjectApplication {
     private String id;
 
-    private String projectCode;
+    private String projectCode;//项目编码
 
-    private String projectName;
+    private String projectName;//项目名称
 
-    private String projectType;
+    private String projectType;//项目类型
 
-    private String leval;
+    private String leval;//项目等级
 
-    private String projectDesc;
+    private String projectDesc;//项目描述
 
-    private String organization;
+    private String organization;//责任单位
 
-    private String range1;
+    private String range1;//实施范围
 
-    private Date kickoffDate;
+    private Date kickoffDate;//启动日期
 
-    private String creater;
+    private String creater;//创建人
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
     private String enable;
 

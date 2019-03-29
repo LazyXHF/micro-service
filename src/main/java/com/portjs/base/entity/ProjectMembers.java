@@ -5,21 +5,21 @@ import java.util.Date;
 public class ProjectMembers {
     private String id;
 
-    private String applicationId;
+    private String applicationId;//对应project_application中的id
 
-    private String name;
+    private String name;//人员名称
 
-    private String unit;
+    private String unit;//单位
 
-    private String type;
+    private String type;//资源分类
 
-    private String sort;
+    private String sort;//人员分类
 
-    private String creater;
+    private String creater;//创建人
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
     private String enable;
 

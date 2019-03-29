@@ -5,31 +5,31 @@ import java.util.Date;
 public class InternalAttachment {
     private String id;
 
-    private Date uploadTime;
+    private Date uploadTime;//上传时间
 
-    private String uploader;
+    private String uploader;//上传人
 
-    private String modifer;
+    private String modifer;//修改人
 
-    private Date modifyTime;
+    private Date modifyTime;//修改时间
 
-    private String relateddomain;
+    private String relateddomain;//对应的业务模块
 
-    private String fileUrl;
+    private String fileUrl;//上传路径
 
-    private String fileModule;
+    private String fileModule;//对应的文件类目
 
-    private String relateddomainId;
+    private String relateddomainId;//业务单id
 
-    private String fileType;
+    private String fileType;//文件类型
 
-    private String fileName;
+    private String fileName;//文件名
 
-    private Double fileSize;
+    private Double fileSize;//文件大小
 
-    private String enable;
+    private String enable;//可用"1"不可用"0"
 
-    private String sort;
+    private String sort;//排序
 
     private String backUp2;
 
