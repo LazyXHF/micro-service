@@ -185,4 +185,83 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             return new ResponseMessage(Code.CODE_ERROR,"服务器异常");
         }
     }
+
+    /**
+     * 立项退回
+     * @param responseBody
+     * @return
+     */
+    @Override
+    public ResponseMessage returnStorage(String responseBody) {
+        try {
+            JSONObject jsonObject = JSONObject.parseObject(responseBody);
+            String application_id = jsonObject.getString("application_id");//立项记录id
+            String workflowstep_id = jsonObject.getString("workflowstep_id");//立项流程id
+            String stepDesc = jsonObject.getString("stepDesc");//当前流程步骤
+            String stepDesc1 =  stepDesc.substring(0,stepDesc.length()-2);
+
+            String user_id  = jsonObject.getString("user_id");//当前登录人id
+
+            //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
+            TWorkflowstepExample example = new TWorkflowstepExample();
+            TWorkflowstepExample.Criteria criteria = example.createCriteria();
+            criteria.andRelateddomainIdEqualTo(application_id);
+            criteria.andStatusEqualTo("0");
+            List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(example);
+            if(tWorkflowsteps.size()==1){
+                    //如果当前审核人员只有一个的话则生成待办
+                    TTodo todo = new TTodo();
+                    todo.setId(String.valueOf(IDUtils.genItemId()));
+                    todo.setCurrentstepId(workflowstep_id);
+                    todo.setStepDesc(stepDesc1+"退回");
+                    todo.setRelateddomain("项目立项");
+                    todo.setRelateddomainId(application_id);
+                    todo.setSenderId(user_id);
+                    todo.setSenderTime(new Date());
+                    ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);
+                    todo.setReceiverId(application.getCreater());
+                    //查询代办类型
+                    TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+                    TXietongDictionaryExample.Criteria criteria1 = example1.createCriteria();
+                    criteria1.andTypeIdEqualTo("8");
+                    criteria1.andTypeCodeEqualTo("38");
+                    criteria1.andMidValueEqualTo("1");
+                    List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
+                    todo.setTodoType(dictionaryList.get(0).getMainValue());
+                    todo.setStatus("0");
+                    int i1 = todoMapper.insertSelective(todo);
+                    if(i1!=1){
+                        return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+                    }
+                }
+            //将当前对应流程关闭
+            TWorkflowstep workflowstep = new TWorkflowstep();
+            workflowstep.setId(workflowstep_id);
+            workflowstep.setStatus("1");
+            int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
+            if(i==0){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+            //新增一条退回流程
+            TWorkflowstep tWorkflowstep = new TWorkflowstep();
+            tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));
+            tWorkflowstep.setRelateddomain("项目立项");
+            tWorkflowstep.setRelateddomainId(application_id);
+            tWorkflowstep.setPrestepId(workflowstep.getId());
+            tWorkflowstep.setStepDesc(stepDesc1+"退回");
+            tWorkflowstep.setActionuserId(user_id);
+            tWorkflowstep.setActionTime(new Date());
+            tWorkflowstep.setStatus("1");
+            int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
+            if(i4!=1){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+
+
+            return new ResponseMessage(Code.CODE_OK,"退回成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage(Code.CODE_ERROR,"服务器异常");
+        }
+    }
 }

@@ -13,4 +13,10 @@ public interface ProjectPreservationService {
      * @return
      */
     ResponseMessage insertStorage(String responseBody);
+    /**
+     * 立项退回
+     * @param responseBody
+     * @return
+     */
+    ResponseMessage returnStorage(String responseBody);
 }

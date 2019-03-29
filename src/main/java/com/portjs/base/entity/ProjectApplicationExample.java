@@ -1126,72 +1126,72 @@ public class ProjectApplicationExample {
         }
 
         public Criteria andBackUp9IsNull() {
-            addCriterion("back_up9 is null");
+            addCriterion("isApprover is null");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9IsNotNull() {
-            addCriterion("back_up9 is not null");
+            addCriterion("isApprover is not null");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9EqualTo(String value) {
-            addCriterion("back_up9 =", value, "backUp9");
+            addCriterion("isApprover =", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9NotEqualTo(String value) {
-            addCriterion("back_up9 <>", value, "backUp9");
+            addCriterion("isApprover <>", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9GreaterThan(String value) {
-            addCriterion("back_up9 >", value, "backUp9");
+            addCriterion("isApprover >", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9GreaterThanOrEqualTo(String value) {
-            addCriterion("back_up9 >=", value, "backUp9");
+            addCriterion("isApprover >=", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9LessThan(String value) {
-            addCriterion("back_up9 <", value, "backUp9");
+            addCriterion("isApprover <", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9LessThanOrEqualTo(String value) {
-            addCriterion("back_up9 <=", value, "backUp9");
+            addCriterion("isApprover <=", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9Like(String value) {
-            addCriterion("back_up9 like", value, "backUp9");
+            addCriterion("isApprover like", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9NotLike(String value) {
-            addCriterion("back_up9 not like", value, "backUp9");
+            addCriterion("isApprover not like", value, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9In(List<String> values) {
-            addCriterion("back_up9 in", values, "backUp9");
+            addCriterion("isApprover in", values, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9NotIn(List<String> values) {
-            addCriterion("back_up9 not in", values, "backUp9");
+            addCriterion("isApprover not in", values, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9Between(String value1, String value2) {
-            addCriterion("back_up9 between", value1, value2, "backUp9");
+            addCriterion("isApprover between", value1, value2, "isApprover");
             return (Criteria) this;
         }
 
         public Criteria andBackUp9NotBetween(String value1, String value2) {
-            addCriterion("back_up9 not between", value1, value2, "backUp9");
+            addCriterion("isApprover not between", value1, value2, "isApprover");
             return (Criteria) this;
         }
     }

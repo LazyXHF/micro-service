@@ -33,4 +33,13 @@ public class ProjectPreservationController  extends BaseController {
         return projectPreservationService.insertStorage(responseBody);
     }
 
+    @LogInfo(methodName = "立项退回",modelName = "立项保存模块")
+    @RequestMapping("/return-designs")
+    @ResponseBody
+    public ResponseMessage returnDesigns(@RequestBody String responseBody){
+        logger.debug(TAG + responseBody);
+        UnifiedExceptionHandler.method= responseBody + "insert-designs==============================" + responseBody;
+        return projectPreservationService.returnStorage(responseBody);
+    }
+
 }

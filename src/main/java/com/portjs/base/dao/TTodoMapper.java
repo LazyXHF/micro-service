@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.TTodo;
 import com.portjs.base.entity.TTodoExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface TTodoMapper {
     int countByExample(TTodoExample example);
 

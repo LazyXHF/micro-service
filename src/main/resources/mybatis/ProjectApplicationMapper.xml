@@ -17,7 +17,7 @@
     <result column="enable" property="enable" jdbcType="VARCHAR" />
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="back_up9" property="backUp9" jdbcType="VARCHAR" />
+    <result column="isApprover" property="isApprover" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -80,7 +80,7 @@
   <sql id="Base_Column_List" >
     Id, project_code, project_name, project_type, leval, project_desc, organization, 
     range1, kickoff_date, creater, create_time, update_time, enable, file_url, status, 
-    back_up9
+    isApprover
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectApplicationExample" >
     select
@@ -118,13 +118,13 @@
       organization, range1, kickoff_date, 
       creater, create_time, update_time, 
       enable, file_url, status, 
-      back_up9)
+      isApprover)
     values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, 
       #{projectType,jdbcType=VARCHAR}, #{leval,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR}, 
       #{organization,jdbcType=VARCHAR}, #{range1,jdbcType=VARCHAR}, #{kickoffDate,jdbcType=TIMESTAMP}, 
       #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{enable,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{backUp9,jdbcType=VARCHAR})
+      #{isApprover,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectApplication" >
     insert into project_application
@@ -174,8 +174,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="backUp9 != null" >
-        back_up9,
+      <if test="isApprover != null" >
+        isApprover,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -224,8 +224,8 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="backUp9 != null" >
-        #{backUp9,jdbcType=VARCHAR},
+      <if test="isApprover != null" >
+        #{isApprover,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -283,8 +283,8 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.backUp9 != null" >
-        back_up9 = #{record.backUp9,jdbcType=VARCHAR},
+      <if test="record.isApprover != null" >
+        isApprover = #{record.isApprover,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -308,7 +308,7 @@
       enable = #{record.enable,jdbcType=VARCHAR},
       file_url = #{record.fileUrl,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
-      back_up9 = #{record.backUp9,jdbcType=VARCHAR}
+      isApprover = #{record.isApprover,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -358,8 +358,8 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="backUp9 != null" >
-        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      <if test="isApprover != null" >
+        isApprover = #{isApprover,jdbcType=VARCHAR},
       </if>
     </set>
     where Id = #{id,jdbcType=VARCHAR}
@@ -380,7 +380,7 @@
       enable = #{enable,jdbcType=VARCHAR},
       file_url = #{fileUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      back_up9 = #{backUp9,jdbcType=VARCHAR}
+      isApprover = #{isApprover,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <!--编辑项目信息-->

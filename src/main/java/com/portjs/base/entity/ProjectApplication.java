@@ -32,7 +32,7 @@ public class ProjectApplication {
     private String fileUrl;
 
 
-    private String backUp9;
+
 
     private String status;
 
@@ -177,11 +177,4 @@ public class ProjectApplication {
     }
 
 
-    public String getBackUp9() {
-        return backUp9;
-    }
-
-    public void setBackUp9(String backUp9) {
-        this.backUp9 = backUp9 == null ? null : backUp9.trim();
-    }
 }
