@@ -29,7 +29,7 @@ public class InternalAttachment {
 
     private String enable;
 
-    private String backUp1;
+    private String sort;
 
     private String backUp2;
 
@@ -153,12 +153,12 @@ public class InternalAttachment {
         this.enable = enable == null ? null : enable.trim();
     }
 
-    public String getBackUp1() {
-        return backUp1;
+    public String getSort() {
+        return sort;
     }
 
-    public void setBackUp1(String backUp1) {
-        this.backUp1 = backUp1 == null ? null : backUp1.trim();
+    public void setSort(String sort) {
+        this.sort = sort == null ? null : sort.trim();
     }
 
     public String getBackUp2() {

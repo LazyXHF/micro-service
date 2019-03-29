@@ -595,73 +595,73 @@ public class ProjectApplicationExample {
             return (Criteria) this;
         }
 
-        public Criteria andRangeIsNull() {
-            addCriterion("range is null");
+        public Criteria andRange1IsNull() {
+            addCriterion("range1 is null");
             return (Criteria) this;
         }
 
-        public Criteria andRangeIsNotNull() {
-            addCriterion("range is not null");
+        public Criteria andRange1IsNotNull() {
+            addCriterion("range1 is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRangeEqualTo(String value) {
-            addCriterion("range =", value, "range");
+        public Criteria andRange1EqualTo(String value) {
+            addCriterion("range1 =", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeNotEqualTo(String value) {
-            addCriterion("range <>", value, "range");
+        public Criteria andRange1NotEqualTo(String value) {
+            addCriterion("range1 <>", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeGreaterThan(String value) {
-            addCriterion("range >", value, "range");
+        public Criteria andRange1GreaterThan(String value) {
+            addCriterion("range1 >", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeGreaterThanOrEqualTo(String value) {
-            addCriterion("range >=", value, "range");
+        public Criteria andRange1GreaterThanOrEqualTo(String value) {
+            addCriterion("range1 >=", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeLessThan(String value) {
-            addCriterion("range <", value, "range");
+        public Criteria andRange1LessThan(String value) {
+            addCriterion("range1 <", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeLessThanOrEqualTo(String value) {
-            addCriterion("range <=", value, "range");
+        public Criteria andRange1LessThanOrEqualTo(String value) {
+            addCriterion("range1 <=", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeLike(String value) {
-            addCriterion("range like", value, "range");
+        public Criteria andRange1Like(String value) {
+            addCriterion("range1 like", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeNotLike(String value) {
-            addCriterion("range not like", value, "range");
+        public Criteria andRange1NotLike(String value) {
+            addCriterion("range1 not like", value, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeIn(List<String> values) {
-            addCriterion("range in", values, "range");
+        public Criteria andRange1In(List<String> values) {
+            addCriterion("range1 in", values, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeNotIn(List<String> values) {
-            addCriterion("range not in", values, "range");
+        public Criteria andRange1NotIn(List<String> values) {
+            addCriterion("range1 not in", values, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeBetween(String value1, String value2) {
-            addCriterion("range between", value1, value2, "range");
+        public Criteria andRange1Between(String value1, String value2) {
+            addCriterion("range1 between", value1, value2, "range1");
             return (Criteria) this;
         }
 
-        public Criteria andRangeNotBetween(String value1, String value2) {
-            addCriterion("range not between", value1, value2, "range");
+        public Criteria andRange1NotBetween(String value1, String value2) {
+            addCriterion("range1 not between", value1, value2, "range1");
             return (Criteria) this;
         }
 
@@ -985,143 +985,143 @@ public class ProjectApplicationExample {
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7IsNull() {
-            addCriterion("back_up7 is null");
+        public Criteria andFileUrlIsNull() {
+            addCriterion("file_url is null");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7IsNotNull() {
-            addCriterion("back_up7 is not null");
+        public Criteria andFileUrlIsNotNull() {
+            addCriterion("file_url is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7EqualTo(String value) {
-            addCriterion("back_up7 =", value, "backUp7");
+        public Criteria andFileUrlEqualTo(String value) {
+            addCriterion("file_url =", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7NotEqualTo(String value) {
-            addCriterion("back_up7 <>", value, "backUp7");
+        public Criteria andFileUrlNotEqualTo(String value) {
+            addCriterion("file_url <>", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7GreaterThan(String value) {
-            addCriterion("back_up7 >", value, "backUp7");
+        public Criteria andFileUrlGreaterThan(String value) {
+            addCriterion("file_url >", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7GreaterThanOrEqualTo(String value) {
-            addCriterion("back_up7 >=", value, "backUp7");
+        public Criteria andFileUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("file_url >=", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7LessThan(String value) {
-            addCriterion("back_up7 <", value, "backUp7");
+        public Criteria andFileUrlLessThan(String value) {
+            addCriterion("file_url <", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7LessThanOrEqualTo(String value) {
-            addCriterion("back_up7 <=", value, "backUp7");
+        public Criteria andFileUrlLessThanOrEqualTo(String value) {
+            addCriterion("file_url <=", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7Like(String value) {
-            addCriterion("back_up7 like", value, "backUp7");
+        public Criteria andFileUrlLike(String value) {
+            addCriterion("file_url like", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7NotLike(String value) {
-            addCriterion("back_up7 not like", value, "backUp7");
+        public Criteria andFileUrlNotLike(String value) {
+            addCriterion("file_url not like", value, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7In(List<String> values) {
-            addCriterion("back_up7 in", values, "backUp7");
+        public Criteria andFileUrlIn(List<String> values) {
+            addCriterion("file_url in", values, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7NotIn(List<String> values) {
-            addCriterion("back_up7 not in", values, "backUp7");
+        public Criteria andFileUrlNotIn(List<String> values) {
+            addCriterion("file_url not in", values, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7Between(String value1, String value2) {
-            addCriterion("back_up7 between", value1, value2, "backUp7");
+        public Criteria andFileUrlBetween(String value1, String value2) {
+            addCriterion("file_url between", value1, value2, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp7NotBetween(String value1, String value2) {
-            addCriterion("back_up7 not between", value1, value2, "backUp7");
+        public Criteria andFileUrlNotBetween(String value1, String value2) {
+            addCriterion("file_url not between", value1, value2, "fileUrl");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8IsNull() {
-            addCriterion("back_up8 is null");
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8IsNotNull() {
-            addCriterion("back_up8 is not null");
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8EqualTo(String value) {
-            addCriterion("back_up8 =", value, "backUp8");
+        public Criteria andStatusEqualTo(String value) {
+            addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8NotEqualTo(String value) {
-            addCriterion("back_up8 <>", value, "backUp8");
+        public Criteria andStatusNotEqualTo(String value) {
+            addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8GreaterThan(String value) {
-            addCriterion("back_up8 >", value, "backUp8");
+        public Criteria andStatusGreaterThan(String value) {
+            addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8GreaterThanOrEqualTo(String value) {
-            addCriterion("back_up8 >=", value, "backUp8");
+        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8LessThan(String value) {
-            addCriterion("back_up8 <", value, "backUp8");
+        public Criteria andStatusLessThan(String value) {
+            addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8LessThanOrEqualTo(String value) {
-            addCriterion("back_up8 <=", value, "backUp8");
+        public Criteria andStatusLessThanOrEqualTo(String value) {
+            addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8Like(String value) {
-            addCriterion("back_up8 like", value, "backUp8");
+        public Criteria andStatusLike(String value) {
+            addCriterion("status like", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8NotLike(String value) {
-            addCriterion("back_up8 not like", value, "backUp8");
+        public Criteria andStatusNotLike(String value) {
+            addCriterion("status not like", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8In(List<String> values) {
-            addCriterion("back_up8 in", values, "backUp8");
+        public Criteria andStatusIn(List<String> values) {
+            addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8NotIn(List<String> values) {
-            addCriterion("back_up8 not in", values, "backUp8");
+        public Criteria andStatusNotIn(List<String> values) {
+            addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8Between(String value1, String value2) {
-            addCriterion("back_up8 between", value1, value2, "backUp8");
+        public Criteria andStatusBetween(String value1, String value2) {
+            addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andBackUp8NotBetween(String value1, String value2) {
-            addCriterion("back_up8 not between", value1, value2, "backUp8");
+        public Criteria andStatusNotBetween(String value1, String value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 

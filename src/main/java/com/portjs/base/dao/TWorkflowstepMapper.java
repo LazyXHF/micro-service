@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.TWorkflowstep;
 import com.portjs.base.entity.TWorkflowstepExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface TWorkflowstepMapper {
     int countByExample(TWorkflowstepExample example);
 

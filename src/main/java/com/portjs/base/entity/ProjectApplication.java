@@ -17,7 +17,7 @@ public class ProjectApplication {
 
     private String organization;
 
-    private String range;
+    private String range1;
 
     private Date kickoffDate;
 
@@ -29,9 +29,9 @@ public class ProjectApplication {
 
     private String enable;
 
-    private String backUp7;
+    private String fileUrl;
 
-    private String backUp8;
+    private String status;
 
     private String backUp9;
 
@@ -91,12 +91,12 @@ public class ProjectApplication {
         this.organization = organization == null ? null : organization.trim();
     }
 
-    public String getRange() {
-        return range;
+    public String getRange1() {
+        return range1;
     }
 
-    public void setRange(String range) {
-        this.range = range == null ? null : range.trim();
+    public void setRange1(String range1) {
+        this.range1 = range1 == null ? null : range1.trim();
     }
 
     public Date getKickoffDate() {
@@ -139,20 +139,20 @@ public class ProjectApplication {
         this.enable = enable == null ? null : enable.trim();
     }
 
-    public String getBackUp7() {
-        return backUp7;
+    public String getFileUrl() {
+        return fileUrl;
     }
 
-    public void setBackUp7(String backUp7) {
-        this.backUp7 = backUp7 == null ? null : backUp7.trim();
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl == null ? null : fileUrl.trim();
     }
 
-    public String getBackUp8() {
-        return backUp8;
+    public String getStatus() {
+        return status;
     }
 
-    public void setBackUp8(String backUp8) {
-        this.backUp8 = backUp8 == null ? null : backUp8.trim();
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getBackUp9() {

@@ -14,7 +14,7 @@
     <result column="actiontime" property="actiontime" jdbcType="TIMESTAMP" />
     <result column="enable" property="enable" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="backup_2" property="backup2" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
     <result column="backup_3" property="backup3" jdbcType="VARCHAR" />
     <result column="back_up7" property="backUp7" jdbcType="VARCHAR" />
     <result column="back_up8" property="backUp8" jdbcType="VARCHAR" />
@@ -80,8 +80,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, currentstep_id, step_desc, relateddomain, relateddomain_id, sender_id, sender_time, 
-    receiver_id, todo_type, actiontime, enable, status, backup_2, backup_3, back_up7, 
-    back_up8, back_up9
+    receiver_id, todo_type, actiontime, enable, status, sort, backup_3, back_up7, back_up8, 
+    back_up9
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TTodoExample" >
     select
@@ -118,13 +118,13 @@
       relateddomain, relateddomain_id, sender_id, 
       sender_time, receiver_id, todo_type, 
       actiontime, enable, status, 
-      backup_2, backup_3, back_up7, 
+      sort, backup_3, back_up7, 
       back_up8, back_up9)
     values (#{id,jdbcType=VARCHAR}, #{currentstepId,jdbcType=VARCHAR}, #{stepDesc,jdbcType=VARCHAR}, 
       #{relateddomain,jdbcType=VARCHAR}, #{relateddomainId,jdbcType=VARCHAR}, #{senderId,jdbcType=VARCHAR}, 
       #{senderTime,jdbcType=TIMESTAMP}, #{receiverId,jdbcType=VARCHAR}, #{todoType,jdbcType=VARCHAR}, 
       #{actiontime,jdbcType=TIMESTAMP}, #{enable,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{backup2,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, 
       #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.TTodo" >
@@ -166,8 +166,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="backup2 != null" >
-        backup_2,
+      <if test="sort != null" >
+        sort,
       </if>
       <if test="backup3 != null" >
         backup_3,
@@ -219,8 +219,8 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="backup2 != null" >
-        #{backup2,jdbcType=VARCHAR},
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
       </if>
       <if test="backup3 != null" >
         #{backup3,jdbcType=VARCHAR},
@@ -281,8 +281,8 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.backup2 != null" >
-        backup_2 = #{record.backup2,jdbcType=VARCHAR},
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
       </if>
       <if test="record.backup3 != null" >
         backup_3 = #{record.backup3,jdbcType=VARCHAR},
@@ -315,7 +315,7 @@
       actiontime = #{record.actiontime,jdbcType=TIMESTAMP},
       enable = #{record.enable,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
-      backup_2 = #{record.backup2,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=VARCHAR},
       backup_3 = #{record.backup3,jdbcType=VARCHAR},
       back_up7 = #{record.backUp7,jdbcType=VARCHAR},
       back_up8 = #{record.backUp8,jdbcType=VARCHAR},
@@ -360,8 +360,8 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="backup2 != null" >
-        backup_2 = #{backup2,jdbcType=VARCHAR},
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
       </if>
       <if test="backup3 != null" >
         backup_3 = #{backup3,jdbcType=VARCHAR},
@@ -391,7 +391,7 @@
       actiontime = #{actiontime,jdbcType=TIMESTAMP},
       enable = #{enable,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      backup_2 = #{backup2,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR},
       backup_3 = #{backup3,jdbcType=VARCHAR},
       back_up7 = #{backUp7,jdbcType=VARCHAR},
       back_up8 = #{backUp8,jdbcType=VARCHAR},

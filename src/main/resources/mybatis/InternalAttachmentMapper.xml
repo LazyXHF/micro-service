@@ -15,7 +15,7 @@
     <result column="file_name" property="fileName" jdbcType="VARCHAR" />
     <result column="file_size" property="fileSize" jdbcType="DOUBLE" />
     <result column="enable" property="enable" jdbcType="VARCHAR" />
-    <result column="back_up1" property="backUp1" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
     <result column="back_up2" property="backUp2" jdbcType="VARCHAR" />
     <result column="back_up3" property="backUp3" jdbcType="VARCHAR" />
     <result column="back_up4" property="backUp4" jdbcType="VARCHAR" />
@@ -86,7 +86,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, upload_time, uploader, modifer, modify_time, relateddomain, file_url, file_module, 
-    relateddomain_id, file_type, file_name, file_size, enable, back_up1, back_up2, back_up3, 
+    relateddomain_id, file_type, file_name, file_size, enable, sort, back_up2, back_up3, 
     back_up4, back_up5, back_up6, back_up7, back_up8, back_up9, back_up10
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.InternalAttachmentExample" >
@@ -124,7 +124,7 @@
       modifer, modify_time, relateddomain, 
       file_url, file_module, relateddomain_id, 
       file_type, file_name, file_size, 
-      enable, back_up1, back_up2, 
+      enable, sort, back_up2, 
       back_up3, back_up4, back_up5, 
       back_up6, back_up7, back_up8, 
       back_up9, back_up10)
@@ -132,7 +132,7 @@
       #{modifer,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{relateddomain,jdbcType=VARCHAR}, 
       #{fileUrl,jdbcType=VARCHAR}, #{fileModule,jdbcType=VARCHAR}, #{relateddomainId,jdbcType=VARCHAR}, 
       #{fileType,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{fileSize,jdbcType=DOUBLE}, 
-      #{enable,jdbcType=VARCHAR}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, 
+      #{enable,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, 
       #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, 
       #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, 
       #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR})
@@ -179,8 +179,8 @@
       <if test="enable != null" >
         enable,
       </if>
-      <if test="backUp1 != null" >
-        back_up1,
+      <if test="sort != null" >
+        sort,
       </if>
       <if test="backUp2 != null" >
         back_up2,
@@ -250,8 +250,8 @@
       <if test="enable != null" >
         #{enable,jdbcType=VARCHAR},
       </if>
-      <if test="backUp1 != null" >
-        #{backUp1,jdbcType=VARCHAR},
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
       </if>
       <if test="backUp2 != null" >
         #{backUp2,jdbcType=VARCHAR},
@@ -330,8 +330,8 @@
       <if test="record.enable != null" >
         enable = #{record.enable,jdbcType=VARCHAR},
       </if>
-      <if test="record.backUp1 != null" >
-        back_up1 = #{record.backUp1,jdbcType=VARCHAR},
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
       </if>
       <if test="record.backUp2 != null" >
         back_up2 = #{record.backUp2,jdbcType=VARCHAR},
@@ -380,7 +380,7 @@
       file_name = #{record.fileName,jdbcType=VARCHAR},
       file_size = #{record.fileSize,jdbcType=DOUBLE},
       enable = #{record.enable,jdbcType=VARCHAR},
-      back_up1 = #{record.backUp1,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=VARCHAR},
       back_up2 = #{record.backUp2,jdbcType=VARCHAR},
       back_up3 = #{record.backUp3,jdbcType=VARCHAR},
       back_up4 = #{record.backUp4,jdbcType=VARCHAR},
@@ -433,8 +433,8 @@
       <if test="enable != null" >
         enable = #{enable,jdbcType=VARCHAR},
       </if>
-      <if test="backUp1 != null" >
-        back_up1 = #{backUp1,jdbcType=VARCHAR},
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
       </if>
       <if test="backUp2 != null" >
         back_up2 = #{backUp2,jdbcType=VARCHAR},
@@ -480,7 +480,7 @@
       file_name = #{fileName,jdbcType=VARCHAR},
       file_size = #{fileSize,jdbcType=DOUBLE},
       enable = #{enable,jdbcType=VARCHAR},
-      back_up1 = #{backUp1,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR},
       back_up2 = #{backUp2,jdbcType=VARCHAR},
       back_up3 = #{backUp3,jdbcType=VARCHAR},
       back_up4 = #{backUp4,jdbcType=VARCHAR},

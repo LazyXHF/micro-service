@@ -996,62 +996,62 @@ public class InternalAttachmentExample {
         }
 
         public Criteria andBackUp1EqualTo(String value) {
-            addCriterion("back_up1 =", value, "backUp1");
+            addCriterion("back_up1 =", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1NotEqualTo(String value) {
-            addCriterion("back_up1 <>", value, "backUp1");
+            addCriterion("back_up1 <>", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1GreaterThan(String value) {
-            addCriterion("back_up1 >", value, "backUp1");
+            addCriterion("back_up1 >", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1GreaterThanOrEqualTo(String value) {
-            addCriterion("back_up1 >=", value, "backUp1");
+            addCriterion("back_up1 >=", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1LessThan(String value) {
-            addCriterion("back_up1 <", value, "backUp1");
+            addCriterion("back_up1 <", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1LessThanOrEqualTo(String value) {
-            addCriterion("back_up1 <=", value, "backUp1");
+            addCriterion("back_up1 <=", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1Like(String value) {
-            addCriterion("back_up1 like", value, "backUp1");
+            addCriterion("back_up1 like", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1NotLike(String value) {
-            addCriterion("back_up1 not like", value, "backUp1");
+            addCriterion("back_up1 not like", value, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1In(List<String> values) {
-            addCriterion("back_up1 in", values, "backUp1");
+            addCriterion("back_up1 in", values, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1NotIn(List<String> values) {
-            addCriterion("back_up1 not in", values, "backUp1");
+            addCriterion("back_up1 not in", values, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1Between(String value1, String value2) {
-            addCriterion("back_up1 between", value1, value2, "backUp1");
+            addCriterion("back_up1 between", value1, value2, "sort");
             return (Criteria) this;
         }
 
         public Criteria andBackUp1NotBetween(String value1, String value2) {
-            addCriterion("back_up1 not between", value1, value2, "backUp1");
+            addCriterion("back_up1 not between", value1, value2, "sort");
             return (Criteria) this;
         }
 

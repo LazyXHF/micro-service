@@ -925,73 +925,73 @@ public class TTodoExample {
             return (Criteria) this;
         }
 
-        public Criteria andBackup2IsNull() {
-            addCriterion("backup_2 is null");
+        public Criteria andSortIsNull() {
+            addCriterion("sort is null");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2IsNotNull() {
-            addCriterion("backup_2 is not null");
+        public Criteria andSortIsNotNull() {
+            addCriterion("sort is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2EqualTo(String value) {
-            addCriterion("backup_2 =", value, "backup2");
+        public Criteria andSortEqualTo(String value) {
+            addCriterion("sort =", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2NotEqualTo(String value) {
-            addCriterion("backup_2 <>", value, "backup2");
+        public Criteria andSortNotEqualTo(String value) {
+            addCriterion("sort <>", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2GreaterThan(String value) {
-            addCriterion("backup_2 >", value, "backup2");
+        public Criteria andSortGreaterThan(String value) {
+            addCriterion("sort >", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2GreaterThanOrEqualTo(String value) {
-            addCriterion("backup_2 >=", value, "backup2");
+        public Criteria andSortGreaterThanOrEqualTo(String value) {
+            addCriterion("sort >=", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2LessThan(String value) {
-            addCriterion("backup_2 <", value, "backup2");
+        public Criteria andSortLessThan(String value) {
+            addCriterion("sort <", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2LessThanOrEqualTo(String value) {
-            addCriterion("backup_2 <=", value, "backup2");
+        public Criteria andSortLessThanOrEqualTo(String value) {
+            addCriterion("sort <=", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2Like(String value) {
-            addCriterion("backup_2 like", value, "backup2");
+        public Criteria andSortLike(String value) {
+            addCriterion("sort like", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2NotLike(String value) {
-            addCriterion("backup_2 not like", value, "backup2");
+        public Criteria andSortNotLike(String value) {
+            addCriterion("sort not like", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2In(List<String> values) {
-            addCriterion("backup_2 in", values, "backup2");
+        public Criteria andSortIn(List<String> values) {
+            addCriterion("sort in", values, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2NotIn(List<String> values) {
-            addCriterion("backup_2 not in", values, "backup2");
+        public Criteria andSortNotIn(List<String> values) {
+            addCriterion("sort not in", values, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2Between(String value1, String value2) {
-            addCriterion("backup_2 between", value1, value2, "backup2");
+        public Criteria andSortBetween(String value1, String value2) {
+            addCriterion("sort between", value1, value2, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andBackup2NotBetween(String value1, String value2) {
-            addCriterion("backup_2 not between", value1, value2, "backup2");
+        public Criteria andSortNotBetween(String value1, String value2) {
+            addCriterion("sort not between", value1, value2, "sort");
             return (Criteria) this;
         }
 

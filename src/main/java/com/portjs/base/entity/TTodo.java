@@ -27,7 +27,7 @@ public class TTodo {
 
     private String status;
 
-    private String backup2;
+    private String sort;
 
     private String backup3;
 
@@ -133,12 +133,12 @@ public class TTodo {
         this.status = status == null ? null : status.trim();
     }
 
-    public String getBackup2() {
-        return backup2;
+    public String getSort() {
+        return sort;
     }
 
-    public void setBackup2(String backup2) {
-        this.backup2 = backup2 == null ? null : backup2.trim();
+    public void setSort(String sort) {
+        this.sort = sort == null ? null : sort.trim();
     }
 
     public String getBackup3() {

@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.InternalAttachment;
 import com.portjs.base.entity.InternalAttachmentExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface InternalAttachmentMapper {
     int countByExample(InternalAttachmentExample example);
 

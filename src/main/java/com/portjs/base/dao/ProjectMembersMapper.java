@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.ProjectMembers;
 import com.portjs.base.entity.ProjectMembersExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ProjectMembersMapper {
     int countByExample(ProjectMembersExample example);
 
