@@ -31,9 +31,38 @@ public class ProjectApplication {
 
     private String fileUrl;
 
-    private String status;
 
     private String backUp9;
+
+    private String status;
+
+    private String isApprover;
+
+    public String getIsApprover() {
+        return isApprover;
+    }
+
+    public void setIsApprover(String isApprover) {
+        this.isApprover = isApprover;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private TWorkflowstep workflowstep;
+
+    public TWorkflowstep getWorkflowstep() {
+        return workflowstep;
+    }
+
+    public void setWorkflowstep(TWorkflowstep workflowstep) {
+        this.workflowstep = workflowstep;
+    }
 
     public String getId() {
         return id;
@@ -147,13 +176,6 @@ public class ProjectApplication {
         this.fileUrl = fileUrl == null ? null : fileUrl.trim();
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
 
     public String getBackUp9() {
         return backUp9;

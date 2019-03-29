@@ -35,4 +35,6 @@ public interface TWorkflowstepMapper {
     int updateByPrimaryKeyWithBLOBs(TWorkflowstep record);
 
     int updateByPrimaryKey(TWorkflowstep record);
+
+    String isApproveingId(@Param("id") String id);
 }

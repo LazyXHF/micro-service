@@ -383,4 +383,104 @@
       back_up9 = #{backUp9,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+  <!--编辑项目信息-->
+  <update id="updateProject" parameterType="com.portjs.base.entity.ProjectApplication" >
+    update project_application
+    set project_code = #{projectCode,jdbcType=VARCHAR},
+    project_name = #{projectName,jdbcType=VARCHAR},
+    project_type = #{projectType,jdbcType=VARCHAR},
+    leval = #{leval,jdbcType=VARCHAR},
+    project_desc = #{projectDesc,jdbcType=VARCHAR},
+    organization = #{organization,jdbcType=VARCHAR},
+    range1 = #{range1,jdbcType=VARCHAR},
+    kickoff_date = #{kickoffDate,jdbcType=TIMESTAMP},
+    creater = #{creater,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP},
+    enable = #{enable,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.ProjectApplication" >
+    <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="aProjectCode" property="projectCode" jdbcType="VARCHAR" />
+    <result column="aProjectName" property="projectName" jdbcType="VARCHAR" />
+    <result column="aProjectType" property="projectType" jdbcType="VARCHAR" />
+    <result column="leval" property="leval" jdbcType="VARCHAR" />
+    <result column="aProjectDesc" property="projectDesc" jdbcType="VARCHAR" />
+    <result column="organization" property="organization" jdbcType="VARCHAR" />
+    <result column="range1" property="range1" jdbcType="VARCHAR" />
+    <result column="aKickoffDate" property="kickoffDate" jdbcType="TIMESTAMP" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="aCreateTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="aUpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="aenable" property="enable" jdbcType="VARCHAR" />
+    <result column="astatus" property="status" jdbcType="VARCHAR" />
+    <result column="isApprover" property="isApprover" jdbcType="VARCHAR" />
+    <association property="workflowstep"  javaType="com.portjs.base.entity.TWorkflowstep">
+      <id column="bId" property="id" jdbcType="VARCHAR" />
+      <result column="relateddomain" property="relateddomain" jdbcType="VARCHAR" />
+      <result column="bRelateddomainId" property="relateddomainId" jdbcType="VARCHAR" />
+      <result column="bPrestepId" property="prestepId" jdbcType="VARCHAR" />
+      <result column="bStepDesc" property="stepDesc" jdbcType="VARCHAR" />
+      <result column="bActionuserId" property="actionuserId" jdbcType="VARCHAR" />
+      <result column="bActionTime" property="actionTime" jdbcType="TIMESTAMP" />
+      <result column="bActionResult" property="actionResult" jdbcType="INTEGER" />
+      <result column="bFileUrl" property="fileUrl" jdbcType="VARCHAR" />
+      <result column="bActionComment" property="actionComment" jdbcType="VARCHAR" />
+      <result column="benable" property="enable" jdbcType="VARCHAR" />
+      <result column="bstatus" property="status" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
+
+  <select id="queryProjectCount" resultType="int">
+  select count(1)
+  from project_application  a left join t_workflowstep  b  on a.id=b.relateddomain_id
+  <where>
+  <if test="projectCode !=null and projectCode!=''">
+    and  a.project_code like "%" #{projectCode} "%"
+  </if>
+  <if test="projectType !=null and projectType!=''">
+    and  a.project_type like "%" #{projectType} "%"
+  </if>
+  <if test="creater !=null and creater!=''">
+    and  a.creater like "%" #{creater} "%"
+  </if>
+  <if test="stepDesc !=null and stepDesc!=''">
+    and  b.step_desc like "%" #{stepDesc} "%"
+  </if>
+  </where>
+  </select>
+
+  <!--查询项目信息-->
+  <select id="queryProject" resultMap="BaseResultMap1">
+    select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
+    a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover,
+    b.id as bId, b.relateddomain, b.relateddomain_id as bRelateddomainId, b.prestep_id as bPrestepId, b.step_desc as bStepDesc, b.actionuser_id as bActionuserId, b.action_time as bActionTime,
+    b.action_result as bActionResult, b.file_url as bFileUrl, b.action_comment as bActionComment, b.enable as benable, b.status as bstatus
+    from project_application  a left join t_workflowstep  b  on a.id=b.relateddomain_id
+<where>
+  <if test="projectCode !=null and projectCode!=''">
+     a.project_code like "%" #{projectCode} "%"
+  </if>
+  <if test="projectType !=null and projectType!=''">
+    and  a.project_type like "%" #{projectType} "%"
+  </if>
+  <if test="creater !=null and creater!=''">
+    and  a.creater like "%" #{creater} "%"
+  </if>
+  <if test="stepDesc !=null and stepDesc!=''">
+    and  b.step_desc like "%" #{stepDesc} "%"
+  </if>
+</where>
+    order by  a.create_time desc
+    limit #{rowNum},#{pageCount}
+  </select>
+
+  <select id="queryProjectBase" resultMap="BaseResultMap">
+  select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
+  a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover
+  from project_application  a
+   where id=#{id}
+  </select>
 </mapper>

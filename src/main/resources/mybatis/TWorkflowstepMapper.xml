@@ -462,4 +462,9 @@
       back_up9 = #{backUp9,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="isApproveingId" parameterType="String" resultType="String">
+    select actionuser_id from t_workflowstep
+     where relateddomain_id=#{id} and status='0'
+  </select>
 </mapper>
