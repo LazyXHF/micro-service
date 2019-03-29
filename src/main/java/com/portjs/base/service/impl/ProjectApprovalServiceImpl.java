@@ -80,16 +80,21 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		}
 		//步骤描述
 		String stepDesc="";
+		String stepTodo="";
 		if(sort.equals("2")){
+			stepTodo="部门负责人审核";
 			stepDesc="分管领导审核";
 			sort="3";
 		}else if(sort.equals("3")){
+			stepTodo="分管领导审核";
 			stepDesc="技术委员会审核";
 			sort="4";
 		}else if(sort.equals("4")){
+			stepTodo="技术委员会审核";
 			stepDesc="总经办审核";
 			sort="5";
 		}else if(sort.equals("5")){
+			stepTodo="总经办审核";
 			stepDesc="规划部归档";
 			sort="6";
 		}
@@ -136,20 +141,6 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				criteria2.andBackup3EqualTo("4");
 				List<TWorkflowstep> list = tWorkflowstepMapper.selectByExample(example1);
 				if(CollectionUtils.isEmpty(list)){
-					TTodo internalToDo=new TTodo();
-					internalToDo.setId(String.valueOf(UUID.randomUUID()));
-					internalToDo.setCurrentstepId(currentstep_id);
-					internalToDo.setRelateddomain(relateddomain);
-					internalToDo.setRelateddomainId(relateddomain_id);
-					internalToDo.setSenderId(sender_id);
-					internalToDo.setReceiverId(nextReviewerId.getString(c));
-					internalToDo.setSenderTime(new Date());
-					internalToDo.setTodoType("项目立项审核流程");
-					internalToDo.setStatus("0");
-					int n=tTodoMapper.insertSelective(internalToDo);
-					if(n<=0) {
-						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
-					}
 					TWorkflowstep workflowstep=new TWorkflowstep();
 					workflowstep.setId(String.valueOf(UUID.randomUUID()));
 					workflowstep.setRelateddomain(relateddomain);
@@ -164,6 +155,36 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
 					}
 				}
+
+				//1.查询此条待办 2.更新 3.插入
+				TTodoExample todoExample = new TTodoExample();
+				TTodoExample.Criteria criteria3 = todoExample.createCriteria();
+				criteria3.andRelateddomainIdEqualTo(relateddomain_id);
+				criteria3.andCurrentstepIdEqualTo(currentstep_id);
+				criteria3.andReceiverIdEqualTo(nextReviewerId.getString(c));
+				List<TTodo> list1= tTodoMapper.selectByExample(todoExample);
+				if(CollectionUtils.isEmpty(list1)){
+					TTodo internalToDo=new TTodo();
+					internalToDo.setId(String.valueOf(UUID.randomUUID()));
+					internalToDo.setCurrentstepId(currentstep_id);
+					internalToDo.setRelateddomain(relateddomain);
+					internalToDo.setRelateddomainId(relateddomain_id);
+					internalToDo.setSenderId(sender_id);
+					internalToDo.setReceiverId(nextReviewerId.getString(c));
+					internalToDo.setSenderTime(new Date());
+					internalToDo.setStepDesc(stepTodo);
+					internalToDo.setTodoType("项目立项审核流程");
+					internalToDo.setStatus("0");
+					int n=tTodoMapper.insertSelective(internalToDo);
+					if(n<=0) {
+						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+					}
+				}else{
+					//更新
+					TTodo internalToDo = list1.get(0);
+					internalToDo.setReceiverId(internalToDo.getReceiverId() + "," + nextReviewerId.getString(c));
+					tTodoMapper.updateByPrimaryKeySelective(internalToDo);
+				}
 			}else{
 				TTodo internalToDo=new TTodo();
 				internalToDo.setId(String.valueOf(UUID.randomUUID()));
@@ -174,6 +195,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				internalToDo.setReceiverId(nextReviewerId.getString(c));
 				internalToDo.setSenderTime(new Date());
 				internalToDo.setTodoType("项目立项审核流程");
+				internalToDo.setStepDesc(stepTodo);
 				internalToDo.setStatus("0");
 				int n=tTodoMapper.insertSelective(internalToDo);
 				if(n<=0) {
