@@ -34,10 +34,16 @@ public interface ProjectApplicationMapper {
 
 
 
-    int queryProjectCount(@Param("projectCode") String projectCode, @Param("projectType") String projectType, @Param("creater") String creater, @Param("stepDesc") String stepDesc);
+    int queryProjectCount(@Param("projectCode") String projectCode, @Param("projectType") String projectType, @Param("creater") String creater, @Param("status") String stepDesc);
 
-    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectType") String projectType, @Param("creater") String creater, @Param("stepDesc") String stepDesc,@Param("rowNum")Integer rowNum,@Param("pageCount")Integer pageCount);
+    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectType") String projectType, @Param("creater") String creater, @Param("status") String stepDesc,@Param("rowNum")Integer rowNum,@Param("pageCount")Integer pageCount);
 
 
     ProjectApplication queryProjectBase(@Param("id") String id);
+
+    int queryProjectPersonsCount(@Param("id") String id);
+
+    List<ProjectApplication> queryProjectPersons(@Param("id") String id);
+
+    int deleteProject(@Param("id") String id);
 }

@@ -37,6 +37,16 @@ public class TWorkflowstep {
 
     private String fileDescription;
 
+    private  String bstatus;
+
+    public String getBstatus() {
+        return bstatus;
+    }
+
+    public void setBstatus(String bstatus) {
+        this.bstatus = bstatus;
+    }
+
     public String getId() {
         return id;
     }

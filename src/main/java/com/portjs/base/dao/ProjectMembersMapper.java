@@ -1,5 +1,6 @@
 package com.portjs.base.dao;
 
+import com.portjs.base.entity.ProjectApplication;
 import com.portjs.base.entity.ProjectMembers;
 import com.portjs.base.entity.ProjectMembersExample;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +30,8 @@ public interface ProjectMembersMapper {
     int updateByPrimaryKeySelective(ProjectMembers record);
 
     int updateByPrimaryKey(ProjectMembers record);
+
+    int queryProjectPersonsCount(@Param("id") String id);
+
+    List<ProjectApplication> queryProjectPersons(@Param("id") String id);
 }

@@ -429,4 +429,17 @@
       back_up10 = #{backUp10,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="queryProjectPersonsCount" resultType="int" parameterType="java.lang.String" >
+    select
+   count(1)
+    from project_members
+    where application_id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="queryProjectPersons" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from project_members
+    where application_id = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>

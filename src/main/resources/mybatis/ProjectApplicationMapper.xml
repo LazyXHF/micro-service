@@ -435,7 +435,7 @@
 
   <select id="queryProjectCount" resultType="int">
   select count(1)
-  from project_application  a left join t_workflowstep  b  on a.id=b.relateddomain_id
+  from project_application  a
   <where>
   <if test="projectCode !=null and projectCode!=''">
     and  a.project_code like "%" #{projectCode} "%"
@@ -446,14 +446,55 @@
   <if test="creater !=null and creater!=''">
     and  a.creater like "%" #{creater} "%"
   </if>
-  <if test="stepDesc !=null and stepDesc!=''">
-    and  b.step_desc like "%" #{stepDesc} "%"
-  </if>
+    <if test="status !=null and status!=''">
+      and  a.status like "%" #{status} "%"
+    </if>
   </where>
   </select>
-
+  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.ProjectApplication" >
+  <id column="Id" property="id" jdbcType="VARCHAR" />
+  <result column="aProjectCode" property="projectCode" jdbcType="VARCHAR" />
+  <result column="aProjectName" property="projectName" jdbcType="VARCHAR" />
+  <result column="aProjectType" property="projectType" jdbcType="VARCHAR" />
+  <result column="leval" property="leval" jdbcType="VARCHAR" />
+  <result column="aProjectDesc" property="projectDesc" jdbcType="VARCHAR" />
+  <result column="organization" property="organization" jdbcType="VARCHAR" />
+  <result column="range1" property="range1" jdbcType="VARCHAR" />
+  <result column="aKickoffDate" property="kickoffDate" jdbcType="TIMESTAMP" />
+  <result column="creater" property="creater" jdbcType="VARCHAR" />
+  <result column="aCreateTime" property="createTime" jdbcType="TIMESTAMP" />
+  <result column="aUpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
+  <result column="aenable" property="enable" jdbcType="VARCHAR" />
+  <result column="astatus" property="status" jdbcType="VARCHAR" />
+  <result column="isApprover" property="isApprover" jdbcType="VARCHAR" />
+  </resultMap>
   <!--查询项目信息-->
   <select id="queryProject" resultMap="BaseResultMap1">
+    select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
+    a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover
+    from project_application a
+    <where>
+      <if test="projectCode !=null and projectCode!=''">
+        a.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectType !=null and projectType!=''">
+        and  a.project_type like "%" #{projectType} "%"
+      </if>
+      <if test="creater !=null and creater!=''">
+        and  a.creater like "%" #{creater} "%"
+      </if>
+      <if test="status !=null and status!=''">
+        and  a.status like "%" #{status} "%"
+      </if>
+    </where>
+    order by  a.create_time desc
+    limit #{rowNum},#{pageCount}
+  </select>
+
+
+
+  <!--查询项目信息-->
+<!--  <select id="queryProject" resultMap="BaseResultMap1">
     select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
     a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover,
     b.id as bId, b.relateddomain, b.relateddomain_id as bRelateddomainId, b.prestep_id as bPrestepId, b.step_desc as bStepDesc, b.actionuser_id as bActionuserId, b.action_time as bActionTime,
@@ -475,12 +516,17 @@
 </where>
     order by  a.create_time desc
     limit #{rowNum},#{pageCount}
-  </select>
+  </select>-->
 
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
-  a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover
+  select Id, project_code, project_name, project_type, leval, project_desc, organization,
+    range1, kickoff_date, creater, create_time, update_time, enable, file_url, status
   from project_application  a
    where id=#{id}
   </select>
+
+  <update id="deleteProject">
+    update project_application set is_delete='1'
+    where id=#{id}
+  </update>
 </mapper>
