@@ -549,9 +549,10 @@
 
   </resultMap>
   <!--查询项目信息-->
-  <select id="queryProject" resultMap="BaseResultMap1">
-    select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
-    a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus
+  <select id="queryProject" resultMap="BaseResultMap">
+    select  Id, investment_id, project_code, project_name, project_type, investor, organization,
+    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
+    remark, creater, create_time, update_time, enable, file_url, status, is_delete
     from project_application a
     <where>
       is_delete='0'
@@ -600,8 +601,9 @@
   </select>-->
 
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select Id, project_code, project_name, project_type, leval, project_desc, organization,
-    range1, kickoff_date, creater, create_time, update_time, enable, file_url, status
+  select   Id, investment_id, project_code, project_name, project_type, investor, organization,
+    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
+    remark, creater, create_time, update_time, enable, file_url, status, is_delete
   from project_application  a
    where id=#{id}
   </select>

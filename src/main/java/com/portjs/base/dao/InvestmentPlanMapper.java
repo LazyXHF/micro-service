@@ -34,4 +34,8 @@ public interface InvestmentPlanMapper {
     int selectCountByExample(InvestmentPlan plan);
 
     List<InvestmentPlan> selectByPage(InvestmentPlan plan);
+
+    List<InvestmentPlan> queryProjectPlan();
+
+    InvestmentPlan queryProjectPlanInfo(@Param("id") String id);
 }

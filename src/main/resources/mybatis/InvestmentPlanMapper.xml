@@ -389,4 +389,17 @@
     order by create_time
     limit #{rowNum},#{pageCount}
   </select>
+
+  <select id="queryProjectPlan" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from investment_plan
+  </select>
+
+  <select id="queryProjectPlanInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from investment_plan
+    where Id = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>
