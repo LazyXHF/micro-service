@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @CrossOrigin
 @RequestMapping("/projectApplication")
 @Component
-public class ProjectApplicationControllerRSH extends BaseController {
+public class ProjectApplicationController extends BaseController {
     static final  String TAG = "ProjectApplication================>";
     Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -83,6 +83,22 @@ public class ProjectApplicationControllerRSH extends BaseController {
         JSONObject requestJson=JSONObject.parseObject(responseBody);
         return  applicationService.deleteProject(requestJson);
     }
+
+   /* 项目基本信息
+    投资计划下拉框*/
+   @LogInfo(methodName = "投资计划",modelName = "立项管理")
+   @RequestMapping("queryProjectPlan")
+   @ResponseBody
+   public ResponseMessage queryProjectPlan(@RequestBody String responseBody){
+       logger.debug(TAG+"queryProjectPlan() begin");
+       JSONObject requestJson=JSONObject.parseObject(responseBody);
+       return  applicationService.queryProjectPlan(requestJson);
+   }
+
+
+
+
+
 
 
 

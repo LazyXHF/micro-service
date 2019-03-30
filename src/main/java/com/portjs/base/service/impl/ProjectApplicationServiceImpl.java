@@ -178,4 +178,9 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         return  new ResponseMessage(Code.CODE_OK,"删除成功");
     }
 
+    @Override
+    public ResponseMessage queryProjectPlan(JSONObject requestJson) {
+        return null;
+    }
+
 }

@@ -27,4 +27,6 @@ public interface ProjectApplicationService {
     ResponseMessage queryProjectRecords(JSONObject requestJson);
 
     ResponseMessage deleteProject(JSONObject requestJson);
+
+    ResponseMessage queryProjectPlan(JSONObject requestJson);
 }

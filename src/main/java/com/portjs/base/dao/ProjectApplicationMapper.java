@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.ProjectApplication;
 import com.portjs.base.entity.ProjectApplicationExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ProjectApplicationMapper {
     int countByExample(ProjectApplicationExample example);
 
@@ -28,4 +29,19 @@ public interface ProjectApplicationMapper {
     int updateByPrimaryKeySelective(ProjectApplication record);
 
     int updateByPrimaryKey(ProjectApplication record);
+
+    int queryProjectCount(@Param("projectCode") String projectCode, @Param("projectType") String projectType, @Param("creater") String creater, @Param("status") String stepDesc);
+
+    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectType") String projectType, @Param("creater") String creater, @Param("status") String stepDesc,@Param("rowNum")Integer rowNum,@Param("pageCount")Integer pageCount);
+
+    int updateProject(ProjectApplication projectApplication);
+
+    ProjectApplication queryProjectBase(@Param("id") String id);
+
+    int queryProjectPersonsCount(@Param("id") String id);
+
+    List<ProjectApplication> queryProjectPersons(@Param("id") String id);
+
+    int deleteProject(@Param("id") String id);
+
 }

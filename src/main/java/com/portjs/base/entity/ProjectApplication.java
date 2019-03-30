@@ -46,6 +46,26 @@ public class ProjectApplication {
 
     private String isDelete;
 
+    private String isApprover;
+
+    private TWorkflowstep workflowstep;
+
+    public TWorkflowstep getWorkflowstep() {
+        return workflowstep;
+    }
+
+    public void setWorkflowstep(TWorkflowstep workflowstep) {
+        this.workflowstep = workflowstep;
+    }
+
+    public String getIsApprover() {
+        return isApprover;
+    }
+
+    public void setIsApprover(String isApprover) {
+        this.isApprover = isApprover;
+    }
+
     public String getId() {
         return id;
     }
