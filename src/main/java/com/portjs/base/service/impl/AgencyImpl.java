@@ -44,7 +44,7 @@ public class AgencyImpl implements AgencyService {
         int totelCount=bugDetailsRecordMapper.selectByOwnerIdCount(owner_id);
         Page page = new Page();
         page.init(totelCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-        List<BugDetailsRecord> records = bugDetailsRecordMapper.selectByOwnerId(owner_id,page.getRowNum(),page.getPageNum());
+        List<BugDetailsRecord> records = bugDetailsRecordMapper.selectByOwnerId(owner_id,page.getRowNum(),page.getPageCount());
         page.setList(records);
         message = records.isEmpty()?"查询失败":"查询成功";
         code = records.isEmpty() ? Code.CODE_ERROR : Code.CODE_OK ;

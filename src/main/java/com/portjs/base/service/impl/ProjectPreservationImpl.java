@@ -6,11 +6,8 @@ import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.ProjectManagerService;
 import com.portjs.base.service.ProjectPreservationService;
-import com.portjs.base.util.Code;
-import com.portjs.base.util.IDUtils;
-import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.*;
 import com.portjs.base.util.StringUtils.StringUtils;
-import com.portjs.base.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +16,8 @@ import org.springframework.util.CollectionUtils;
 import javax.naming.spi.DirStateFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,6 +38,9 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     private TXietongDictionaryMapper dictionaryMapper;
     @Autowired
     private TTodoMapper todoMapper;
+
+    @Autowired
+    private InvestmentPlanMapper planMapper;
 
     //返参信息
     public final static String PARAM_MESSAGE_1 = "未传";
@@ -281,4 +283,91 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             }
             return new ResponseMessage(Code.CODE_OK,"退回成功");
     }
+
+    /**
+     * 查询项目分类/投资主体/责任单位/建设方式
+     * @return
+     */
+    @Override
+    public ResponseMessage selectBox(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String type = jsonObject.getString("type");//1 项目类型 2 投资主体 3 责任单位 4 建设方式
+        InvestmentPlanExample example = new InvestmentPlanExample();
+        example.setOrderByClause("create_time");
+        List<InvestmentPlan> investmentPlans = planMapper.selectByExample(example);
+        LinkedList list = new LinkedList();
+        if(!investmentPlans.isEmpty()){
+            for (InvestmentPlan plan: investmentPlans) {
+                if(StringUtils.isEmpty(type)){
+                    return new ResponseMessage(Code.CODE_OK,"查询类型不得为空");
+                }else if(Integer.valueOf(type)==1){
+                    list.add(plan.getProjectType());
+                }else if(Integer.valueOf(type)==2){
+                    list.add(plan.getInvestor());
+                }else if(Integer.valueOf(type)==3){
+                    list.add(plan.getOrganization());
+                }else if(Integer.valueOf(type)==4){
+                    list.add(plan.getConstructionMode());
+                }else {
+                    return new ResponseMessage(Code.CODE_OK,"查询类型错误");
+                }
+
+            }
+        }
+        HashSet set = new HashSet(list);
+        list.clear();
+        list.addAll(set);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",list);
+    }
+
+    /**
+     * 按条件分页查询投资计划
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage selectInvestment(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String pageNum = jsonObject.getString("pageNum");//当前页数
+        String pageCount = jsonObject.getString("pageCount");//每页显示记录数
+        String project_name = jsonObject.getString("project_name");//项目名称
+        String project_type = jsonObject.getString("project_type");//项目分类
+        String investor = jsonObject.getString("investor");//投资主体
+        String organization = jsonObject.getString("organization");//责任单位
+        String construction_mode = jsonObject.getString("construction_mode");//建设方式
+        String amount = jsonObject.getString("amount");//投资金额
+
+        InvestmentPlan plan= new InvestmentPlan();
+
+        if (!StringUtils.isEmpty(project_name)) {
+            plan.setProjectName(project_name);
+        }
+        if(!StringUtils.isEmpty(project_type)){
+            plan.setProjectType(project_type);
+        }
+        if(!StringUtils.isEmpty(investor)){
+            plan.setInvestor(investor);
+        }
+        if(!StringUtils.isEmpty(organization)){
+            plan.setOrganization(organization);
+        }
+        if (!StringUtils.isEmpty(construction_mode)) {
+          plan.setConstructionMode(construction_mode);
+        }
+        if(!StringUtils.isEmpty(amount)){
+            plan.setAmount(Long.parseLong(amount));
+        }
+        int totelCount=planMapper.selectCountByExample(plan);
+        Page page = new Page();
+        page.init(totelCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+        plan.setRowNum(page.getRowNum());
+        plan.setPageCount(page.getPageCount());
+        List<InvestmentPlan> investmentPlans = planMapper.selectByPage(plan);
+        page.setList(investmentPlans);
+        String message = investmentPlans.isEmpty()?"查询失败":"查询成功";
+        Integer code = investmentPlans.isEmpty() ? Code.CODE_ERROR : Code.CODE_OK ;
+        return new ResponseMessage(code,message,page);
+    }
+
+
 }

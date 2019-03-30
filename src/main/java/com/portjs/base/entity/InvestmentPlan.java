@@ -29,6 +29,25 @@ public class InvestmentPlan {
 
     private Date deleteTime;
 
+    private int rowNum;
+    private int pageCount;
+
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public void setRowNum(int rowNum) {
+        this.rowNum = rowNum;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
     public String getId() {
         return id;
     }

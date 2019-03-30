@@ -339,15 +339,15 @@
     <if test="remark!=null and remark!=''">
       and t.participant_id = #{remark}
     </if>
+    )
     <if test="beginTime!=null">
-      and t.begin_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+      and begin_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+      and end_time &gt;=#{beginTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
     </if>
     <if test="endTime!=null">
-      and t.begin_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+      and begin_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
+      and end_time &lt;=#{endTime}/*STR_TO_DATE(,"%Y-%m-%d %H:%i:%s")*/
     </if>
-
-
-    )
     and isdelete=1
 
     ORDER BY ispublish,begin_time
