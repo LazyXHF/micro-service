@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.InternalTodo">
+  <!--<resultMap id="BaseResultMap" type="com.portjs.base.entity.InternalPilot">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="plan_start_time" jdbcType="TIMESTAMP" property="planStartTime" />
+    <result column="plan_end_time" jdbcType="TIMESTAMP" property="planEndTime" />
+    <result column="actual_start_time" jdbcType="TIMESTAMP" property="actualStartTime" />
+    <result column="actual_end_time" jdbcType="TIMESTAMP" property="actualEndTime" />
+    <result column="test_pass_time" jdbcType="TIMESTAMP" property="testPassTime" />
+    <result column="line_time" jdbcType="TIMESTAMP" property="lineTime" />
+    <result column="test_time" jdbcType="TIMESTAMP" property="testTime" />
+    <result column="test_person" jdbcType="VARCHAR" property="testPerson" />
+    <result column="test_unit" jdbcType="VARCHAR" property="testUnit" />
+    <result column="test_leader" jdbcType="VARCHAR" property="testLeader" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="enable" jdbcType="CHAR" property="enable" />
+    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
+    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
+    <result column="back_up4" jdbcType="VARCHAR" property="backUp4" />
+    <result column="back_up5" jdbcType="VARCHAR" property="backUp5" />
+    <result column="back_up6" jdbcType="VARCHAR" property="backUp6" />
+    <result column="back_up7" jdbcType="VARCHAR" property="backUp7" />
+    <result column="back_up8" jdbcType="VARCHAR" property="backUp8" />
+    <result column="back_up9" jdbcType="VARCHAR" property="backUp9" />
+    <result column="back_up10" jdbcType="VARCHAR" property="backUp10" />
+  </resultMap>-->
+  <select id="isShenHe" parameterType="String" resultType="int">
+    select count(1) from internal_todo
+    <where> 1=1
+      <if test="id !=null and id!=''">
+      AND relateddomain_id=#{id}
+      </if>
+      <if test="ownerId !=null and ownerId!=''">
+        and  receiver_id=#{ownerId}
+      </if>
+
+    </where>
+  </select>
+</mapper>

@@ -29,4 +29,8 @@ public interface InternalAttachmentMapper {
     int updateByPrimaryKeySelective(InternalAttachment record);
 
     int updateByPrimaryKey(InternalAttachment record);
+
+    List<InternalAttachment> queryProjectFiles(@Param("id") String id);
+
+    List<InternalAttachment> queryProjectRecords(String id);
 }
