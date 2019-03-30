@@ -42,4 +42,10 @@ public interface LifeMapper {
      * @return
      */
     List<Life> sumLines();
+
+    /**
+     * 在建项目的projectId
+     * @return
+     */
+    List<String> selectProjectId();
 }

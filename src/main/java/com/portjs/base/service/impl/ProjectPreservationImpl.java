@@ -49,7 +49,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      * @return
      */
     @Override
-    public ResponseMessage insertStorage(String responseBody)throws Exception {
+    public ResponseMessage insertStorage(String responseBody) {
         JSONObject jsonObject = JSONObject.parseObject(responseBody);
         String status = jsonObject.getString("Status");//0暂存7提交
         String userId = jsonObject.getString("UserId");//登录用户
@@ -67,12 +67,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         if(StringUtils.isEmpty(application1JSON)){
             return new ResponseMessage(Code.CODE_ERROR,"Application"+PARAM_MESSAGE_1);
         }
-        if(CollectionUtils.isEmpty(arrayJSON)){
-            return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);
-        }
-        if(CollectionUtils.isEmpty(resourcesJSON)){
-            return new ResponseMessage(Code.CODE_ERROR,"Files"+PARAM_MESSAGE_1);
-        }
+
         String message1="";
         String message2="";
         //0暂存
@@ -83,6 +78,12 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             nextViewJSON.clear();
         }else{
           //提交
+            if(CollectionUtils.isEmpty(arrayJSON)){
+                return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);
+            }
+            if(CollectionUtils.isEmpty(resourcesJSON)){
+                return new ResponseMessage(Code.CODE_ERROR,"Files"+PARAM_MESSAGE_1);
+            }
             message1="提交失败";
             message2="提交失败";
         }
@@ -211,7 +212,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      * @return
      */
     @Override
-    public ResponseMessage returnStorage(String responseBody)throws Exception {
+    public ResponseMessage returnStorage(String responseBody) {
             JSONObject jsonObject = JSONObject.parseObject(responseBody);
             String application_id = jsonObject.getString("application_id");//立项记录id
             String workflowstep_id = jsonObject.getString("workflowstep_id");//立项流程id

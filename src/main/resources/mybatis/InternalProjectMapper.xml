@@ -562,4 +562,17 @@
       project_type = #{projectType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectCreateTime" resultType="java.lang.String">
+    select min(create_time) from internal_project where enable='0' and id in
+    <foreach collection="projectId" item="pId" open="(" close=")" separator=",">
+      #{pId}
+    </foreach>
+  </select>
+  <select id="selectAbuildingProject" resultType="int">
+    select Count(id)from internal_project where enable='0' and DATE_FORMAT(create_time,'%Y')=#{niandu} and id in
+    <foreach collection="projectId" item="pId" open="(" close=")" separator=",">
+      #{pId}
+    </foreach>
+  </select>
 </mapper>

@@ -143,4 +143,18 @@ public class ProjectController extends BaseController {
         InternalProject internalProject = JSONObject.toJavaObject(jsonObject,InternalProject.class);
         return internalProjectService.queryProjectsByLoginer(internalProject);
     }
+
+    @LogInfo(methodName = "查询不同年份的在建项目总数",modelName = "项目概览")
+    @RequestMapping("select-abuilding-project")
+    @ResponseBody
+    public ResponseMessage selectAbuildingProject() {
+        return internalProjectService.selectAbuildingProject();
+    }
+
+    @LogInfo(methodName = "查询不同年份的在建项目总金额",modelName = "项目概览")
+    @RequestMapping("select-abuilding-project-money")
+    @ResponseBody
+    public ResponseMessage selectAbuildingProjectMoney() {
+        return internalProjectService.selectAbuildingProjectMoney();
+    }
 }

@@ -3,7 +3,6 @@ package com.portjs.base.service;
 import com.portjs.base.entity.InternalProject;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -89,4 +88,8 @@ public interface InternalProjectService {
      * @return
      */
     ResponseMessage queryProjectsByLoginer(InternalProject internalProject);
+
+    ResponseMessage selectAbuildingProject();
+
+    ResponseMessage selectAbuildingProjectMoney();
 }

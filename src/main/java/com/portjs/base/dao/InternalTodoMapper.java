@@ -4,7 +4,9 @@ import com.portjs.base.entity.InternalTodo;
 import com.portjs.base.entity.InternalTodoExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface InternalTodoMapper {
     int countByExample(InternalTodoExample example);
 

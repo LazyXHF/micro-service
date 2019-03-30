@@ -347,4 +347,18 @@
       amount = #{amount,jdbcType=DECIMAL}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectCreateTime" resultType="java.lang.String">
+  select min(creat_time) from internal_approval where enable='0' and project_id in
+  <foreach collection="projectId" item="pId" open="(" close=")" separator=",">
+    #{pId}
+  </foreach>
+  </select>
+
+  <select id="selectAbuildingProject" resultType="Double">
+    select sum(amount)from internal_approval where enable='0' and DATE_FORMAT(creat_time,'%Y')=#{niandu} and project_id in
+    <foreach collection="projectId" item="pId" open="(" close=")" separator=",">
+      #{pId}
+    </foreach>
+  </select>
 </mapper>
