@@ -41,9 +41,13 @@ public class ProjectPreservationController  extends BaseController {
     @RequestMapping("/return-designs")
     @ResponseBody
     public ResponseMessage returnDesigns(@RequestBody String responseBody){
-        logger.debug(TAG + responseBody);
-        UnifiedExceptionHandler.method= responseBody + "insert-designs==============================" + responseBody;
-        return projectPreservationService.returnStorage(responseBody);
+        try {
+            logger.error(TAG + "return-designs()begin....." + responseBody);
+            return projectPreservationService.returnStorage(responseBody);
+        } catch (Exception e) {
+            logger.error(TAG + "return-designs()error.....", e);
+            throw new RuntimeException();
+        }
     }
 
 }
