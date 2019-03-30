@@ -474,8 +474,9 @@
     a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover
     from project_application a
     <where>
+      is_delete='0'
       <if test="projectCode !=null and projectCode!=''">
-        a.project_code like "%" #{projectCode} "%"
+       and  a.project_code like "%" #{projectCode} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
         and  a.project_type like "%" #{projectType} "%"
