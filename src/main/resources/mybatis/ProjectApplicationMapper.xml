@@ -3,21 +3,26 @@
 <mapper namespace="com.portjs.base.dao.ProjectApplicationMapper" >
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.ProjectApplication" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="investment_id" property="investmentId" jdbcType="VARCHAR" />
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
-    <result column="leval" property="leval" jdbcType="VARCHAR" />
-    <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
+    <result column="investor" property="investor" jdbcType="VARCHAR" />
     <result column="organization" property="organization" jdbcType="VARCHAR" />
+    <result column="leval" property="leval" jdbcType="VARCHAR" />
+    <result column="investment_amount" property="investmentAmount" jdbcType="DECIMAL" />
     <result column="range1" property="range1" jdbcType="VARCHAR" />
+    <result column="application_amount" property="applicationAmount" jdbcType="DECIMAL" />
+    <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
     <result column="kickoff_date" property="kickoffDate" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creater" property="creater" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="enable" property="enable" jdbcType="VARCHAR" />
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="isApprover" property="isApprover" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,9 +83,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, project_code, project_name, project_type, leval, project_desc, organization, 
-    range1, kickoff_date, creater, create_time, update_time, enable, file_url, status, 
-    isApprover
+    Id, investment_id, project_code, project_name, project_type, investor, organization, 
+    leval, investment_amount, range1, application_amount, project_desc, kickoff_date, 
+    remark, creater, create_time, update_time, enable, file_url, status, is_delete
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectApplicationExample" >
     select
@@ -113,24 +118,31 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.ProjectApplication" >
-    insert into project_application (Id, project_code, project_name, 
-      project_type, leval, project_desc, 
-      organization, range1, kickoff_date, 
-      creater, create_time, update_time, 
-      enable, file_url, status, 
-      isApprover)
-    values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, 
-      #{projectType,jdbcType=VARCHAR}, #{leval,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR}, 
-      #{organization,jdbcType=VARCHAR}, #{range1,jdbcType=VARCHAR}, #{kickoffDate,jdbcType=TIMESTAMP}, 
-      #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{enable,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{isApprover,jdbcType=VARCHAR})
+    insert into project_application (Id, investment_id, project_code, 
+      project_name, project_type, investor, 
+      organization, leval, investment_amount, 
+      range1, application_amount, project_desc, 
+      kickoff_date, remark, creater, 
+      create_time, update_time, enable, 
+      file_url, status, is_delete
+      )
+    values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
+      #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{investor,jdbcType=VARCHAR}, 
+      #{organization,jdbcType=VARCHAR}, #{leval,jdbcType=VARCHAR}, #{investmentAmount,jdbcType=DECIMAL}, 
+      #{range1,jdbcType=VARCHAR}, #{applicationAmount,jdbcType=DECIMAL}, #{projectDesc,jdbcType=VARCHAR}, 
+      #{kickoffDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=VARCHAR}, 
+      #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectApplication" >
     insert into project_application
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         Id,
+      </if>
+      <if test="investmentId != null" >
+        investment_id,
       </if>
       <if test="projectCode != null" >
         project_code,
@@ -141,20 +153,32 @@
       <if test="projectType != null" >
         project_type,
       </if>
-      <if test="leval != null" >
-        leval,
-      </if>
-      <if test="projectDesc != null" >
-        project_desc,
+      <if test="investor != null" >
+        investor,
       </if>
       <if test="organization != null" >
         organization,
       </if>
+      <if test="leval != null" >
+        leval,
+      </if>
+      <if test="investmentAmount != null" >
+        investment_amount,
+      </if>
       <if test="range1 != null" >
         range1,
       </if>
+      <if test="applicationAmount != null" >
+        application_amount,
+      </if>
+      <if test="projectDesc != null" >
+        project_desc,
+      </if>
       <if test="kickoffDate != null" >
         kickoff_date,
+      </if>
+      <if test="remark != null" >
+        remark,
       </if>
       <if test="creater != null" >
         creater,
@@ -174,13 +198,16 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="isApprover != null" >
-        isApprover,
+      <if test="isDelete != null" >
+        is_delete,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentId != null" >
+        #{investmentId,jdbcType=VARCHAR},
       </if>
       <if test="projectCode != null" >
         #{projectCode,jdbcType=VARCHAR},
@@ -191,20 +218,32 @@
       <if test="projectType != null" >
         #{projectType,jdbcType=VARCHAR},
       </if>
-      <if test="leval != null" >
-        #{leval,jdbcType=VARCHAR},
-      </if>
-      <if test="projectDesc != null" >
-        #{projectDesc,jdbcType=VARCHAR},
+      <if test="investor != null" >
+        #{investor,jdbcType=VARCHAR},
       </if>
       <if test="organization != null" >
         #{organization,jdbcType=VARCHAR},
       </if>
+      <if test="leval != null" >
+        #{leval,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentAmount != null" >
+        #{investmentAmount,jdbcType=DECIMAL},
+      </if>
       <if test="range1 != null" >
         #{range1,jdbcType=VARCHAR},
       </if>
+      <if test="applicationAmount != null" >
+        #{applicationAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="projectDesc != null" >
+        #{projectDesc,jdbcType=VARCHAR},
+      </if>
       <if test="kickoffDate != null" >
         #{kickoffDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
       <if test="creater != null" >
         #{creater,jdbcType=VARCHAR},
@@ -224,8 +263,8 @@
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="isApprover != null" >
-        #{isApprover,jdbcType=VARCHAR},
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -241,6 +280,9 @@
       <if test="record.id != null" >
         Id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.investmentId != null" >
+        investment_id = #{record.investmentId,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectCode != null" >
         project_code = #{record.projectCode,jdbcType=VARCHAR},
       </if>
@@ -250,20 +292,32 @@
       <if test="record.projectType != null" >
         project_type = #{record.projectType,jdbcType=VARCHAR},
       </if>
-      <if test="record.leval != null" >
-        leval = #{record.leval,jdbcType=VARCHAR},
-      </if>
-      <if test="record.projectDesc != null" >
-        project_desc = #{record.projectDesc,jdbcType=VARCHAR},
+      <if test="record.investor != null" >
+        investor = #{record.investor,jdbcType=VARCHAR},
       </if>
       <if test="record.organization != null" >
         organization = #{record.organization,jdbcType=VARCHAR},
       </if>
+      <if test="record.leval != null" >
+        leval = #{record.leval,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investmentAmount != null" >
+        investment_amount = #{record.investmentAmount,jdbcType=DECIMAL},
+      </if>
       <if test="record.range1 != null" >
         range1 = #{record.range1,jdbcType=VARCHAR},
       </if>
+      <if test="record.applicationAmount != null" >
+        application_amount = #{record.applicationAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.projectDesc != null" >
+        project_desc = #{record.projectDesc,jdbcType=VARCHAR},
+      </if>
       <if test="record.kickoffDate != null" >
         kickoff_date = #{record.kickoffDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.creater != null" >
         creater = #{record.creater,jdbcType=VARCHAR},
@@ -283,8 +337,8 @@
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.isApprover != null" >
-        isApprover = #{record.isApprover,jdbcType=VARCHAR},
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -294,21 +348,26 @@
   <update id="updateByExample" parameterType="map" >
     update project_application
     set Id = #{record.id,jdbcType=VARCHAR},
+      investment_id = #{record.investmentId,jdbcType=VARCHAR},
       project_code = #{record.projectCode,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_type = #{record.projectType,jdbcType=VARCHAR},
-      leval = #{record.leval,jdbcType=VARCHAR},
-      project_desc = #{record.projectDesc,jdbcType=VARCHAR},
+      investor = #{record.investor,jdbcType=VARCHAR},
       organization = #{record.organization,jdbcType=VARCHAR},
+      leval = #{record.leval,jdbcType=VARCHAR},
+      investment_amount = #{record.investmentAmount,jdbcType=DECIMAL},
       range1 = #{record.range1,jdbcType=VARCHAR},
+      application_amount = #{record.applicationAmount,jdbcType=DECIMAL},
+      project_desc = #{record.projectDesc,jdbcType=VARCHAR},
       kickoff_date = #{record.kickoffDate,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
       creater = #{record.creater,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       enable = #{record.enable,jdbcType=VARCHAR},
       file_url = #{record.fileUrl,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
-      isApprover = #{record.isApprover,jdbcType=VARCHAR}
+      is_delete = #{record.isDelete,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +375,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.ProjectApplication" >
     update project_application
     <set >
+      <if test="investmentId != null" >
+        investment_id = #{investmentId,jdbcType=VARCHAR},
+      </if>
       <if test="projectCode != null" >
         project_code = #{projectCode,jdbcType=VARCHAR},
       </if>
@@ -325,20 +387,32 @@
       <if test="projectType != null" >
         project_type = #{projectType,jdbcType=VARCHAR},
       </if>
-      <if test="leval != null" >
-        leval = #{leval,jdbcType=VARCHAR},
-      </if>
-      <if test="projectDesc != null" >
-        project_desc = #{projectDesc,jdbcType=VARCHAR},
+      <if test="investor != null" >
+        investor = #{investor,jdbcType=VARCHAR},
       </if>
       <if test="organization != null" >
         organization = #{organization,jdbcType=VARCHAR},
       </if>
+      <if test="leval != null" >
+        leval = #{leval,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentAmount != null" >
+        investment_amount = #{investmentAmount,jdbcType=DECIMAL},
+      </if>
       <if test="range1 != null" >
         range1 = #{range1,jdbcType=VARCHAR},
       </if>
+      <if test="applicationAmount != null" >
+        application_amount = #{applicationAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="projectDesc != null" >
+        project_desc = #{projectDesc,jdbcType=VARCHAR},
+      </if>
       <if test="kickoffDate != null" >
         kickoff_date = #{kickoffDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="creater != null" >
         creater = #{creater,jdbcType=VARCHAR},
@@ -358,177 +432,34 @@
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="isApprover != null" >
-        isApprover = #{isApprover,jdbcType=VARCHAR},
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=VARCHAR},
       </if>
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.ProjectApplication" >
     update project_application
-    set project_code = #{projectCode,jdbcType=VARCHAR},
+    set investment_id = #{investmentId,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_type = #{projectType,jdbcType=VARCHAR},
-      leval = #{leval,jdbcType=VARCHAR},
-      project_desc = #{projectDesc,jdbcType=VARCHAR},
+      investor = #{investor,jdbcType=VARCHAR},
       organization = #{organization,jdbcType=VARCHAR},
+      leval = #{leval,jdbcType=VARCHAR},
+      investment_amount = #{investmentAmount,jdbcType=DECIMAL},
       range1 = #{range1,jdbcType=VARCHAR},
+      application_amount = #{applicationAmount,jdbcType=DECIMAL},
+      project_desc = #{projectDesc,jdbcType=VARCHAR},
       kickoff_date = #{kickoffDate,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
       creater = #{creater,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       enable = #{enable,jdbcType=VARCHAR},
       file_url = #{fileUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      isApprover = #{isApprover,jdbcType=VARCHAR}
+      is_delete = #{isDelete,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
-  </update>
-  <!--编辑项目信息-->
-  <update id="updateProject" parameterType="com.portjs.base.entity.ProjectApplication" >
-    update project_application
-    set project_code = #{projectCode,jdbcType=VARCHAR},
-    project_name = #{projectName,jdbcType=VARCHAR},
-    project_type = #{projectType,jdbcType=VARCHAR},
-    leval = #{leval,jdbcType=VARCHAR},
-    project_desc = #{projectDesc,jdbcType=VARCHAR},
-    organization = #{organization,jdbcType=VARCHAR},
-    range1 = #{range1,jdbcType=VARCHAR},
-    kickoff_date = #{kickoffDate,jdbcType=TIMESTAMP},
-    creater = #{creater,jdbcType=VARCHAR},
-    create_time = #{createTime,jdbcType=TIMESTAMP},
-    update_time = #{updateTime,jdbcType=TIMESTAMP},
-    enable = #{enable,jdbcType=VARCHAR}
-    where Id = #{id,jdbcType=VARCHAR}
-  </update>
-  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.ProjectApplication" >
-    <id column="Id" property="id" jdbcType="VARCHAR" />
-    <result column="aProjectCode" property="projectCode" jdbcType="VARCHAR" />
-    <result column="aProjectName" property="projectName" jdbcType="VARCHAR" />
-    <result column="aProjectType" property="projectType" jdbcType="VARCHAR" />
-    <result column="leval" property="leval" jdbcType="VARCHAR" />
-    <result column="aProjectDesc" property="projectDesc" jdbcType="VARCHAR" />
-    <result column="organization" property="organization" jdbcType="VARCHAR" />
-    <result column="range1" property="range1" jdbcType="VARCHAR" />
-    <result column="aKickoffDate" property="kickoffDate" jdbcType="TIMESTAMP" />
-    <result column="creater" property="creater" jdbcType="VARCHAR" />
-    <result column="aCreateTime" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="aUpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="aenable" property="enable" jdbcType="VARCHAR" />
-    <result column="astatus" property="status" jdbcType="VARCHAR" />
-    <result column="isApprover" property="isApprover" jdbcType="VARCHAR" />
-    <association property="workflowstep"  javaType="com.portjs.base.entity.TWorkflowstep">
-      <id column="bId" property="id" jdbcType="VARCHAR" />
-      <result column="relateddomain" property="relateddomain" jdbcType="VARCHAR" />
-      <result column="bRelateddomainId" property="relateddomainId" jdbcType="VARCHAR" />
-      <result column="bPrestepId" property="prestepId" jdbcType="VARCHAR" />
-      <result column="bStepDesc" property="stepDesc" jdbcType="VARCHAR" />
-      <result column="bActionuserId" property="actionuserId" jdbcType="VARCHAR" />
-      <result column="bActionTime" property="actionTime" jdbcType="TIMESTAMP" />
-      <result column="bActionResult" property="actionResult" jdbcType="INTEGER" />
-      <result column="bFileUrl" property="fileUrl" jdbcType="VARCHAR" />
-      <result column="bActionComment" property="actionComment" jdbcType="VARCHAR" />
-      <result column="benable" property="enable" jdbcType="VARCHAR" />
-      <result column="bstatus" property="status" jdbcType="VARCHAR" />
-    </association>
-  </resultMap>
-
-
-  <select id="queryProjectCount" resultType="int">
-  select count(1)
-  from project_application  a
-  <where>
-    is_delete='0'
-  <if test="projectCode !=null and projectCode!=''">
-    and  a.project_code like "%" #{projectCode} "%"
-  </if>
-  <if test="projectType !=null and projectType!=''">
-    and  a.project_type like "%" #{projectType} "%"
-  </if>
-  <if test="creater !=null and creater!=''">
-    and  a.creater like "%" #{creater} "%"
-  </if>
-    <if test="status !=null and status!=''">
-      and  a.status like "%" #{status} "%"
-    </if>
-  </where>
-  </select>
-  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.ProjectApplication" >
-  <id column="Id" property="id" jdbcType="VARCHAR" />
-  <result column="aProjectCode" property="projectCode" jdbcType="VARCHAR" />
-  <result column="aProjectName" property="projectName" jdbcType="VARCHAR" />
-  <result column="aProjectType" property="projectType" jdbcType="VARCHAR" />
-  <result column="leval" property="leval" jdbcType="VARCHAR" />
-  <result column="aProjectDesc" property="projectDesc" jdbcType="VARCHAR" />
-  <result column="organization" property="organization" jdbcType="VARCHAR" />
-  <result column="range1" property="range1" jdbcType="VARCHAR" />
-  <result column="aKickoffDate" property="kickoffDate" jdbcType="TIMESTAMP" />
-  <result column="creater" property="creater" jdbcType="VARCHAR" />
-  <result column="aCreateTime" property="createTime" jdbcType="TIMESTAMP" />
-  <result column="aUpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
-  <result column="aenable" property="enable" jdbcType="VARCHAR" />
-  <result column="astatus" property="status" jdbcType="VARCHAR" />
-  <result column="isApprover" property="isApprover" jdbcType="VARCHAR" />
-  </resultMap>
-  <!--查询项目信息-->
-  <select id="queryProject" resultMap="BaseResultMap1">
-    select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
-    a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover
-    from project_application a
-    <where>
-      is_delete='0'
-      <if test="projectCode !=null and projectCode!=''">
-       and  a.project_code like "%" #{projectCode} "%"
-      </if>
-      <if test="projectType !=null and projectType!=''">
-        and  a.project_type like "%" #{projectType} "%"
-      </if>
-      <if test="creater !=null and creater!=''">
-        and  a.creater like "%" #{creater} "%"
-      </if>
-      <if test="status !=null and status!=''">
-        and  a.status like "%" #{status} "%"
-      </if>
-    </where>
-    order by  a.create_time desc
-    limit #{rowNum},#{pageCount}
-  </select>
-
-
-
-  <!--查询项目信息-->
-<!--  <select id="queryProject" resultMap="BaseResultMap1">
-    select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
-    a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover,
-    b.id as bId, b.relateddomain, b.relateddomain_id as bRelateddomainId, b.prestep_id as bPrestepId, b.step_desc as bStepDesc, b.actionuser_id as bActionuserId, b.action_time as bActionTime,
-    b.action_result as bActionResult, b.file_url as bFileUrl, b.action_comment as bActionComment, b.enable as benable, b.status as bstatus
-    from project_application  a left join t_workflowstep  b  on a.id=b.relateddomain_id
-<where>
-  <if test="projectCode !=null and projectCode!=''">
-     a.project_code like "%" #{projectCode} "%"
-  </if>
-  <if test="projectType !=null and projectType!=''">
-    and  a.project_type like "%" #{projectType} "%"
-  </if>
-  <if test="creater !=null and creater!=''">
-    and  a.creater like "%" #{creater} "%"
-  </if>
-  <if test="stepDesc !=null and stepDesc!=''">
-    and  b.step_desc like "%" #{stepDesc} "%"
-  </if>
-</where>
-    order by  a.create_time desc
-    limit #{rowNum},#{pageCount}
-  </select>-->
-
-  <select id="queryProjectBase" resultMap="BaseResultMap">
-  select Id, project_code, project_name, project_type, leval, project_desc, organization,
-    range1, kickoff_date, creater, create_time, update_time, enable, file_url, status
-  from project_application  a
-   where id=#{id}
-  </select>
-
-  <update id="deleteProject">
-    update project_application set is_delete='1'
-    where id=#{id}
   </update>
 </mapper>

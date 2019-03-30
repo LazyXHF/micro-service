@@ -1,78 +1,50 @@
 package com.portjs.base.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProjectApplication {
     private String id;
 
-    private String projectCode;//项目编码
+    private String investmentId;
 
-    private String projectName;//项目名称
+    private String projectCode;
 
-    private String projectType;//项目类型
+    private String projectName;
 
-    private String leval;//项目等级
+    private String projectType;
 
-    private String projectDesc;//项目描述
+    private String investor;
 
-    private String organization;//责任单位
+    private String organization;
 
-    private String range1;//实施范围
+    private String leval;
 
-    private Date kickoffDate;//启动日期
+    private BigDecimal investmentAmount;
 
-    private String creater;//创建人
+    private String range1;
 
-    private Date createTime;//创建时间
+    private BigDecimal applicationAmount;
 
-    private Date updateTime;//更新时间
+    private String projectDesc;
+
+    private Date kickoffDate;
+
+    private String remark;
+
+    private String creater;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     private String enable;
 
     private String fileUrl;
 
-
-
-
     private String status;
 
-    private String isApprover;
-
     private String isDelete;
-
-    public String getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(String isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public String getIsApprover() {
-        return isApprover;
-    }
-
-    public void setIsApprover(String isApprover) {
-        this.isApprover = isApprover;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    private TWorkflowstep workflowstep;
-
-    public TWorkflowstep getWorkflowstep() {
-        return workflowstep;
-    }
-
-    public void setWorkflowstep(TWorkflowstep workflowstep) {
-        this.workflowstep = workflowstep;
-    }
 
     public String getId() {
         return id;
@@ -80,6 +52,14 @@ public class ProjectApplication {
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getInvestmentId() {
+        return investmentId;
+    }
+
+    public void setInvestmentId(String investmentId) {
+        this.investmentId = investmentId == null ? null : investmentId.trim();
     }
 
     public String getProjectCode() {
@@ -106,20 +86,12 @@ public class ProjectApplication {
         this.projectType = projectType == null ? null : projectType.trim();
     }
 
-    public String getLeval() {
-        return leval;
+    public String getInvestor() {
+        return investor;
     }
 
-    public void setLeval(String leval) {
-        this.leval = leval == null ? null : leval.trim();
-    }
-
-    public String getProjectDesc() {
-        return projectDesc;
-    }
-
-    public void setProjectDesc(String projectDesc) {
-        this.projectDesc = projectDesc == null ? null : projectDesc.trim();
+    public void setInvestor(String investor) {
+        this.investor = investor == null ? null : investor.trim();
     }
 
     public String getOrganization() {
@@ -130,6 +102,22 @@ public class ProjectApplication {
         this.organization = organization == null ? null : organization.trim();
     }
 
+    public String getLeval() {
+        return leval;
+    }
+
+    public void setLeval(String leval) {
+        this.leval = leval == null ? null : leval.trim();
+    }
+
+    public BigDecimal getInvestmentAmount() {
+        return investmentAmount;
+    }
+
+    public void setInvestmentAmount(BigDecimal investmentAmount) {
+        this.investmentAmount = investmentAmount;
+    }
+
     public String getRange1() {
         return range1;
     }
@@ -138,12 +126,36 @@ public class ProjectApplication {
         this.range1 = range1 == null ? null : range1.trim();
     }
 
+    public BigDecimal getApplicationAmount() {
+        return applicationAmount;
+    }
+
+    public void setApplicationAmount(BigDecimal applicationAmount) {
+        this.applicationAmount = applicationAmount;
+    }
+
+    public String getProjectDesc() {
+        return projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc == null ? null : projectDesc.trim();
+    }
+
     public Date getKickoffDate() {
         return kickoffDate;
     }
 
     public void setKickoffDate(Date kickoffDate) {
         this.kickoffDate = kickoffDate;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreater() {
@@ -186,5 +198,19 @@ public class ProjectApplication {
         this.fileUrl = fileUrl == null ? null : fileUrl.trim();
     }
 
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete == null ? null : isDelete.trim();
+    }
 }

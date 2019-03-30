@@ -14,7 +14,7 @@ public interface UnifiedConfigurationService {
      * @param requestBody
      * @return
      */
-    ResponseMessage insertProjectLevel(String requestBody);
+    /*ResponseMessage insertProjectLevel(String requestBody);*/
 
     /**
      *统一模块查询项目等级
@@ -35,14 +35,14 @@ public interface UnifiedConfigurationService {
      * @param requestBody
      * @return
      */
-    /*ResponseMessage deleteProjectLevel(String requestBody);*/
+    ResponseMessage deleteProjectLevel(String requestBody);
 
     /**
      *统一模块新增项目类型
      * @param requestBody
      * @return
      */
-    ResponseMessage insertProjectType(String requestBody);
+    /*ResponseMessage insertProjectType(String requestBody);*/
 
     /**
      *统一模块查询项目类型
@@ -62,5 +62,5 @@ public interface UnifiedConfigurationService {
      * @param requestBody
      * @return
      */
-   /* ResponseMessage deleteProjectType(String requestBody);*/
+    ResponseMessage deleteProjectType(String requestBody);
 }
