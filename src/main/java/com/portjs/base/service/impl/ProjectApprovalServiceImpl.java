@@ -38,7 +38,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 
 	//项目立项阶段的审批流程添加
 	@Override
-	public ResponseMessage insertProjectProcedures(String requestBody) {
+	public ResponseMessage insertProjectProcedures(String requestBody)throws Exception {
 		JSONObject jsonObj=JSONObject.parseObject(requestBody);
 		String relateddomain="项目立项";//业务模块
 		String relateddomain_id=jsonObj.getString("relateddomainId");//业务id
@@ -229,7 +229,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 
     //立项阶段的归档操作
 	@Override
-	public ResponseMessage projectProceduresArchive(String requestBody) {
+	public ResponseMessage projectProceduresArchive(String requestBody)throws Exception {
 		JSONObject jsonObj=JSONObject.parseObject(requestBody);
 		//当前待办的ID
 		String todoId=jsonObj.getString("todoId");

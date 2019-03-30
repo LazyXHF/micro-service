@@ -49,8 +49,12 @@ public class ProjectApprovalController extends BaseController{
     @RequestMapping("/insert-designs")
     @ResponseBody
     public ResponseMessage insertDesigns(@RequestBody String responseBody){
-        logger.debug(TAG + responseBody);
-        UnifiedExceptionHandler.method= responseBody + "insert-designs==============================" + responseBody;
-        return projectPreservationService.insertStorage(responseBody);
+        try {
+            logger.error(TAG+"insert-designs()begin....."+responseBody);
+            return projectPreservationService.insertStorage(responseBody);
+        } catch (Exception e) {
+            logger.error(TAG+"insert-designs()error.....",e);
+            throw new RuntimeException();
+        }
     }
 }

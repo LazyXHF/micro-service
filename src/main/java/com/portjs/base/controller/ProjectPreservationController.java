@@ -27,10 +27,14 @@ public class ProjectPreservationController  extends BaseController {
     @LogInfo(methodName = "立项暂存/提交",modelName = "立项保存模块")
     @RequestMapping("/insert-designs")
     @ResponseBody
-    public ResponseMessage insertDesigns(@RequestBody String responseBody){
-        logger.debug(TAG + responseBody);
-        UnifiedExceptionHandler.method= responseBody + "insert-designs==============================" + responseBody;
-        return projectPreservationService.insertStorage(responseBody);
+    public ResponseMessage insertDesigns(@RequestBody String responseBody) {
+        try {
+            logger.error(TAG + "insert-designs()begin....." + responseBody);
+            return projectPreservationService.insertStorage(responseBody);
+        } catch (Exception e) {
+            logger.error(TAG + "insert-designs()error.....", e);
+            throw new RuntimeException();
+        }
     }
 
     @LogInfo(methodName = "立项退回",modelName = "立项保存模块")

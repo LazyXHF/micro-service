@@ -12,12 +12,12 @@ public interface ProjectApprovalService {
 	 * @param requestBody
 	 * @return
 	 */
-	ResponseMessage insertProjectProcedures(String requestBody);
+	ResponseMessage insertProjectProcedures(String requestBody)throws Exception;
     
 	/**
 	 * 立项阶段的归档操作
 	 * @param requestBody
 	 * @return
 	 */
-	ResponseMessage projectProceduresArchive(String requestBody);
+	ResponseMessage projectProceduresArchive(String requestBody)throws Exception;
 }

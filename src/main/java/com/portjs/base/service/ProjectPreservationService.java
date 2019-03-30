@@ -12,11 +12,11 @@ public interface ProjectPreservationService {
      * @param responseBody
      * @return
      */
-    ResponseMessage insertStorage(String responseBody);
+    ResponseMessage insertStorage(String responseBody) throws Exception;
     /**
      * 立项退回
      * @param responseBody
      * @return
      */
-    ResponseMessage returnStorage(String responseBody);
+    ResponseMessage returnStorage(String responseBody)throws Exception;
 }
