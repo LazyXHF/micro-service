@@ -28,4 +28,12 @@ public interface ProjectApprovalService {
 	 * @throws Exception
 	 */
 	ResponseMessage queryTodos(String requestBody)throws Exception;
+
+	/**
+	 * 待办查询
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
+	ResponseMessage todoGo(String requestBody)throws Exception;
 }

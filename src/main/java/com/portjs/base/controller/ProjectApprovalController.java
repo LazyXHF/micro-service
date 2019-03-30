@@ -69,4 +69,16 @@ public class ProjectApprovalController extends BaseController{
             throw new RuntimeException();
         }
     }
+    @LogInfo(methodName = "待办跳转",modelName = "待办模块")
+    @RequestMapping("/todos-go")
+    @ResponseBody
+    public ResponseMessage todoGo(@RequestBody String responseBody){
+        try {
+            logger.error(TAG+"todos-go()begin....."+responseBody);
+            return projectApprovalService.todoGo(responseBody);
+        } catch (Exception e) {
+            logger.error(TAG+"todos-go()error.....",e);
+            throw new RuntimeException();
+        }
+    }
 }

@@ -53,6 +53,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONObject jsonObject = JSONObject.parseObject(responseBody);
         String status = jsonObject.getString("Status");//0暂存7提交
         String userId = jsonObject.getString("UserId");//登录用户
+        String userName = jsonObject.getString("UserName");//登录用户名
         JSONObject application1JSON = jsonObject.getJSONObject("Application");
         JSONArray arrayJSON = jsonObject.getJSONArray("Persons");
         JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
@@ -197,7 +198,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             //查询待办类型
             todo.setTodoType(dictionaryList.get(0).getMainValue());
             todo.setStatus("0");
-            todo.setBackUp7(userId);//发起人
+            todo.setBackUp7(userName);//发起人
             int i5 = todoMapper.insertSelective(todo);
             if(i5!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"提交失败");
@@ -221,6 +222,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             String stepDesc1 =  stepDesc.substring(0,stepDesc.length()-2);
 
             String user_id  = jsonObject.getString("user_id");//当前登录人id
+            String user_name  = jsonObject.getString("user_name");//当前登录人姓名
 
             //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
             TWorkflowstepExample example = new TWorkflowstepExample();
@@ -238,7 +240,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     todo.setRelateddomainId(application_id);
                     todo.setSenderId(user_id);
                     todo.setSenderTime(new Date());
-                    todo.setBackUp7(user_id);//发起人
+                    todo.setBackUp7(user_name);//发起人
                     ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);
                     todo.setReceiverId(application.getCreater());
                     //查询代办类型

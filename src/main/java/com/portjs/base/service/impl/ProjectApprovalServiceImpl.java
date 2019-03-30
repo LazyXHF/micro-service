@@ -52,6 +52,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		String actionResult=jsonObj.getString("actionResult");//0 同意 1 不同意or退回
 		String sort = jsonObj.getString("sort");//第几个步骤
 		String reviewIds = jsonObj.getString("nextReviewerId");//下一个审核人的信息
+		String userName = jsonObj.getString("userName");//用户姓名
 
 		//必要参数空值判断
 		if(StringUtils.isEmpty(reviewIds)){
@@ -177,7 +178,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					internalToDo.setStepDesc(stepTodo);
 					internalToDo.setTodoType("项目立项审核流程");
 					internalToDo.setStatus("0");
-					internalToDo.setBackUp7(sender_id);//发起人
+					internalToDo.setBackUp7(userName);//发起人
 					int n=tTodoMapper.insertSelective(internalToDo);
 					if(n<=0) {
 						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
@@ -200,7 +201,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				internalToDo.setTodoType("项目立项审核流程");
 				internalToDo.setStepDesc(stepTodo);
 				internalToDo.setStatus("0");
-				internalToDo.setBackUp7(sender_id);//发起人
+				internalToDo.setBackUp7(userName);//发起人
 				int n=tTodoMapper.insertSelective(internalToDo);
 				if(n<=0) {
 					return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
@@ -323,20 +324,19 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		for(int i=0;i<list.size();i++){
 			//发送人
 			String name = tUserMapper.selectById(list.get(i).getSenderId());
-			//发起人
-			String name1="";
-			if(!StringUtils.isEmpty(list.get(i).getBackUp7())){
-				name1 = tUserMapper.selectById(list.get(i).getBackUp7());
-			}
 			if(!StringUtils.isEmpty(name)){
 				list.get(i).setSenderId(name);
 			}else {
 				list.get(i).setSenderId("");
 			}
-			list.get(i).setBackUp7(name);
 		}
 		pag.setList(list);
 		return new ResponseMessage(Code.CODE_OK, "查询成功",pag);
+	}
+
+	@Override
+	public ResponseMessage todoGo(String requestBody) throws Exception {
+		return null;
 	}
 
 }
