@@ -34,6 +34,7 @@ public class ProjectApplicationControllerRSH extends BaseController {
     @ResponseBody
     public ResponseMessage queryProject(@RequestBody String responseBody){
         logger.debug(TAG+"queryProject() begin");
+
         JSONObject requestJson=JSONObject.parseObject(responseBody);
         return  applicationService.queryProject(requestJson);
     }
