@@ -41,6 +41,10 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     ProjectMembersMapper projectMembersMapper;
     @Autowired
     InternalAttachmentMapper internalAttachmentMapper;
+    @Autowired
+    InvestmentPlanMapper investmentPlanMapper;
+    @Autowired
+    TTodoMapper todoMapper;
     @Override
     public ResponseMessage updateProject(JSONObject requestJson) {
         try {
@@ -179,8 +183,36 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     }
 
     @Override
-    public ResponseMessage queryProjectPlan(JSONObject requestJson) {
-        return null;
+    public ResponseMessage queryProjectPlan() {
+
+        List<InvestmentPlan>  list=investmentPlanMapper.queryProjectPlan();
+        if(list.isEmpty()){
+            return  new ResponseMessage(Code.CODE_ERROR,"下拉信息为空");
+        }
+        return  new ResponseMessage(Code.CODE_OK,"投资列表信息",list);
+    }
+
+    @Override
+    public ResponseMessage queryProjectPlanInfo(JSONObject requestJson) {
+        String id=requestJson.getString("id");
+        InvestmentPlan investmentPlan=investmentPlanMapper.queryProjectPlanInfo(id);
+        if(StringUtils.isNull(investmentPlan)){
+            return  new ResponseMessage(Code.CODE_OK,"立项投资对应项目信息查询为空");
+        }else {
+            return  new ResponseMessage(Code.CODE_OK,"立项文件列表",investmentPlan);
+        }
+    }
+
+    @Override
+    public ResponseMessage toApprove(JSONObject requestJson) {
+        String id=requestJson.getString("id");
+        String ownerId=requestJson.getString("ownerId");
+        TTodo tTodo=todoMapper.toApprove(id,ownerId);
+        if(StringUtils.isNull(tTodo)){
+            return  new ResponseMessage(Code.CODE_OK,"待审核人为空为空");
+        }else {
+            return  new ResponseMessage(Code.CODE_OK,"立项文件列表",tTodo);
+        }
     }
 
 }
