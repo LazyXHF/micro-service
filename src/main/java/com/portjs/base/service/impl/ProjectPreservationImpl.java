@@ -197,6 +197,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             //查询待办类型
             todo.setTodoType(dictionaryList.get(0).getMainValue());
             todo.setStatus("0");
+            todo.setBackUp7(userId);//发起人
             int i5 = todoMapper.insertSelective(todo);
             if(i5!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"提交失败");
@@ -237,6 +238,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     todo.setRelateddomainId(application_id);
                     todo.setSenderId(user_id);
                     todo.setSenderTime(new Date());
+                    todo.setBackUp7(user_id);//发起人
                     ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);
                     todo.setReceiverId(application.getCreater());
                     //查询代办类型

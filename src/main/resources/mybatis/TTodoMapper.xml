@@ -103,6 +103,61 @@
     from t_todo
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="selectBySomething" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TTodo" >
+    select
+    <include refid="Base_Column_List" />
+    from t_todo
+    <where>
+      1=1
+      <if test="receiverId != null">
+        AND receiver_id like concat("%", #{receiverId},"%")
+      </if>
+      <if test="todoType != null">
+        AND todo_type like concat("%", #{todoType},"%")
+      </if>
+      <if test="backup3 != null">
+        AND backup_3 like concat("%", #{backup3},"%")
+      </if>
+      <if test="backUp7 != null">
+        AND backup_7 like concat("%", #{backUp7},"%")
+      </if>
+      <if test="status != null" >
+        AND status=#{status,jdbcType=VARCHAR}
+      </if>
+      <if test="params.keyword != null">
+        AND ( step_desc like concat("%", #{params.keyword},"%") or relateddomain like concat("%", #{params.keyword},"%") )
+      </if>
+      <if test="params.pageNo!=null and params.pageSize!=null">
+        order by sender_time asc limit #{params.pageNo},#{params.pageSize}
+      </if>
+    </where>
+  </select>
+  <select id="selectCountBySomething" resultType="int" parameterType="com.portjs.base.entity.TTodo" >
+    select
+   count(1)
+    from t_todo
+    <where>
+      1=1
+      <if test="receiverId != null">
+        AND receiver_id like concat("%", #{receiverId},"%")
+      </if>
+      <if test="todoType != null">
+        AND todo_type like concat("%", #{todoType},"%")
+      </if>
+      <if test="backup3 != null">
+        AND backup_3 like concat("%", #{backup3},"%")
+      </if>
+      <if test="backUp7 != null">
+        AND backup_7 like concat("%", #{backUp7},"%")
+      </if>
+      <if test="status != null" >
+        AND status=#{status,jdbcType=VARCHAR}
+      </if>
+      <if test="params.keyword != null">
+        AND ( step_desc like concat("%", #{params.keyword},"%") or relateddomain like concat("%", #{params.keyword},"%") )
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_todo
     where id = #{id,jdbcType=VARCHAR}

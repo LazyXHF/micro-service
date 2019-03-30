@@ -57,4 +57,16 @@ public class ProjectApprovalController extends BaseController{
             throw new RuntimeException();
         }
     }
+    @LogInfo(methodName = "待办任务查询",modelName = "待办模块")
+    @RequestMapping("/query-todos")
+    @ResponseBody
+    public ResponseMessage insertDesigs(@RequestBody String responseBody){
+        try {
+            logger.error(TAG+"query-todos()begin....."+responseBody);
+            return projectApprovalService.queryTodos(responseBody);
+        } catch (Exception e) {
+            logger.error(TAG+"query-todos()error.....",e);
+            throw new RuntimeException();
+        }
+    }
 }

@@ -30,6 +30,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private TWorkflowstepMapper tWorkflowstepMapper;
 	@Autowired
 	private ProjectApplicationMapper projectApplicationMapper;
+	@Autowired
+	private  TUserMapper tUserMapper;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -175,6 +177,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					internalToDo.setStepDesc(stepTodo);
 					internalToDo.setTodoType("项目立项审核流程");
 					internalToDo.setStatus("0");
+					internalToDo.setBackUp7(sender_id);//发起人
 					int n=tTodoMapper.insertSelective(internalToDo);
 					if(n<=0) {
 						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
@@ -197,6 +200,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				internalToDo.setTodoType("项目立项审核流程");
 				internalToDo.setStepDesc(stepTodo);
 				internalToDo.setStatus("0");
+				internalToDo.setBackUp7(sender_id);//发起人
 				int n=tTodoMapper.insertSelective(internalToDo);
 				if(n<=0) {
 					return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
@@ -291,6 +295,48 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			return new ResponseMessage(Code.CODE_ERROR, "归档失败");
 		}
 		return new ResponseMessage(Code.CODE_OK, "归档完成");
+	}
+
+	//待办查询
+	@Override
+	public ResponseMessage queryTodos(String requestBody) throws Exception {
+		JSONObject jsonObj=JSONObject.parseObject(requestBody);
+		String userId = jsonObj.getString("userId");//当前登录人id
+		//status 0  userId  条件
+		TTodo todo = JSONObject.toJavaObject(jsonObj,TTodo.class);
+		todo.setStatus("0");
+		todo.setReceiverId(userId);
+
+		if(StringUtils.isEmpty(userId)){
+			return new ResponseMessage(Code.CODE_ERROR, "userId"+PARAM_MESSAGE_1);
+		}
+
+		//分页条件查询
+		Page<TTodo> pag = new Page<TTodo>();
+		int count = tTodoMapper.selectCountBySomething(todo);
+		pag.init(count, Integer.valueOf(todo.getParams().get("pageNo").toString()), Integer.valueOf(todo.getParams().get("pageSize").toString()));
+		todo.getParams().put("pageNo",pag.getRowNum());
+		todo.getParams().put("pageSize",pag.getPageCount());
+
+		List<TTodo> list = tTodoMapper.selectBySomething(todo);
+		//替换姓名
+		for(int i=0;i<list.size();i++){
+			//发送人
+			String name = tUserMapper.selectById(list.get(i).getSenderId());
+			//发起人
+			String name1="";
+			if(!StringUtils.isEmpty(list.get(i).getBackUp7())){
+				name1 = tUserMapper.selectById(list.get(i).getBackUp7());
+			}
+			if(!StringUtils.isEmpty(name)){
+				list.get(i).setSenderId(name);
+			}else {
+				list.get(i).setSenderId("");
+			}
+			list.get(i).setBackUp7(name);
+		}
+		pag.setList(list);
+		return new ResponseMessage(Code.CODE_OK, "查询成功",pag);
 	}
 
 }

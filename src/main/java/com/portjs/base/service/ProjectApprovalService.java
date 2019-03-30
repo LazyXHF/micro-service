@@ -20,4 +20,12 @@ public interface ProjectApprovalService {
 	 * @return
 	 */
 	ResponseMessage projectProceduresArchive(String requestBody)throws Exception;
+
+	/**
+	 * 待办查询
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
+	ResponseMessage queryTodos(String requestBody)throws Exception;
 }

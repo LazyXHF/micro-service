@@ -29,4 +29,8 @@ public interface TTodoMapper {
     int updateByPrimaryKeySelective(TTodo record);
 
     int updateByPrimaryKey(TTodo record);
+
+    List<TTodo> selectBySomething(TTodo record);
+
+    int  selectCountBySomething(TTodo record);
 }

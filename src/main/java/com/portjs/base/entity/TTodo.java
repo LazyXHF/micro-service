@@ -1,37 +1,39 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
+
 import java.util.Date;
 
-public class TTodo {
-    private String id;
+public class TTodo extends BaseEntity{
+    private String id;//通用待办表
 
-    private String currentstepId;
+    private String currentstepId;//当前处理步骤
 
-    private String stepDesc;
+    private String stepDesc;//步骤描述
 
-    private String relateddomain;
+    private String relateddomain;//对应的业务模块
 
-    private String relateddomainId;
+    private String relateddomainId;//业务单id
 
-    private String senderId;
+    private String senderId;//发起人
 
-    private Date senderTime;
+    private Date senderTime;//发送时间
 
-    private String receiverId;
+    private String receiverId;//接收人
 
-    private String todoType;
+    private String todoType;//待办类型
 
-    private Date actiontime;
+    private Date actiontime;//处理时间
 
     private String enable;
 
-    private String status;
+    private String status;//状态 0 ： 未完成   1：已完成
 
     private String sort;
 
-    private String backup3;
+    private String backup3;//优先级
 
-    private String backUp7;
+    private String backUp7;//发起人
 
     private String backUp8;
 
