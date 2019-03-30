@@ -3,6 +3,7 @@ package com.portjs.base.service;
 import com.portjs.base.entity.BugDetails;
 import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.PageVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -30,11 +31,18 @@ public interface BugDetailsService {
     ResponseMessage updateByPrimaryKeySelective(BugDetails record);
 
     /**
-     * bug分页列表
+     * bug分页列表(添加)
      * @param requestBody
      * @return
      */
     ResponseMessage queryAllBugInfo(String requestBody);
+
+    /**
+     * bug分页列表（待办）
+     * @param requestBody
+     * @return
+     */
+   // ResponseMessage queryAllBugInfoDB(String requestBody);
 
     //ResponseMessage queryAllBugInfos();
 
@@ -50,8 +58,41 @@ public interface BugDetailsService {
      */
     ResponseMessage queryBugSearch();
 
+    /**
+     * 根据record表的ownerid ,status(result) ,去查询主表信息并分页
+     * @param requestBody
+     * @return
+     */
+    ResponseMessage queryAllBugInfoFlow(String requestBody);
+
+
+
+    /**
+     * 查询待办
+     * @return
+     */
+    ResponseMessage selectBugSearchDealtWith(PageVo pageVo);
+
+
+    /**
+     * 查询在办
+     * @param pageVo
+     * @return
+     */
+    ResponseMessage selectBugSearchDealtDoing(PageVo pageVo);
+
+    /**
+     * 查询已办
+     * @param pageVo
+     * @return
+     */
+    ResponseMessage selectBugSearchDealtEnd(PageVo pageVo);
+
     //int updateByPrimaryKeyWithBLOBs(BugDetails record);
 
     //int updateByPrimaryKey(BugDetails record);
+
+
+
 
 }

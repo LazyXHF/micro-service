@@ -80,6 +80,9 @@ public class BugDetails  {
 
     private String reappearMethod;//重现方法
 
+    //从表得状态
+    private String rstatus;
+
     @OneToMany
     private List<BugDetailsRecord> bugDetailsRecordList;
 

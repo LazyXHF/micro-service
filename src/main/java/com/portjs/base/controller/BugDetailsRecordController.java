@@ -26,6 +26,21 @@ public class BugDetailsRecordController extends BaseController{
 
 
     /**
+     * TODO 流程操作
+     * @param requestBody
+     * @return
+     */
+    @RequestMapping("insert-flow-operation")
+    @LogInfo(methodName = "添加Bug信息")
+    public ResponseMessage insertFlowOperation(@RequestBody String requestBody) {
+        logger.debug(TAG+requestBody);
+        UnifiedExceptionHandler.method= requestBody + "update-bug-info==============================" + requestBody;
+        responseMessage = bugDetailsRecordService.insertFlowOperation(requestBody);
+        return responseMessage;
+    }
+
+
+    /**
      *  TODO 根据自身id查询Bug审批相关信息
      * @param id
      * @return

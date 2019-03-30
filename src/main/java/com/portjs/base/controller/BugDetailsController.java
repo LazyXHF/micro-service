@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.BugDetails;
 import com.portjs.base.exception.UnifiedExceptionHandler;
+import com.portjs.base.service.BugDetailsRecordService;
 import com.portjs.base.service.BugDetailsService;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
@@ -24,9 +25,12 @@ public class BugDetailsController extends BaseController{
     @Autowired
     BugDetailsService bugDetailsService;
 
+    @Autowired
+    BugDetailsRecordService bugDetailsRecordService;
+
 
     /**
-     * TODO 查询项目相关Bug信息并分页
+     * TODO Bug详情查询并分页并模糊查询（添加页面）
      * @param
      * @return
      */
@@ -41,6 +45,26 @@ public class BugDetailsController extends BaseController{
         responseMessage = bugDetailsService.queryAllBugInfo(requestBody);
         return responseMessage;
     }
+
+
+    /**
+     * 根据record表的ownerid ,status(result) ,去查询主表信息并分页
+     */
+    @LogInfo(methodName = "查询Bug信息",modelName = "缺陷模块")
+    @RequestMapping("query-all-bug-info-flow")
+    @ResponseBody
+    public ResponseMessage queryAllBugInfoFlow(@RequestBody String requestBody){
+        logger.debug(TAG+requestBody);
+        UnifiedExceptionHandler.method= TAG+"queryAllBugInfoFlow=============================="+requestBody;
+        responseMessage = bugDetailsService.queryAllBugInfoFlow(requestBody);
+        return responseMessage;
+    }
+
+
+
+
+
+
     /**
      *  TODO 更新Bug信息
      * @param record
@@ -79,10 +103,14 @@ public class BugDetailsController extends BaseController{
     @LogInfo(methodName = "添加Bug信息")
     public ResponseMessage insertBugInfo(@RequestBody BugDetails record) {
         logger.debug(TAG+record);
+        System.out.println(record.getBackup3());
         UnifiedExceptionHandler.method= record + "update-bug-info==============================" + record;
         responseMessage = bugDetailsService.insertSelective(record);
         return responseMessage;
     }
+
+
+
     /**
      * TODO 根据id批量删除Bug信息
      * @param
@@ -141,6 +169,45 @@ public class BugDetailsController extends BaseController{
         return responseMessage;
     }
 
+
+    /**
+     * 查询待办
+     * @param pageVo
+     * @return
+     */
+    @RequestMapping("select-bug-search-dealt-with")
+    @LogInfo(methodName = "bug查询条件")
+    public ResponseMessage selectBugSearchDealtWith(@RequestBody PageVo pageVo) {
+        UnifiedExceptionHandler.method=  "selectBugSearchDealtWith==============================";
+        responseMessage = bugDetailsService.selectBugSearchDealtWith(pageVo);
+        return responseMessage;
+    }
+
+
+    /**
+     * 查询在办
+     * @param pageVo
+     * @return
+     */
+    @RequestMapping("select-bug-search-dealt-doing")
+    @LogInfo(methodName = "bug查询条件")
+    public ResponseMessage selectBugSearchDealtDoing(@RequestBody PageVo pageVo) {
+        UnifiedExceptionHandler.method=  "selectBugSearchDealtDoing==============================";
+        responseMessage = bugDetailsService.selectBugSearchDealtDoing(pageVo);
+        return responseMessage;
+    }
+
+
+    /**
+     * 查找已办
+     */
+    @RequestMapping("select-bug-search-dealt-end")
+    @LogInfo(methodName = "bug查询条件")
+    public ResponseMessage selectBugSearchDealtEnd(@RequestBody PageVo pageVo) {
+        UnifiedExceptionHandler.method=  "selectBugSearchDealtDoing==============================";
+        responseMessage = bugDetailsService.selectBugSearchDealtEnd(pageVo);
+        return responseMessage;
+    }
 
 
 }
