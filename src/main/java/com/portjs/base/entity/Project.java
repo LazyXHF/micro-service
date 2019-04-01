@@ -9,6 +9,8 @@ public class Project {
 
     private String projectName;
 
+    private String projectType;
+
     private String schedule;
 
     private Date createTime;
@@ -41,6 +43,8 @@ public class Project {
 
     private String backUp10;
 
+    private String applicationId;
+
     public String getId() {
         return id;
     }
@@ -63,6 +67,14 @@ public class Project {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public String getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(String projectType) {
+        this.projectType = projectType == null ? null : projectType.trim();
     }
 
     public String getSchedule() {
@@ -191,5 +203,13 @@ public class Project {
 
     public void setBackUp10(String backUp10) {
         this.backUp10 = backUp10 == null ? null : backUp10.trim();
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId == null ? null : applicationId.trim();
     }
 }

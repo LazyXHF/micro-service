@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="schedule" property="schedule" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
@@ -21,6 +22,7 @@
     <result column="back_up8" property="backUp8" jdbcType="VARCHAR" />
     <result column="back_up9" property="backUp9" jdbcType="VARCHAR" />
     <result column="back_up10" property="backUp10" jdbcType="VARCHAR" />
+    <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,9 +83,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_code, project_name, schedule, create_time, creator, Modifier, update_time, 
-    delete_time, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6, back_up7, 
-    back_up8, back_up9, back_up10
+    id, project_code, project_name, project_type, schedule, create_time, creator, Modifier, 
+    update_time, delete_time, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6, 
+    back_up7, back_up8, back_up9, back_up10, application_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectExample" >
     select
@@ -117,19 +119,21 @@
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.Project" >
     insert into project (id, project_code, project_name, 
-      schedule, create_time, creator, 
-      Modifier, update_time, delete_time, 
-      back_up1, back_up2, back_up3, 
-      back_up4, back_up5, back_up6, 
-      back_up7, back_up8, back_up9, 
-      back_up10)
+      project_type, schedule, create_time, 
+      creator, Modifier, update_time, 
+      delete_time, back_up1, back_up2, 
+      back_up3, back_up4, back_up5, 
+      back_up6, back_up7, back_up8, 
+      back_up9, back_up10, application_id
+      )
     values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, 
-      #{schedule,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
-      #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, 
-      #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, #{backUp3,jdbcType=VARCHAR}, 
-      #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, #{backUp6,jdbcType=VARCHAR}, 
-      #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, #{backUp9,jdbcType=VARCHAR}, 
-      #{backUp10,jdbcType=VARCHAR})
+      #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, 
+      #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, 
+      #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, 
+      #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.Project" >
     insert into project
@@ -142,6 +146,9 @@
       </if>
       <if test="projectName != null" >
         project_name,
+      </if>
+      <if test="projectType != null" >
+        project_type,
       </if>
       <if test="schedule != null" >
         schedule,
@@ -191,6 +198,9 @@
       <if test="backUp10 != null" >
         back_up10,
       </if>
+      <if test="applicationId != null" >
+        application_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -201,6 +211,9 @@
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        #{projectType,jdbcType=VARCHAR},
       </if>
       <if test="schedule != null" >
         #{schedule,jdbcType=VARCHAR},
@@ -250,6 +263,9 @@
       <if test="backUp10 != null" >
         #{backUp10,jdbcType=VARCHAR},
       </if>
+      <if test="applicationId != null" >
+        #{applicationId,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.portjs.base.entity.ProjectExample" resultType="java.lang.Integer" >
@@ -269,6 +285,9 @@
       </if>
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectType != null" >
+        project_type = #{record.projectType,jdbcType=VARCHAR},
       </if>
       <if test="record.schedule != null" >
         schedule = #{record.schedule,jdbcType=VARCHAR},
@@ -318,6 +337,9 @@
       <if test="record.backUp10 != null" >
         back_up10 = #{record.backUp10,jdbcType=VARCHAR},
       </if>
+      <if test="record.applicationId != null" >
+        application_id = #{record.applicationId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -328,6 +350,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       project_code = #{record.projectCode,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_type = #{record.projectType,jdbcType=VARCHAR},
       schedule = #{record.schedule,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -343,7 +366,8 @@
       back_up7 = #{record.backUp7,jdbcType=VARCHAR},
       back_up8 = #{record.backUp8,jdbcType=VARCHAR},
       back_up9 = #{record.backUp9,jdbcType=VARCHAR},
-      back_up10 = #{record.backUp10,jdbcType=VARCHAR}
+      back_up10 = #{record.backUp10,jdbcType=VARCHAR},
+      application_id = #{record.applicationId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -356,6 +380,9 @@
       </if>
       <if test="projectName != null" >
         project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null" >
+        project_type = #{projectType,jdbcType=VARCHAR},
       </if>
       <if test="schedule != null" >
         schedule = #{schedule,jdbcType=VARCHAR},
@@ -405,6 +432,9 @@
       <if test="backUp10 != null" >
         back_up10 = #{backUp10,jdbcType=VARCHAR},
       </if>
+      <if test="applicationId != null" >
+        application_id = #{applicationId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -412,6 +442,7 @@
     update project
     set project_code = #{projectCode,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
+      project_type = #{projectType,jdbcType=VARCHAR},
       schedule = #{schedule,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
@@ -427,7 +458,8 @@
       back_up7 = #{backUp7,jdbcType=VARCHAR},
       back_up8 = #{backUp8,jdbcType=VARCHAR},
       back_up9 = #{backUp9,jdbcType=VARCHAR},
-      back_up10 = #{backUp10,jdbcType=VARCHAR}
+      back_up10 = #{backUp10,jdbcType=VARCHAR},
+      application_id = #{applicationId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
