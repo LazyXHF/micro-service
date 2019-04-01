@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.InvestmentPlan" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
     <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, plan_num, project_name, project_type, project_desc, organization, investor, amount, 
-    construction_mode, remark, create_time, update_time, delete_time
+    Id, plan_num, project_id, project_name, project_type, project_desc, organization, 
+    investor, amount, construction_mode, remark, create_time, update_time, delete_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.InvestmentPlanExample" >
     select
@@ -109,16 +110,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.InvestmentPlan" >
-    insert into investment_plan (Id, plan_num, project_name, 
-      project_type, project_desc, organization, 
-      investor, amount, construction_mode, 
-      remark, create_time, update_time, 
-      delete_time)
-    values (#{id,jdbcType=VARCHAR}, #{planNum,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, 
-      #{projectType,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, 
-      #{investor,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{constructionMode,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleteTime,jdbcType=TIMESTAMP})
+    insert into investment_plan (Id, plan_num, project_id, 
+      project_name, project_type, project_desc, 
+      organization, investor, amount, 
+      construction_mode, remark, create_time, 
+      update_time, delete_time)
+    values (#{id,jdbcType=VARCHAR}, #{planNum,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
+      #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR}, 
+      #{organization,jdbcType=VARCHAR}, #{investor,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{constructionMode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.InvestmentPlan" >
     insert into investment_plan
@@ -128,6 +129,9 @@
       </if>
       <if test="planNum != null" >
         plan_num,
+      </if>
+      <if test="projectId != null" >
+        project_id,
       </if>
       <if test="projectName != null" >
         project_name,
@@ -169,6 +173,9 @@
       </if>
       <if test="planNum != null" >
         #{planNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
@@ -220,6 +227,9 @@
       <if test="record.planNum != null" >
         plan_num = #{record.planNum,jdbcType=VARCHAR},
       </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
@@ -262,6 +272,7 @@
     update investment_plan
     set Id = #{record.id,jdbcType=VARCHAR},
       plan_num = #{record.planNum,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_type = #{record.projectType,jdbcType=VARCHAR},
       project_desc = #{record.projectDesc,jdbcType=VARCHAR},
@@ -282,6 +293,9 @@
     <set >
       <if test="planNum != null" >
         plan_num = #{planNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null" >
         project_name = #{projectName,jdbcType=VARCHAR},
@@ -322,6 +336,7 @@
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.InvestmentPlan" >
     update investment_plan
     set plan_num = #{planNum,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_type = #{projectType,jdbcType=VARCHAR},
       project_desc = #{projectDesc,jdbcType=VARCHAR},
@@ -335,7 +350,6 @@
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
-
   <select id="selectCountByExample" parameterType="com.portjs.base.entity.InvestmentPlan" resultType="int">
     select count(id) from investment_plan
     <where>

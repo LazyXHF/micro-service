@@ -5,15 +5,23 @@ package com.portjs.base.controller;
  * 立项保存
  */
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.portjs.base.aop.LogInfo;
+import com.portjs.base.entity.InvestmentPlan;
 import com.portjs.base.service.ProjectPreservationService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @CrossOrigin
 @Controller
@@ -74,16 +82,26 @@ public class ProjectPreservationController  extends BaseController {
         }
     }
 
-    @LogInfo(methodName = "Excel导入",modelName = "投资计划管理模块")
+    @LogInfo(methodName = "Excel导入（EasyPoi）",modelName = "投资计划管理模块")
     @RequestMapping("/insert-for-excel")
     @ResponseBody
-    public ResponseMessage insertForExcel(@RequestBody String requestBody){
+    public ResponseMessage insertForExcel(@RequestParam("file")MultipartFile file, String loginId){
+        List<InvestmentPlan> list = null;
+        ImportParams importParams =  new ImportParams();
+        importParams.setTitleRows(0);
+        importParams.setHeadRows(1);
+        logger.error(TAG + "insert-for-excel()begin....."+file );
         try {
-            logger.error(TAG + "insert-for-excel()begin....."+requestBody );
-            return projectPreservationService.selectInvestment(requestBody);
+            list = ExcelImportUtil.importExcel(file.getInputStream(), InvestmentPlan.class,importParams);
+           if(!CollectionUtils.isEmpty(list)){
+               ResponseMessage responseMessage = projectPreservationService.insertExcelByEasyPoi(list,loginId);
+               return responseMessage;
+           }
+            return new ResponseMessage(Code.CODE_ERROR,"插入失败");
         } catch (Exception e) {
-            logger.error(TAG + "insert-for-excel()error.....", e);
-            throw new RuntimeException();
+            e.printStackTrace();
+            logger.error("insert-for-excel() end...",e);
+            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
         }
     }
 
@@ -92,16 +110,38 @@ public class ProjectPreservationController  extends BaseController {
      * @param file
      * @return
      */
-    @LogInfo(methodName = "Excel导入（poi）")
+    @LogInfo(methodName = "Excel导入（poi）",modelName = "投资计划管理模块")
     @RequestMapping("insert-excel")
+    @ResponseBody
     public ResponseMessage insertExcel (@RequestParam("file") MultipartFile file) {
-        logger.error(TAG + "insert-for-excel()begin....."+file );
+        logger.error(TAG + "insert-excel()begin....."+file );
         try {
             if(file == null){
                 return new ResponseMessage(Code.CODE_ERROR,"文件为空");
             }
             ResponseMessage uploadResponse= projectPreservationService.insertExcel(file);
             return uploadResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("insert-excel() end...",e);
+            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+        }
+    }
+
+    /**
+     *Excel导出（EasyPoi）
+     * @param
+     * @return
+     */
+    @LogInfo(methodName = "Excel导出（EasyPoi）")
+    @RequestMapping("select-for-excel")
+    public ResponseMessage selectForExcel () {
+        try {
+            List list = projectPreservationService.selectAll();
+            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("","江苏省港口集团2019年度投资计划表"), InvestmentPlan.class, list);
+            return new ResponseMessage(Code.CODE_OK,"",workbook);
+
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("insert-for-excel() end...",e);

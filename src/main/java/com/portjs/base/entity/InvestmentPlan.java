@@ -1,27 +1,41 @@
 package com.portjs.base.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.portjs.base.util.BaseEntity;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class InvestmentPlan {
+public class InvestmentPlan extends BaseEntity {
     private String id;
 
+    @Excel(name = "计划编号", orderNum = "1", height = 20, width = 30, isImportField = "true_st")
     private String planNum;
 
+    private String projectId;
+
+    @Excel(name = "项目名称", orderNum = "2")
     private String projectName;
 
+    @Excel(name = "项目分类", orderNum = "1")
     private String projectType;
 
+    @Excel(name = "项目简介", orderNum = "3")
     private String projectDesc;
 
+    @Excel(name = "责任单位", orderNum = "4")
     private String organization;
 
+    @Excel(name = "投资主体", orderNum = "5")
     private String investor;
 
+    @Excel(name = "投资金额(万元)", orderNum = "6")
     private BigDecimal amount;
 
+    @Excel(name = "建设方式", orderNum = "7")
     private String constructionMode;
 
+    @Excel(name = "备注", orderNum = "8")
     private String remark;
 
     private Date createTime;
@@ -32,6 +46,10 @@ public class InvestmentPlan {
 
     private int rowNum;
     private int pageCount;
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
     public int getRowNum() {
         return rowNum;
@@ -63,6 +81,14 @@ public class InvestmentPlan {
 
     public void setPlanNum(String planNum) {
         this.planNum = planNum == null ? null : planNum.trim();
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId == null ? null : projectId.trim();
     }
 
     public String getProjectName() {
@@ -103,14 +129,6 @@ public class InvestmentPlan {
 
     public void setInvestor(String investor) {
         this.investor = investor == null ? null : investor.trim();
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
     }
 
     public String getConstructionMode() {

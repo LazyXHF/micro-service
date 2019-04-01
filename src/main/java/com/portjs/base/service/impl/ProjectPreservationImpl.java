@@ -49,6 +49,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
     @Autowired
     private InvestmentPlanMapper planMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
 
     //返参信息
     public final static String PARAM_MESSAGE_1 = "未传";
@@ -156,25 +158,35 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             }
         }
 
+        TWorkflowstepExample workflowstepExample = new TWorkflowstepExample();
+        TWorkflowstepExample.Criteria workflowstepCriteria = workflowstepExample.createCriteria();
+        workflowstepCriteria.andRelateddomainIdEqualTo(application.getId());
+        workflowstepCriteria.andActionResultEqualTo(1);
+        List<TWorkflowstep> list = workflowstepMapper.selectByExample(workflowstepExample);
         //进入审核
-        for(int i=0;i<nextViewJSON.size();i++){
-            //然后新增一条当前登录人的流程记录
-            TWorkflowstep workflowstep = new TWorkflowstep();
-            workflowstep.setId(String.valueOf(IDUtils.genItemId()));
-            workflowstep.setRelateddomain("项目立项");
-            workflowstep.setPrestepId("0");
-            workflowstep.setRelateddomainId(application.getId());
-            workflowstep.setStepDesc("项目负责人提交");
-            workflowstep.setActionuserId(userId);
-            workflowstep.setActionTime(new Date());
-            workflowstep.setActionComment("同意");
-            workflowstep.setActionResult(0);
-            workflowstep.setStatus("1");
-            workflowstep.setBackup3("1");
 
-            int i3 = workflowstepMapper.insertSelective(workflowstep);
-            if(i3!=1){
-                return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+        for(int i=0;i<nextViewJSON.size();i++){
+            TWorkflowstep workflowstep = new TWorkflowstep();
+            if(CollectionUtils.isEmpty(list)){
+                //然后新增一条当前登录人的流程记录
+                workflowstep.setId(String.valueOf(IDUtils.genItemId()));
+                workflowstep.setRelateddomain("项目立项");
+                workflowstep.setPrestepId("0");
+                workflowstep.setRelateddomainId(application.getId());
+                workflowstep.setStepDesc("项目负责人提交");
+                workflowstep.setActionuserId(userId);
+                workflowstep.setActionTime(new Date());
+                workflowstep.setActionComment("同意");
+                workflowstep.setActionResult(0);
+                workflowstep.setStatus("1");
+                workflowstep.setBackup3("1");
+
+                int i3 = workflowstepMapper.insertSelective(workflowstep);
+                if(i3!=1){
+                    return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+                }
+            }else {
+                workflowstep.setId(list.get(0).getId());
             }
             //接下来再新增一条部门负责人的流程记录
             TWorkflowstep tWorkflowstep = new TWorkflowstep();
@@ -272,6 +284,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                         return new ResponseMessage(Code.CODE_ERROR,"退回失败");
                     }
                 }
+            //改变当前立项表状态为退回
+            ProjectApplication application = new ProjectApplication();
+            application.setId(application_id);
+            application.setStatus("8");
+            int i1 = applicationMapper.updateByPrimaryKeySelective(application);
+            if(i1==0){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+
             //将当前对应流程关闭
             TWorkflowstep workflowstep = new TWorkflowstep();
             workflowstep.setId(workflowstep_id);
@@ -404,41 +425,104 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         is = file.getInputStream();
         Workbook workbook = read(is, isExcel2003);
         Sheet sheet = workbook.getSheetAt(0);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        SimpleDateFormat df = new SimpleDateFormat("HH");
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-
             Row row = sheet.getRow(i);
-            InvestmentPlan plan = new InvestmentPlan();
-            plan.setId(String.valueOf(IDUtils.genItemId()));
-            //设置计划编号
-            plan.setPlanNum(row.getCell(0).toString());
-            //设置项目分类
-            plan.setProjectType(row.getCell(1).toString());
-            //设置项目名称
-            plan.setProjectName(row.getCell(2).toString());
-            //设置项目简介
-            plan.setProjectDesc(row.getCell(3).toString());
-            //设置责任单位
-            plan.setOrganization(row.getCell(4).toString());
-            //设置投资主体
-            plan.setInvestor(row.getCell(5).toString());
-            //设置金额
-            BigDecimal decimal = new BigDecimal(row.getCell(6).toString());
-            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
-            plan.setAmount(decimal);
-            //设置建设方式
-            plan.setConstructionMode(row.getCell(7).toString());
-            //设置备注
-            plan.setRemark(row.getCell(8).toString());
+            if(row!=null){
+                InvestmentPlan plan = new InvestmentPlan();
+                plan.setId(String.valueOf(IDUtils.genItemId()));
+                //设置计划编号
+                if(!StringUtils.isEmpty(row.getCell(0).toString())){
 
-            int agendaInsert = planMapper.insert(plan);
-            if (agendaInsert != 1) {
+                    plan.setPlanNum(row.getCell(0).toString());
+                }
+                // 设置项目分类
+                if (!StringUtils.isEmpty(row.getCell(1).toString())) {
+                    plan.setProjectType(row.getCell(1).toString());
+                }
+                // 设置项目名称
+                if (!StringUtils.isEmpty(row.getCell(2).toString())) {
+                    plan.setProjectName(row.getCell(2).toString());
+                }
+                // 设置项目简介
+                if (!StringUtils.isEmpty(row.getCell(3).toString())) {
+                    plan.setProjectDesc(row.getCell(3).toString());
+                }
+                // 设置责任单位
+                if (!StringUtils.isEmpty(row.getCell(4).toString())) {
+                    plan.setOrganization(row.getCell(4).toString());
+                }
+                // 设置投资主体
+                if (!StringUtils.isEmpty(row.getCell(5).toString())) {
+                   plan.setInvestor(row.getCell(5).toString());
+                }
+                  // 设置金额
+                if (!StringUtils.isEmpty(row.getCell(6).toString())) {
+                  BigDecimal decimal = new BigDecimal(row.getCell(6).toString());
+                   decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+                   plan.setAmount(decimal);
+                }
+                 // 设置建设方式
+                if (!StringUtils.isEmpty(row.getCell(7).toString())) {
+                    plan.setConstructionMode(row.getCell(7).toString());
+                }
+                // 设置备注
+                if (!StringUtils.isEmpty(row.getCell(8).toString())) {
+                    plan.setRemark(row.getCell(8).toString());
+                }
+                plan.setCreateTime(new Date());
+                int agendaInsert = planMapper.insertSelective(plan);
+                if (agendaInsert != 1) {
+                    return new ResponseMessage(Code.CODE_ERROR, "导入失败");
+                }
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK, "导入成功");
+    }
+
+    /**
+     *Excel导入（EasyPoi）
+     * @param list
+     * @return
+     */
+    @Override
+    public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) {
+
+        for (InvestmentPlan plan : list) {
+            Project project = new Project();
+            project.setId(String.valueOf(IDUtils.genItemId()));
+            project.setProjectName(plan.getProjectName());
+            project.setCreator(loginId);
+            project.setCreateTime(new Date());
+            project.setSchedule("1");
+            project.setProjectType(plan.getProjectType());
+            int i1 = projectMapper.insertSelective(project);
+            if(i1!=1){
+                return new ResponseMessage(Code.CODE_ERROR, "导入失败");
+            }
+
+            plan.setId(String.valueOf(IDUtils.genItemId()));
+            plan.setCreateTime(new Date());
+            plan.setProjectId(project.getId());
+            int i = planMapper.insertSelective(plan);
+            if(i!=1){
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
             }
         }
         return new ResponseMessage(Code.CODE_OK, "导入成功");
     }
+
+    /**
+     * 查询所有项目
+     * @return
+     */
+    @Override
+    public List selectAll() {
+        InvestmentPlanExample example = new InvestmentPlanExample();
+        List<InvestmentPlan> list = planMapper.selectByExample(example);
+
+        return list;
+    }
+
     // 根据不同类型的文件 创建不同的处理对象
     public Workbook read(InputStream inputStream, boolean isExcel2003) throws IOException {
         /** 根据版本选择创建Workbook的方式 */
