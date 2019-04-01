@@ -1,6 +1,10 @@
 package com.portjs.base.service;
 
 import com.portjs.base.util.ResponseMessage;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * Created by dengshuangzhen on 2019\3\28 0028
@@ -33,4 +37,11 @@ public interface ProjectPreservationService {
      * @return
      */
     ResponseMessage selectInvestment(String requestBody);
+
+    /**
+     *Excel导入（poi）
+     * @param file
+     * @return
+     */
+    ResponseMessage insertExcel(MultipartFile file)  throws IOException, ParseException;
 }

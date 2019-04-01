@@ -7,12 +7,11 @@ package com.portjs.base.controller;
 
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.service.ProjectPreservationService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -85,6 +84,28 @@ public class ProjectPreservationController  extends BaseController {
         } catch (Exception e) {
             logger.error(TAG + "insert-for-excel()error.....", e);
             throw new RuntimeException();
+        }
+    }
+
+    /**
+     *Excel导入（poi）
+     * @param file
+     * @return
+     */
+    @LogInfo(methodName = "Excel导入（poi）")
+    @RequestMapping("insert-excel")
+    public ResponseMessage insertExcel (@RequestParam("file") MultipartFile file) {
+        logger.error(TAG + "insert-for-excel()begin....."+file );
+        try {
+            if(file == null){
+                return new ResponseMessage(Code.CODE_ERROR,"文件为空");
+            }
+            ResponseMessage uploadResponse= projectPreservationService.insertExcel(file);
+            return uploadResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("insert-for-excel() end...",e);
+            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
         }
     }
 

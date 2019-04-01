@@ -8,17 +8,25 @@ import com.portjs.base.service.ProjectManagerService;
 import com.portjs.base.service.ProjectPreservationService;
 import com.portjs.base.util.*;
 import com.portjs.base.util.StringUtils.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.spi.DirStateFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by dengshuangzhen on 2019\3\28 0028
@@ -355,7 +363,9 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
           plan.setConstructionMode(construction_mode);
         }
         if(!StringUtils.isEmpty(amount)){
-            plan.setAmount(Long.parseLong(amount));
+            BigDecimal decimal = new BigDecimal(amount);
+            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            plan.setAmount(decimal);
         }
         int totelCount=planMapper.selectCountByExample(plan);
         Page page = new Page();
@@ -368,6 +378,71 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         Integer code = investmentPlans.isEmpty() ? Code.CODE_ERROR : Code.CODE_OK ;
         return new ResponseMessage(code,message,page);
     }
+
+    /**
+     *Excel导入（poi）
+     * @param file
+     * @return
+     */
+    @Override
+    public ResponseMessage insertExcel(MultipartFile file)  throws IOException, ParseException {
+        InputStream is;
+
+        // 判断文件的类型，是2003还是2007
+        boolean isExcel2003 = true;
+        if (WDWUtil.isExcel2007(file.getOriginalFilename())) {
+            isExcel2003 = false;
+        }
+        is = file.getInputStream();
+        Workbook workbook = read(is, isExcel2003);
+        Sheet sheet = workbook.getSheetAt(0);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("HH");
+        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+            Row row = sheet.getRow(i);
+            InvestmentPlan plan = new InvestmentPlan();
+            plan.setId(String.valueOf(IDUtils.genItemId()));
+            //设置计划编号
+            plan.setPlanNum(row.getCell(0).toString());
+            //设置项目分类
+            plan.setProjectType(row.getCell(1).toString());
+            //设置项目名称
+            plan.setProjectName(row.getCell(2).toString());
+            //设置项目简介
+            plan.setProjectDesc(row.getCell(3).toString());
+            //设置责任单位
+            plan.setOrganization(row.getCell(4).toString());
+            //设置投资主体
+            plan.setInvestor(row.getCell(5).toString());
+            //设置金额
+            BigDecimal decimal = new BigDecimal(row.getCell(6).toString());
+            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            plan.setAmount(decimal);
+            //设置建设方式
+            plan.setConstructionMode(row.getCell(7).toString());
+            //设置备注
+            plan.setRemark(row.getCell(8).toString());
+
+            int agendaInsert = planMapper.insert(plan);
+            if (agendaInsert != 1) {
+                return new ResponseMessage(Code.CODE_ERROR, "导入失败");
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK, "导入成功");
+    }
+    // 根据不同类型的文件 创建不同的处理对象
+    public Workbook read(InputStream inputStream, boolean isExcel2003) throws IOException {
+        /** 根据版本选择创建Workbook的方式 */
+        Workbook wb;
+        if (isExcel2003) {
+            wb = new HSSFWorkbook(inputStream);
+        } else {
+            wb = new XSSFWorkbook(inputStream);
+        }
+        return wb;
+    }
+
 
 
 }
