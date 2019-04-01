@@ -119,7 +119,7 @@
         AND backup_3 like concat("%", #{backup3},"%")
       </if>
       <if test="backUp7 != null">
-        AND backup_7 like concat("%", #{backUp7},"%")
+        AND back_up7 like concat("%", #{backUp7},"%")
       </if>
       <if test="status != null" >
         AND status=#{status,jdbcType=VARCHAR}
@@ -148,7 +148,7 @@
         AND backup_3 like concat("%", #{backup3},"%")
       </if>
       <if test="backUp7 != null">
-        AND backup_7 like concat("%", #{backUp7},"%")
+        AND back_up7 like concat("%", #{backUp7},"%")
       </if>
       <if test="status != null" >
         AND status=#{status,jdbcType=VARCHAR}
