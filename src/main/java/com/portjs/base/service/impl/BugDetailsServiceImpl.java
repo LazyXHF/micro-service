@@ -61,7 +61,7 @@ public class BugDetailsServiceImpl implements BugDetailsService {
     }
 
     /**
-     * 新增bug接口
+     * TODO 新增bug接口
      * @param record
      * @return
      */
@@ -244,7 +244,7 @@ public class BugDetailsServiceImpl implements BugDetailsService {
     }*/
 
     /**
-     * 更新bug信息
+     * TODO 更新bug信息
      * @param record
      * @return
      */
