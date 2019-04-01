@@ -274,20 +274,24 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         // Status  0 未完成   1已完成
         if (!StringUtils.isEmpty(ownerId)){
             bugDetailsRecordMapper.updateRecordStatus("1",loginAccount,bugId);
+
             BugDetailsRecord bugDetailsRecord = new BugDetailsRecord();
             bugDetailsRecord.setCreaterId(createrId);
             bugDetailsRecord.setBackup7(backup7);
+
             bugDetailsRecord.setBackup8(ownerName);
-            bugDetailsRecord.setFileUrl(fileUrl);
+
+//            bugDetailsRecord.setFileUrl(fileUrl);
+
             bugDetailsRecord.setRecordTime(new Date());
             bugDetailsRecord.setBugId(bugId);
             bugDetailsRecord.setStatus(0);//代表流程下一步的状态值
             bugDetailsRecord.setId(UUID.randomUUID().toString());
-            bugDetailsRecord.setRemark(remark);
+//            bugDetailsRecord.setRemark(remark);
             bugDetailsRecord.setOwnerId(ownerId);
 //        bugDetailsRecord.setIsAgree(isAgree);
-            bugDetailsRecord.setBackup1(backup1);
-            bugDetailsRecord.setBackup2(backup2);
+//            bugDetailsRecord.setBackup1(backup1);
+//            bugDetailsRecord.setBackup2(backup2);
             bugDetailsRecord.setBackup5(backup5);//身份标识 获取指派人
             //插入一条新的流转数据到record表里
             i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
@@ -295,6 +299,26 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         }else {
             //1.改变属于我得record记录状态
             bugDetailsRecordMapper.updateRecordStatus("1",loginAccount,bugId);
+
+            BugDetailsRecord bugDetailsRecord = new BugDetailsRecord();
+            bugDetailsRecord.setCreaterId(createrId);
+            bugDetailsRecord.setBackup7(backup7);
+            bugDetailsRecord.setBackup8(ownerName);
+            bugDetailsRecord.setFileUrl(fileUrl);
+            bugDetailsRecord.setRecordTime(new Date());
+            bugDetailsRecord.setBugId(bugId);
+            bugDetailsRecord.setStatus(1);//代表流程下一步的状态值
+            bugDetailsRecord.setId(UUID.randomUUID().toString());
+            bugDetailsRecord.setRemark(remark);
+            bugDetailsRecord.setOwnerId(ownerId);
+//            bugDetailsRecord.setIsAgree(isAgree);
+            bugDetailsRecord.setBackup1(backup1);
+            bugDetailsRecord.setBackup2(backup2);
+            bugDetailsRecord.setBackup5(backup5);//身份标识 获取指派人
+            //插入一条新的流转数据到record表里
+            i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
+
+            //改变主表状态
             bugDetailsMapper.updateStatusById("1",bugId);
         }
 

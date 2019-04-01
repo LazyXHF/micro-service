@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.CommunicationLogMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.CommunicationLog">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="communication_id" jdbcType="VARCHAR" property="communicationId" />
+    <result column="discussant" jdbcType="VARCHAR" property="discussant" />
+    <result column="replytime" jdbcType="TIMESTAMP" property="replytime" />
+    <result column="pre_message" jdbcType="VARCHAR" property="preMessage" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="backup1" jdbcType="VARCHAR" property="backup1" />
+    <result column="backup2" jdbcType="VARCHAR" property="backup2" />
+    <result column="backup3" jdbcType="VARCHAR" property="backup3" />
+    <result column="backup4" jdbcType="VARCHAR" property="backup4" />
+    <result column="backup5" jdbcType="VARCHAR" property="backup5" />
+    <result column="backup6" jdbcType="VARCHAR" property="backup6" />
+    <result column="backup7" jdbcType="VARCHAR" property="backup7" />
+    <result column="backup8" jdbcType="VARCHAR" property="backup8" />
+    <result column="backup9" jdbcType="VARCHAR" property="backup9" />
+    <result column="backup10" jdbcType="VARCHAR" property="backup10" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, communication_id, discussant, replytime, pre_message, content, backup1, backup2, 
+    backup3, backup4, backup5, backup6, backup7, backup8, backup9, backup10
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from communication_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from communication_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.CommunicationLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into communication_log (communication_id, discussant, replytime, 
+      pre_message, content, backup1, 
+      backup2, backup3, backup4, 
+      backup5, backup6, backup7, 
+      backup8, backup9, backup10
+      )
+    values (#{communicationId,jdbcType=VARCHAR}, #{discussant,jdbcType=VARCHAR}, #{replytime,jdbcType=TIMESTAMP}, 
+      #{preMessage,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{backup1,jdbcType=VARCHAR}, 
+      #{backup2,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}, #{backup4,jdbcType=VARCHAR}, 
+      #{backup5,jdbcType=VARCHAR}, #{backup6,jdbcType=VARCHAR}, #{backup7,jdbcType=VARCHAR}, 
+      #{backup8,jdbcType=VARCHAR}, #{backup9,jdbcType=VARCHAR}, #{backup10,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.CommunicationLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into communication_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="communicationId != null">
+        communication_id,
+      </if>
+      <if test="discussant != null">
+        discussant,
+      </if>
+      <if test="replytime != null">
+        replytime,
+      </if>
+      <if test="preMessage != null">
+        pre_message,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="backup1 != null">
+        backup1,
+      </if>
+      <if test="backup2 != null">
+        backup2,
+      </if>
+      <if test="backup3 != null">
+        backup3,
+      </if>
+      <if test="backup4 != null">
+        backup4,
+      </if>
+      <if test="backup5 != null">
+        backup5,
+      </if>
+      <if test="backup6 != null">
+        backup6,
+      </if>
+      <if test="backup7 != null">
+        backup7,
+      </if>
+      <if test="backup8 != null">
+        backup8,
+      </if>
+      <if test="backup9 != null">
+        backup9,
+      </if>
+      <if test="backup10 != null">
+        backup10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="communicationId != null">
+        #{communicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="discussant != null">
+        #{discussant,jdbcType=VARCHAR},
+      </if>
+      <if test="replytime != null">
+        #{replytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preMessage != null">
+        #{preMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="backup1 != null">
+        #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="backup2 != null">
+        #{backup2,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null">
+        #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backup4 != null">
+        #{backup4,jdbcType=VARCHAR},
+      </if>
+      <if test="backup5 != null">
+        #{backup5,jdbcType=VARCHAR},
+      </if>
+      <if test="backup6 != null">
+        #{backup6,jdbcType=VARCHAR},
+      </if>
+      <if test="backup7 != null">
+        #{backup7,jdbcType=VARCHAR},
+      </if>
+      <if test="backup8 != null">
+        #{backup8,jdbcType=VARCHAR},
+      </if>
+      <if test="backup9 != null">
+        #{backup9,jdbcType=VARCHAR},
+      </if>
+      <if test="backup10 != null">
+        #{backup10,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.CommunicationLog">
+    update communication_log
+    <set>
+      <if test="communicationId != null">
+        communication_id = #{communicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="discussant != null">
+        discussant = #{discussant,jdbcType=VARCHAR},
+      </if>
+      <if test="replytime != null">
+        replytime = #{replytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preMessage != null">
+        pre_message = #{preMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="backup1 != null">
+        backup1 = #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="backup2 != null">
+        backup2 = #{backup2,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null">
+        backup3 = #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backup4 != null">
+        backup4 = #{backup4,jdbcType=VARCHAR},
+      </if>
+      <if test="backup5 != null">
+        backup5 = #{backup5,jdbcType=VARCHAR},
+      </if>
+      <if test="backup6 != null">
+        backup6 = #{backup6,jdbcType=VARCHAR},
+      </if>
+      <if test="backup7 != null">
+        backup7 = #{backup7,jdbcType=VARCHAR},
+      </if>
+      <if test="backup8 != null">
+        backup8 = #{backup8,jdbcType=VARCHAR},
+      </if>
+      <if test="backup9 != null">
+        backup9 = #{backup9,jdbcType=VARCHAR},
+      </if>
+      <if test="backup10 != null">
+        backup10 = #{backup10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.CommunicationLog">
+    update communication_log
+    set communication_id = #{communicationId,jdbcType=VARCHAR},
+      discussant = #{discussant,jdbcType=VARCHAR},
+      replytime = #{replytime,jdbcType=TIMESTAMP},
+      pre_message = #{preMessage,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      backup1 = #{backup1,jdbcType=VARCHAR},
+      backup2 = #{backup2,jdbcType=VARCHAR},
+      backup3 = #{backup3,jdbcType=VARCHAR},
+      backup4 = #{backup4,jdbcType=VARCHAR},
+      backup5 = #{backup5,jdbcType=VARCHAR},
+      backup6 = #{backup6,jdbcType=VARCHAR},
+      backup7 = #{backup7,jdbcType=VARCHAR},
+      backup8 = #{backup8,jdbcType=VARCHAR},
+      backup9 = #{backup9,jdbcType=VARCHAR},
+      backup10 = #{backup10,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

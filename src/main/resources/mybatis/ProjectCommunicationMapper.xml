@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.ProjectCommunicationMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.ProjectCommunication">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="sponsor" jdbcType="VARCHAR" property="sponsor" />
+    <result column="phase" jdbcType="VARCHAR" property="phase" />
+    <result column="priority" jdbcType="VARCHAR" property="priority" />
+    <result column="classification" jdbcType="VARCHAR" property="classification" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="backup1" jdbcType="VARCHAR" property="backup1" />
+    <result column="backup2" jdbcType="VARCHAR" property="backup2" />
+    <result column="backup3" jdbcType="VARCHAR" property="backup3" />
+    <result column="backup4" jdbcType="VARCHAR" property="backup4" />
+    <result column="backup5" jdbcType="VARCHAR" property="backup5" />
+    <result column="backup6" jdbcType="VARCHAR" property="backup6" />
+    <result column="backup7" jdbcType="VARCHAR" property="backup7" />
+    <result column="backup8" jdbcType="VARCHAR" property="backup8" />
+    <result column="backup9" jdbcType="VARCHAR" property="backup9" />
+    <result column="backup10" jdbcType="VARCHAR" property="backup10" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, sponsor, phase, priority, classification, title, content, file_url, 
+    create_time, delete_time, status, backup1, backup2, backup3, backup4, backup5, backup6, 
+    backup7, backup8, backup9, backup10
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from project_communication
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryProjectCommunicationInfo" resultMap="BaseResultMap">
+    select
+    <if test="projectId != null">
+      project_id  like concat('%',#{projectId},'%') and
+    </if>
+    <if test="sponsor != null">
+      sponsor like concat('%',#{sponsor},'%') and
+    </if>
+    <if test="phase != null">
+      phase like concat('%',#{phase},'%') and
+    </if>
+    <if test="priority != null">
+      priority like concat('%',#{priority},'%') and
+    </if>
+    <if test="classification != null">
+      classification like concat('%',#{classification},'%')
+    </if>
+    from project_communication
+    order by create_time DESC   LIMIT  #{pageNo},#{pageSize}
+  </select>
+  <select id="projectCommunicationCounts"  resultType="Integer">
+    SELECT count(*)
+    from project_communication where 1=1 and
+    <if test="projectId != null">
+      project_id  like concat('%',#{projectId},'%') and
+    </if>
+    <if test="sponsor != null">
+      sponsor like concat('%',#{sponsor},'%') and
+    </if>
+    <if test="phase != null">
+      phase like concat('%',#{phase},'%') and
+    </if>
+    <if test="priority != null">
+      priority like concat('%',#{priority},'%') and
+    </if>
+    <if test="classification != null">
+      classification like concat('%',#{classification},'%')
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from project_communication
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.ProjectCommunication">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into project_communication (project_id, sponsor, phase, 
+      priority, classification, title, 
+      content, file_url, create_time, 
+      delete_time, status, backup1, 
+      backup2, backup3, backup4, 
+      backup5, backup6, backup7, 
+      backup8, backup9, backup10
+      )
+    values (#{projectId,jdbcType=VARCHAR}, #{sponsor,jdbcType=VARCHAR}, #{phase,jdbcType=VARCHAR}, 
+      #{priority,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{backup1,jdbcType=VARCHAR}, 
+      #{backup2,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}, #{backup4,jdbcType=VARCHAR}, 
+      #{backup5,jdbcType=VARCHAR}, #{backup6,jdbcType=VARCHAR}, #{backup7,jdbcType=VARCHAR}, 
+      #{backup8,jdbcType=VARCHAR}, #{backup9,jdbcType=VARCHAR}, #{backup10,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectCommunication">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into project_communication
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="sponsor != null">
+        sponsor,
+      </if>
+      <if test="phase != null">
+        phase,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="classification != null">
+        classification,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="fileUrl != null">
+        file_url,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="backup1 != null">
+        backup1,
+      </if>
+      <if test="backup2 != null">
+        backup2,
+      </if>
+      <if test="backup3 != null">
+        backup3,
+      </if>
+      <if test="backup4 != null">
+        backup4,
+      </if>
+      <if test="backup5 != null">
+        backup5,
+      </if>
+      <if test="backup6 != null">
+        backup6,
+      </if>
+      <if test="backup7 != null">
+        backup7,
+      </if>
+      <if test="backup8 != null">
+        backup8,
+      </if>
+      <if test="backup9 != null">
+        backup9,
+      </if>
+      <if test="backup10 != null">
+        backup10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="sponsor != null">
+        #{sponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="phase != null">
+        #{phase,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="classification != null">
+        #{classification,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="backup1 != null">
+        #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="backup2 != null">
+        #{backup2,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null">
+        #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backup4 != null">
+        #{backup4,jdbcType=VARCHAR},
+      </if>
+      <if test="backup5 != null">
+        #{backup5,jdbcType=VARCHAR},
+      </if>
+      <if test="backup6 != null">
+        #{backup6,jdbcType=VARCHAR},
+      </if>
+      <if test="backup7 != null">
+        #{backup7,jdbcType=VARCHAR},
+      </if>
+      <if test="backup8 != null">
+        #{backup8,jdbcType=VARCHAR},
+      </if>
+      <if test="backup9 != null">
+        #{backup9,jdbcType=VARCHAR},
+      </if>
+      <if test="backup10 != null">
+        #{backup10,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertDeleteTime" parameterType="list">
+    insert into project_communication
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    where id in
+    <foreach collection="id" index="index" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.ProjectCommunication">
+    update project_communication
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="sponsor != null">
+        sponsor = #{sponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="phase != null">
+        phase = #{phase,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="classification != null">
+        classification = #{classification,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="backup1 != null">
+        backup1 = #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="backup2 != null">
+        backup2 = #{backup2,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null">
+        backup3 = #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backup4 != null">
+        backup4 = #{backup4,jdbcType=VARCHAR},
+      </if>
+      <if test="backup5 != null">
+        backup5 = #{backup5,jdbcType=VARCHAR},
+      </if>
+      <if test="backup6 != null">
+        backup6 = #{backup6,jdbcType=VARCHAR},
+      </if>
+      <if test="backup7 != null">
+        backup7 = #{backup7,jdbcType=VARCHAR},
+      </if>
+      <if test="backup8 != null">
+        backup8 = #{backup8,jdbcType=VARCHAR},
+      </if>
+      <if test="backup9 != null">
+        backup9 = #{backup9,jdbcType=VARCHAR},
+      </if>
+      <if test="backup10 != null">
+        backup10 = #{backup10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.ProjectCommunication">
+    update project_communication
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      sponsor = #{sponsor,jdbcType=VARCHAR},
+      phase = #{phase,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR},
+      classification = #{classification,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      backup1 = #{backup1,jdbcType=VARCHAR},
+      backup2 = #{backup2,jdbcType=VARCHAR},
+      backup3 = #{backup3,jdbcType=VARCHAR},
+      backup4 = #{backup4,jdbcType=VARCHAR},
+      backup5 = #{backup5,jdbcType=VARCHAR},
+      backup6 = #{backup6,jdbcType=VARCHAR},
+      backup7 = #{backup7,jdbcType=VARCHAR},
+      backup8 = #{backup8,jdbcType=VARCHAR},
+      backup9 = #{backup9,jdbcType=VARCHAR},
+      backup10 = #{backup10,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
