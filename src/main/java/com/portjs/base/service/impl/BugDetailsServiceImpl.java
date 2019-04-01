@@ -131,14 +131,14 @@ public class BugDetailsServiceImpl implements BugDetailsService {
 
             // Status  0 未完成   1已完成
             bugDetailsRecord.setStatus(0);
-            bugDetailsRecord.setFileUrl(record.getFileUrl());
+//            bugDetailsRecord.setFileUrl(record.getFileUrl());
             bugDetailsRecord.setRecordTime(record.getBugCreateTime());
             bugDetailsRecord.setBugId(uuid);
             bugDetailsRecord.setId(UUID.randomUUID().toString());
             // accepter 提单人   创建者
 //            bugDetailsRecord.setOwnerId(record.getBackup3());
 //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
-            bugDetailsRecord.setBackup5("开发");//身份标识 获取指派人
+            bugDetailsRecord.setBackup5(record.getBackup5());//身份标识 获取指派人
 
           int j =   bugDetailsRecordMapper.insert(bugDetailsRecord);
             System.out.println(j);

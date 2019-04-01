@@ -138,7 +138,7 @@
     tbr.backUp3 as backUp13,tbr.backUp4 as backUp14,tbr.backUp5 as backUp15,tbr.backUp6 as backUp16,tbr.backUp7 as backUp18,tbr.backUp9 as backUp19,tbr.backUp10 as backUp100
     from t_mgt_bug tb left join t_mgt_bug_record tbr
     on tb.id=tbr.bug_id
-    where tb.id=#{id} order by tbr.record_time asc
+    where tb.id=#{id} and tbr.status != 0  order by tbr.record_time asc
   </select>
 
   <!--<select id="queryAllBugIf" resultMap="BaseResultMap">
