@@ -165,6 +165,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             workflowstep.setStepDesc("项目负责人提交");
             workflowstep.setActionuserId(userId);
             workflowstep.setActionTime(new Date());
+            workflowstep.setActionComment("同意");
+            workflowstep.setActionResult(0);
             workflowstep.setStatus("1");
             workflowstep.setBackup3("1");
 
