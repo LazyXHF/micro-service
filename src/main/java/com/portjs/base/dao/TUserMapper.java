@@ -64,4 +64,5 @@ public interface TUserMapper {
     @Select("SELECT u.* FROM t_user u LEFT JOIN t_user_role ur ON u.`ID` = ur.`user_id` WHERE ur.`role_id` = #{rid}")
     List<TUser> selectUserByRoleId(String rid);
 
+    String queryUserNameByUserId(@Param("actionUserId") String actionUserId);
 }

@@ -39,6 +39,16 @@ public class TWorkflowstep {
 
     private  String bstatus;
 
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getBstatus() {
         return bstatus;
     }
