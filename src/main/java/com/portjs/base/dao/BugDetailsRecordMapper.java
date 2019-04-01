@@ -1,8 +1,12 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.BugDetailsRecord;
+import jdk.net.SocketFlow;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -64,5 +68,40 @@ public interface BugDetailsRecordMapper {
     @Update("UPDATE t_mgt_bug_record SET STATUS = #{status} WHERE  id = #{id}")
     int updateStatusByOwnerIDAndBugId(@Param("status") String status,@Param("id")String id);
 
+
+
+
+/**
+ * TODO  流程操作方法------------------分割线--------------------------------------------------------------------------------------------------------------------
+ */
+    /**
+     * 进行流程操作--更新record表状态值（status）
+     * @param status  Record表的状态值
+     * @return
+     */
+    //int updateFlowOperation(@Param("bugId")String bugId,@Param("status")int status);
+    /**
+     * 进行流程操作--插入record状态
+     * @param backup3  主表的指派人id与之对应 record表里为 backup3
+     * @param ownerId  主表的当前登录人id record表里为 ownerId
+     * @return
+     */
+    int insertFlowOperation(BugDetailsRecord bugDetailsRecord);
+
+    /**
+     * 根据状态和当前登录人ownerId 来查询bugId
+     * @return
+     */
+   // @Select("Select * from t_mgt_bug_record where status = #{status} and owner_id = #{ownerId}")
+    BugDetailsRecord queryBugIdByStatusAndOwnerId(@Param("status")int status,@Param("ownerId")String ownerId);
+
+
+/**
+ * TODO  流程操作方法------------------分割线--------------------------------------------------------------------------------------------------------------------
+ */
+
+
+   @Update("UPDATE  t_mgt_bug_record   SET `status` = #{status}  where owner_id = #{ownerId} and bug_id=#{bugId}")
+   int updateRecordStatus(@Param("status")String status,@Param("ownerId")String ownerId, @Param("bugId")String bugId);
 
 }
