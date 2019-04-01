@@ -1,5 +1,6 @@
 package com.portjs.base.dao;
 
+import com.portjs.base.entity.BugDetailsRecord;
 import com.portjs.base.entity.InvestmentPlan;
 import com.portjs.base.entity.InvestmentPlanExample;
 import org.apache.ibatis.annotations.Param;
@@ -29,6 +30,10 @@ public interface InvestmentPlanMapper {
     int updateByPrimaryKeySelective(InvestmentPlan record);
 
     int updateByPrimaryKey(InvestmentPlan record);
+
+    int selectCountByExample(InvestmentPlan plan);
+
+    List<InvestmentPlan> selectByPage(InvestmentPlan plan);
 
     List<InvestmentPlan> queryProjectPlan();
 

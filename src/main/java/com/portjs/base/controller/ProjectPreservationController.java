@@ -6,14 +6,12 @@ package com.portjs.base.controller;
  */
 
 import com.portjs.base.aop.LogInfo;
-import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectPreservationService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -47,6 +45,67 @@ public class ProjectPreservationController  extends BaseController {
         } catch (Exception e) {
             logger.error(TAG + "return-designs()error.....", e);
             throw new RuntimeException();
+        }
+    }
+
+    @LogInfo(methodName = "查询所有下拉框",modelName = "投资计划管理模块")
+    @RequestMapping("/select-box")
+    @ResponseBody
+    public ResponseMessage selectBox(@RequestBody String requestBody){
+        try {
+            logger.error(TAG + "select-box()begin....."+requestBody );
+            return projectPreservationService.selectBox(requestBody);
+        } catch (Exception e) {
+            logger.error(TAG + "select-box()error.....", e);
+            throw new RuntimeException();
+        }
+    }
+
+    @LogInfo(methodName = "按条件分页查询投资计划",modelName = "投资计划管理模块")
+    @RequestMapping("/select-investment")
+    @ResponseBody
+    public ResponseMessage selectInvestment(@RequestBody String requestBody){
+        try {
+            logger.error(TAG + "select-investment()begin....."+requestBody );
+            return projectPreservationService.selectInvestment(requestBody);
+        } catch (Exception e) {
+            logger.error(TAG + "select-investment()error.....", e);
+            throw new RuntimeException();
+        }
+    }
+
+    @LogInfo(methodName = "Excel导入",modelName = "投资计划管理模块")
+    @RequestMapping("/insert-for-excel")
+    @ResponseBody
+    public ResponseMessage insertForExcel(@RequestBody String requestBody){
+        try {
+            logger.error(TAG + "insert-for-excel()begin....."+requestBody );
+            return projectPreservationService.selectInvestment(requestBody);
+        } catch (Exception e) {
+            logger.error(TAG + "insert-for-excel()error.....", e);
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     *Excel导入（poi）
+     * @param file
+     * @return
+     */
+    @LogInfo(methodName = "Excel导入（poi）")
+    @RequestMapping("insert-excel")
+    public ResponseMessage insertExcel (@RequestParam("file") MultipartFile file) {
+        logger.error(TAG + "insert-for-excel()begin....."+file );
+        try {
+            if(file == null){
+                return new ResponseMessage(Code.CODE_ERROR,"文件为空");
+            }
+            ResponseMessage uploadResponse= projectPreservationService.insertExcel(file);
+            return uploadResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("insert-for-excel() end...",e);
+            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
         }
     }
 

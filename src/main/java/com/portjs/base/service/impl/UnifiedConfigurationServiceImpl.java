@@ -66,6 +66,7 @@ public class UnifiedConfigurationServiceImpl implements UnifiedConfigurationServ
     @Override
     public ResponseMessage selectProjectLevel() {
         TXietongDictionaryExample example = new TXietongDictionaryExample();
+        example.setOrderByClause("mid_value");
         TXietongDictionaryExample.Criteria criteria = example.createCriteria();
         criteria.andTypeCodeEqualTo("99");
         List<TXietongDictionary> list = dictionaryMapper.selectByExample(example);
@@ -178,9 +179,11 @@ public class UnifiedConfigurationServiceImpl implements UnifiedConfigurationServ
     @Override
     public ResponseMessage selectProjectType() {
         TXietongDictionaryExample example = new TXietongDictionaryExample();
-        example.setOrderByClause("midValue desc");
+        example.setOrderByClause("mid_value");
+
         TXietongDictionaryExample.Criteria criteria = example.createCriteria();
         criteria.andTypeCodeEqualTo("100");
+
         List<TXietongDictionary> list = dictionaryMapper.selectByExample(example);
         if(list==null){
             return new ResponseMessage(Code.CODE_ERROR, "暂无数据");

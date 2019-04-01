@@ -336,6 +336,60 @@
     where Id = #{id,jdbcType=VARCHAR}
   </update>
 
+  <select id="selectCountByExample" parameterType="com.portjs.base.entity.InvestmentPlan" resultType="int">
+    select count(id) from investment_plan
+    <where>
+      delete_time is null
+      <if test="projectName!=null  and projectName!=''">
+        and project_name like "%"#{projectName,jdbcType=VARCHAR}"%"
+      </if>
+      <if test="projectType!=null  and projectType!=''">
+        and project_type = #{projectType,jdbcType=VARCHAR}
+      </if>
+      <if test="investor!=null  and investor!=''">
+        and investor = #{investor,jdbcType=VARCHAR}
+      </if>
+      <if test="organization!=null  and organization!=''">
+        and organization = #{organization,jdbcType=VARCHAR}
+      </if>
+      <if test="constructionMode!=null  and constructionMode!=''">
+        and construction_mode = #{constructionMode,jdbcType=VARCHAR}
+      </if>
+      <if test="amount!=null  and amount!=''">
+        and amount = #{amount,jdbcType=DECIMAL}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByPage" parameterType="com.portjs.base.entity.InvestmentPlan" resultMap="BaseResultMap">
+    select
+    *
+    from investment_plan
+    <where>
+      delete_time is null
+      <if test="projectName!=null and projectName!=''">
+        and project_name  like "%"#{projectName,jdbcType=VARCHAR}"%"
+      </if>
+      <if test="projectType!=null  and projectType!=''">
+        and project_type = #{projectType,jdbcType=VARCHAR}
+      </if>
+      <if test="investor!=null  and investor!=''">
+        and investor = #{investor,jdbcType=VARCHAR}
+      </if>
+      <if test="organization!=null  and organization!=''">
+        and organization = #{organization,jdbcType=VARCHAR}
+      </if>
+      <if test="constructionMode!=null  and constructionMode!=''">
+        and construction_mode = #{constructionMode,jdbcType=VARCHAR}
+      </if>
+      <if test="amount!=null  and amount!=''">
+        and amount  = #{amount,jdbcType=DECIMAL}
+      </if>
+    </where>
+    order by create_time
+    limit #{rowNum},#{pageCount}
+  </select>
+
   <select id="queryProjectPlan" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />

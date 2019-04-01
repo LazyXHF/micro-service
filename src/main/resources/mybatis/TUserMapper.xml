@@ -729,4 +729,7 @@
     select * from t_user
   </select>
 
+  <select id="queryUserNameByUserId" resultType="String">
+    select name_cn from t_user where id=#{actionUserId}
+  </select>
 </mapper>

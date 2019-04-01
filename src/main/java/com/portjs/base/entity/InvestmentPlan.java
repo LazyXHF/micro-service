@@ -1,5 +1,6 @@
 package com.portjs.base.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class InvestmentPlan {
@@ -17,7 +18,7 @@ public class InvestmentPlan {
 
     private String investor;
 
-    private Long amount;
+    private BigDecimal amount;
 
     private String constructionMode;
 
@@ -28,6 +29,25 @@ public class InvestmentPlan {
     private Date updateTime;
 
     private Date deleteTime;
+
+    private int rowNum;
+    private int pageCount;
+
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    public void setRowNum(int rowNum) {
+        this.rowNum = rowNum;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
 
     public String getId() {
         return id;
@@ -85,11 +105,11 @@ public class InvestmentPlan {
         this.investor = investor == null ? null : investor.trim();
     }
 
-    public Long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

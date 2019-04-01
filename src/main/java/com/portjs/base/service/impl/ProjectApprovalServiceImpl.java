@@ -32,6 +32,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private ProjectApplicationMapper projectApplicationMapper;
 	@Autowired
 	private  TUserMapper tUserMapper;
+	@Autowired
+	private TXietongDictionaryMapper dictionaryMapper;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -101,6 +103,15 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			stepDesc="规划部归档";
 			sort="6";
 		}
+		//查询待办类型
+		TXietongDictionaryExample example = new TXietongDictionaryExample();
+		TXietongDictionaryExample.Criteria criteria = example.createCriteria();
+		criteria.andTypeIdEqualTo("8");
+		criteria.andTypeCodeEqualTo("38");
+		criteria.andMidValueEqualTo("1");
+		List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
+
+
 		/*
 		 * 修改掉当前todo表对应的id的信息
 		 */
@@ -176,7 +187,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					internalToDo.setReceiverId(nextReviewerId.getString(c));
 					internalToDo.setSenderTime(new Date());
 					internalToDo.setStepDesc(stepTodo);
-					internalToDo.setTodoType("项目立项审核流程");
+					internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
 					internalToDo.setStatus("0");
 					internalToDo.setBackUp7(userName);//发起人
 					int n=tTodoMapper.insertSelective(internalToDo);
@@ -198,7 +209,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				internalToDo.setSenderId(sender_id);
 				internalToDo.setReceiverId(nextReviewerId.getString(c));
 				internalToDo.setSenderTime(new Date());
-				internalToDo.setTodoType("项目立项审核流程");
+				internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
 				internalToDo.setStepDesc(stepTodo);
 				internalToDo.setStatus("0");
 				internalToDo.setBackUp7(userName);//发起人
@@ -336,6 +347,18 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 
 	@Override
 	public ResponseMessage todoGo(String requestBody) throws Exception {
+		//1.人员分页参数2.type类型查询
+		JSONObject jsonObj=JSONObject.parseObject(requestBody);
+		String moduel = jsonObj.getString("Relateddomain");//项目模块
+		if(StringUtils.isEmpty(moduel)){
+			return new ResponseMessage(Code.CODE_ERROR, "Relateddomain"+PARAM_MESSAGE_1);
+		}
+		switch(moduel.trim()){
+			case"项目立项":
+				break;
+			default:
+				return new ResponseMessage(Code.CODE_ERROR, "不存在此模块");
+		}
 		return null;
 	}
 

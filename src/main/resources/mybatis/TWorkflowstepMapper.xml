@@ -468,7 +468,7 @@
      where relateddomain_id=#{id} and status='0'
   </select>
 
-  <select id="queryProjectRecords" resultType="TWorkflowstep" parameterType="java.lang.String" >
+  <select id="queryProjectRecords" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select a.id, a.relateddomain, a.relateddomain_id as relateddomainId, a.prestep_id as prestepId, a.step_desc as stepDesc, a.actionuser_id as actionuserId , a.action_time as action_time,
     a.action_result as actionResult , a.file_url as fileUrl, a.action_comment as actionComment, a.enable, a.status as status,b.status as bstatus
     from t_workflowstep a left join project_application b

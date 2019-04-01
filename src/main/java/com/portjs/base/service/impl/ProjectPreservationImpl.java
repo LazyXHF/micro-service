@@ -6,20 +6,27 @@ import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.ProjectManagerService;
 import com.portjs.base.service.ProjectPreservationService;
-import com.portjs.base.util.Code;
-import com.portjs.base.util.IDUtils;
-import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.*;
 import com.portjs.base.util.StringUtils.StringUtils;
-import com.portjs.base.util.UserUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.spi.DirStateFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by dengshuangzhen on 2019\3\28 0028
@@ -39,6 +46,9 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     private TXietongDictionaryMapper dictionaryMapper;
     @Autowired
     private TTodoMapper todoMapper;
+
+    @Autowired
+    private InvestmentPlanMapper planMapper;
 
     //返参信息
     public final static String PARAM_MESSAGE_1 = "未传";
@@ -90,6 +100,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         }
         //项目基本信息
         ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
+        application.setCreater(userId);
+        application.setCreateTime(new Date());
         application.setStatus(status);
         //插入还是更新
         if(StringUtils.isEmpty(application.getId())){
@@ -155,6 +167,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             workflowstep.setStepDesc("项目负责人提交");
             workflowstep.setActionuserId(userId);
             workflowstep.setActionTime(new Date());
+            workflowstep.setActionComment("同意");
+            workflowstep.setActionResult(0);
             workflowstep.setStatus("1");
             workflowstep.setBackup3("1");
 
@@ -223,6 +237,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             String user_id  = jsonObject.getString("user_id");//当前登录人id
             String user_name  = jsonObject.getString("user_name");//当前登录人姓名
+            String action  = jsonObject.getString("action_commont");//处理意见
 
             //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
             TWorkflowstepExample example = new TWorkflowstepExample();
@@ -260,12 +275,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             //将当前对应流程关闭
             TWorkflowstep workflowstep = new TWorkflowstep();
             workflowstep.setId(workflowstep_id);
+            workflowstep.setStepDesc(stepDesc1+"退回");
             workflowstep.setStatus("1");
+            workflowstep.setActionResult(1);
+            workflowstep.setActionComment(action);
             int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
             if(i==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }
-            //新增一条退回流程
+          /*  //新增一条退回流程
             TWorkflowstep tWorkflowstep = new TWorkflowstep();
             tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));
             tWorkflowstep.setRelateddomain("项目立项");
@@ -278,7 +296,161 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
             if(i4!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-            }
+            }*/
             return new ResponseMessage(Code.CODE_OK,"退回成功");
     }
+
+    /**
+     * 查询项目分类/投资主体/责任单位/建设方式
+     * @return
+     */
+    @Override
+    public ResponseMessage selectBox(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String type = jsonObject.getString("type");//1 项目类型 2 投资主体 3 责任单位 4 建设方式
+        InvestmentPlanExample example = new InvestmentPlanExample();
+        example.setOrderByClause("create_time");
+        List<InvestmentPlan> investmentPlans = planMapper.selectByExample(example);
+        LinkedList list = new LinkedList();
+        if(!investmentPlans.isEmpty()){
+            for (InvestmentPlan plan: investmentPlans) {
+                if(StringUtils.isEmpty(type)){
+                    return new ResponseMessage(Code.CODE_OK,"查询类型不得为空");
+                }else if(Integer.valueOf(type)==1){
+                    list.add(plan.getProjectType());
+                }else if(Integer.valueOf(type)==2){
+                    list.add(plan.getInvestor());
+                }else if(Integer.valueOf(type)==3){
+                    list.add(plan.getOrganization());
+                }else if(Integer.valueOf(type)==4){
+                    list.add(plan.getConstructionMode());
+                }else {
+                    return new ResponseMessage(Code.CODE_OK,"查询类型错误");
+                }
+
+            }
+        }
+        HashSet set = new HashSet(list);
+        list.clear();
+        list.addAll(set);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",list);
+    }
+
+    /**
+     * 按条件分页查询投资计划
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage selectInvestment(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String pageNum = jsonObject.getString("pageNum");//当前页数
+        String pageCount = jsonObject.getString("pageCount");//每页显示记录数
+        String project_name = jsonObject.getString("project_name");//项目名称
+        String project_type = jsonObject.getString("project_type");//项目分类
+        String investor = jsonObject.getString("investor");//投资主体
+        String organization = jsonObject.getString("organization");//责任单位
+        String construction_mode = jsonObject.getString("construction_mode");//建设方式
+        String amount = jsonObject.getString("amount");//投资金额
+
+        InvestmentPlan plan= new InvestmentPlan();
+
+        if (!StringUtils.isEmpty(project_name)) {
+            plan.setProjectName(project_name);
+        }
+        if(!StringUtils.isEmpty(project_type)){
+            plan.setProjectType(project_type);
+        }
+        if(!StringUtils.isEmpty(investor)){
+            plan.setInvestor(investor);
+        }
+        if(!StringUtils.isEmpty(organization)){
+            plan.setOrganization(organization);
+        }
+        if (!StringUtils.isEmpty(construction_mode)) {
+          plan.setConstructionMode(construction_mode);
+        }
+        if(!StringUtils.isEmpty(amount)){
+            BigDecimal decimal = new BigDecimal(amount);
+            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            plan.setAmount(decimal);
+        }
+        int totelCount=planMapper.selectCountByExample(plan);
+        Page page = new Page();
+        page.init(totelCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+        plan.setRowNum(page.getRowNum());
+        plan.setPageCount(page.getPageCount());
+        List<InvestmentPlan> investmentPlans = planMapper.selectByPage(plan);
+        page.setList(investmentPlans);
+        String message = investmentPlans.isEmpty()?"查询失败":"查询成功";
+        Integer code = investmentPlans.isEmpty() ? Code.CODE_ERROR : Code.CODE_OK ;
+        return new ResponseMessage(code,message,page);
+    }
+
+    /**
+     *Excel导入（poi）
+     * @param file
+     * @return
+     */
+    @Override
+    public ResponseMessage insertExcel(MultipartFile file)  throws IOException, ParseException {
+        InputStream is;
+
+        // 判断文件的类型，是2003还是2007
+        boolean isExcel2003 = true;
+        if (WDWUtil.isExcel2007(file.getOriginalFilename())) {
+            isExcel2003 = false;
+        }
+        is = file.getInputStream();
+        Workbook workbook = read(is, isExcel2003);
+        Sheet sheet = workbook.getSheetAt(0);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("HH");
+        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+            Row row = sheet.getRow(i);
+            InvestmentPlan plan = new InvestmentPlan();
+            plan.setId(String.valueOf(IDUtils.genItemId()));
+            //设置计划编号
+            plan.setPlanNum(row.getCell(0).toString());
+            //设置项目分类
+            plan.setProjectType(row.getCell(1).toString());
+            //设置项目名称
+            plan.setProjectName(row.getCell(2).toString());
+            //设置项目简介
+            plan.setProjectDesc(row.getCell(3).toString());
+            //设置责任单位
+            plan.setOrganization(row.getCell(4).toString());
+            //设置投资主体
+            plan.setInvestor(row.getCell(5).toString());
+            //设置金额
+            BigDecimal decimal = new BigDecimal(row.getCell(6).toString());
+            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            plan.setAmount(decimal);
+            //设置建设方式
+            plan.setConstructionMode(row.getCell(7).toString());
+            //设置备注
+            plan.setRemark(row.getCell(8).toString());
+
+            int agendaInsert = planMapper.insert(plan);
+            if (agendaInsert != 1) {
+                return new ResponseMessage(Code.CODE_ERROR, "导入失败");
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK, "导入成功");
+    }
+    // 根据不同类型的文件 创建不同的处理对象
+    public Workbook read(InputStream inputStream, boolean isExcel2003) throws IOException {
+        /** 根据版本选择创建Workbook的方式 */
+        Workbook wb;
+        if (isExcel2003) {
+            wb = new HSSFWorkbook(inputStream);
+        } else {
+            wb = new XSSFWorkbook(inputStream);
+        }
+        return wb;
+    }
+
+
+
 }
