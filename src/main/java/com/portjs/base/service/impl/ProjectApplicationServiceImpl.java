@@ -119,11 +119,14 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
               String id=application.getId();
                 //查询当前登录人是否是审批人
               List<String> approverIds=tWorkflowstepMapper.isApproveingId(id);
+              String  str="";
               for(String approverId:approverIds){
               if(owneId.equals(approverId)){
-                  application.setIsApprover("1");
+                  str="1";
+                  application.setIsApprover(str);
               }else {
-                  application.setIsApprover("0");
+                  str="0";
+                  application.setIsApprover(str);
               }}
               }
             page.setList(list);
