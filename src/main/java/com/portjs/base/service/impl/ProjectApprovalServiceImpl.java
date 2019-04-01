@@ -52,7 +52,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		String workflowstep_id=jsonObj.getString("workflowstepId");//当前workflowstep表中的id
 		String actionComment=jsonObj.getString("actionComment");//审核意见
 		String actionResult=jsonObj.getString("actionResult");//0 同意 1 不同意or退回
-		String sort = jsonObj.getString("sort");//第几个步骤
+		String backup3 = jsonObj.getString("sort");//第几个步骤
 		String reviewIds = jsonObj.getString("nextReviewerId");//下一个审核人的信息
 		String userName = jsonObj.getString("userName");//用户姓名
 
@@ -80,28 +80,33 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		if(StringUtils.isEmpty(actionResult)){
 			return new ResponseMessage(Code.CODE_ERROR, "actionResult"+PARAM_MESSAGE_1);
 		}
-		if(StringUtils.isEmpty(sort)){
+		if(StringUtils.isEmpty(backup3)){
 			return new ResponseMessage(Code.CODE_ERROR, "sort"+PARAM_MESSAGE_1);
 		}
 		//步骤描述
 		String stepDesc="";
 		String stepTodo="";
-		if(sort.equals("2")){
+		String ss="1";
+		if(backup3.equals("2")){
+			ss=backup3;
 			stepTodo="部门负责人审核";
 			stepDesc="分管领导审核";
-			sort="3";
-		}else if(sort.equals("3")){
+			backup3="3";
+		}else if(backup3.equals("3")){
+			ss=backup3;
 			stepTodo="分管领导审核";
 			stepDesc="技术委员会审核";
-			sort="4";
-		}else if(sort.equals("4")){
+			backup3="4";
+		}else if(backup3.equals("4")){
+			ss=backup3;
 			stepTodo="技术委员会审核";
 			stepDesc="总经办审核";
-			sort="5";
-		}else if(sort.equals("5")){
+			backup3="5";
+		}else if(backup3.equals("5")){
+			ss=backup3;
 			stepTodo="总经办审核";
 			stepDesc="规划部归档";
-			sort="6";
+			backup3="6";
 		}
 		//查询待办类型
 		TXietongDictionaryExample example = new TXietongDictionaryExample();
@@ -147,7 +152,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		 */
 		for(int c=0;c<nextReviewerId.size();c++) {
 			//进入到多个人审核阶段
-			if(sort.equals("5")){
+			if(backup3.equals("5")){
 				TWorkflowstepExample example1=new TWorkflowstepExample();
 				TWorkflowstepExample.Criteria criteria2 = example1.createCriteria();
 				criteria2.andStatusEqualTo("0");
@@ -162,7 +167,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					workflowstep.setPrestepId(workflowstep_id);
 					workflowstep.setActionuserId(nextReviewerId.getString(c));
 					workflowstep.setStatus("0");
-					workflowstep.setBackup3(sort);
+					workflowstep.setBackup3(backup3);
 					workflowstep.setStepDesc(stepDesc);
 					int m=tWorkflowstepMapper.insertSelective(workflowstep);
 					if(m<=0) {
@@ -224,7 +229,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				workflowstep.setPrestepId(workflowstep_id);
 				workflowstep.setActionuserId(nextReviewerId.getString(c));
 				workflowstep.setStatus("0");
-				workflowstep.setBackup3(sort);
+				workflowstep.setBackup3(backup3);
 				workflowstep.setStepDesc(stepDesc);
 				int m=tWorkflowstepMapper.insertSelective(workflowstep);
 				if(m<=0) {
@@ -235,7 +240,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		//更新projectApplication
 		ProjectApplication projectApplication = new ProjectApplication();
 		projectApplication.setId(relateddomain_id);
-		projectApplication.setStatus(sort);
+		projectApplication.setStatus(ss);
 		int num =projectApplicationMapper.updateByPrimaryKeySelective(projectApplication);
 		if(num<=0){
 			return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");
@@ -306,6 +311,9 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		if(count<=0){
 			return new ResponseMessage(Code.CODE_ERROR, "归档失败");
 		}
+
+		//新增项目信息
+		//ProjectMapper
 		return new ResponseMessage(Code.CODE_OK, "归档完成");
 	}
 
