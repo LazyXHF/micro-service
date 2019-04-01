@@ -93,30 +93,39 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     @Override
     public ResponseMessage queryProject(JSONObject requestJson) {
       /*  ProjectApplication annex = JSONObject.toJavaObject(requestJson, ProjectApplication.class);*/
-        String owneId=requestJson.getString("ownerId");
+        //项目编码
         String projectCode=requestJson.getString("projectCode");
+        //项目名称
+        String projectName=requestJson.getString("projectName");
+        //项目分类
         String projectType=requestJson.getString("projectType");
-        String creater=requestJson.getString("creater");
-        String status=requestJson.getString("stepDesc");
+        //责任单位
+        String organization=requestJson.getString("organization");
+        //建设方式
+        String  constructionMode=requestJson.getString("constructionMode");
+        //投资主体
+        String investor=requestJson.getString("investor");
+        String owneId=requestJson.getString("ownerId");
         String pageNum=requestJson.getString("pageNum");
         String pageCount=requestJson.getString("pageCount");
         Page page=new Page();
-        int totalCount=applicationMapper.queryProjectCount(projectCode,projectType,creater,status);
+        int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,constructionMode,investor);
         page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-
-        List<ProjectApplication> list=applicationMapper.queryProject(projectCode,projectType,creater,status,page.getRowNum(),page.getPageCount());
+        List<ProjectApplication> list=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,page.getRowNum(),page.getPageCount());
         if(list.isEmpty()){
             return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
         }else{
             for(ProjectApplication application:list){
               String id=application.getId();
                 //查询当前登录人是否是审批人
-              String approverId=tWorkflowstepMapper.isApproveingId(id);
+              List<String> approverIds=tWorkflowstepMapper.isApproveingId(id);
+              for(String approverId:approverIds){
               if(owneId.equals(approverId)){
                   application.setIsApprover("1");
               }else {
                   application.setIsApprover("0");
               }}
+              }
             page.setList(list);
             return  new ResponseMessage(Code.CODE_OK,"项目分页信息",page);
             }

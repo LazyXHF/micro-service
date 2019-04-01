@@ -9,6 +9,7 @@
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="investor" property="investor" jdbcType="VARCHAR" />
     <result column="organization" property="organization" jdbcType="VARCHAR" />
+    <result column="construction_mode" property="constructionMode" jdbcType="VARCHAR" />
     <result column="leval" property="leval" jdbcType="VARCHAR" />
     <result column="investment_amount" property="investmentAmount" jdbcType="DECIMAL" />
     <result column="range1" property="range1" jdbcType="VARCHAR" />
@@ -517,17 +518,23 @@
   from project_application  a
   <where>
     is_delete='0'
-  <if test="projectCode !=null and projectCode!=''">
-    and  a.project_code like "%" #{projectCode} "%"
-  </if>
-  <if test="projectType !=null and projectType!=''">
-    and  a.project_type like "%" #{projectType} "%"
-  </if>
-  <if test="creater !=null and creater!=''">
-    and  a.creater like "%" #{creater} "%"
-  </if>
-    <if test="status !=null and status!=''">
-      and  a.status like "%" #{status} "%"
+    <if test="projectCode !=null and projectCode!=''">
+      and  a.project_code like "%" #{projectCode} "%"
+    </if>
+    <if test="projectName !=null and projectName!=''">
+      and  a.project_name like "%" #{projectName} "%"
+    </if>
+    <if test="projectType !=null and projectType!=''">
+      and  a.project_type like "%" #{projectType} "%"
+    </if>
+    <if test="organization !=null and organization!=''">
+      and  a.organization like "%" #{organization} "%"
+    </if>
+    <if test="constructionMode !=null and constructionMode!=''">
+      and  a.construction_mode like "%" #{constructionMode} "%"
+    </if>
+    <if test="investor !=null and investor!=''">
+      and  a.investor like "%" #{investor} "%"
     </if>
   </where>
   </select>
@@ -559,14 +566,20 @@
       <if test="projectCode !=null and projectCode!=''">
        and  a.project_code like "%" #{projectCode} "%"
       </if>
+      <if test="projectName !=null and projectName!=''">
+        and  a.project_name like "%" #{projectName} "%"
+      </if>
       <if test="projectType !=null and projectType!=''">
         and  a.project_type like "%" #{projectType} "%"
       </if>
-      <if test="creater !=null and creater!=''">
-        and  a.creater like "%" #{creater} "%"
+      <if test="organization !=null and organization!=''">
+        and  a.organization like "%" #{organization} "%"
       </if>
-      <if test="status !=null and status!=''">
-        and  a.status like "%" #{status} "%"
+      <if test="constructionMode !=null and constructionMode!=''">
+        and  a.construction_mode like "%" #{constructionMode} "%"
+      </if>
+      <if test="investor !=null and investor!=''">
+        and  a.investor like "%" #{investor} "%"
       </if>
     </where>
     order by  a.create_time desc
@@ -601,7 +614,7 @@
   </select>-->
 
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select   Id, investment_id, project_code, project_name, project_type, investor, organization,
+  select   Id, investment_id, project_code, project_name, project_type, investor, organization,construction_mode,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
   from project_application  a
