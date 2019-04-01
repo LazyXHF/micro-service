@@ -45,6 +45,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     InvestmentPlanMapper investmentPlanMapper;
     @Autowired
     TTodoMapper todoMapper;
+    @Autowired
+    TUserMapper tUserMapper;
     @Override
     public ResponseMessage updateProject(JSONObject requestJson) {
         try {
@@ -168,6 +170,11 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         if(StringUtils.isNull(tWorkflowsteps)){
             return  new ResponseMessage(Code.CODE_OK,"审批信息查询失败");
         }else {
+            for(TWorkflowstep tWorkflowstep:tWorkflowsteps){
+              String actionUserId=tWorkflowstep.getActionuserId();
+              String userName=tUserMapper.queryUserNameByUserId(actionUserId);
+              tWorkflowstep.setUserName(userName);
+            }
             return  new ResponseMessage(Code.CODE_OK,"审批信息列表",tWorkflowsteps);
         }
     }
