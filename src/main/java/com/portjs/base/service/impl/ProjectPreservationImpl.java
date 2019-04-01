@@ -237,6 +237,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             String user_id  = jsonObject.getString("user_id");//当前登录人id
             String user_name  = jsonObject.getString("user_name");//当前登录人姓名
+            String action  = jsonObject.getString("action_commont");//处理意见
 
             //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
             TWorkflowstepExample example = new TWorkflowstepExample();
@@ -274,12 +275,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             //将当前对应流程关闭
             TWorkflowstep workflowstep = new TWorkflowstep();
             workflowstep.setId(workflowstep_id);
+            workflowstep.setStepDesc(stepDesc1+"退回");
             workflowstep.setStatus("1");
+            workflowstep.setActionResult(1);
+            workflowstep.setActionComment(action);
             int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
             if(i==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }
-            //新增一条退回流程
+          /*  //新增一条退回流程
             TWorkflowstep tWorkflowstep = new TWorkflowstep();
             tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));
             tWorkflowstep.setRelateddomain("项目立项");
@@ -292,7 +296,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
             if(i4!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-            }
+            }*/
             return new ResponseMessage(Code.CODE_OK,"退回成功");
     }
 
