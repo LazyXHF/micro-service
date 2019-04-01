@@ -96,6 +96,9 @@ public interface BugDetailsRecordMapper {
     BugDetailsRecord queryBugIdByStatusAndOwnerId(@Param("status")int status,@Param("ownerId")String ownerId);
 
 
+
+    int updateBugRecordInfoss(BugDetailsRecord bugDetailsRecord);
+
 /**
  * TODO  流程操作方法------------------分割线--------------------------------------------------------------------------------------------------------------------
  */

@@ -138,7 +138,7 @@ public class BugDetailsServiceImpl implements BugDetailsService {
             // accepter 提单人   创建者
 //            bugDetailsRecord.setOwnerId(record.getBackup3());
 //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
-            bugDetailsRecord.setBackup5(record.getBackup5());//身份标识 获取指派人
+            bugDetailsRecord.setBackup5(record.getSf());//身份标识 获取指派人
 
           int j =   bugDetailsRecordMapper.insert(bugDetailsRecord);
             System.out.println(j);

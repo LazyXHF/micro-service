@@ -252,12 +252,12 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         String backup7 = jsonObject.getString("backup7");//创建人得姓名
         String bugId = jsonObject.getString("id");//前端传来的主表id
         String remark = jsonObject.getString("remark");//从表的备注信息，前端传过来
-//        int isAgree = jsonObject.getInteger("isAgree");//从表的同意意见
+        Integer isAgree = jsonObject.getInteger("isAgree");//从表的同意意见
         String backup1 = jsonObject.getString("backup1");//解决方案
         String backup2 = jsonObject.getString("backup2");//解决结果
         String fileUrl = jsonObject.getString("fileUrl");
         String backup5 = jsonObject.getString("backup5");
-
+        String backup6 = jsonObject.getString("backup6");
         String loginAccount = jsonObject.getString("loginAccount");
 
 
@@ -273,23 +273,34 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         //2.创建一个新的record记录并指定状态
         // Status  0 未完成   1已完成
         if (!StringUtils.isEmpty(ownerId)){
-            bugDetailsRecordMapper.updateRecordStatus("1",loginAccount,bugId);
+            //改变自身的流转意见
+            BugDetailsRecord bugDetailsRecord1= new BugDetailsRecord();
+            bugDetailsRecord1.setBugId(bugId);
+//            bugDetailsRecord1.setStatus(1);
+            bugDetailsRecord1.setOwnerId(loginAccount);//当前登录人 指派人传值
+            bugDetailsRecord1.setRemark(remark);
+            bugDetailsRecord1.setFileUrl(fileUrl);
+            bugDetailsRecord1.setBackup1(backup1);//解决结果
+            bugDetailsRecord1.setBackup2(backup2);//解决方法
+            bugDetailsRecord1.setIsAgree(isAgree);
+            bugDetailsRecord1.setBackup6(backup6);//文件名称
+            int j =     bugDetailsRecordMapper.updateBugRecordInfoss(bugDetailsRecord1);
+            System.out.println(j);
+               bugDetailsRecordMapper.updateRecordStatus("1",loginAccount,bugId);
+
 
             BugDetailsRecord bugDetailsRecord = new BugDetailsRecord();
             bugDetailsRecord.setCreaterId(createrId);
             bugDetailsRecord.setBackup7(backup7);
-
             bugDetailsRecord.setBackup8(ownerName);
-
 //            bugDetailsRecord.setFileUrl(fileUrl);
-
             bugDetailsRecord.setRecordTime(new Date());
             bugDetailsRecord.setBugId(bugId);
             bugDetailsRecord.setStatus(0);//代表流程下一步的状态值
             bugDetailsRecord.setId(UUID.randomUUID().toString());
 //            bugDetailsRecord.setRemark(remark);
             bugDetailsRecord.setOwnerId(ownerId);
-//        bugDetailsRecord.setIsAgree(isAgree);
+            bugDetailsRecord.setIsAgree(isAgree);
 //            bugDetailsRecord.setBackup1(backup1);
 //            bugDetailsRecord.setBackup2(backup2);
             bugDetailsRecord.setBackup5(backup5);//身份标识 获取指派人
@@ -297,8 +308,22 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
 
         }else {
+
+
+            //改变自身的流转意见
+            BugDetailsRecord bugDetailsRecord1= new BugDetailsRecord();
+            bugDetailsRecord1.setBugId(bugId);
+            bugDetailsRecord1.setStatus(1);
+            bugDetailsRecord1.setOwnerId(loginAccount);//当前登录人 指派人传值
+            bugDetailsRecord1.setRemark(remark);
+            bugDetailsRecord1.setFileUrl(fileUrl);
+            bugDetailsRecord1.setBackup1(backup1);//解决结果
+            bugDetailsRecord1.setBackup2(backup2);//解决方法
+//            bugDetailsRecord1.setIsAgree(isAgree);
+            bugDetailsRecord1.setBackup6(backup6);//文件名称
+            bugDetailsRecordMapper.updateBugRecordInfoss(bugDetailsRecord1);
             //1.改变属于我得record记录状态
-            bugDetailsRecordMapper.updateRecordStatus("1",loginAccount,bugId);
+           /* bugDetailsRecordMapper.updateRecordStatus("1",loginAccount,bugId);
 
             BugDetailsRecord bugDetailsRecord = new BugDetailsRecord();
             bugDetailsRecord.setCreaterId(createrId);
@@ -317,16 +342,16 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord.setBackup5(backup5);//身份标识 获取指派人
             //插入一条新的流转数据到record表里
             i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
-
+*/
             //改变主表状态
             bugDetailsMapper.updateStatusById("1",bugId);
         }
 
 
 
-        if(i==0){
-            return new ResponseMessage(Code.CODE_ERROR,"流程跳转阶段指派人id存入record表失败！",i);
-        }
+//        if(i==0){
+//            return new ResponseMessage(Code.CODE_ERROR,"流程跳转阶段指派人id存入record表失败！",i);
+//        }
 
         return new ResponseMessage(Code.CODE_OK,"流程跳转阶段指派人id存入record表成功！",i);
     }

@@ -83,6 +83,26 @@ public class BugDetails  {
     //从表得状态
     private String rstatus;
 
+    private String sf;
+
+
+
+    public String getRstatus() {
+        return rstatus;
+    }
+
+    public void setRstatus(String rstatus) {
+        this.rstatus = rstatus;
+    }
+
+    public String getSf() {
+        return sf;
+    }
+
+    public void setSf(String sf) {
+        this.sf = sf;
+    }
+
     @OneToMany
     private List<BugDetailsRecord> bugDetailsRecordList;
 

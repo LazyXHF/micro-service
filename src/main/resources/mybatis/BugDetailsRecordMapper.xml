@@ -517,6 +517,73 @@
     </set>
     where bug_id = #{bugId,jdbcType=VARCHAR}
   </update>
+
+
+  <update id="updateBugRecordInfoss" parameterType="com.portjs.base.entity.BugDetailsRecord">
+    update t_mgt_bug_record
+    <set>
+      <if test="bugId != null">
+        bug_id = #{bugId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null">
+        creater_id = #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="repeatCount != null">
+        repeat_count = #{repeatCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="ownerId != null">
+        owner_id = #{ownerId,jdbcType=VARCHAR},
+      </if>
+      <if test="isAgree != null">
+        is_agree = #{isAgree,jdbcType=INTEGER},
+      </if>
+      <if test="recordTime != null">
+        record_time = #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backup1 != null">
+        backUp1 = #{backup1,jdbcType=VARCHAR},
+      </if>
+      <if test="backup2 != null">
+        backUp2 = #{backup2,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null">
+        backUp3 = #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backup4 != null">
+        backUp4 = #{backup4,jdbcType=VARCHAR},
+      </if>
+      <if test="backup5 != null">
+        backUp5 = #{backup5,jdbcType=VARCHAR},
+      </if>
+      <if test="backup6 != null">
+        backUp6 = #{backup6,jdbcType=VARCHAR},
+      </if>
+      <if test="backup7 != null">
+        backUp7 = #{backup7,jdbcType=VARCHAR},
+      </if>
+      <if test="backup8 != null">
+        backUp8 = #{backup8,jdbcType=VARCHAR},
+      </if>
+      <if test="backup9 != null">
+        backUp9 = #{backup9,jdbcType=VARCHAR},
+      </if>
+      <if test="backup10 != null">
+        backUp10 = #{backup10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bug_id = #{bugId} and status = '0' and owner_id=#{ownerId}
+  </update>
+
+
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.BugDetailsRecord">
     update t_mgt_bug_record
     set bug_id = #{bugId,jdbcType=VARCHAR},
