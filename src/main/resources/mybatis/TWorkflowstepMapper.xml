@@ -475,4 +475,11 @@
     on a.relateddomain_id=b.id
     where relateddomain_id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="toApprove" resultType="TWorkflowstep" parameterType="java.lang.String" >
+    select a.id, a.relateddomain, a.relateddomain_id as relateddomainId, a.prestep_id as prestepId, a.step_desc as stepDesc, a.actionuser_id as actionuserId , a.action_time as action_time,
+    a.action_result as actionResult , a.file_url as fileUrl, a.action_comment as actionComment, a.enable, a.status as status
+    from t_workflowstep a left join project_application b
+    on a.relateddomain_id=b.id
+    where relateddomain_id = #{id,jdbcType=VARCHAR} and actionuser_id=#{ownerId} and  a.status='0'
+  </select>
 </mapper>

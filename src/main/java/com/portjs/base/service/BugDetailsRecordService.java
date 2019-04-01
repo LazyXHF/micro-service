@@ -42,4 +42,24 @@ public interface BugDetailsRecordService {
      */
     ResponseMessage updateByPrimaryKeySelective(BugDetailsRecord record);
 
+/**
+ * TODO  流程操作方法------------------分割线--------------------------------------------------------------------------------------------------------------------
+ */
+    /**
+     * 进行流程操作--更新record表状态值（status）
+     * @param  requestBody  传status  Record表的状态值
+     * @return
+     */
+    //ResponseMessage updateFlowOperation(String requestBody);
+    /**
+     * 进行流程操作--插入record状态
+     * @param requestBody  此id为bug主表id
+     * @return
+     */
+    ResponseMessage insertFlowOperation(String requestBody);
+/**
+ * TODO  流程操作方法------------------分割线--------------------------------------------------------------------------------------------------------------------
+ */
+
+
 }

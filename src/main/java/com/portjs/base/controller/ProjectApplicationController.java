@@ -34,7 +34,6 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage queryProject(@RequestBody String responseBody){
         logger.debug(TAG+"queryProject() begin");
-
         JSONObject requestJson=JSONObject.parseObject(responseBody);
         return  applicationService.queryProject(requestJson);
     }
@@ -65,6 +64,15 @@ public class ProjectApplicationController extends BaseController {
         JSONObject requestJson=JSONObject.parseObject(responseBody);
         return  applicationService.queryProjectFiles(requestJson);
     }
+    @LogInfo(methodName = "待办审批",modelName = "立项管理")
+    @RequestMapping("toApprove")
+    @ResponseBody
+    public ResponseMessage toApprove(@RequestBody String responseBody) {
+        logger.debug(TAG + "toApprove() begin");
+        JSONObject requestJson=JSONObject.parseObject(responseBody);
+        return  applicationService.toApprove(requestJson);
+    }
+
     @LogInfo(methodName = "审批意见结果列表",modelName = "立项管理")
     @RequestMapping("queryProjectRecords")
     @ResponseBody
@@ -89,12 +97,18 @@ public class ProjectApplicationController extends BaseController {
    @LogInfo(methodName = "投资计划",modelName = "立项管理")
    @RequestMapping("queryProjectPlan")
    @ResponseBody
-   public ResponseMessage queryProjectPlan(@RequestBody String responseBody){
+   public ResponseMessage queryProjectPlan(){
        logger.debug(TAG+"queryProjectPlan() begin");
-       JSONObject requestJson=JSONObject.parseObject(responseBody);
-       return  applicationService.queryProjectPlan(requestJson);
+       return  applicationService.queryProjectPlan();
    }
-
+    @LogInfo(methodName = "投资计划对应项目信息",modelName = "立项管理")
+    @RequestMapping("queryProjectPlanInfo")
+    @ResponseBody
+    public ResponseMessage queryProjectPlanInfo(@RequestBody String responseBody){
+        logger.debug(TAG+"queryProjectPlanInfo() begin");
+        JSONObject requestJson=JSONObject.parseObject(responseBody);
+        return  applicationService.queryProjectPlanInfo(requestJson);
+    }
 
 
 

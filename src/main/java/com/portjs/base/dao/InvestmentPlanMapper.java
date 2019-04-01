@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.InvestmentPlan;
 import com.portjs.base.entity.InvestmentPlanExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface InvestmentPlanMapper {
     int countByExample(InvestmentPlanExample example);
 
@@ -28,4 +29,8 @@ public interface InvestmentPlanMapper {
     int updateByPrimaryKeySelective(InvestmentPlan record);
 
     int updateByPrimaryKey(InvestmentPlan record);
+
+    List<InvestmentPlan> queryProjectPlan();
+
+    InvestmentPlan queryProjectPlanInfo(@Param("id") String id);
 }
