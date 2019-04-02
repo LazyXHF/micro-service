@@ -76,15 +76,11 @@ public class BugDetailsServiceImpl implements BugDetailsService {
                 return new ResponseMessage(Code.CODE_ERROR , "添加项目Bug信息,项目id未传");
             }
 
-
             //补充主表信息
             record.setAcceptTime(new Date());
             record.setBugCreateTime(new Date());
-
             //result  0 未完成  1 已完成
             record.setResult(0);
-
-
             i = bugDetailsMapper.insertSelective(record);
 
 
@@ -498,6 +494,17 @@ public class BugDetailsServiceImpl implements BugDetailsService {
         page.setList(bugDetails);
         responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",page);
         return responseMessage;
+    }
+
+
+    /**
+     * 暂存bugs
+     * @param record
+     * @return
+     */
+    @Override
+    public ResponseMessage temporaryBugs(BugDetails record) {
+        return null;
     }
 
 

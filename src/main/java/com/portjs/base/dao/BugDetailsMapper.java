@@ -127,6 +127,6 @@ public interface BugDetailsMapper {
 
 
     //修改主表状态
-    @Update("UPDATE  t_mgt_bug SET result=#{result} and mendTime = #{endTime} WHERE id = #{id}")
+    @Update("UPDATE t_mgt_bug SET result=#{result},end_time = #{endTime} WHERE id = #{id}")
     int updateStatusById(@Param("result") String result,@Param("id")String id,@Param("endTime")Date endTime);
 }
