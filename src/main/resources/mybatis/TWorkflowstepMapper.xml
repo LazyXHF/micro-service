@@ -463,7 +463,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <select id="isApproveingId" parameterType="String" resultType="String">
+  <select id="isApproveingId" parameterType="String" resultType="Integer">
     select count(*) from t_workflowstep
      where relateddomain_id=#{id} and  actionuser_id=#{ownerId}  and status='0'
   </select>
