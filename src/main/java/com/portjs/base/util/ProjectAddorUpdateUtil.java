@@ -4,6 +4,7 @@ import com.portjs.base.dao.ProjectMapper;
 import com.portjs.base.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.TimeZone;
  * Created by Administrator on 2019/4/2.
  */
 @Component
+@Transactional
 public class ProjectAddorUpdateUtil {
     @Autowired
     private ProjectMapper projectMapper;
@@ -49,23 +51,26 @@ public class ProjectAddorUpdateUtil {
             String status=project1.getProjectStatus();
             StringBuffer buffer = new StringBuffer();
             String[] statusArray=status.split(",");
-            for(int i=1;i<=statusArray.length;i++){
+            for(int i=0;i<statusArray.length;i++){
                 //如果有就替换，没有就在尾部添加
-                if(projectStatus.substring(0,2).equals(statusArray[i].substring(0,2))){
-                    status.replace(statusArray[i],projectStatus);
+                String astatus=statusArray[i].substring(0,2);
+                if(projectStatus.substring(0,2).equals(astatus)){
+                    String replaceStatus=statusArray[i].substring(0);
+                    String status2=status.replace(replaceStatus,projectStatus);
+                    buffer.append(status2);
                     break;
                 }
                 //如果没有就一只添加，直到最后一个也没有就追加
                 else {
                     buffer.append(statusArray[i]).append(",");
-                    if(i==statusArray.length){
+                    if(i==(statusArray.length-1)){
                         buffer.append(projectStatus);
                     }
                 }
             }
-            //如果状态的长度没有发生变化  说明是替换了  用原来的，如果变了，说明追加了  用新的
+            //如果状态的长度没有发生变化了  说明是追加了  用新的，如果变了，说明追加了  用新的
           if(status.length()==buffer.toString().length()){
-                projectMapper.updateProjectById(projectId,schedule,status);
+                projectMapper.updateProjectById(projectId,schedule,buffer.toString());
           }else {
              String newStatus=buffer.toString();
                 projectMapper.updateProjectById(projectId,schedule,newStatus);
