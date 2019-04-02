@@ -529,4 +529,51 @@
       project_status = #{status,jdbcType=VARCHAR}
     where id = #{projectId,jdbcType=VARCHAR}
   </update>
+  <select id="queryProjectAllInfoCount" resultType="Integer" parameterType="String">
+    select count(*) from project a
+    <where>
+      <if test="projectCode !=null and projectCode!=''">
+        and a.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and a.project_name like "%" #{projectName} "%"
+      </if>
+      <if test="organization !=null and organization!=''">
+        and a.organization like "%" #{organization} "%"
+      </if>
+      <if test="projectType !=null and projectType!=''">
+        and a.project_type like "%" #{projectType} "%"
+      </if>
+      <if test="creator !=null and creator!=''">
+        and a.creator like "%" #{creator} "%"
+      </if>
+      <if test="schedule !=null and schedule!=''">
+        and a.schedule like "%" #{schedule} "%"
+      </if>
+    </where>
+  </select>
+  <select id="queryProjectAllInfo" resultMap="BaseResultMap2" parameterType="String">
+    select * from project a
+    <where>
+    <if test="projectCode !=null and projectCode!=''">
+      and a.project_code like "%" #{projectCode} "%"
+    </if>
+    <if test="projectName !=null and projectName!=''">
+      and a.project_name like "%" #{projectName} "%"
+    </if>
+    <if test="organization !=null and organization!=''">
+      and a.organization like "%" #{organization} "%"
+    </if>
+    <if test="projectType !=null and projectType!=''">
+      and a.project_type like "%" #{projectType} "%"
+    </if>
+    <if test="creator !=null and creator!=''">
+      and a.creator like "%" #{creator} "%"
+    </if>
+      <if test="schedule !=null and schedule!=''">
+        and a.schedule like "%" #{schedule} "%"
+      </if>
+    </where>
+    limit   #{rownum},#{pagecount}
+  </select>
 </mapper>

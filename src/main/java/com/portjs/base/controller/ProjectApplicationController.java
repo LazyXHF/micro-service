@@ -133,18 +133,19 @@ public class ProjectApplicationController extends BaseController {
     public void addProject(@RequestBody String responseBody){
         logger.debug(TAG+"updateProject() begin");
         JSONObject requestJson=JSONObject.parseObject(responseBody);
-         String projectId=requestJson.getString("projectId");
-         String projectCode=requestJson.getString("projectCode");
-         String projectName=requestJson.getString("projectName");
-         String projectType=requestJson.getString("projectType");
-         String schedule=requestJson.getString("schedule");
-         String creator=requestJson.getString("creator");
-         String organization=requestJson.getString("organization");
-         String projectMoney=requestJson.getString("projectMoney");
-         String projectStatus=requestJson.getString("projectStatus");
-         projectAddorUpdateUtil.projectMethod(projectId,projectCode,projectName,projectType,schedule,creator,organization,projectMoney,projectStatus);
+        String projectId=requestJson.getString("projectId");
+        String projectCode=requestJson.getString("projectCode");
+        String projectName=requestJson.getString("projectName");
+        String projectType=requestJson.getString("projectType");
+        String schedule=requestJson.getString("schedule");
+        String creator=requestJson.getString("creator");
+        String organization=requestJson.getString("organization");
+        String projectMoney=requestJson.getString("projectMoney");
+        String projectStatus=requestJson.getString("projectStatus");
+        //投资主体
+        String investor=requestJson.getString("investor");
+        projectAddorUpdateUtil.projectMethod(projectId,projectCode,projectName,projectType,schedule,creator,organization,projectMoney,projectStatus,investor);
     }
-
 
 
 }
