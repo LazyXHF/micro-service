@@ -45,6 +45,15 @@ public class Project {
 
     private String applicationId;
 
+    private String organization;
+
+    private String projectMoney;
+
+    private String projectStage;
+
+    private String projectStatus;
+
+
     public String getId() {
         return id;
     }
@@ -211,5 +220,37 @@ public class Project {
 
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId == null ? null : applicationId.trim();
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public String getProjectMoney() {
+        return projectMoney;
+    }
+
+    public void setProjectMoney(String projectMoney) {
+        this.projectMoney = projectMoney;
+    }
+
+    public String getProjectStage() {
+        return projectStage;
+    }
+
+    public void setProjectStage(String projectStage) {
+        this.projectStage = projectStage;
+    }
+
+    public String getProjectStatus() {
+        return projectStatus;
+    }
+
+    public void setProjectStatus(String projectStatus) {
+        this.projectStatus = projectStatus;
     }
 }
