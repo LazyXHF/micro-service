@@ -473,7 +473,7 @@
     delete_time, back_up1, back_up2,
     back_up3, back_up4, back_up5,
     back_up6, back_up7, back_up8,
-    back_up9, back_up10, application_id,organization,project_money,project_stage,project_status
+    back_up9, back_up10,organization,project_money,project_stage,project_status,investor
     )
     values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
     #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
@@ -481,7 +481,7 @@
     #{deleteTime,jdbcType=TIMESTAMP}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR},
     #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR},
     #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR},
-    #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR},#{organization,jdbcType=VARCHAR},#{projectMoney,jdbcType=VARCHAR},#{projectStage,jdbcType=VARCHAR},#{projectStatus,jdbcType=VARCHAR}
+    #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR},#{projectMoney,jdbcType=VARCHAR},#{projectStage,jdbcType=VARCHAR},#{projectStatus,jdbcType=VARCHAR},#{investor,jdbcType=VARCHAR}
     )
   </insert>
   <resultMap id="BaseResultMap2" type="com.portjs.base.entity.Project" >
@@ -514,7 +514,7 @@
   <sql id="Base_Column_List2" >
     id, project_code, project_name, project_type, schedule, create_time, creator, Modifier,
     update_time, delete_time, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6,
-    back_up7, back_up8, back_up9, back_up10, application_id,organization,project_money,project_stage,project_status
+    back_up7, back_up8, back_up9, back_up10,organization,project_money,project_stage,project_status
   </sql>
   <select id="queryProjectById" resultMap="BaseResultMap2" parameterType="java.lang.String" >
     select
