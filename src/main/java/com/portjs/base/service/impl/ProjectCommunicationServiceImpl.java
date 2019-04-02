@@ -38,7 +38,7 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
      * @return
      */
     @Override
-    public ResponseMessage insertSelective(ProjectCommunication record) {
+    public ResponseMessage insertProjectCommunicationSelective(ProjectCommunication record) {
         record.setId(UUID.randomUUID().toString());
         Date date = new Date();//获得系统时间.
         SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
@@ -52,7 +52,7 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
         if(StringUtils.isEmpty(record.getProjectId())){
             return new ResponseMessage(Code.CODE_ERROR,"添加信息时未选择项目！");
         }
-        int i = projectCommunicationMapper.insertSelective(record);
+        int i = projectCommunicationMapper.insertProjectCommunicationSelective(record);
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加信息失败！",i);
 

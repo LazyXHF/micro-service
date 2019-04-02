@@ -684,7 +684,7 @@
   <select id="countBugSearchDealtDoing" resultType="int">
      SELECT count(*) from t_mgt_bug b
     left join t_mgt_bug_record br on b.id = br.bug_id
-    where br.`status` = "1" and b.result="0" and  b.id != b.id in (SELECT DISTINCT br.bug_id from t_mgt_bug_record br where br.`status` = "0")
+    where br.`status` = "1" and b.result="0" and  b.id != b.id in (SELECT DISTINCT br.bug_id from t_mgt_bug_record br where br.owner_id = #{ownerId} and br.`status` = "0")
     and br.owner_id = #{ownerId} GROUP BY b.id
   </select>
 

@@ -4,17 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.BugDetailsMapper;
 import com.portjs.base.dao.BugDetailsRecordMapper;
 import com.portjs.base.dao.InternalProjectMapper;
-import com.portjs.base.entity.BugDetails;
-import com.portjs.base.entity.BugDetailsRecord;
-import com.portjs.base.entity.InternalPersionResource;
-import com.portjs.base.entity.InternalProject;
+import com.portjs.base.dao.TUserMapper;
+import com.portjs.base.entity.*;
 import com.portjs.base.service.BugDetailsService;
-import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.util.UserUtils;
-import com.portjs.base.vo.Bug;
 import com.portjs.base.vo.BugSearchDO;
 import com.portjs.base.vo.PageVo;
 import com.portjs.base.vo.Project;
@@ -22,13 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 
 @Service
 public class BugDetailsServiceImpl implements BugDetailsService {
     ResponseMessage responseMessage = null;
+
+    @Autowired
+    private TUserMapper tUserMapper;
+
+    @Autowired
+    private BugDetailsMapper detailsMapper;
 
     @Autowired
     BugDetailsMapper bugDetailsMapper;
@@ -139,16 +139,61 @@ public class BugDetailsServiceImpl implements BugDetailsService {
 //            bugDetailsRecord.setOwnerId(record.getBackup3());
 //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
 
-            if(record.getBackup6()=="565ecec0-6ed3-4f44-bd8d-faa6fe6c744e"){
-                bugDetailsRecord.setBackup5("开发");//身份标识 获取指派人
-            }else if(record.getBackup6()=="d3bcbe76-604e-4d89-93e6-e19438daad96"){
-                bugDetailsRecord.setBackup5("测试");//身份标识 获取指派人
-            }else if(record.getBackup6()=="c2582665-3730-4b4b-896c-e50242e9471b"){
-                bugDetailsRecord.setBackup5("经理");//身份标识 获取指派人
-            }
-          int j =   bugDetailsRecordMapper.insert(bugDetailsRecord);
-            System.out.println(j);
 
+            //指派人id
+            String ownerId = record.getBackup6();
+            //经理角色id
+            String managerId = "c2582665-3730-4b4b-896c-e50242e9471b";
+            //开发人员角色
+            String developerId = "565ecec0-6ed3-4f44-bd8d-faa6fe6c744e";
+            //测试人员角色
+            String testID = "d3bcbe76-604e-4d89-93e6-e19438daad96";
+//            //bugId
+//            String bugId = uuid;
+            //如果有指派人
+            if (!StringUtils.isEmpty(record.getBackup6())) {
+                //经理用户
+                List<TUser> managerUsers = tUserMapper.selectUserByRoleId(managerId);
+                if (CollectionUtils.isEmpty(managerUsers)) {
+                    return new ResponseMessage(Code.CODE_ERROR, "该经理角色下无用户");
+                }
+                //开发人员用户
+                List<TUser> developerUsers = tUserMapper.selectUserByRoleId(developerId);
+                if (CollectionUtils.isEmpty(developerUsers)) {
+                    return new ResponseMessage(Code.CODE_ERROR, "该开发角色下无用户");
+                }
+                //测试人员角色
+                List<TUser> testUsers = tUserMapper.selectUserByRoleId(testID);
+                if (CollectionUtils.isEmpty(testUsers)) {
+                    return new ResponseMessage(Code.CODE_ERROR, "该测试角色下无用户");
+                }
+                //result  1  开发   2 经理   3 测试
+
+                //判断指派人是否是开发人员
+                for (int j = 0; j < developerUsers.size(); j++) {
+                    String developerIds = developerUsers.get(j).getId();
+                    if (developerIds.equals(ownerId)) {
+                        bugDetailsRecord.setBackup5("开发");
+                    }
+                }
+
+                //判断指派人是否是经理
+                for (int j = 0; j < managerUsers.size(); j++) {
+                    String managerIds = managerUsers.get(j).getId();
+                    if (managerIds.equals(ownerId)) {
+                        bugDetailsRecord.setBackup5("经理");
+                    }
+                }
+                //判断指派人是否是测试人员
+                for (int j = 0; j < testUsers.size(); j++) {
+                    String testIds = testUsers.get(j).getId();
+                    if (testIds.equals(ownerId)) {
+                        bugDetailsRecord.setBackup5("测试");
+                    }
+                }
+                int j = bugDetailsRecordMapper.insert(bugDetailsRecord);
+
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

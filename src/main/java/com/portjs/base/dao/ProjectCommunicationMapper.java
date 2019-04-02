@@ -55,7 +55,10 @@ public interface ProjectCommunicationMapper {
      */
     int insertDeleteTime(@Param("id") List<String> ids);
 
-
-
-
+    /**
+     * 添加
+     * @param record
+     * @return
+     */
+    int insertProjectCommunicationSelective(ProjectCommunication record);
 }

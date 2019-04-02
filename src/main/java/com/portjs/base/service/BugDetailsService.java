@@ -1,10 +1,8 @@
 package com.portjs.base.service;
 
 import com.portjs.base.entity.BugDetails;
-import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.PageVo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

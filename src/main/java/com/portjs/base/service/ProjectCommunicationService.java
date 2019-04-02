@@ -11,7 +11,8 @@ public interface ProjectCommunicationService {
 
     //int insert(ProjectCommunication record);
 
-    ResponseMessage insertSelective(ProjectCommunication record);
+   // ResponseMessage insertSelective(ProjectCommunication record);
+    ResponseMessage insertProjectCommunicationSelective(ProjectCommunication record);
 
     //ResponseMessage selectByPrimaryKey(String id);
 
