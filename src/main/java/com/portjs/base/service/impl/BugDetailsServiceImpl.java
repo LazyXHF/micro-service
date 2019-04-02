@@ -138,8 +138,14 @@ public class BugDetailsServiceImpl implements BugDetailsService {
             // accepter 提单人   创建者
 //            bugDetailsRecord.setOwnerId(record.getBackup3());
 //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
-            bugDetailsRecord.setBackup5(record.getSf());//身份标识 获取指派人
 
+            if(record.getBackup6()=="565ecec0-6ed3-4f44-bd8d-faa6fe6c744e"){
+                bugDetailsRecord.setBackup5("开发");//身份标识 获取指派人
+            }else if(record.getBackup6()=="d3bcbe76-604e-4d89-93e6-e19438daad96"){
+                bugDetailsRecord.setBackup5("测试");//身份标识 获取指派人
+            }else if(record.getBackup6()=="c2582665-3730-4b4b-896c-e50242e9471b"){
+                bugDetailsRecord.setBackup5("经理");//身份标识 获取指派人
+            }
           int j =   bugDetailsRecordMapper.insert(bugDetailsRecord);
             System.out.println(j);
 
