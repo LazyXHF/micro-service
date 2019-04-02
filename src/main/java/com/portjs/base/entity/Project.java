@@ -53,6 +53,15 @@ public class Project {
 
     private String projectStatus;
 
+    private String investor;
+
+    public String getInvestor() {
+        return investor;
+    }
+
+    public void setInvestor(String investor) {
+        this.investor = investor;
+    }
 
     public String getId() {
         return id;

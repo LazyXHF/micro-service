@@ -11,9 +11,11 @@ import com.portjs.base.entity.Life;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.service.LifeService;
+import com.portjs.base.service.ProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.PageVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,9 +41,10 @@ public class ProjectController extends BaseController {
     private LifeService lifeService;
     @Resource
     private InternalProjectService internalProjectService;
-
     @Resource
     private ApprovalMapper approvalService;
+    @Autowired
+    private ProjectService projectService;
     @LogInfo(methodName = "动态跟踪",modelName = "首页动态跟踪")
     @RequestMapping("/query-project")
     @ResponseBody
@@ -159,9 +162,13 @@ public class ProjectController extends BaseController {
     }
 
    //**** --------------------------------------项目概览接口rsh-------------------------------------------------
-    //**** --------------------------------------项目概览接口------------------------------------------
-    //**** --------------------------------------项目概览接口------------------------------------------
-
+   @LogInfo(methodName = "查询所有项目信息",modelName = "项目管理")
+   @RequestMapping("queryProjectAllInfo")
+   @ResponseBody
+   public ResponseMessage queryProjectAllInfo(@RequestBody String requestBody) {
+       JSONObject requestJson=JSONObject.parseObject(requestBody);
+       return projectService.queryProjectAllInfo(requestJson);
+   }
 
 
 
