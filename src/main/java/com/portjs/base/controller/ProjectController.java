@@ -157,4 +157,18 @@ public class ProjectController extends BaseController {
     public ResponseMessage selectAbuildingProjectMoney() {
         return internalProjectService.selectAbuildingProjectMoney();
     }
+
+   //**** --------------------------------------项目概览接口rsh-------------------------------------------------
+    //**** --------------------------------------项目概览接口------------------------------------------
+    //**** --------------------------------------项目概览接口------------------------------------------
+
+
+
+
+
+
+
+
+
+
 }

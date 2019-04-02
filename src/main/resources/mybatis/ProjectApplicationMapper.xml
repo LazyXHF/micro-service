@@ -6,6 +6,7 @@
     <result column="investment_id" property="investmentId" jdbcType="VARCHAR" />
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="investor" property="investor" jdbcType="VARCHAR" />
     <result column="organization" property="organization" jdbcType="VARCHAR" />
@@ -614,7 +615,7 @@
   </select>-->
 
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select   Id, investment_id, project_code, project_name, project_type, investor, organization,construction_mode,
+  select   Id, investment_id, project_code, project_id,project_name, project_type, investor, organization,construction_mode,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
   from project_application  a

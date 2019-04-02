@@ -462,4 +462,71 @@
       application_id = #{applicationId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="isHaveProject" resultType="int" parameterType="String">
+    select count(*) from project where id=#{projectId}
+  </select>
+
+  <insert id="addProject" parameterType="com.portjs.base.entity.Project" >
+    insert into project (id, project_code, project_name,
+    project_type, schedule, create_time,
+    creator, Modifier, update_time,
+    delete_time, back_up1, back_up2,
+    back_up3, back_up4, back_up5,
+    back_up6, back_up7, back_up8,
+    back_up9, back_up10, application_id,organization,project_money,project_stage,project_status
+    )
+    values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
+    #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+    #{deleteTime,jdbcType=TIMESTAMP}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR},
+    #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR},
+    #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR},
+    #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR},#{organization,jdbcType=VARCHAR},#{projectMoney,jdbcType=VARCHAR},#{projectStage,jdbcType=VARCHAR},#{projectStatus,jdbcType=VARCHAR}
+    )
+  </insert>
+  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.Project" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_type" property="projectType" jdbcType="VARCHAR" />
+    <result column="schedule" property="schedule" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="back_up1" property="backUp1" jdbcType="VARCHAR" />
+    <result column="back_up2" property="backUp2" jdbcType="VARCHAR" />
+    <result column="back_up3" property="backUp3" jdbcType="VARCHAR" />
+    <result column="back_up4" property="backUp4" jdbcType="VARCHAR" />
+    <result column="back_up5" property="backUp5" jdbcType="VARCHAR" />
+    <result column="back_up6" property="backUp6" jdbcType="VARCHAR" />
+    <result column="back_up7" property="backUp7" jdbcType="VARCHAR" />
+    <result column="back_up8" property="backUp8" jdbcType="VARCHAR" />
+    <result column="back_up9" property="backUp9" jdbcType="VARCHAR" />
+    <result column="back_up10" property="backUp10" jdbcType="VARCHAR" />
+    <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
+    <result column="organization" property="organization" jdbcType="VARCHAR" />
+    <result column="project_money" property="projectMoney" jdbcType="VARCHAR" />
+    <result column="project_stage" property="projectStage" jdbcType="VARCHAR" />
+    <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List2" >
+    id, project_code, project_name, project_type, schedule, create_time, creator, Modifier,
+    update_time, delete_time, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6,
+    back_up7, back_up8, back_up9, back_up10, application_id,organization,project_money,project_stage,project_status
+  </sql>
+  <select id="queryProjectById" resultMap="BaseResultMap2" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List2" />
+    from project
+    where id = #{projectId,jdbcType=VARCHAR}
+  </select>
+  <update id="updateProjectById" parameterType="String" >
+    update project SET
+     schedule = #{schedule,jdbcType=VARCHAR},
+      project_stage = #{schedule,jdbcType=VARCHAR},
+      project_status = #{status,jdbcType=VARCHAR}
+    where id = #{projectId,jdbcType=VARCHAR}
+  </update>
 </mapper>
