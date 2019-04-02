@@ -453,7 +453,7 @@
       back_up9 = #{backUp9,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="toApprove" parameterType="com.portjs.base.entity.TTodo" resultType="TTodo">
+  <select id="toApprove" parameterType="com.portjs.base.entity.TTodo" resultMap="BaseResultMap">
     select id, currentstep_id, step_desc, relateddomain, relateddomain_id, sender_id, sender_time,
     receiver_id, todo_type, actiontime, enable, status, sort
     from t_todo
