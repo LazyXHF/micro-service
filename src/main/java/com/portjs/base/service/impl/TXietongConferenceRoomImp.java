@@ -151,8 +151,15 @@ public class TXietongConferenceRoomImp extends BaseController implements TXieton
 	public ResponseMessage reservationDetails(String requestBody) {
 		JSONObject requestJson = JSONObject.parseObject(requestBody);
 		String apply_id = requestJson.getString("apply_id");
+		String pageNum = requestJson.getString("pageNum");//当前页数
+		String pageCount = requestJson.getString("pageCount");//每页显示记录数
+
 		List<TXietongMrApply> mrApply = mrApplyMapper.selectMrApplyByApplyId(apply_id);
-		return new ResponseMessage(Code.CODE_OK, "查询成功", mrApply);
+		Page page = new Page();
+		page.init(mrApply.size(),Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+		List<TXietongMrApply> applies =mrApplyMapper.selectMrApplyByPage(apply_id,page.getRowNum(),page.getPageCount());
+		page.setList(applies);
+		return new ResponseMessage(Code.CODE_OK, "查询成功",page);
 	}
 
 	// 取消会议室预定
@@ -305,9 +312,11 @@ public class TXietongConferenceRoomImp extends BaseController implements TXieton
 		// 测试此日期是否在指定日期之后
 		while (dEnd.after(calBegin.getTime())) {
 			// 根据日历的规则，为给定的日历字段添加或减去指定的时间量
-			calBegin.add(Calendar.DAY_OF_MONTH, 1);
+			calBegin.add(Calendar.DAY_OF_MONTH,1);
 			lDate.add(sd.format(calBegin.getTime()));
+
 		}
+		lDate.remove(lDate.size()-1);
 		return lDate;
 	}
 

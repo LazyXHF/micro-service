@@ -32,6 +32,8 @@ public class InvestmentPlan extends BaseEntity {
     @Excel(name = "投资金额(万元)", orderNum = "6")
     private BigDecimal amount;
 
+
+
     @Excel(name = "建设方式", orderNum = "7")
     private String constructionMode;
 
@@ -46,6 +48,10 @@ public class InvestmentPlan extends BaseEntity {
 
     private int rowNum;
     private int pageCount;
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;

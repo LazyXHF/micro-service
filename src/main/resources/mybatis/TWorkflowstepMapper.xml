@@ -466,6 +466,7 @@
   <select id="isApproveingId" parameterType="String" resultType="Integer">
     select count(*) from t_workflowstep
      where relateddomain_id=#{id} and  actionuser_id=#{ownerId}  and status='0'
+     order by
   </select>
   <resultMap id="BaseResultMap3" type="com.portjs.base.entity.TWorkflowstep" >
     <id column="id" property="id" jdbcType="VARCHAR" />
