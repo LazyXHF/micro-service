@@ -118,16 +118,14 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             for(ProjectApplication application:list){
               String id=application.getId();
                 //查询当前登录人是否是审批人
-              List<String> approverIds=tWorkflowstepMapper.isApproveingId(id);
-              String  str="";
-              for(String approverId:approverIds){
-              if(owneId.equals(approverId)){
-                  str="1";
-                  application.setIsApprover(str);
+                Integer  count=tWorkflowstepMapper.isApproveingId(id,owneId);
+                //isApprove(当前任是否是审批人 0：不是 1：是)
+               if(count==0){
+                  application.setIsApprover("0");
+                  break;
               }else {
-                  str="0";
-                  application.setIsApprover(str);
-              }}
+                  application.setIsApprover("1");
+              }
               }
             page.setList(list);
             return  new ResponseMessage(Code.CODE_OK,"项目分页信息",page);
