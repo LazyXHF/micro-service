@@ -5,6 +5,7 @@
     <id column="Id" property="id" jdbcType="VARCHAR" />
     <result column="investment_id" property="investmentId" jdbcType="VARCHAR" />
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="investor" property="investor" jdbcType="VARCHAR" />
@@ -84,7 +85,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, investment_id, project_code, project_name, project_type, investor, organization,
+    Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
   </sql>
@@ -119,7 +120,7 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.ProjectApplication" >
-    insert into project_application (Id, investment_id, project_code,
+    insert into project_application (Id, investment_id, project_code,project_id,
       project_name, project_type, investor,
       organization, leval, investment_amount,
       range1, application_amount, project_desc,
@@ -127,7 +128,7 @@
       create_time, update_time, enable,
       file_url, status, is_delete
       )
-    values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR},
+    values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},
       #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{investor,jdbcType=VARCHAR},
       #{organization,jdbcType=VARCHAR}, #{leval,jdbcType=VARCHAR}, #{investmentAmount,jdbcType=DECIMAL},
       #{range1,jdbcType=VARCHAR}, #{applicationAmount,jdbcType=DECIMAL}, #{projectDesc,jdbcType=VARCHAR},
@@ -147,6 +148,9 @@
       </if>
       <if test="projectCode != null" >
         project_code,
+      </if>
+      <if test="projectId != null" >
+        project_id,
       </if>
       <if test="projectName != null" >
         project_name,
@@ -212,6 +216,9 @@
       </if>
       <if test="projectCode != null" >
         #{projectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
@@ -287,6 +294,9 @@
       <if test="record.projectCode != null" >
         project_code = #{record.projectCode,jdbcType=VARCHAR},
       </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
       </if>
@@ -351,6 +361,7 @@
     set Id = #{record.id,jdbcType=VARCHAR},
       investment_id = #{record.investmentId,jdbcType=VARCHAR},
       project_code = #{record.projectCode,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=VARCHAR},
       project_name = #{record.projectName,jdbcType=VARCHAR},
       project_type = #{record.projectType,jdbcType=VARCHAR},
       investor = #{record.investor,jdbcType=VARCHAR},
@@ -378,6 +389,9 @@
     <set >
       <if test="investmentId != null" >
         investment_id = #{investmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="projectCode != null" >
         project_code = #{projectCode,jdbcType=VARCHAR},
@@ -443,6 +457,7 @@
     update project_application
     set investment_id = #{investmentId,jdbcType=VARCHAR},
       project_code = #{projectCode,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_type = #{projectType,jdbcType=VARCHAR},
       investor = #{investor,jdbcType=VARCHAR},
@@ -467,6 +482,7 @@
   <update id="updateProject" parameterType="com.portjs.base.entity.ProjectApplication" >
     update project_application
     set project_code = #{projectCode,jdbcType=VARCHAR},
+    project_id = #{projectId,jdbcType=VARCHAR},
     project_name = #{projectName,jdbcType=VARCHAR},
     project_type = #{projectType,jdbcType=VARCHAR},
     leval = #{leval,jdbcType=VARCHAR},
@@ -483,6 +499,7 @@
   <resultMap id="BaseResultMap1" type="com.portjs.base.entity.ProjectApplication" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
     <result column="aProjectCode" property="projectCode" jdbcType="VARCHAR" />
+    <result column="aProjectId" property="projectId" jdbcType="VARCHAR" />
     <result column="aProjectName" property="projectName" jdbcType="VARCHAR" />
     <result column="aProjectType" property="projectType" jdbcType="VARCHAR" />
     <result column="leval" property="leval" jdbcType="VARCHAR" />
@@ -518,6 +535,9 @@
   from project_application  a
   <where>
     is_delete='0'
+    <if test="projectId !=null and projectId!=''">
+      and  a.project_id like "%" #{projectId} "%"
+    </if>
     <if test="projectCode !=null and projectCode!=''">
       and  a.project_code like "%" #{projectCode} "%"
     </if>
@@ -541,6 +561,7 @@
   <resultMap id="BaseResultMap2" type="com.portjs.base.entity.ProjectApplication" >
   <id column="Id" property="id" jdbcType="VARCHAR" />
   <result column="aProjectCode" property="projectCode" jdbcType="VARCHAR" />
+    <result column="aProjectId" property="projectId" jdbcType="VARCHAR" />
   <result column="aProjectName" property="projectName" jdbcType="VARCHAR" />
   <result column="aProjectType" property="projectType" jdbcType="VARCHAR" />
   <result column="leval" property="leval" jdbcType="VARCHAR" />
@@ -557,12 +578,15 @@
   </resultMap>
   <!--查询项目信息-->
   <select id="queryProject" resultMap="BaseResultMap">
-    select  Id, investment_id, project_code, project_name, project_type, investor, organization,
+    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
     from project_application a
     <where>
       is_delete='0'
+      <if test="projectId !=null and projectId!=''">
+        and  a.project_id like "%" #{projectId} "%"
+      </if>
       <if test="projectCode !=null and projectCode!=''">
        and  a.project_code like "%" #{projectCode} "%"
       </if>
@@ -614,7 +638,7 @@
   </select>-->
 
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select   Id, investment_id, project_code, project_name, project_type, investor, organization,construction_mode,
+  select   Id, investment_id, project_code,project_id,  project_name, project_type, investor, organization,construction_mode,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
   from project_application  a

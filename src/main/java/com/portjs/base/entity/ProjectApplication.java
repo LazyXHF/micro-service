@@ -10,6 +10,8 @@ public class ProjectApplication {
 
     private String projectCode;
 
+    private String projectId;
+
     private String projectName;
 
     private String projectType;
@@ -86,7 +88,16 @@ public class ProjectApplication {
         return projectCode;
     }
 
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
     public void setProjectCode(String projectCode) {
+
         this.projectCode = projectCode == null ? null : projectCode.trim();
     }
 
