@@ -196,7 +196,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             tWorkflowstep.setPrestepId(workflowstep.getId());
             tWorkflowstep.setStepDesc("部门负责人审核");
             tWorkflowstep.setActionuserId(nextViewJSON.getString(i));
-            tWorkflowstep.setActionTime(new Date());
+           // tWorkflowstep.setActionTime(new Date());
             tWorkflowstep.setStatus("0");
             tWorkflowstep.setBackup3("2");
 

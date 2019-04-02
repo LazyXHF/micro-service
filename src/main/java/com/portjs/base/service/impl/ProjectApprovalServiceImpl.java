@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	@Autowired
 	private TTodoMapper tTodoMapper;
@@ -91,22 +90,22 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			ss=backup3;
 			stepTodo="部门负责人审核";
 			stepDesc="分管领导审核";
-			backup3="3";
+			backup3=new String("3");
 		}else if(backup3.equals("3")){
 			ss=backup3;
 			stepTodo="分管领导审核";
 			stepDesc="技术委员会审核";
-			backup3="4";
+			backup3=new String("4");
 		}else if(backup3.equals("4")){
 			ss=backup3;
 			stepTodo="技术委员会审核";
 			stepDesc="总经办审核";
-			backup3="5";
+			backup3=new String("5");
 		}else if(backup3.equals("5")){
 			ss=backup3;
 			stepTodo="总经办审核";
 			stepDesc="规划部归档";
-			backup3="6";
+			backup3=new String("6");
 		}
 		//查询待办类型
 		TXietongDictionaryExample example = new TXietongDictionaryExample();
@@ -151,7 +150,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		 * 对Workflowstep表中进行添加操作
 		 */
 		for(int c=0;c<nextReviewerId.size();c++) {
-			//进入到多个人审核阶段
+			//进入到多个人审核阶段，修改待办
 			if(backup3.equals("5")){
 				TWorkflowstepExample example1=new TWorkflowstepExample();
 				TWorkflowstepExample.Criteria criteria2 = example1.createCriteria();
@@ -173,9 +172,25 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					if(m<=0) {
 						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
 					}
+					TTodo internalToDo=new TTodo();
+					internalToDo.setId(String.valueOf(UUID.randomUUID()));
+					internalToDo.setCurrentstepId(currentstep_id);
+					internalToDo.setRelateddomain(relateddomain);
+					internalToDo.setRelateddomainId(relateddomain_id);
+					internalToDo.setSenderId(sender_id);
+					internalToDo.setReceiverId(nextReviewerId.getString(c));
+					internalToDo.setSenderTime(new Date());
+					internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+					internalToDo.setStepDesc(stepTodo);
+					internalToDo.setStatus("0");
+					internalToDo.setBackUp7(userName);//发起人
+					int n=tTodoMapper.insertSelective(internalToDo);
+					if(n<=0) {
+						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+					}
 				}
 
-				//1.查询此条待办 2.更新 3.插入
+				/*//1.查询此条待办 2.更新 3.插入
 				TTodoExample todoExample = new TTodoExample();
 				TTodoExample.Criteria criteria3 = todoExample.createCriteria();
 				criteria3.andRelateddomainIdEqualTo(relateddomain_id);
@@ -204,7 +219,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					TTodo internalToDo = list1.get(0);
 					internalToDo.setReceiverId(internalToDo.getReceiverId() + "," + nextReviewerId.getString(c));
 					tTodoMapper.updateByPrimaryKeySelective(internalToDo);
-				}
+				}*/
 			}else{
 				TTodo internalToDo=new TTodo();
 				internalToDo.setId(String.valueOf(UUID.randomUUID()));
@@ -240,7 +255,13 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		//更新projectApplication
 		ProjectApplication projectApplication = new ProjectApplication();
 		projectApplication.setId(relateddomain_id);
-		projectApplication.setStatus(ss);
+		//多人审核阶段
+		if(backup3.equals("5")){
+			projectApplication.setStatus("3");
+		}else{
+			projectApplication.setStatus(ss);
+		}
+
 		int num =projectApplicationMapper.updateByPrimaryKeySelective(projectApplication);
 		if(num<=0){
 			return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");
@@ -250,6 +271,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 
     //立项阶段的归档操作
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public ResponseMessage projectProceduresArchive(String requestBody)throws Exception {
 		JSONObject jsonObj=JSONObject.parseObject(requestBody);
 		//当前待办的ID
@@ -319,6 +341,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 
 	//待办查询
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public ResponseMessage queryTodos(String requestBody) throws Exception {
 		JSONObject jsonObj=JSONObject.parseObject(requestBody);
 		String userId = jsonObj.getString("userId");//当前登录人id
@@ -354,6 +377,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public ResponseMessage todoGo(String requestBody) throws Exception {
 		//1.人员分页参数2.type类型查询
 		JSONObject jsonObj=JSONObject.parseObject(requestBody);
