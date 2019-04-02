@@ -651,21 +651,19 @@
   </update>
 
 
-
   <resultMap id="dealtWith" type="com.portjs.base.entity.BugDetails" extends="ResultMapWithBLOBs">
     <result column="rstatus" jdbcType="VARCHAR" property="rstatus" />
   </resultMap>
 
-
   <!--待办查询-->
   <select id="selectBugSearchDealtWith" resultMap="dealtWith">
-    SELECT b.*,br.`status` as rstatus from t_mgt_bug b left join
+    SELECT distinct b.*,br.`status` as rstatus from t_mgt_bug b left join
     t_mgt_bug_record br on b.id = br.bug_id
-    where br.owner_id = #{ownerId} and br.`status` = "0"  LIMIT #{pageNo},#{pageSize}
+    where br.owner_id = #{ownerId} and br.`status` = "0" order by br.record_time DESC  LIMIT #{pageNo},#{pageSize}
   </select>
 
   <select id="countBugSearchDealtWith" resultType="int">
-    SELECT count(b.id) from t_mgt_bug b left join
+    SELECT count(distinct b.id) from t_mgt_bug b left join
     t_mgt_bug_record br on b.id = br.bug_id
     where br.owner_id = #{ownerId} and br.`status` = "0"
   </select>
@@ -675,41 +673,36 @@
 
   <!--查询在办-->
   <select id="selectBugSearchDealtDoing" resultMap="dealtWith">
-  SELECT b.* , br.`status` as rstatus from t_mgt_bug b
+   SELECT DISTINCT b.* , br.`status` as rstatus from t_mgt_bug b
    left join t_mgt_bug_record br on b.id = br.bug_id
    where br.`status` = "1" and b.result="0" and b.id not in (select DISTINCT br.bug_id from t_mgt_bug_record br where  br.owner_id = #{ownerId} and br.status = "0")
-    and br.owner_id =#{ownerId} GROUP BY b.id LIMIT #{pageNo},#{pageSize}
+  and br.owner_id =#{ownerId} order by br.record_time  DESC LIMIT #{pageNo},#{pageSize}
   </select>
 
   <select id="countBugSearchDealtDoing" resultType="int">
-     SELECT count(*) from t_mgt_bug b
+    SELECT count(DISTINCT b.id) from t_mgt_bug b
     left join t_mgt_bug_record br on b.id = br.bug_id
-    where br.`status` = "1" and b.result="0" and  b.id != b.id in (SELECT DISTINCT br.bug_id from t_mgt_bug_record br where br.owner_id = #{ownerId} and br.`status` = "0")
-    and br.owner_id = #{ownerId} GROUP BY b.id
+    where br.`status` = "1" and b.result="0" and  b.id not in (SELECT DISTINCT br.bug_id from t_mgt_bug_record br where br.owner_id = #{ownerId} and br.`status` = "0")
+    and br.owner_id = #{ownerId}
   </select>
 
-
-
-
   <select id="selectIsBugSearchDealtWith" resultMap="dealtWith">
-    SELECT b.*,br.`status` as rstatus from t_mgt_bug b left join
+    SELECT DISTINCT b.*,br.`status` as rstatus from t_mgt_bug b left join
     t_mgt_bug_record br on b.id = br.bug_id
     where br.owner_id = #{ownerId} and br.`status` = "0"
   </select>
 
   <select id="selectBugSearchDealtEnd" resultMap="dealtWith">
-    SELECT b.* , br.`status` as rstatus from t_mgt_bug b
+    SELECT DISTINCT b.* , br.`status` as rstatus from t_mgt_bug b
    left join t_mgt_bug_record br on b.id = br.bug_id
    where b.result="1"
-    and br.owner_id = #{ownerId} GROUP BY b.id LIMIT #{pageNo},#{pageSize}
+    and br.owner_id = #{ownerId} order by br.record_time DESC  LIMIT #{pageNo},#{pageSize}
   </select>
-
-
   <select id="countBugSearchDealtEnd" resultType="int">
-  SELECT count(*) from t_mgt_bug b
+  SELECT count( DISTINCT  b.id) from t_mgt_bug b
   left join t_mgt_bug_record br on b.id = br.bug_id
   where b.result="1"
-  and br.owner_id = #{ownerId} GROUP BY b.id
+  and br.owner_id = #{ownerId}
   </select>
 
 

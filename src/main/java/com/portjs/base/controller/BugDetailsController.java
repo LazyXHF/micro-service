@@ -79,6 +79,24 @@ public class BugDetailsController extends BaseController{
         return bugDetailsService.updateByPrimaryKeySelective(record);
     }
 
+
+    /**
+     * 暂存Bug信息
+     * @param record
+     * @return
+     */
+    @RequestMapping("temporary-bug-info")
+    @LogInfo(methodName = "暂存Bug信息")
+    @ResponseBody
+    public ResponseMessage temporaryBugs(@RequestBody BugDetails record) {
+        logger.debug(TAG+record);
+        UnifiedExceptionHandler.method= record + "temporaryBugs==============================" + record;
+        return bugDetailsService.temporaryBugs(record);
+    }
+
+
+
+
     /**
      *  TODO 根据自身id查询Bug信息
      * @param id
@@ -208,6 +226,10 @@ public class BugDetailsController extends BaseController{
         responseMessage = bugDetailsService.selectBugSearchDealtEnd(pageVo);
         return responseMessage;
     }
+
+
+
+
 
 
 }

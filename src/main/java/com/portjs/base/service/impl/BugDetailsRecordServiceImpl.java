@@ -365,6 +365,7 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord2.setBugId(bugId);
             bugDetailsRecord2.setStatus(1);
             bugDetailsRecord2.setOwnerId(loginAccount);//当前登录人 指派人传值
+
             bugDetailsRecord2.setRemark(remark);
             bugDetailsRecord2.setFileUrl(fileUrl);
             bugDetailsRecord2.setBackup1(backup1);//解决结果
