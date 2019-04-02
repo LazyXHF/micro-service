@@ -110,13 +110,27 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String pageCount=requestJson.getString("pageCount");
         Page page=new Page();
         int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,constructionMode,investor);
+
+
         page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
         List<ProjectApplication> list=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,page.getRowNum(),page.getPageCount());
         if(list.isEmpty()){
             return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
         }else{
             for(ProjectApplication application:list){
-              String id=application.getId();
+                TTodoExample todoExample = new TTodoExample();
+                TTodoExample.Criteria todoCriteria = todoExample.createCriteria();
+                todoCriteria.andStatusEqualTo("0");
+                todoCriteria.andRelateddomainIdEqualTo(application.getId());
+                todoCriteria.andReceiverIdEqualTo(owneId);
+                List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
+                //isApprove(当前任是否是审批人 0：不是 1：是)
+                if(CollectionUtils.isEmpty(tTodos)){
+                    application.setIsApprover("0");
+                }else {
+                    application.setIsApprover("1");
+                }
+              /*String id=application.getId();
                 //查询当前登录人是否是审批人
                 Integer  count=tWorkflowstepMapper.isApproveingId(id,owneId);
                 //isApprove(当前任是否是审批人 0：不是 1：是)
@@ -124,7 +138,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                   application.setIsApprover("0");
               }else {
                   application.setIsApprover("1");
-              }
+              }*/
               }
             page.setList(list);
             return  new ResponseMessage(Code.CODE_OK,"项目分页信息",page);

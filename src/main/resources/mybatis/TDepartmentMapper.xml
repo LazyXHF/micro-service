@@ -376,7 +376,12 @@
   </select>
 
   <select id="selectAllDepartment" resultMap="BaseResultMap">
-       SELECT * FROM t_department d ORDER BY d.`SORT`
+    SELECT * FROM t_department
+      <where>
+        d.PARENT_ID is not null
+        and d.parent_id !=""
+      </where>
+      d ORDER BY d.`SORT`
   </select>
 
 

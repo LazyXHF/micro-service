@@ -535,9 +535,7 @@
   from project_application  a
   <where>
     is_delete='0'
-    <if test="projectId !=null and projectId!=''">
-      and  a.project_id like "%" #{projectId} "%"
-    </if>
+
     <if test="projectCode !=null and projectCode!=''">
       and  a.project_code like "%" #{projectCode} "%"
     </if>
@@ -584,9 +582,6 @@
     from project_application a
     <where>
       is_delete='0'
-      <if test="projectId !=null and projectId!=''">
-        and  a.project_id like "%" #{projectId} "%"
-      </if>
       <if test="projectCode !=null and projectCode!=''">
        and  a.project_code like "%" #{projectCode} "%"
       </if>

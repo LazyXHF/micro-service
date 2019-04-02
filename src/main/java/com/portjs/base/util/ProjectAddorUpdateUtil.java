@@ -18,7 +18,8 @@ import java.util.TimeZone;
 public class ProjectAddorUpdateUtil {
     @Autowired
     private ProjectMapper projectMapper;
-    public  void projectMethod(String projectId, String projectCode, String projectName, String projectType, String schedule, String creator, String organization, String projectMoney, String projectStatus,String investor){
+    public  void projectMethod(String projectId, String projectCode, String projectName, String projectType, String schedule,
+                               String creator, String organization, String projectMoney, String projectStatus,String investor){
         try {
             Project project = new Project();
             project.setId(projectId);

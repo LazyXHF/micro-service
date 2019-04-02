@@ -52,4 +52,7 @@ public interface TXietongMrApplyMapper {
 	TXietongMrApply selectMrApplyById(@Param("id") String id);
     //获得会议室审批总条数
 	int selectConferenceRoomCount(@Param("apply_dep_id") String apply_dep_id, @Param("apply_id") String apply_id, @Param("owner_id") String owner_id);
+
+	//根据id分页查询
+    List<TXietongMrApply> selectMrApplyByPage(@Param("apply_id") String apply_id, @Param("rowNum")Integer rowNum,@Param("pageCount") Integer pageCount);
 }
