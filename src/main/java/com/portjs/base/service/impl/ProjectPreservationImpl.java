@@ -77,6 +77,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONArray arrayJSON = jsonObject.getJSONArray("Persons");
         JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
         JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
+        String tTodoId = jsonObject.getString("tTodoId");
+        if (StringUtils.isEmpty(tTodoId)){
+            TTodo todo = new TTodo();
+            todo.setId(tTodoId);
+            todo.setStatus("1");
+            todo.setActiontime(new Date());
+            todoMapper.updateByPrimaryKeySelective(todo);
+        }
 
         if(StringUtils.isEmpty(status)){
             return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);
@@ -280,6 +288,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     TTodo tTodo = new TTodo();
                     tTodo.setId(todoId);
                     tTodo.setStatus("1");
+                    tTodo.setActiontime(new Date());
                     int i = todoMapper.updateByPrimaryKeySelective(tTodo);
                     if(i!=1){
                         return new ResponseMessage(Code.CODE_ERROR,"退回失败");
@@ -293,6 +302,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     todo.setRelateddomainId(application_id);
                     todo.setSenderId(user_id);
                     todo.setSenderTime(new Date());
+
                     todo.setBackUp7(user_name);//发起人
                     /*ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);*/
                     todo.setReceiverId(fistId);
