@@ -122,7 +122,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 //isApprove(当前任是否是审批人 0：不是 1：是)
                if(count==0){
                   application.setIsApprover("0");
-                  break;
               }else {
                   application.setIsApprover("1");
               }
