@@ -81,4 +81,16 @@ public class ProjectApprovalController extends BaseController{
             throw new RuntimeException();
         }
     }
+    @LogInfo(methodName = "查询项目节点具体信息",modelName = "项目节点模块")
+    @RequestMapping("/query-project-details")
+    @ResponseBody
+    public ResponseMessage queryProjectDetials(@RequestBody String responseBody){
+        try {
+            logger.error(TAG+"query-project-details()begin....."+responseBody);
+            return projectApprovalService.queryProjectDetials(responseBody);
+        } catch (Exception e) {
+            logger.error(TAG+"query-project-details()error.....",e);
+            throw new RuntimeException();
+        }
+    }
 }

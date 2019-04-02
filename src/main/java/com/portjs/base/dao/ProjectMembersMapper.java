@@ -34,4 +34,6 @@ public interface ProjectMembersMapper {
     int queryProjectPersonsCount(@Param("id") String id);
 
     List<ProjectApplication> queryProjectPersons(@Param("id") String id);
+
+    List<ProjectMembers> selectByPage(@Param("rowNum")int rowNum,@Param("pageCount")int pageCount,@Param("id") String id);
 }
