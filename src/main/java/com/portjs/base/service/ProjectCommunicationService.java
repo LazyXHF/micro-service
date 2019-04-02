@@ -30,7 +30,7 @@ public interface ProjectCommunicationService {
      * @param ids
      * @return
      */
-    ResponseMessage insertDeleteTime(List<String> ids);
+    ResponseMessage updateDeleteTime(List<String> ids);
 
 
     //int updateByPrimaryKey(ProjectCommunication record);

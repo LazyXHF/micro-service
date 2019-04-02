@@ -97,15 +97,26 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
      * @return
      */
     @Override
-    public ResponseMessage insertDeleteTime(List<String> ids) {
+    public ResponseMessage updateDeleteTime(List<String> ids) {
         ProjectCommunication projectCommunication = null;
-        int i = projectCommunicationMapper.insertDeleteTime(ids);
-        for (String id:ids) {
-           projectCommunication = projectCommunicationMapper.selectByPrimaryKey(id);
-           if(StringUtils.isEmpty(projectCommunication.getDeleteTime().toString())){
-               return new ResponseMessage(Code.CODE_ERROR,"删除失败","失败的项目问题id"+projectCommunication.getId()+" : "+projectCommunication.getDeleteTime());
+        Date date = new Date();//获得系统时间.
+        SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+        String nowTime = sdf.format(date);
+        Date time = null;
+        try {
+            time = sdf.parse(nowTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (int j = 0 ;j < ids.size() ; j++) {
+            String id = ids.get(j);
+            projectCommunication = projectCommunicationMapper.selectByPrimaryKey(id);
+            if(!StringUtils.isEmpty(projectCommunication.getDeleteTime().toString())){
+               return new ResponseMessage(Code.CODE_ERROR,"删除失败","失败的项目问题id："+projectCommunication.getId()+" ： "+projectCommunication.getDeleteTime());
            }
         }
+        int i = projectCommunicationMapper.updateDeleteTime(ids);
+
         if(i == 0){
             return new ResponseMessage(Code.CODE_ERROR,"批量删除失败！",i);
         }

@@ -67,7 +67,7 @@
     </where>
   </select>
   <select id="queryProjectCommunicationInfo" resultMap="BaseResultMap">
-    select
+    select * from project_communication where
     <if test="projectId != null">
       project_id  like concat('%',#{projectId},'%') and
     </if>
@@ -75,7 +75,7 @@
       sponsor like concat('%',#{sponsor},'%') and
     </if>
     <if test="phase != null">
-      phase like concat('%',#{phase},'%') and
+      phase = #{phase} and
     </if>
     <if test="priority != null">
       priority like concat('%',#{priority},'%') and
@@ -83,7 +83,6 @@
     <if test="classification != null">
       classification like concat('%',#{classification},'%')
     </if>
-    from project_communication
     order by create_time DESC   LIMIT  #{pageNo},#{pageSize}
   </select>
   <select id="projectCommunicationCounts"  resultType="Integer">
@@ -96,7 +95,7 @@
       sponsor like concat('%',#{sponsor},'%') and
     </if>
     <if test="phase != null">
-      phase like concat('%',#{phase},'%') and
+      phase = #{phase} and
     </if>
     <if test="priority != null">
       priority like concat('%',#{priority},'%') and
@@ -411,25 +410,6 @@
   </insert>
 
 
-
-
-  <insert id="insertDeleteTime" parameterType="list">
-    insert into project_communication
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="deleteTime != null">
-        delete_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="deleteTime != null">
-        #{deleteTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-    where id in
-    <foreach collection="id" index="index" item="id" open="(" close=")" separator=",">
-      #{id}
-    </foreach>
-  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.ProjectCommunication">
     update project_communication
     <set>
@@ -499,6 +479,17 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+
+  <update id="updateDeleteTime" parameterType="com.portjs.base.entity.ProjectCommunication">
+    update project_communication
+    set delete_time = SYSDATE()
+    where id in
+    <foreach collection="id" index="index" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.ProjectCommunication">
     update project_communication
     set project_id = #{projectId,jdbcType=VARCHAR},

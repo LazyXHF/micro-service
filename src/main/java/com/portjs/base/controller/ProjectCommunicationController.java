@@ -44,12 +44,12 @@ public class ProjectCommunicationController extends BaseController{
      * @param
      * @return
      */
-    @RequestMapping("insert-project-communication-delete-time")
+    @RequestMapping("update-project-communication-delete-time")
     @LogInfo(methodName = "根据id删除项目问题信息")
-    public ResponseMessage insertDeleteTime(@RequestBody ArrayVO arrayVO) {
+    public ResponseMessage updateDeleteTime(@RequestBody ArrayVO arrayVO) {
         logger.debug(TAG+arrayVO);
         UnifiedExceptionHandler.method = TAG + "insertDeleteTime============================" +arrayVO;
-        responseMessage = projectCommunicationService.insertDeleteTime(arrayVO.getList());
+        responseMessage = projectCommunicationService.updateDeleteTime(arrayVO.getList());
         return responseMessage;
     }
 

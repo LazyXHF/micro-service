@@ -6,6 +6,7 @@ import com.portjs.base.util.ResponseMessage;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -40,12 +41,12 @@ public interface ProjectCommunicationMapper {
      * @param priority
      * @param sponsor
      * @param phase
-     * @param rowNum
-     * @param pageCount
+     * @param pageNo
+     * @param pageSize
      * @return
      */
     List<InternalPersionResource> queryProjectCommunicationInfo(@Param("projectId")String projectId,@Param("classification")String classification ,@Param("priority")String priority,
-                                                                @Param("sponsor") String sponsor,@Param("phase") String phase,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
+                                                                @Param("sponsor") String sponsor,@Param("phase") String phase,@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
 
 
     /**
@@ -53,7 +54,7 @@ public interface ProjectCommunicationMapper {
      * @param ids
      * @return
      */
-    int insertDeleteTime(@Param("id") List<String> ids);
+    int updateDeleteTime(@Param("id")List<String> ids);
 
     /**
      * 添加
