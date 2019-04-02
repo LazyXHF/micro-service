@@ -36,7 +36,36 @@
     from project_communication
     where id = #{id,jdbcType=VARCHAR}
   </select>
-
+  <select id="queryProjectCommunicatisCount" resultType="Integer">
+    select count(id)
+    from project_communication
+    <where>
+      1=1
+      <if test="projectId != null">
+        AND project_id= #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="phase != null">
+        AND phase =#{phase,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="queryProjectCommunicatisByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from project_communication
+    <where>
+      1=1
+      <if test="projectId != null">
+        AND project_id= #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="phase != null">
+        AND phase =#{phase,jdbcType=VARCHAR}
+      </if>
+      <if test="params != null">
+        order by create_time asc limit #{params.pageNo},#{params.pageSize}
+      </if>
+    </where>
+  </select>
   <select id="queryProjectCommunicationInfo" resultMap="BaseResultMap">
     select
     <if test="projectId != null">

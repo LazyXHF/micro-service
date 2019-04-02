@@ -36,6 +36,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private ProjectMembersMapper projectMembersMapper;
 	@Autowired
 	private InternalAttachmentMapper internalAttachmentMapper;
+	@Autowired
+	private  ProjectCommunicationMapper projectCommunicationMapper;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -464,7 +466,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
 					page.init(totalCount,Integer.valueOf(pageNo),Integer.valueOf(pageSize));
 					List<ProjectMembers> list = projectMembersMapper.selectByPage(page.getRowNum(), page.getPageCount(),id);
-					mapData.put("Persons",list);
+					page.setList(list);
+					mapData.put("Persons",page);
 					//附件
 					InternalAttachmentExample example = new InternalAttachmentExample();
 					InternalAttachmentExample.Criteria criteria2 = example.createCriteria();
@@ -490,7 +493,21 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			//沟通记录
 			if("a".equals(node)){
 				String schedule =jsonObj.getString("schedule");
+				ProjectCommunication projectCommunication = new ProjectCommunication();
+				projectCommunication.setProjectId(projectId);
+				projectCommunication.setPhase(schedule);
 
+				Page page=new Page();
+				int totalCount = projectCommunicationMapper.queryProjectCommunicatisCount(projectCommunication);
+				page.init(totalCount,Integer.valueOf(pageNo),Integer.valueOf(pageSize));
+				Map<String,Object> map = new HashMap<String, Object>();
+				map.put("pageNo",page.getRowNum());
+				map.put("pageSize",page.getPageCount());
+				projectCommunication.setParams(map);
+
+				List<ProjectCommunication> dataList = projectCommunicationMapper.queryProjectCommunicatisByPage(projectCommunication);
+				page.setList(dataList);
+				return  new ResponseMessage(Code.CODE_OK, "查询成功",page);
 			}
 		}else{
 			return new ResponseMessage(Code.CODE_ERROR, "不存在此种状态");
