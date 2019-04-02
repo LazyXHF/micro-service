@@ -58,4 +58,11 @@ public interface ProjectPreservationService {
      * @return
      */
     List selectAll();
+
+    /**
+     *总经办查询
+     * @param
+     * @return
+     */
+    ResponseMessage selectUser();
 }

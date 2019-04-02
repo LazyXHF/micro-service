@@ -50,7 +50,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     @Autowired
     private InvestmentPlanMapper planMapper;
     @Autowired
-    private ProjectMapper projectMapper;
+    private ProjectAddorUpdateUtil updateUtil;
+    @Autowired
+    private TRoleMapper roleMapper;
+    @Autowired
+    private TUserMapper userMapper;
+    @Autowired
+    private TUserRoleMapper userRoleMapper;
+
 
     //返参信息
     public final static String PARAM_MESSAGE_1 = "未传";
@@ -196,7 +203,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             tWorkflowstep.setPrestepId(workflowstep.getId());
             tWorkflowstep.setStepDesc("部门负责人审核");
             tWorkflowstep.setActionuserId(nextViewJSON.getString(i));
-            tWorkflowstep.setActionTime(new Date());
+           // tWorkflowstep.setActionTime(new Date());
             tWorkflowstep.setStatus("0");
             tWorkflowstep.setBackup3("2");
 
@@ -229,8 +236,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             if(i5!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"提交失败");
             }
+
+            String id = String.valueOf(IDUtils.genItemId());
+
+            updateUtil.projectMethod(id,null,application.getProjectName(),
+                    application.getProjectType(),"A",userId,application.getOrganization()
+                    ,application.getApplicationAmount().toString(),"Ab2",application.getInvestor());
             return new ResponseMessage(Code.CODE_OK,"提交成功");
         }
+
         return new ResponseMessage(Code.CODE_OK,"操作成功");
     }
 
@@ -250,6 +264,10 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             String user_id  = jsonObject.getString("user_id");//当前登录人id
             String user_name  = jsonObject.getString("user_name");//当前登录人姓名
             String action  = jsonObject.getString("action_commont");//处理意见
+            String todoId =  jsonObject.getString("todoId");//当前步骤待办id
+            String fistId =  jsonObject.getString("fistId");//项目负责人id
+
+
 
             //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
             TWorkflowstepExample example = new TWorkflowstepExample();
@@ -258,6 +276,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             criteria.andStatusEqualTo("0");
             List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(example);
             if(tWorkflowsteps.size()==1){
+                    //修改当前待办表
+                    TTodo tTodo = new TTodo();
+                    tTodo.setId(todoId);
+                    tTodo.setStatus("1");
+                    int i = todoMapper.updateByPrimaryKeySelective(tTodo);
+                    if(i!=1){
+                        return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+                    }
                     //如果当前审核人员只有一个的话则生成待办
                     TTodo todo = new TTodo();
                     todo.setId(String.valueOf(IDUtils.genItemId()));
@@ -268,8 +294,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     todo.setSenderId(user_id);
                     todo.setSenderTime(new Date());
                     todo.setBackUp7(user_name);//发起人
-                    ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);
-                    todo.setReceiverId(application.getCreater());
+                    /*ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);*/
+                    todo.setReceiverId(fistId);
                     //查询代办类型
                     TXietongDictionaryExample example1 = new TXietongDictionaryExample();
                     TXietongDictionaryExample.Criteria criteria1 = example1.createCriteria();
@@ -304,8 +330,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             if(i==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }
-          /*  //新增一条退回流程
-            TWorkflowstep tWorkflowstep = new TWorkflowstep();
+            //新增一条退回流程
+            /*TWorkflowstep tWorkflowstep = new TWorkflowstep();
             tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));
             tWorkflowstep.setRelateddomain("项目立项");
             tWorkflowstep.setRelateddomainId(application_id);
@@ -488,7 +514,10 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) {
 
         for (InvestmentPlan plan : list) {
-            Project project = new Project();
+            String id = String.valueOf(IDUtils.genItemId());
+
+
+            /*Project project = new Project();
             project.setId(String.valueOf(IDUtils.genItemId()));
             project.setProjectName(plan.getProjectName());
             project.setCreator(loginId);
@@ -498,15 +527,17 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             int i1 = projectMapper.insertSelective(project);
             if(i1!=1){
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
-            }
+            }*/
 
             plan.setId(String.valueOf(IDUtils.genItemId()));
             plan.setCreateTime(new Date());
-            plan.setProjectId(project.getId());
+            plan.setProjectId(id);
             int i = planMapper.insertSelective(plan);
             if(i!=1){
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
             }
+            updateUtil.projectMethod(id,null,plan.getProjectName(),
+                    plan.getProjectType(),"A",loginId,plan.getOrganization(),plan.getAmount().toString(),"Aa1",plan.getInvestor());
         }
         return new ResponseMessage(Code.CODE_OK, "导入成功");
     }
@@ -521,6 +552,34 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         List<InvestmentPlan> list = planMapper.selectByExample(example);
 
         return list;
+    }
+
+    /**
+     *总经办查询
+     * @param
+     * @return
+     */
+    @Override
+    public ResponseMessage selectUser() {
+        TRoleExample example = new TRoleExample();
+        TRoleExample.Criteria criteria = example.createCriteria();
+        criteria.andRoleNameEqualTo("总经办汇总人员角色（请勿删除）");
+        List<TRole> roles = roleMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(roles)){
+            return new ResponseMessage(Code.CODE_ERROR, "查询失败");
+        }
+        TUserRoleExample example1 = new TUserRoleExample();
+        TUserRoleExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andRoleIdEqualTo(roles.get(0).getId());
+        List<TUserRole> tUserRoles = userRoleMapper.selectByExample(example1);
+        if(CollectionUtils.isEmpty(tUserRoles)){
+            return new ResponseMessage(Code.CODE_ERROR, "查询失败");
+        }
+        TUser tUser = userMapper.selectByPrimaryKey(tUserRoles.get(0).getUserId());
+        if(tUser==null){
+            return new ResponseMessage(Code.CODE_ERROR, "查询失败");
+        }
+        return new ResponseMessage(Code.CODE_OK, "查询成功",tUser);
     }
 
     // 根据不同类型的文件 创建不同的处理对象

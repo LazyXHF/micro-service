@@ -61,4 +61,18 @@ public interface ProjectCommunicationMapper {
      * @return
      */
     int insertProjectCommunicationSelective(ProjectCommunication record);
+
+    /**
+     * 查询总数
+     * @param record
+     * @return
+     */
+    int  queryProjectCommunicatisCount(ProjectCommunication record);
+
+    /**
+     * 分页查询
+     * @param record
+     * @return
+     */
+    List<ProjectCommunication> queryProjectCommunicatisByPage(ProjectCommunication record);
 }

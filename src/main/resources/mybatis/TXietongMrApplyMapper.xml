@@ -458,7 +458,7 @@ and a.id=r.apply_id and r.owner_id =#{owner_id} and d.TYPE_CODE='37'
 </select>
 <!--会议室预定详情-->
 <select id="selectMrApplyByApplyId" resultMap="BaseResultMap">
-select * from t_xietong_mr_apply where isdelete!=0 and apply_id=#{apply_id} order by createtime desc
+select * from t_xietong_mr_apply where isdelete!=0 and apply_id=#{apply_id} order by  status desc, createtime desc
 </select>
 <!--修改会议室状态-->
 <update id="updateMrApplyStatus" parameterType="com.portjs.base.entity.TXietongMrApply">
@@ -510,4 +510,9 @@ select * from t_xietong_mr_apply where isdelete!=0 and apply_id=#{apply_id} orde
 <select id="selectMrApplyById" resultMap="BaseResultMap">
 select * from t_xietong_mr_apply where id =#{id} and isdelete!=0
 </select>
+
+  <select id="selectMrApplyByPage" resultMap="BaseResultMap">
+    select * from t_xietong_mr_apply where isdelete!=0 and apply_id=#{apply_id} order by  status desc, createtime desc
+    limit #{rowNum},#{pageCount}
+  </select>
 </mapper>

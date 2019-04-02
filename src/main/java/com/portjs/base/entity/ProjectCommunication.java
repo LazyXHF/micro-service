@@ -1,9 +1,11 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class ProjectCommunication implements Serializable {
+public class ProjectCommunication extends BaseEntity {
     private String id;
 
     private String projectId;//所属项目id

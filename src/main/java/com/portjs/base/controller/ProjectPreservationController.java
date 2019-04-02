@@ -149,4 +149,24 @@ public class ProjectPreservationController  extends BaseController {
         }
     }
 
+    /**
+     *总经办查询
+     * @param
+     * @return
+     */
+    @LogInfo(methodName = "总经办查询")
+    @RequestMapping("select-user")
+    @ResponseBody
+    public ResponseMessage selectUser () {
+        try {
+            logger.error(TAG + "select-user()begin....." );
+            return projectPreservationService.selectUser();
+        } catch (Exception e) {
+            logger.error(TAG + "select-user()error.....", e);
+            throw new RuntimeException();
+        }
+    }
+
+
+
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectApplicationService;
+import com.portjs.base.util.ProjectAddorUpdateUtil;
 import com.portjs.base.util.ResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,6 +124,25 @@ public class ProjectApplicationController extends BaseController {
         logger.debug(TAG+"updateProject() begin");
        JSONObject requestJson=JSONObject.parseObject(responseBody);
        return  applicationService.updateProject(requestJson);
+    }
+    @Autowired
+    ProjectAddorUpdateUtil projectAddorUpdateUtil;
+    @LogInfo(methodName = "测试添加项目",modelName = "立项管理")
+    @RequestMapping("addProject")
+    @ResponseBody
+    public void addProject(@RequestBody String responseBody){
+        logger.debug(TAG+"updateProject() begin");
+        JSONObject requestJson=JSONObject.parseObject(responseBody);
+         String projectId=requestJson.getString("projectId");
+         String projectCode=requestJson.getString("projectCode");
+         String projectName=requestJson.getString("projectName");
+         String projectType=requestJson.getString("projectType");
+         String schedule=requestJson.getString("schedule");
+         String creator=requestJson.getString("creator");
+         String organization=requestJson.getString("organization");
+         String projectMoney=requestJson.getString("projectMoney");
+         String projectStatus=requestJson.getString("projectStatus");
+         projectAddorUpdateUtil.projectMethod(projectId,projectCode,projectName,projectType,schedule,creator,organization,projectMoney,projectStatus);
     }
 
 
