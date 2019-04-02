@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -126,6 +127,6 @@ public interface BugDetailsMapper {
 
 
     //修改主表状态
-    @Update("UPDATE  t_mgt_bug SET result=#{result} WHERE id = #{id}")
-    int updateStatusById(@Param("result") String result,@Param("id")String id);
+    @Update("UPDATE  t_mgt_bug SET result=#{result} and mendTime = #{endTime} WHERE id = #{id}")
+    int updateStatusById(@Param("result") String result,@Param("id")String id,@Param("endTime")Date endTime);
 }

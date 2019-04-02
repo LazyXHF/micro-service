@@ -6,7 +6,7 @@ import java.util.Date;
 public class ProjectCommunication implements Serializable {
     private String id;
 
-    private String projectId;//所属项目
+    private String projectId;//所属项目id
 
     private String sponsor;//发起人
 

@@ -1,11 +1,9 @@
 package com.portjs.base.controller;
 
 import com.portjs.base.aop.LogInfo;
-import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectCommunicationService;
-import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +74,10 @@ public class ProjectCommunicationController extends BaseController{
      */
     @RequestMapping("insert-project-communication")
     @LogInfo(methodName = "新建项目问题信息")
-    public ResponseMessage insertSelective(@RequestBody ProjectCommunication record) {
+    public ResponseMessage insertProjectCommunicationSelective(@RequestBody ProjectCommunication record) {
         logger.debug(TAG+record);
         UnifiedExceptionHandler.method = TAG + "insertSelective============================" +record;
-        responseMessage = projectCommunicationService.insertSelective(record);
+        responseMessage = projectCommunicationService.insertProjectCommunicationSelective(record);
         return responseMessage;
     }
 }

@@ -36,7 +36,7 @@ public interface TWorkflowstepMapper {
 
     int updateByPrimaryKey(TWorkflowstep record);
 
-    List<String> isApproveingId(@Param("id") String id);
+    Integer isApproveingId(@Param("id") String id,@Param("ownerId") String ownerId);
 
     List<TWorkflowstep> queryProjectRecords(@Param("id") String id);
 

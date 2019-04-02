@@ -19,6 +19,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -91,8 +92,6 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         String testID = "d3bcbe76-604e-4d89-93e6-e19438daad96";
         //bugId
         String bugId = record.getBugId();
-
-
         //如果有指派人
         if (!StringUtils.isEmpty(record.getOwnerId())){
             //经理用户
@@ -111,15 +110,11 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
                 return  new ResponseMessage(Code.CODE_ERROR,"该测试角色下无用户");
             }
             //result  1  开发   2 经理   3 测试
-
-
-
-
             //判断指派人是否是开发人员
             for (int j=0;j<developerUsers.size();j++){
                 String developerIds = developerUsers.get(j).getId();
                 if (developerIds.equals(ownerId)){
-                    detailsMapper.updateStatusById("1",bugId);
+//                    detailsMapper.updateStatusById("1",bugId);
                 }
             }
 
@@ -127,20 +122,20 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             for (int i=0;i<managerUsers.size();i++){
                 String managerIds = managerUsers.get(i).getId();
                 if (managerIds.equals(ownerId)){
-                    detailsMapper.updateStatusById("2",bugId);
+//                    detailsMapper.updateStatusById("2",bugId);
                 }
             }
             //判断指派人是否是测试人员
             for (int i=0;i<testUsers.size();i++){
                 String testIds = testUsers.get(i).getId();
                 if (testIds.equals(ownerId)){
-                    detailsMapper.updateStatusById("3",bugId);
+//                    detailsMapper.updateStatusById("3",bugId);
                 }
             }
 
         }else {
             //结束此单
-            detailsMapper.updateStatusById("4",bugId);
+//            detailsMapper.updateStatusById("4",bugId);
             bugDetailsRecordMapper.updateStatusByOwnerIDAndBugId("0",record.getId());
         }
           int i = bugDetailsRecordMapper.insertSelective(record);
@@ -303,7 +298,62 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord.setIsAgree(isAgree);
 //            bugDetailsRecord.setBackup1(backup1);
 //            bugDetailsRecord.setBackup2(backup2);
-            bugDetailsRecord.setBackup5(backup5);//身份标识 获取指派人
+
+            //指派人id
+            //String ownerId = ownerId;
+            //经理角色id
+            String managerId = "c2582665-3730-4b4b-896c-e50242e9471b";
+            //开发人员角色
+            String developerId = "565ecec0-6ed3-4f44-bd8d-faa6fe6c744e";
+            //测试人员角色
+            String testID = "d3bcbe76-604e-4d89-93e6-e19438daad96";
+            //bugId
+           /// String bugId = bugId;
+            //如果有指派人
+            if (!StringUtils.isEmpty(ownerId)) {
+                //经理用户
+                List<TUser> managerUsers = tUserMapper.selectUserByRoleId(managerId);
+                if (CollectionUtils.isEmpty(managerUsers)) {
+                    return new ResponseMessage(Code.CODE_ERROR, "该经理角色下无用户");
+                }
+                //开发人员用户
+                List<TUser> developerUsers = tUserMapper.selectUserByRoleId(developerId);
+                if (CollectionUtils.isEmpty(developerUsers)) {
+                    return new ResponseMessage(Code.CODE_ERROR, "该开发角色下无用户");
+                }
+                //测试人员角色
+                List<TUser> testUsers = tUserMapper.selectUserByRoleId(testID);
+                if (CollectionUtils.isEmpty(testUsers)) {
+                    return new ResponseMessage(Code.CODE_ERROR, "该测试角色下无用户");
+                }
+                //result  1  开发   2 经理   3 测试
+                //判断指派人是否是开发人员
+                for (int h = 0; h < developerUsers.size(); h++) {
+                    String developerIds = developerUsers.get(h).getId();
+                    if (developerIds.equals(ownerId)) {
+                        bugDetailsRecord.setBackup5("开发");//身份标识 获取指派人
+                    }
+                }
+
+                //判断指派人是否是经理
+                for (int h = 0; h < managerUsers.size(); h++) {
+                    String managerIds = managerUsers.get(h).getId();
+                    if (managerIds.equals(ownerId)) {
+                        bugDetailsRecord.setBackup5("经理");//身份标识 获取指派人
+                    }
+                }
+                //判断指派人是否是测试人员
+                for (int h = 0; h < testUsers.size(); h++) {
+                    String testIds = testUsers.get(h).getId();
+                    if (testIds.equals(ownerId)) {
+                        bugDetailsRecord.setBackup5("测试");//身份标识 获取指派人
+                    }
+                }
+
+
+            }
+
+
             //插入一条新的流转数据到record表里
             i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
 
@@ -311,17 +361,17 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
 
 
             //改变自身的流转意见
-            BugDetailsRecord bugDetailsRecord1= new BugDetailsRecord();
-            bugDetailsRecord1.setBugId(bugId);
-            bugDetailsRecord1.setStatus(1);
-            bugDetailsRecord1.setOwnerId(loginAccount);//当前登录人 指派人传值
-            bugDetailsRecord1.setRemark(remark);
-            bugDetailsRecord1.setFileUrl(fileUrl);
-            bugDetailsRecord1.setBackup1(backup1);//解决结果
-            bugDetailsRecord1.setBackup2(backup2);//解决方法
+            BugDetailsRecord bugDetailsRecord2= new BugDetailsRecord();
+            bugDetailsRecord2.setBugId(bugId);
+            bugDetailsRecord2.setStatus(1);
+            bugDetailsRecord2.setOwnerId(loginAccount);//当前登录人 指派人传值
+            bugDetailsRecord2.setRemark(remark);
+            bugDetailsRecord2.setFileUrl(fileUrl);
+            bugDetailsRecord2.setBackup1(backup1);//解决结果
+            bugDetailsRecord2.setBackup2(backup2);//解决方法
 //            bugDetailsRecord1.setIsAgree(isAgree);
-            bugDetailsRecord1.setBackup6(backup6);//文件名称
-            bugDetailsRecordMapper.updateBugRecordInfoss(bugDetailsRecord1);
+            bugDetailsRecord2.setBackup6(backup6);//文件名称
+            bugDetailsRecordMapper.updateBugRecordInfoss(bugDetailsRecord2);
             //1.改变属于我得record记录状态
            /* bugDetailsRecordMapper.updateRecordStatus("1",loginAccount,bugId);
 
@@ -344,7 +394,16 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
 */
             //改变主表状态
-            bugDetailsMapper.updateStatusById("1",bugId);
+            Date date = new Date();//获得系统时间.
+            SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+            String nowTime = sdf.format(date);
+            Date time = null;
+            try {
+                time = sdf.parse(nowTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            bugDetailsMapper.updateStatusById("1",bugId,time);
         }
 
 
