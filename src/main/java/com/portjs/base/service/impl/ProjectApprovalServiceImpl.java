@@ -16,10 +16,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ProjectApprovalServiceImpl implements ProjectApprovalService {
@@ -33,10 +30,17 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private  TUserMapper tUserMapper;
 	@Autowired
 	private TXietongDictionaryMapper dictionaryMapper;
+	@Autowired
+	private InvestmentPlanMapper planMapper;
+	@Autowired
+	private ProjectMembersMapper projectMembersMapper;
+	@Autowired
+	private InternalAttachmentMapper internalAttachmentMapper;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
 	public final static String PARAM_MESSAGE_2 = "已存在";
+	public final static String PARAM_MESSAGE_3 = "不规范";
 
 
 	//项目立项阶段的审批流程添加
@@ -390,6 +394,106 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				break;
 			default:
 				return new ResponseMessage(Code.CODE_ERROR, "不存在此模块");
+		}
+		return null;
+	}
+
+	/**
+	 * 查询项目具体信息
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public ResponseMessage queryProjectDetials(String requestBody) throws Exception {
+		JSONObject jsonObj=JSONObject.parseObject(requestBody);
+		String projectId = jsonObj.getString("projectId");//项目id
+		String stage = jsonObj.getString("stage");//项目阶段
+		String node=jsonObj.getString("node");//阶段下的节点
+		String pageSize= jsonObj.getString("pageSize");
+		String pageNo =jsonObj.getString("pageNo");
+		//空值判断
+		if(StringUtils.isEmpty(projectId)){
+			return new ResponseMessage(Code.CODE_ERROR, "projectId"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(stage)){
+			return new ResponseMessage(Code.CODE_ERROR, "stage"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(node)){
+			return new ResponseMessage(Code.CODE_ERROR, "node"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(pageSize)){
+			return new ResponseMessage(Code.CODE_ERROR, "pageSize"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(pageNo)){
+			return new ResponseMessage(Code.CODE_ERROR, "pageNo"+PARAM_MESSAGE_1);
+		}
+		//规则校验
+		if(!ValidateUtils.CapitalizeEnglish(stage)){
+			return new ResponseMessage(Code.CODE_ERROR, "stage"+PARAM_MESSAGE_3);
+		}
+		if(!ValidateUtils.LowercaseEnglish(node)){
+			return new ResponseMessage(Code.CODE_ERROR, "stage"+PARAM_MESSAGE_3);
+		}
+		//A:立项阶段 B:工程准备阶段 C:设计阶段 D:建设阶段 E:验收阶段 F:收尾阶段 G:沟通记录
+		if(stage.equals("A")){
+			//a：投资计划 b:立项批复 c:项目交底
+			if("a".equals(node)){
+				InvestmentPlanExample planExample = new InvestmentPlanExample();
+				InvestmentPlanExample.Criteria criteria = planExample.createCriteria();
+				criteria.andProjectIdEqualTo(projectId);
+				List <InvestmentPlan> data = planMapper.selectByExample(planExample);
+				if(!CollectionUtils.isEmpty(data)){
+					return  new ResponseMessage(Code.CODE_OK, "查询成功",data.get(0));
+				}
+				return  new ResponseMessage(Code.CODE_OK, "查询成功",data);
+			}else if("b".equals(node)){
+				ProjectApplicationExample projectApplicationExample = new ProjectApplicationExample();
+				ProjectApplicationExample.Criteria criteria = projectApplicationExample.createCriteria();
+				criteria.andProjectIdEqualTo(projectId);
+				List <ProjectApplication> data = projectApplicationMapper.selectByExample(projectApplicationExample);
+
+				Map<String,Object> mapData = null;
+				if(!CollectionUtils.isEmpty(data)){
+					mapData = new HashMap<String,Object>();
+					//立项id
+					String id = data.get(0).getId();
+					mapData.put("Application",data.get(0));
+					//人员
+					Page page=new Page();
+					int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
+					page.init(totalCount,Integer.valueOf(pageNo),Integer.valueOf(pageSize));
+					List<ProjectMembers> list = projectMembersMapper.selectByPage(page.getRowNum(), page.getPageCount(),id);
+					mapData.put("Persons",list);
+					//附件
+					InternalAttachmentExample example = new InternalAttachmentExample();
+					InternalAttachmentExample.Criteria criteria2 = example.createCriteria();
+					criteria2.andRelateddomainIdEqualTo(id);
+					List<InternalAttachment> files = internalAttachmentMapper.selectByExample(example);
+					mapData.put("Files",files);
+				}
+				return  new ResponseMessage(Code.CODE_OK, "查询成功",mapData);
+			}else{
+				return new ResponseMessage(Code.CODE_ERROR, "不存在此种状态");
+			}
+		}else if(stage.equals("B")){
+			return null;
+		}else if(stage.equals("C")){
+			return null;
+		}else if(stage.equals("D")){
+			return null;
+		}else if(stage.equals("E")){
+			return null;
+		}else if(stage.equals("F")){
+			return null;
+		}else if(stage.equals("G")){
+			//沟通记录
+			if("a".equals(node)){
+				String schedule =jsonObj.getString("schedule");
+
+			}
+		}else{
+			return new ResponseMessage(Code.CODE_ERROR, "不存在此种状态");
 		}
 		return null;
 	}

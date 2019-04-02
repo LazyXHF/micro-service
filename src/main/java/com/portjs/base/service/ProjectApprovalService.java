@@ -36,4 +36,12 @@ public interface ProjectApprovalService {
 	 * @throws Exception
 	 */
 	ResponseMessage todoGo(String requestBody)throws Exception;
+
+	/**
+	 *
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
+	ResponseMessage queryProjectDetials(String requestBody)throws Exception;
 }
