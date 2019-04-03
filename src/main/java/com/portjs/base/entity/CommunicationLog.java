@@ -6,7 +6,7 @@ import java.util.Date;
 public class CommunicationLog implements Serializable {
     private String id;//留言
 
-    private String communicationId;//沟通问题id
+    private String communicationId;//沟通问题
 
     private String discussant;//回复人
 

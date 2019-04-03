@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -20,9 +21,21 @@ public class ProjectAddorUpdateUtil {
     private ProjectMapper projectMapper;
     public  void projectMethod(String projectId, String projectCode, String projectName, String projectType, String schedule,
                                String creator, String organization, String projectMoney, String projectStatus,String investor)throws Exception{
-
             Project project = new Project();
             project.setId(projectId);
+     /*   if (projectCode.length()!=0) {
+            supplies.setEncode(encode);
+        } else {
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH) + 1;
+            int day = cal.get(Calendar.DATE);//获取日
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            int minute = cal.get(Calendar.MINUTE);
+            int second = cal.get(Calendar.SECOND);
+            String time2 = year + "" + month + day + hour + minute + second;
+            supplies.setEncode(time2);
+        }*/
             project.setProjectCode(projectCode);
             project.setProjectName(projectName);
             project.setProjectType(projectType);
