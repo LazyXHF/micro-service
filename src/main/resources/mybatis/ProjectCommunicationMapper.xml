@@ -113,7 +113,7 @@
       </if>
       <if test="priority != null and priority!=''">
           and priority like concat('%',#{priority},'%')
-      </if>
+      </if>``
       <if test="classification != null and classification!=''">
           and classification like concat('%',#{classification},'%')
       </if>
