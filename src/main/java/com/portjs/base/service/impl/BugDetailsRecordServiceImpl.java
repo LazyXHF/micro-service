@@ -138,9 +138,9 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
 //            detailsMapper.updateStatusById("4",bugId);
             bugDetailsRecordMapper.updateStatusByOwnerIDAndBugId("0",record.getId());
         }
-          int i = bugDetailsRecordMapper.insertSelective(record);
+            int i = bugDetailsRecordMapper.insertSelective(record);
             if(i==0){
-            return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
+                return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
             }
         return  new ResponseMessage(Code.CODE_OK,"添加成功！",i);
     }

@@ -1,7 +1,12 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.portjs.base.dao.BusinessConfigurationMapper;
 import com.portjs.base.dao.ProjectCommunicationMapper;
+import com.portjs.base.dao.ProjectMapper;
+import com.portjs.base.entity.BusinessConfiguration;
 import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.service.ProjectCommunicationService;
@@ -9,14 +14,17 @@ import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.StringUtils;
+import com.portjs.base.vo.BugSearchDO;
+import com.portjs.base.vo.FlashProject;
+import com.portjs.base.vo.Project;
+import com.portjs.base.vo.ProjectSearchDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.PortUnreachableException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ProjectCommunicationServiceImpl implements ProjectCommunicationService {
@@ -25,6 +33,11 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
     @Autowired
     ProjectCommunicationMapper projectCommunicationMapper;
 
+    @Autowired
+    BusinessConfigurationMapper businessConfigurationMapper;
+
+    @Autowired
+    ProjectMapper projectMapper;
 
     @Override
     public ResponseMessage deleteByPrimaryKey(String id) {
@@ -61,6 +74,20 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
     }
 
     /**
+     * 根据id查询项目问题信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ResponseMessage queryProjectCommunicationById(String id) {
+        ProjectCommunication projectCommunication = projectCommunicationMapper.queryProjectCommunicationById(id);
+        if(projectCommunication==null){
+            return new ResponseMessage(Code.CODE_ERROR,"暂无数据",projectCommunication);
+        }
+        return new ResponseMessage(Code.CODE_OK,"查询成功!",projectCommunication);
+    }
+
+    /**
      * 项目问题沟通---分页并模糊查询问题信息
      * @param requestBody
      * @return
@@ -80,10 +107,10 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
             return new ResponseMessage(Code.CODE_ERROR,"查询时项目id未传!",projectId);
         }
 
-        Page<InternalPersionResource> page = new Page<>();
+        Page<ProjectCommunication> page = new Page<>();
         int totalCount = projectCommunicationMapper.projectCommunicationCounts(projectId,classification,priority,sponsor,phase);
         page.init(totalCount,pageNo,pageSize);
-        List<InternalPersionResource> list = projectCommunicationMapper.queryProjectCommunicationInfo(projectId,classification,priority,sponsor,phase,page.getRowNum(), page.getPageCount());
+        List<ProjectCommunication> list = projectCommunicationMapper.queryProjectCommunicationInfo(projectId,classification,priority,sponsor,phase,page.getRowNum(), page.getPageCount());
         page.setList(list);
 
         responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功！",page);
@@ -97,15 +124,26 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
      * @return
      */
     @Override
-    public ResponseMessage insertDeleteTime(List<String> ids) {
+    public ResponseMessage updateDeleteTime(List<String> ids) {
         ProjectCommunication projectCommunication = null;
-        int i = projectCommunicationMapper.insertDeleteTime(ids);
-        for (String id:ids) {
-           projectCommunication = projectCommunicationMapper.selectByPrimaryKey(id);
-           if(StringUtils.isEmpty(projectCommunication.getDeleteTime().toString())){
-               return new ResponseMessage(Code.CODE_ERROR,"删除失败","失败的项目问题id"+projectCommunication.getId()+" : "+projectCommunication.getDeleteTime());
+        Date date = new Date();//获得系统时间.
+        SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
+        String nowTime = sdf.format(date);
+        Date time = null;
+        try {
+            time = sdf.parse(nowTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (int j = 0 ;j < ids.size() ; j++) {
+            String id = ids.get(j);
+            projectCommunication = projectCommunicationMapper.selectByPrimaryKey(id);
+            if(!StringUtils.isEmpty(projectCommunication.getDeleteTime().toString())){
+               return new ResponseMessage(Code.CODE_ERROR,"删除失败","失败的项目问题id："+projectCommunication.getId()+" ： "+projectCommunication.getDeleteTime());
            }
         }
+        int i = projectCommunicationMapper.updateDeleteTime(ids);
+
         if(i == 0){
             return new ResponseMessage(Code.CODE_ERROR,"批量删除失败！",i);
         }
@@ -130,4 +168,26 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
         }
         return new ResponseMessage(Code.CODE_OK,"修改信息成功！",i);
     }
+
+    /**
+     * bug查询条件
+     * @return
+     */
+    @Override
+    public ResponseMessage queryProjectCommunicationSearch() {
+
+        ProjectSearchDO projectSearchDO = new ProjectSearchDO();
+
+        List<FlashProject> flashProjects = projectMapper.selectProjectAll();
+
+
+        projectSearchDO.setProjectList(flashProjects);
+       // projectSearchDO.setBusinessConfigurationList(businessConfigurations);
+        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",projectSearchDO);
+
+
+        return responseMessage;
+    }
+
+
 }
