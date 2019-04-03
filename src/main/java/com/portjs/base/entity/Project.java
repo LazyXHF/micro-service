@@ -17,6 +17,16 @@ public class Project {
 
     private String creator;
 
+    private String creatorName;
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
     private String modifier;
 
     private Date updateTime;
@@ -54,6 +64,8 @@ public class Project {
     private String projectStatus;
 
     private String investor;
+
+
 
     public String getInvestor() {
         return investor;

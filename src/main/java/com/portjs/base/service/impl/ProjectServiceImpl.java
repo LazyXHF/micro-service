@@ -2,29 +2,48 @@ package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.ProjectMapper;
+import com.portjs.base.dao.TUserMapper;
+import com.portjs.base.entity.Project;
 import com.portjs.base.service.ProjectService;
+import com.portjs.base.util.Code;
+import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2019/4/2.
  */
-/*
+
 @Service
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ProjectMapper projectMapper;
+    @Autowired
+    TUserMapper userMapper;
     @Override
     public ResponseMessage queryProjectAllInfo(JSONObject requestJson) {
         String projectCode=requestJson.getString("projectCode");
         String projectName=requestJson.getString("projectName");
         String organization=requestJson.getString("organization");
         String projectType=requestJson.getString("projectType");
-        String project=requestJson.getString("projectMapper");
         String creator=requestJson.getString("creator");
-        projectMapper.queryProjectAllInfo(projectCode,projectName,organization,projectType,)
-        return null;
+        String schedule=requestJson.getString("schedule");
+        String pageNum = requestJson.getString("pageNum");
+        String pageCount = requestJson.getString("pageCount");
+        Page<Project> page = new Page<>();
+        int totalcount=projectMapper.queryProjectAllInfoCount(projectCode,projectName,organization,projectType,creator,schedule);
+        page.init(totalcount, Integer.valueOf(pageNum), Integer.valueOf(pageCount));
+        List<Project> projectList=projectMapper.queryProjectAllInfo(projectCode,projectName,organization,projectType,creator,schedule,page.getRowNum(),page.getPageCount());
+        for(Project project:projectList){
+            String creatorId=project.getCreator();
+            String creatorName=userMapper.queryUserNameByUserId(creatorId);
+            project.setCreatorName(creatorName);
+        }
+        page.setList(projectList);
+        return   new ResponseMessage(Code.CODE_OK, "查询成功",page);
     }
 }
-*/
+
