@@ -11,6 +11,8 @@ import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -55,10 +57,25 @@ public class ProjectServiceImpl implements ProjectService {
         String[] nodeArray=project.getNode().split(",");
        /* List<String>  nodeList=new ArrayList<>(nodeArray.length);*/
         String[] projectStatusArray=project.getProjectStatus().split(",");
+        List<String>  greenList=new LinkedList<>();
+        List<String>  yellowList=new LinkedList<>();
+        List<String>  redList=new LinkedList<>();
+         for(String projectStatus :projectStatusArray) {
+             if (projectStatus.contains("1")) {
+                 greenList.add(projectStatus.substring(0, 2));
+             } else if (projectStatus.contains("2")) {
+                 yellowList.add(projectStatus.substring(0, 2));
+             } else if(projectStatus.contains("3")){
+                 redList.add(projectStatus.substring(0, 2));
+             }
+         }
         String[] allscheduleArray=project.getAllschedule().split(",");
         project.setNodeArray(nodeArray);
         project.setProjectStatusArray(projectStatusArray);
         project.setAllscheduleArray(allscheduleArray);
+        project.setGreenArray(greenList);
+        project.setRedArray(redList);
+        project.setYellowArray(yellowList);
         return   new ResponseMessage(Code.CODE_OK, "查询成功",project);
     }
 }
