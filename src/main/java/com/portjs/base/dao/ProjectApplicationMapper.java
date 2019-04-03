@@ -44,4 +44,7 @@ public interface ProjectApplicationMapper {
 
     int deleteProject(@Param("id") String id);
 
+    //查询对应年份的所有数据
+    List<ProjectApplication> selectapplicationByYear(@Param("niandu")String niandu);
+
 }

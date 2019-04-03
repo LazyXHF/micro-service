@@ -68,7 +68,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      * @return
      */
     @Override
-    public ResponseMessage insertStorage(String responseBody) {
+    public ResponseMessage insertStorage(String responseBody)throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(responseBody);
         String status = jsonObject.getString("Status");//0暂存7提交
         String userId = jsonObject.getString("UserId");//登录用户
@@ -78,12 +78,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
         JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
         String tTodoId = jsonObject.getString("tTodoId");
-        if (StringUtils.isEmpty(tTodoId)){
+        if (!StringUtils.isEmpty(tTodoId)){
             TTodo todo = new TTodo();
             todo.setId(tTodoId);
             todo.setStatus("1");
             todo.setActiontime(new Date());
-            todoMapper.updateByPrimaryKeySelective(todo);
+            int i = todoMapper.updateByPrimaryKeySelective(todo);
+            if(i!=1){
+                return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+            }
         }
 
 
@@ -339,6 +342,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             workflowstep.setStatus("1");
             workflowstep.setActionResult(1);
             workflowstep.setActionComment(action);
+            workflowstep.setActionTime(new Date());
             int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
             if(i==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
@@ -524,7 +528,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      * @return
      */
     @Override
-    public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) {
+    public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) throws Exception{
 
         for (InvestmentPlan plan : list) {
             String id = String.valueOf(IDUtils.genItemId());
@@ -550,7 +554,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
             }
             updateUtil.projectMethod(id,null,plan.getProjectName(),
-                    plan.getProjectType(),"A",loginId,plan.getOrganization(),plan.getAmount().toString(),"Aa1",plan.getInvestor());
+                    plan.getProjectType(),"A",loginId,plan.getOrganization(),
+                    plan.getAmount().toString(),"Aa1",plan.getInvestor());
         }
         return new ResponseMessage(Code.CODE_OK, "导入成功");
     }
