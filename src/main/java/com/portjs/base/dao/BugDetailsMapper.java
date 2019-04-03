@@ -125,6 +125,18 @@ public interface BugDetailsMapper {
     List<BugDetails> queryAllBugAndRecordInfo(@Param("id") String id);
 
 
+    /**
+     * 查询暂存
+     * @param ownerId
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    List<BugDetails> selectBugSearchDealtTemporary(@Param("ownerId")String ownerId, @Param("pageNo")Integer pageNo, @Param("pageSize")Integer pageSize);
+    int countBugSearchDealtTemporary(@Param("ownerId")String ownerId);
+
+
+
 
     //修改主表状态
     @Update("UPDATE t_mgt_bug SET result=#{result},end_time = #{endTime} WHERE id = #{id}")

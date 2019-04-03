@@ -498,14 +498,130 @@ public class BugDetailsServiceImpl implements BugDetailsService {
 
 
     /**
-     * 暂存bugs
+     * 暂存
      * @param record
      * @return
      */
     @Override
     public ResponseMessage temporaryBugs(BugDetails record) {
-        return null;
+
+        String uuid = UUID.randomUUID().toString();
+        record.setId(uuid);
+
+        int i = 0;
+        if (StringUtils.isEmpty(record.getProjectId())) {
+            return new ResponseMessage(Code.CODE_ERROR, "添加项目Bug信息,项目id未传");
+        }
+            //补充主表信息
+            record.setAcceptTime(new Date());
+            record.setBugCreateTime(new Date());
+            //result  0 未完成  1 已完成
+            record.setResult(0);
+            i = bugDetailsMapper.insertSelective(record);
+
+
+            //创建人的record
+            BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
+
+            bugDetailsRecord1.setCreaterId(record.getBackup7());
+            bugDetailsRecord1.setBackup7(record.getAccepter());
+
+            //属于人
+            bugDetailsRecord1.setOwnerId(record.getBackup7());
+            bugDetailsRecord1.setBackup8(record.getAccepter());
+
+            // Status  0 未完成   1已完成   2是暂存
+            bugDetailsRecord1.setStatus(2);
+
+            bugDetailsRecord1.setFileUrl(record.getFileUrl());
+            bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
+            bugDetailsRecord1.setId(UUID.randomUUID().toString());
+            bugDetailsRecord1.setBugId(uuid);
+            // accepter 提单人   创建者
+//            bugDetailsRecord.setOwnerId(record.getBackup3());
+//            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+            bugDetailsRecord1.setBackup5("null");//身份标识 获取指派人
+            bugDetailsRecordMapper.insert(bugDetailsRecord1);
+
+
+            if (i == 0) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加失败！", i);
+            }
+            return new ResponseMessage(Code.CODE_OK, "添加成功！", i);
+
+
     }
 
 
+    /**
+     * 查找暂存
+     * @param pageVo
+     * @return
+     */
+    @Override
+    public ResponseMessage selectBugSearchDealtTemporary(PageVo pageVo) {
+        Page<BugDetails> page = new Page<>();
+        String ownerId = pageVo.getObject();
+        int totalCount = bugDetailsMapper.countBugSearchDealtTemporary(ownerId);
+        page.init(totalCount,pageVo.getPageNo(),pageVo.getPageSize());
+        List<BugDetails> bugDetails = bugDetailsMapper.selectBugSearchDealtTemporary(ownerId,page.getRowNum(),page.getPageCount());
+        page.setList(bugDetails);
+        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",page);
+        return responseMessage;
+
+
+    }
+
+    /**
+     * 修改暂存
+     * @param record
+     * @return
+     */
+    @Override
+    public ResponseMessage updateTemporaryBugs(BugDetails record) {
+//        String uuid = UUID.randomUUID().toString();
+//        record.setId(uuid);
+
+        int i = 0;
+        if (StringUtils.isEmpty(record.getProjectId())) {
+            return new ResponseMessage(Code.CODE_ERROR, "添加项目Bug信息,项目id未传");
+        }
+        //补充主表信息
+        record.setAcceptTime(new Date());
+        record.setBugCreateTime(new Date());
+        //result  0 未完成  1 已完成
+        record.setResult(0);
+        i = bugDetailsMapper.updateByPrimaryKeySelective(record);
+
+
+        //创建人的record
+        BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
+
+        bugDetailsRecord1.setCreaterId(record.getBackup7());
+        bugDetailsRecord1.setBackup7(record.getAccepter());
+
+        //属于人
+        bugDetailsRecord1.setOwnerId(record.getBackup7());
+        bugDetailsRecord1.setBackup8(record.getAccepter());
+
+        // Status  0 未完成   1已完成   2是暂存
+        bugDetailsRecord1.setStatus(2);
+
+        bugDetailsRecord1.setFileUrl(record.getFileUrl());
+        bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
+        bugDetailsRecord1.setId(UUID.randomUUID().toString());
+//        bugDetailsRecord1.setBugId(uuid);
+        // accepter 提单人   创建者
+//            bugDetailsRecord.setOwnerId(record.getBackup3());
+//            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+        bugDetailsRecord1.setBackup5("null");//身份标识 获取指派人
+        bugDetailsRecordMapper.insert(bugDetailsRecord1);
+
+
+        if (i == 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "添加失败！", i);
+        }
+        return new ResponseMessage(Code.CODE_OK, "添加成功！", i);
+
+    }
 }
