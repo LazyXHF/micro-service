@@ -10,9 +10,7 @@ import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
@@ -20,6 +18,7 @@ import java.util.List;
  */
 
 @Service
+@Transactional
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ProjectMapper projectMapper;
