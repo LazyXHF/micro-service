@@ -41,6 +41,4 @@ public interface ProjectMapper {
     List<Project> queryProjectAllInfo(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("organization") String organization,@Param("projectType") String projectType,@Param("creator") String creator,@Param("schedule") String schedule,@Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
 
     int queryProjectAllInfoCount(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("organization") String organization,@Param("projectType") String projectType,@Param("creator") String creator,@Param("schedule") String schedule);
-
-    Project queryProjectDetails(@Param("id") String id,@Param("projectType") String projectType);
 }

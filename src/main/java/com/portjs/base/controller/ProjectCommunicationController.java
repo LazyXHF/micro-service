@@ -1,5 +1,6 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.exception.UnifiedExceptionHandler;
@@ -36,6 +37,22 @@ public class ProjectCommunicationController extends BaseController{
         logger.debug(TAG+requestBody);
         UnifiedExceptionHandler.method = TAG + "queryProjectCommunicationInfo()==================================>" + requestBody;
         responseMessage = projectCommunicationService.queryProjectCommunicationInfo(requestBody);
+        return responseMessage;
+    }
+
+    /**
+     * 根据id查询项目沟通信息
+     * @param id
+     * @return
+     */
+    @RequestMapping("select-project-communication-info")
+    @LogInfo(methodName = "查询项目沟通信息并分页且模糊查询")
+    public ResponseMessage selectByPrimaryKey(@RequestBody String id) {
+        logger.debug(TAG+id);
+        JSONObject jsonObject = JSONObject.parseObject(id);
+        String ids = jsonObject.getString("id");
+        UnifiedExceptionHandler.method = TAG + "selectByPrimaryKey()==================================>" + ids;
+        responseMessage = projectCommunicationService.queryProjectCommunicationById(ids);
         return responseMessage;
     }
 
@@ -78,6 +95,20 @@ public class ProjectCommunicationController extends BaseController{
         logger.debug(TAG+record);
         UnifiedExceptionHandler.method = TAG + "insertSelective============================" +record;
         responseMessage = projectCommunicationService.insertProjectCommunicationSelective(record);
+        return responseMessage;
+    }
+
+    /**
+     * 项目问题沟通查询条件
+     * @param
+     * @return
+     */
+    @RequestMapping("query-project-communication-search")
+    @LogInfo(methodName = "项目问题沟通查询条件")
+    public ResponseMessage queryProjectCommunicationSearch() {
+
+        UnifiedExceptionHandler.method=  "queryProjectCommunicationSearch==============================";
+        responseMessage = projectCommunicationService.queryProjectCommunicationSearch();
         return responseMessage;
     }
 }
