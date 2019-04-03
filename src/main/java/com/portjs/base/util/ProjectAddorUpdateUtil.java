@@ -19,8 +19,8 @@ public class ProjectAddorUpdateUtil {
     @Autowired
     private ProjectMapper projectMapper;
     public  void projectMethod(String projectId, String projectCode, String projectName, String projectType, String schedule,
-                               String creator, String organization, String projectMoney, String projectStatus,String investor){
-        try {
+                               String creator, String organization, String projectMoney, String projectStatus,String investor)throws Exception{
+
             Project project = new Project();
             project.setId(projectId);
             project.setProjectCode(projectCode);
@@ -30,11 +30,9 @@ public class ProjectAddorUpdateUtil {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
             Date time = null;
-            try {
+
                 time = sdf.parse(sdf.format(new Date()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
             project.setCreateTime(time);
             project.setCreator(creator);
             project.setOrganization(organization);
@@ -79,8 +77,6 @@ public class ProjectAddorUpdateUtil {
                     projectMapper.updateProjectById(projectId, schedule, newStatus);
                 }
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
     }
 }

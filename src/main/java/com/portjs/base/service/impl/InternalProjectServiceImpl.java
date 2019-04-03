@@ -3,10 +3,8 @@ package com.portjs.base.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.*;
-import com.portjs.base.entity.InternalPersionResource;
-import com.portjs.base.entity.InternalProject;
+import com.portjs.base.entity.*;
 import com.portjs.base.entity.InternalTodo;
-import com.portjs.base.entity.Life;
 import com.portjs.base.service.InternalProjectService;
 import com.portjs.base.service.LifeService;
 import com.portjs.base.util.Code;
@@ -19,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -40,6 +40,8 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     private InternalTodoMapper internalTodoMapper;
     @Autowired
     private InternalApprovalMapper approvalMapper;
+    @Autowired
+    private ProjectApplicationMapper applicationMapper;
     /**
      * 查询所有项目信息和相关人员信息
      * @return
@@ -415,12 +417,16 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     @Override
     public ResponseMessage selectAbuildingProject() {
         LinkedHashMap<String,Integer> map=new LinkedHashMap<String,Integer>();
-        //查询生命周期中的projectId
-        List<String>projectId=lifeMapper.selectProjectId();
         //查询在建项目的时间点
-
-        //查询在建项目的时间点
-        String minYear = internalProjectMapper.selectCreateTime(projectId);
+        ProjectApplicationExample example = new ProjectApplicationExample();
+        example.setOrderByClause("create_time");
+        List<ProjectApplication> applications = applicationMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(applications)){
+            return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String minYear = format.format(applications.get(0).getCreateTime());
+        /*String minYear = applicationMapper.selectCreateTime(projectId);*/
         Calendar cale = null;
         cale = Calendar.getInstance();
         int year = cale.get(Calendar.YEAR);
@@ -434,8 +440,11 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             if(map.containsKey(list.get(i))) {
                 continue;
             }
-            int count =internalProjectMapper.selectAbuildingProject(list.get(i).toString(),projectId);
-            map.put(list.get(i)+"年", count);
+            List<ProjectApplication> projectApplications = applicationMapper.selectapplicationByYear(list.get(i).toString());
+            if (CollectionUtils.isEmpty(projectApplications)){
+                return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
+            }
+            map.put(list.get(i)+"年", projectApplications.size());
         }
         return new ResponseMessage(Code.CODE_OK,"查询成功！",map);
     }
@@ -446,10 +455,16 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     @Override
     public ResponseMessage selectAbuildingProjectMoney() {
         LinkedHashMap map=new LinkedHashMap();
-        //查询生命周期中的projectId
-        List<String>projectId=lifeMapper.selectProjectId();
         //查询在建项目的时间点
-        String minYear = approvalMapper.selectCreateTime(projectId);
+        ProjectApplicationExample example = new ProjectApplicationExample();
+        example.setOrderByClause("create_time");
+        List<ProjectApplication> applications = applicationMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(applications)){
+            return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String minYear = format.format(applications.get(0).getCreateTime());
+        /*String minYear = applicationMapper.selectCreateTime(projectId);*/
         Calendar cale = null;
         cale = Calendar.getInstance();
         int year = cale.get(Calendar.YEAR);
@@ -463,8 +478,17 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             if(map.containsKey(list.get(i))) {
                 continue;
             }
-            double count =approvalMapper.selectAbuildingProject(list.get(i).toString(),projectId);
-            map.put(list.get(i)+"年", count);
+            List<ProjectApplication> projectApplications = applicationMapper.selectapplicationByYear(list.get(i).toString());
+            if (CollectionUtils.isEmpty(projectApplications)){
+                return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
+            }
+            BigDecimal decimal = new BigDecimal(0);
+            for (ProjectApplication projectApplication : projectApplications) {
+                /*money+=projectApplication.getApplicationAmount();*/
+                decimal = decimal.add(projectApplication.getApplicationAmount());
+            }
+
+            map.put(list.get(i)+"年", decimal);
         }
         return new ResponseMessage(Code.CODE_OK,"查询成功！",map);
     }

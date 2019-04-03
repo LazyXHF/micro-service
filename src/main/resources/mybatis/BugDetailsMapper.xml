@@ -705,5 +705,19 @@
   and br.owner_id = #{ownerId}
   </select>
 
+  <!--查询暂存-->
+  <select id="selectBugSearchDealtTemporary" resultMap="dealtWith">
+   SELECT DISTINCT b.* , br.`status` as rstatus from t_mgt_bug b
+   left join t_mgt_bug_record br on b.id = br.bug_id
+   where br.`status` = "2" and b.result="0" and b.id not in (select DISTINCT br.bug_id from t_mgt_bug_record br where  br.owner_id = #{ownerId} and (br.`status` = "0" or br.status = "1"))
+  and br.owner_id =#{ownerId} order by br.record_time  DESC LIMIT #{pageNo},#{pageSize}
+  </select>
+  <select id="countBugSearchDealtTemporary" resultType="int">
+    SELECT count(DISTINCT b.id) from t_mgt_bug b
+    left join t_mgt_bug_record br on b.id = br.bug_id
+    where br.`status` = "2" and b.result="0" and  b.id not in (SELECT DISTINCT br.bug_id from t_mgt_bug_record br where br.owner_id = #{ownerId} and (br.`status` = "0" or br.status = "1"))
+    and br.owner_id = #{ownerId}
+  </select>
+
 
 </mapper>

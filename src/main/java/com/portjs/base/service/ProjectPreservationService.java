@@ -51,7 +51,7 @@ public interface ProjectPreservationService {
      * @param list
      * @return
      */
-    ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId);
+    ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) throws Exception;
 
     /**
      * 查询所有项目

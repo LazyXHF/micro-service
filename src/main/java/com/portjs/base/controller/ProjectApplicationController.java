@@ -144,9 +144,10 @@ public class ProjectApplicationController extends BaseController {
         String projectStatus=requestJson.getString("projectStatus");
         //投资主体
         String investor=requestJson.getString("investor");
-        projectAddorUpdateUtil.projectMethod(projectId,projectCode,projectName,projectType,schedule,creator,organization,projectMoney,projectStatus,investor);
+        try {
+            projectAddorUpdateUtil.projectMethod(projectId,projectCode,projectName,projectType,schedule,creator,organization,projectMoney,projectStatus,investor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
-
 }
