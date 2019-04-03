@@ -1,6 +1,5 @@
 package com.portjs.base.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.exception.UnifiedExceptionHandler;
@@ -41,32 +40,16 @@ public class ProjectCommunicationController extends BaseController{
     }
 
     /**
-     * 根据id查询项目沟通信息
-     * @param id
-     * @return
-     */
-    @RequestMapping("select-project-communication-info")
-    @LogInfo(methodName = "查询项目沟通信息并分页且模糊查询")
-    public ResponseMessage selectByPrimaryKey(@RequestBody String id) {
-        logger.debug(TAG+id);
-        JSONObject jsonObject = JSONObject.parseObject(id);
-        String ids = jsonObject.getString("id");
-        UnifiedExceptionHandler.method = TAG + "selectByPrimaryKey()==================================>" + ids;
-        responseMessage = projectCommunicationService.queryProjectCommunicationById(ids);
-        return responseMessage;
-    }
-
-    /**
      * 根据id批量软删除项目问题信息
      * @param
      * @return
      */
-    @RequestMapping("update-project-communication-delete-time")
+    @RequestMapping("insert-project-communication-delete-time")
     @LogInfo(methodName = "根据id删除项目问题信息")
-    public ResponseMessage updateDeleteTime(@RequestBody ArrayVO arrayVO) {
+    public ResponseMessage insertDeleteTime(@RequestBody ArrayVO arrayVO) {
         logger.debug(TAG+arrayVO);
         UnifiedExceptionHandler.method = TAG + "insertDeleteTime============================" +arrayVO;
-        responseMessage = projectCommunicationService.updateDeleteTime(arrayVO.getList());
+        responseMessage = projectCommunicationService.insertDeleteTime(arrayVO.getList());
         return responseMessage;
     }
 
@@ -95,20 +78,6 @@ public class ProjectCommunicationController extends BaseController{
         logger.debug(TAG+record);
         UnifiedExceptionHandler.method = TAG + "insertSelective============================" +record;
         responseMessage = projectCommunicationService.insertProjectCommunicationSelective(record);
-        return responseMessage;
-    }
-
-    /**
-     * 项目问题沟通查询条件
-     * @param
-     * @return
-     */
-    @RequestMapping("query-project-communication-search")
-    @LogInfo(methodName = "项目问题沟通查询条件")
-    public ResponseMessage queryProjectCommunicationSearch() {
-
-        UnifiedExceptionHandler.method=  "queryProjectCommunicationSearch==============================";
-        responseMessage = projectCommunicationService.queryProjectCommunicationSearch();
         return responseMessage;
     }
 }

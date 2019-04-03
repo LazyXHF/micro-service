@@ -23,7 +23,9 @@ public class ProjectAddorUpdateUtil {
                                String creator, String organization, String projectMoney, String projectStatus,String investor)throws Exception{
             Project project = new Project();
             project.setId(projectId);
-        if(projectCode == null || projectCode.length() == 0) {
+     /*   if (projectCode.length()!=0) {
+            supplies.setEncode(encode);
+        } else {
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH) + 1;
@@ -32,11 +34,9 @@ public class ProjectAddorUpdateUtil {
             int minute = cal.get(Calendar.MINUTE);
             int second = cal.get(Calendar.SECOND);
             String time2 = year + "" + month + day + hour + minute + second;
-            project.setProjectCode(time2);
-        } else {
+            supplies.setEncode(time2);
+        }*/
             project.setProjectCode(projectCode);
-        }
-
             project.setProjectName(projectName);
             project.setProjectType(projectType);
             project.setSchedule(schedule);

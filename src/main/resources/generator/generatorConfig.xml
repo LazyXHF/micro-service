@@ -60,7 +60,7 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名 -->
-        <table tableName="business_configuration" domainObjectName="BusinessConfiguration"
+        <table tableName="project_communication" domainObjectName="ProjectCommunication"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
                enableDeleteByPrimaryKey="true">

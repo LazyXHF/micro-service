@@ -15,7 +15,6 @@ public interface ProjectCommunicationService {
     ResponseMessage insertProjectCommunicationSelective(ProjectCommunication record);
 
     //ResponseMessage selectByPrimaryKey(String id);
-    ResponseMessage queryProjectCommunicationById(String id);
 
     ResponseMessage updateByPrimaryKeySelective(ProjectCommunication record);
 
@@ -31,13 +30,8 @@ public interface ProjectCommunicationService {
      * @param ids
      * @return
      */
-    ResponseMessage updateDeleteTime(List<String> ids);
+    ResponseMessage insertDeleteTime(List<String> ids);
 
-    /**
-     * 项目问题沟通下拉框条件
-     * @return
-     */
-    ResponseMessage queryProjectCommunicationSearch();
 
     //int updateByPrimaryKey(ProjectCommunication record);
 
