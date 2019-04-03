@@ -38,6 +38,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private InternalAttachmentMapper internalAttachmentMapper;
 	@Autowired
 	private  ProjectCommunicationMapper projectCommunicationMapper;
+	@Autowired
+	private ProjectAddorUpdateUtil updateUtil;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -288,6 +290,19 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		String projectCoding=jsonObj.getString("projectCoding");
 		//业务id
 		String relateddomainId=jsonObj.getString("relateddomainId");
+		//项目id
+		String projectId=jsonObj.getString("projectId");
+		String projectCode=projectCoding;
+		String projectName=jsonObj.getString("projectName");
+		String projectType=jsonObj.getString("projectType");
+		String schedule="A";
+		String creator=jsonObj.getString("creator");
+		String organization=jsonObj.getString("organization");
+		String projectMoney=jsonObj.getString("projectMoney");
+		String projectStatus="Ab1";
+		String investor=jsonObj.getString("investor");
+
+		updateUtil.projectMethod(projectId,projectCode,projectName,projectType,schedule,creator,organization,projectMoney,projectStatus,investor);
 
 		if(StringUtils.isEmpty(todoId)){
 			return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);
@@ -339,7 +354,6 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		if(count<=0){
 			return new ResponseMessage(Code.CODE_ERROR, "归档失败");
 		}
-
 		//新增项目信息
 		//ProjectMapper
 		return new ResponseMessage(Code.CODE_OK, "归档完成");
