@@ -95,6 +95,18 @@ public class BugDetailsController extends BaseController{
     }
 
 
+    /**
+     * 修改暂存
+     */
+    @RequestMapping("update-bug-search-dealt-temporary")
+    @LogInfo(methodName = "修改暂存")
+    public ResponseMessage updateBugSearchDealtTemporary(@RequestBody BugDetails details) {
+        UnifiedExceptionHandler.method=  "updateBugSearchDealtTemporary==============================";
+        responseMessage = bugDetailsService.updateTemporaryBugs(details);
+        return responseMessage;
+    }
+
+
 
 
     /**
@@ -121,7 +133,7 @@ public class BugDetailsController extends BaseController{
     @LogInfo(methodName = "添加Bug信息")
     public ResponseMessage insertBugInfo(@RequestBody BugDetails record) {
         logger.debug(TAG+record);
-        System.out.println(record.getBackup3());
+//        System.out.println(record.getBackup3());
         UnifiedExceptionHandler.method= record + "update-bug-info==============================" + record;
         responseMessage = bugDetailsService.insertSelective(record);
         return responseMessage;
@@ -227,6 +239,19 @@ public class BugDetailsController extends BaseController{
         return responseMessage;
     }
 
+
+
+
+    /**
+     * 查找暂存
+     */
+    @RequestMapping("select-bug-search-dealt-temporary")
+    @LogInfo(methodName = "bug查询条件")
+    public ResponseMessage selectBugSearchDealtTemporary(@RequestBody PageVo pageVo) {
+        UnifiedExceptionHandler.method=  "selectBugSearchDealtTemporary==============================";
+        responseMessage = bugDetailsService.selectBugSearchDealtTemporary(pageVo);
+        return responseMessage;
+    }
 
 
 

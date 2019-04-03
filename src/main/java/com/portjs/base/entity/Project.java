@@ -1,5 +1,6 @@
 package com.portjs.base.entity;
 
+import java.sql.Array;
 import java.util.Date;
 
 public class Project {
@@ -18,6 +19,58 @@ public class Project {
     private String creator;
 
     private String creatorName;
+
+
+    //便于存放数据添加的几个字段  数据库并没有对应
+    private String node;
+
+    private String Allschedule;
+
+    private String[] nodeArray;
+
+    private String[] projectStatusArray;
+
+    private String[] allscheduleArray;
+
+    public String[] getNodeArray() {
+        return nodeArray;
+    }
+
+    public void setNodeArray(String[] nodeArray) {
+        this.nodeArray = nodeArray;
+    }
+
+    public String[] getProjectStatusArray() {
+        return projectStatusArray;
+    }
+
+    public void setProjectStatusArray(String[] projectStatusArray) {
+        this.projectStatusArray = projectStatusArray;
+    }
+
+    public String[] getAllscheduleArray() {
+        return allscheduleArray;
+    }
+
+    public void setAllscheduleArray(String[] allscheduleArray) {
+        this.allscheduleArray = allscheduleArray;
+    }
+
+    public String getAllschedule() {
+        return Allschedule;
+    }
+
+    public void setAllschedule(String allschedule) {
+        Allschedule = allschedule;
+    }
+
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
+    }
 
     public String getCreatorName() {
         return creatorName;

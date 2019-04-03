@@ -94,6 +94,22 @@ public interface BugDetailsService {
      */
     ResponseMessage temporaryBugs(BugDetails record);
 
+    /**
+     * 查找暂存
+     * @param pageVo
+     * @return
+     */
+
+    ResponseMessage selectBugSearchDealtTemporary(PageVo pageVo);
+
+
+    /**
+     * 修改暂存
+     * @param details
+     * @return
+     */
+    ResponseMessage updateTemporaryBugs(BugDetails details);
+
     //int updateByPrimaryKeyWithBLOBs(BugDetails record);
 
     //int updateByPrimaryKey(BugDetails record);

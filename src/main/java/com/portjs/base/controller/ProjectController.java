@@ -162,14 +162,20 @@ public class ProjectController extends BaseController {
     }
 
    //**** --------------------------------------项目概览接口rsh-------------------------------------------------
-   @LogInfo(methodName = "查询所有项目信息",modelName = "项目管理")
+   @LogInfo(methodName = "查询所有项目信息",modelName = "项目概览")
    @RequestMapping("queryProjectAllInfo")
    @ResponseBody
    public ResponseMessage queryProjectAllInfo(@RequestBody String requestBody) {
        JSONObject requestJson=JSONObject.parseObject(requestBody);
        return projectService.queryProjectAllInfo(requestJson);
    }
-
+    @LogInfo(methodName = "查询项目详细信息",modelName = "项目概览")
+    @RequestMapping("queryProjectDetails")
+    @ResponseBody
+    public ResponseMessage queryProjectDetails(@RequestBody String requestBody) {
+        JSONObject requestJson=JSONObject.parseObject(requestBody);
+        return projectService.queryProjectDetails(requestJson);
+    }
 
 
 
