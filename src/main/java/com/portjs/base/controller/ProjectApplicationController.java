@@ -150,7 +150,4 @@ public class ProjectApplicationController extends BaseController {
             e.printStackTrace();
         }
     }
-
-
-
 }

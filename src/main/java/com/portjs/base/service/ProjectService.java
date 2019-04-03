@@ -9,4 +9,6 @@ import com.portjs.base.util.ResponseMessage;
 
 public interface ProjectService {
     ResponseMessage queryProjectAllInfo(JSONObject requestJson);
+
+    ResponseMessage queryProjectDetails(JSONObject requestJson);
 }

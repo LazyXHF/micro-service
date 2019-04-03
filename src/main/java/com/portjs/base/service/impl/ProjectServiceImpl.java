@@ -11,6 +11,8 @@ import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -44,6 +46,21 @@ public class ProjectServiceImpl implements ProjectService {
         }
         page.setList(projectList);
         return   new ResponseMessage(Code.CODE_OK, "查询成功",page);
+    }
+
+    @Override
+    public ResponseMessage queryProjectDetails(JSONObject requestJson) {
+        String id=requestJson.getString("id");
+        String projectType=requestJson.getString("projectType");
+         Project project=projectMapper.queryProjectDetails(id,projectType);
+        String[] nodeArray=project.getNode().split(",");
+       /* List<String>  nodeList=new ArrayList<>(nodeArray.length);*/
+        String[] projectStatusArray=project.getProjectStatus().split(",");
+        String[] allscheduleArray=project.getAllschedule().split(",");
+        project.setNodeArray(nodeArray);
+        project.setProjectStatusArray(projectStatusArray);
+        project.setAllscheduleArray(allscheduleArray);
+        return   new ResponseMessage(Code.CODE_OK, "查询成功",project);
     }
 }
 
