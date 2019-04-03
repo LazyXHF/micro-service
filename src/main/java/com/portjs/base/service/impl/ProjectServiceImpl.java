@@ -49,17 +49,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResponseMessage queryProjectDetails(JSONObject requestJson) {
-        String id=requestJson.getString("id");
-        String projectType=requestJson.getString("projectType");
-         Project project=projectMapper.queryProjectDetails(id,projectType);
-        String[] nodeArray=project.getNode().split(",");
-       /* List<String>  nodeList=new ArrayList<>(nodeArray.length);*/
-        String[] projectStatusArray=project.getProjectStatus().split(",");
-        String[] allscheduleArray=project.getAllschedule().split(",");
-        project.setNodeArray(nodeArray);
-        project.setProjectStatusArray(projectStatusArray);
-        project.setAllscheduleArray(allscheduleArray);
-        return   new ResponseMessage(Code.CODE_OK, "查询成功",project);
+//        String id=requestJson.getString("id");
+//        String projectType=requestJson.getString("projectType");
+////         Project project=projectMapper.queryProjectDetails(id,projectType);
+//        String[] nodeArray=project.getNode().split(",");
+//       /* List<String>  nodeList=new ArrayList<>(nodeArray.length);*/
+//        String[] projectStatusArray=project.getProjectStatus().split(",");
+//        String[] allscheduleArray=project.getAllschedule().split(",");
+//        project.setNodeArray(nodeArray);
+//        project.setProjectStatusArray(projectStatusArray);
+//        project.setAllscheduleArray(allscheduleArray);
+//        return   new ResponseMessage(Code.CODE_OK, "查询成功",project);
+        return null;
     }
 }
 
