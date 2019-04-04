@@ -530,12 +530,11 @@
   </resultMap>
 
 
-  <select id="queryProjectCount" resultType="int">
+ <!-- <select id="queryProjectCount" resultType="int">
   select count(1)
   from project_application  a
   <where>
     is_delete='0'
-
     <if test="projectCode !=null and projectCode!=''">
       and  a.project_code like "%" #{projectCode} "%"
     </if>
@@ -555,7 +554,57 @@
       and  a.investor like "%" #{investor} "%"
     </if>
   </where>
+  </select>-->
+  <select id="queryProjectCount" resultType="int">
+    select SUM(tmpcount)
+    from (
+    select count(t1.id)   AS tmpcount
+    from project_application  t1
+    where    is_delete='0'  and status!='0'
+      <if test="projectCode !=null and projectCode!=''">
+        and  a.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and  a.project_name like "%" #{projectName} "%"
+      </if>
+      <if test="projectType !=null and projectType!=''">
+        and  a.project_type like "%" #{projectType} "%"
+      </if>
+      <if test="organization !=null and organization!=''">
+        and  a.organization like "%" #{organization} "%"
+      </if>
+      <if test="constructionMode !=null and constructionMode!=''">
+        and  a.construction_mode like "%" #{constructionMode} "%"
+      </if>
+      <if test="investor !=null and investor!=''">
+        and  a.investor like "%" #{investor} "%"
+      </if>
+    UNION ALL
+    select count(t2.id) as tmpcount
+    from project_application  t2
+    where
+    is_delete='0' and status='0' and creater=#{ownerId}
+    <if test="projectCode !=null and projectCode!=''">
+      and  project_code like "%" #{projectCode} "%"
+    </if>
+    <if test="projectName !=null and projectName!=''">
+      and project_name like "%" #{projectName} "%"
+    </if>
+    <if test="projectType !=null and projectType!=''">
+      and  project_type like "%" #{projectType} "%"
+    </if>
+    <if test="organization !=null and organization!=''">
+      and  organization like "%" #{organization} "%"
+    </if>
+    <if test="constructionMode !=null and constructionMode!=''">
+      and  construction_mode like "%" #{constructionMode} "%"
+    </if>
+    <if test="investor !=null and investor!=''">
+      and  investor like "%" #{investor} "%"
+    </if> ) A
   </select>
+
+
   <resultMap id="BaseResultMap2" type="com.portjs.base.entity.ProjectApplication" >
   <id column="Id" property="id" jdbcType="VARCHAR" />
   <result column="aProjectCode" property="projectCode" jdbcType="VARCHAR" />
@@ -579,58 +628,55 @@
     select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
-    from project_application a
-    <where>
-      is_delete='0'
+    from project_application
+     where
+      is_delete='0' and status!='0'
       <if test="projectCode !=null and projectCode!=''">
-       and  a.project_code like "%" #{projectCode} "%"
+       and  project_code like "%" #{projectCode} "%"
       </if>
       <if test="projectName !=null and projectName!=''">
-        and  a.project_name like "%" #{projectName} "%"
+        and  project_name like "%" #{projectName} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
-        and  a.project_type like "%" #{projectType} "%"
+        and  project_type like "%" #{projectType} "%"
       </if>
       <if test="organization !=null and organization!=''">
-        and  a.organization like "%" #{organization} "%"
+        and  organization like "%" #{organization} "%"
       </if>
       <if test="constructionMode !=null and constructionMode!=''">
-        and  a.construction_mode like "%" #{constructionMode} "%"
+        and  construction_mode like "%" #{constructionMode} "%"
       </if>
       <if test="investor !=null and investor!=''">
-        and  a.investor like "%" #{investor} "%"
+        and  investor like "%" #{investor} "%"
       </if>
-    </where>
-    order by  a.create_time desc
+    UNION ALL
+    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
+    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
+    remark, creater, create_time, update_time, enable, file_url, status, is_delete
+    from project_application
+     where
+      is_delete='0' and status='0' and creater=#{ownerId}
+    <if test="projectCode !=null and projectCode!=''">
+        and  project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and project_name like "%" #{projectName} "%"
+      </if>
+      <if test="projectType !=null and projectType!=''">
+        and  project_type like "%" #{projectType} "%"
+      </if>
+      <if test="organization !=null and organization!=''">
+        and  organization like "%" #{organization} "%"
+      </if>
+      <if test="constructionMode !=null and constructionMode!=''">
+        and  construction_mode like "%" #{constructionMode} "%"
+      </if>
+      <if test="investor !=null and investor!=''">
+        and  investor like "%" #{investor} "%"
+      </if>
+    order by  create_time desc
     limit #{rowNum},#{pageCount}
   </select>
-
-
-
-  <!--查询项目信息-->
-<!--  <select id="queryProject" resultMap="BaseResultMap1">
-    select a.Id, a.project_code as aProjectCode, a.project_name as aProjectName, a.project_type as aProjectType, a.leval, a.project_desc as aProjectDesc, a.organization,
-    a.range1, a.kickoff_date as aKickoffDate, a.creater , a.create_time as aCreateTime, update_time as aUpdateTime, a.enable as aenable,a.status as astatus,a.isApprover,
-    b.id as bId, b.relateddomain, b.relateddomain_id as bRelateddomainId, b.prestep_id as bPrestepId, b.step_desc as bStepDesc, b.actionuser_id as bActionuserId, b.action_time as bActionTime,
-    b.action_result as bActionResult, b.file_url as bFileUrl, b.action_comment as bActionComment, b.enable as benable, b.status as bstatus
-    from project_application  a left join t_workflowstep  b  on a.id=b.relateddomain_id
-<where>
-  <if test="projectCode !=null and projectCode!=''">
-     a.project_code like "%" #{projectCode} "%"
-  </if>
-  <if test="projectType !=null and projectType!=''">
-    and  a.project_type like "%" #{projectType} "%"
-  </if>
-  <if test="creater !=null and creater!=''">
-    and  a.creater like "%" #{creater} "%"
-  </if>
-  <if test="stepDesc !=null and stepDesc!=''">
-    and  b.step_desc like "%" #{stepDesc} "%"
-  </if>
-</where>
-    order by  a.create_time desc
-    limit #{rowNum},#{pageCount}
-  </select>-->
 
   <select id="queryProjectBase" resultMap="BaseResultMap">
   select   Id, investment_id, project_code,project_id,  project_name, project_type, investor, organization,construction_mode,

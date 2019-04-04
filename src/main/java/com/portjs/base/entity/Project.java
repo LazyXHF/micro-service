@@ -39,6 +39,16 @@ public class Project {
 
     private List<String> redArray;
 
+    private List<String> stageList;
+
+    public List<String> getStageList() {
+        return stageList;
+    }
+
+    public void setStageList(List<String> stageList) {
+        this.stageList = stageList;
+    }
+
     public List<String> getYellowArray() {
         return yellowArray;
     }
