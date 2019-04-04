@@ -126,7 +126,7 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
     @Override
     public ResponseMessage updateDeleteTime(List<String> ids) {
         ProjectCommunication projectCommunication = null;
-        Date date = new Date();//获得系统时间.
+        /*Date date = new Date();//获得系统时间.
         SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
         String nowTime = sdf.format(date);
         Date time = null;
@@ -134,12 +134,12 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
             time = sdf.parse(nowTime);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
         for (int j = 0 ;j < ids.size() ; j++) {
             String id = ids.get(j);
             projectCommunication = projectCommunicationMapper.selectByPrimaryKey(id);
 //            System.out.println(projectCommunication.getDeleteTime().toString()+"----------------------------------------------------------");
-            if(!StringUtils.isEmpty(String.valueOf(projectCommunication.getDeleteTime()))){
+            if(projectCommunication.getDeleteTime()!=null){
                 return new ResponseMessage(Code.CODE_ERROR,"删除失败","失败的项目问题id："+projectCommunication.getId()+" ： "+projectCommunication.getDeleteTime());
             }
         }
@@ -171,7 +171,7 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
     }
 
     /**
-     * bug查询条件
+     * 项目问题沟通查询条件
      * @return
      */
     @Override
