@@ -93,6 +93,13 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             return new ResponseMessage(Code.CODE_ERROR,"Application"+PARAM_MESSAGE_1);
         }
 
+
+        //项目基本信息
+        ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
+        application.setCreater(userId);
+        application.setCreateTime(new Date());
+        application.setStatus(status);
+
         String message1="";
         String message2="";
         //0暂存
@@ -121,12 +128,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             }
             message1="提交失败";
             message2="提交失败";
+            application.setStatus("1");
         }
-        //项目基本信息
-        ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
-        application.setCreater(userId);
-        application.setCreateTime(new Date());
-        application.setStatus(status);
         //插入还是更新
         if(StringUtils.isEmpty(application.getId())){
             application.setId(String.valueOf(IDUtils.genItemId()));
@@ -282,7 +285,27 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             String todoId =  jsonObject.getString("todoId");//当前步骤待办id
             String fistId =  jsonObject.getString("fistId");//项目负责人id
 
-
+             //将当前对应流程关闭
+            TWorkflowstep workflowstep = new TWorkflowstep();
+            workflowstep.setId(workflowstep_id);
+            workflowstep.setStepDesc(stepDesc1+"退回");
+            workflowstep.setStatus("1");
+            workflowstep.setActionResult(1);
+            workflowstep.setActionComment(action);
+            workflowstep.setActionTime(new Date());
+            int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
+            if(i==0){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+            //修改当前待办表
+            TTodo tTodo = new TTodo();
+            tTodo.setId(todoId);
+            tTodo.setStatus("1");
+            tTodo.setActiontime(new Date());
+            int k = todoMapper.updateByPrimaryKeySelective(tTodo);
+            if(k!=1){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
 
             //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
             TWorkflowstepExample example = new TWorkflowstepExample();
@@ -290,16 +313,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             criteria.andRelateddomainIdEqualTo(application_id);
             criteria.andStatusEqualTo("0");
             List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(example);
-            if(tWorkflowsteps.size()==1){
-                    //修改当前待办表
-                    TTodo tTodo = new TTodo();
-                    tTodo.setId(todoId);
-                    tTodo.setStatus("1");
-                    tTodo.setActiontime(new Date());
-                    int i = todoMapper.updateByPrimaryKeySelective(tTodo);
-                    if(i!=1){
-                        return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-                    }
+            if(tWorkflowsteps.size()==0){
                     //如果当前审核人员只有一个的话则生成待办
                     TTodo todo = new TTodo();
                     todo.setId(String.valueOf(IDUtils.genItemId()));
@@ -336,18 +350,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }
 
-            //将当前对应流程关闭
-            TWorkflowstep workflowstep = new TWorkflowstep();
-            workflowstep.setId(workflowstep_id);
-            workflowstep.setStepDesc(stepDesc1+"退回");
-            workflowstep.setStatus("1");
-            workflowstep.setActionResult(1);
-            workflowstep.setActionComment(action);
-            workflowstep.setActionTime(new Date());
-            int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
-            if(i==0){
-                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-            }
+
             //新增一条退回流程
             /*TWorkflowstep tWorkflowstep = new TWorkflowstep();
             tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));
