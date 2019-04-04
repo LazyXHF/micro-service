@@ -2,7 +2,9 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.Project;
 import com.portjs.base.entity.ProjectExample;
+import com.portjs.base.vo.FlashProject;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,4 +45,11 @@ public interface ProjectMapper {
     int queryProjectAllInfoCount(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("organization") String organization,@Param("projectType") String projectType,@Param("creator") String creator,@Param("schedule") String schedule);
 
     Project queryProjectDetails(@Param("id") String id,@Param("projectType") String projectType);
+
+    /**
+     * 问题沟通所需下拉框接口
+     * @return
+     */
+    @Select("select id,project_name,project_type,schedule from project")
+    List<FlashProject> selectProjectAll();
 }

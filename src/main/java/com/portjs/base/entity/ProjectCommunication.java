@@ -30,7 +30,7 @@ public class ProjectCommunication extends BaseEntity {
 
     private String status;
 
-    private String backup1;
+    private String follower;//关注人
 
     private String backup2;
 
@@ -148,12 +148,12 @@ public class ProjectCommunication extends BaseEntity {
         this.status = status == null ? null : status.trim();
     }
 
-    public String getBackup1() {
-        return backup1;
+    public String getFollower() {
+        return follower;
     }
 
-    public void setBackup1(String backup1) {
-        this.backup1 = backup1 == null ? null : backup1.trim();
+    public void setFollower(String follower) {
+        this.follower = follower;
     }
 
     public String getBackup2() {

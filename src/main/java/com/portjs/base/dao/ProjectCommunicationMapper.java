@@ -1,9 +1,11 @@
 package com.portjs.base.dao;
 
-import com.portjs.base.entity.InternalPersionResource;
+import com.portjs.base.entity.BusinessConfiguration;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.FlashProject;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,12 +42,12 @@ public interface ProjectCommunicationMapper {
      * @param priority
      * @param sponsor
      * @param phase
-     * @param rowNum
-     * @param pageCount
+     * @param pageNo
+     * @param pageSize
      * @return
      */
-    List<InternalPersionResource> queryProjectCommunicationInfo(@Param("projectId")String projectId,@Param("classification")String classification ,@Param("priority")String priority,
-                                                                @Param("sponsor") String sponsor,@Param("phase") String phase,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
+    List<ProjectCommunication> queryProjectCommunicationInfo(@Param("projectId")String projectId,@Param("classification")String classification ,@Param("priority")String priority,
+                                                             @Param("sponsor") String sponsor,@Param("phase") String phase,@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
 
 
     /**
@@ -53,7 +55,7 @@ public interface ProjectCommunicationMapper {
      * @param ids
      * @return
      */
-    int insertDeleteTime(@Param("id") List<String> ids);
+    int updateDeleteTime(@Param("id")List<String> ids);
 
     /**
      * 添加
@@ -75,4 +77,7 @@ public interface ProjectCommunicationMapper {
      * @return
      */
     List<ProjectCommunication> queryProjectCommunicatisByPage(ProjectCommunication record);
+
+
+    ProjectCommunication queryProjectCommunicationById(@Param("id") String id);
 }

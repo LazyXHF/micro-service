@@ -26,12 +26,12 @@
     <result column="backup10" jdbcType="VARCHAR" property="backup10" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_id, sponsor, phase, priority, classification, title, content, file_url, 
+    id, project_id, sponsor, phase, priority, classification, title, content, file_url,
     create_time, delete_time, status, follower, backup2, backup3, backup4, backup5, backup6,
     backup7, backup8, backup9, backup10
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from project_communication
     where id = #{id,jdbcType=VARCHAR}
@@ -76,7 +76,7 @@
   <select id="queryProjectCommunicationInfo" resultMap="BaseResultMap">
     select * from project_communication
     where
-      1=1
+    1=1
     <if test="projectId != null and projectId!=''">
       and project_id  = #{projectId}
     </if>
@@ -100,23 +100,23 @@
     <!--<if test="projectId != null">
       and project_id  like concat('%',#{projectId},'%')
     </if>-->
-      where
-      1=1
-      <if test="projectId != null and projectId!=''">
-          and project_id  = #{projectId}
-      </if>
-      <if test="sponsor != null and sponsor!=''">
-          and sponsor like concat('%',#{sponsor},'%')
-      </if>
-      <if test="phase != null and phase!=''">
-          and phase like concat('%',#{phase},'%')
-      </if>
-      <if test="priority != null and priority!=''">
-          and priority like concat('%',#{priority},'%')
-      </if>
-      <if test="classification != null and classification!=''">
-          and classification like concat('%',#{classification},'%')
-      </if>
+    where
+    1=1
+    <if test="projectId != null and projectId!=''">
+      and project_id  = #{projectId}
+    </if>
+    <if test="sponsor != null and sponsor!=''">
+      and sponsor like concat('%',#{sponsor},'%')
+    </if>
+    <if test="phase != null and phase!=''">
+      and phase like concat('%',#{phase},'%')
+    </if>
+    <if test="priority != null and priority!=''">
+      and priority like concat('%',#{priority},'%')
+    </if>
+    <if test="classification != null and classification!=''">
+      and classification like concat('%',#{classification},'%')
+    </if>
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -127,22 +127,22 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into project_communication (project_id, sponsor, phase, 
-      priority, classification, title, 
-      content, file_url, create_time, 
-      delete_time, status, follower,
-      backup2, backup3, backup4, 
-      backup5, backup6, backup7, 
-      backup8, backup9, backup10
-      )
-    values (#{projectId,jdbcType=VARCHAR}, #{sponsor,jdbcType=VARCHAR}, #{phase,jdbcType=VARCHAR}, 
-      #{priority,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{deleteTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{follower,jdbcType=VARCHAR},
-      #{backup2,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}, #{backup4,jdbcType=VARCHAR}, 
-      #{backup5,jdbcType=VARCHAR}, #{backup6,jdbcType=VARCHAR}, #{backup7,jdbcType=VARCHAR}, 
-      #{backup8,jdbcType=VARCHAR}, #{backup9,jdbcType=VARCHAR}, #{backup10,jdbcType=VARCHAR}
-      )
+    insert into project_communication (project_id, sponsor, phase,
+    priority, classification, title,
+    content, file_url, create_time,
+    delete_time, status, follower,
+    backup2, backup3, backup4,
+    backup5, backup6, backup7,
+    backup8, backup9, backup10
+    )
+    values (#{projectId,jdbcType=VARCHAR}, #{sponsor,jdbcType=VARCHAR}, #{phase,jdbcType=VARCHAR},
+    #{priority,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+    #{content,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    #{deleteTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{follower,jdbcType=VARCHAR},
+    #{backup2,jdbcType=VARCHAR}, #{backup3,jdbcType=VARCHAR}, #{backup4,jdbcType=VARCHAR},
+    #{backup5,jdbcType=VARCHAR}, #{backup6,jdbcType=VARCHAR}, #{backup7,jdbcType=VARCHAR},
+    #{backup8,jdbcType=VARCHAR}, #{backup9,jdbcType=VARCHAR}, #{backup10,jdbcType=VARCHAR}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectCommunication">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">

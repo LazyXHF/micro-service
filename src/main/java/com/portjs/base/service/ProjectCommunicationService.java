@@ -11,7 +11,7 @@ public interface ProjectCommunicationService {
 
     //int insert(ProjectCommunication record);
 
-   // ResponseMessage insertSelective(ProjectCommunication record);
+    // ResponseMessage insertSelective(ProjectCommunication record);
     ResponseMessage insertProjectCommunicationSelective(ProjectCommunication record);
 
     //ResponseMessage selectByPrimaryKey(String id);
@@ -37,7 +37,7 @@ public interface ProjectCommunicationService {
      * 项目问题沟通下拉框条件
      * @return
      */
-/*    ResponseMessage queryProjectCommunicationSearch();*/
+    ResponseMessage queryProjectCommunicationSearch();
 
     //int updateByPrimaryKey(ProjectCommunication record);
 
