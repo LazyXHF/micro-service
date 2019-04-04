@@ -2,6 +2,7 @@ package com.portjs.base.entity;
 
 import java.sql.Array;
 import java.util.Date;
+import java.util.List;
 
 public class Project {
     private String id;
@@ -31,6 +32,37 @@ public class Project {
     private String[] projectStatusArray;
 
     private String[] allscheduleArray;
+
+    private  List<String> greenArray;
+
+    private List<String> yellowArray;
+
+    private List<String> redArray;
+
+    public List<String> getYellowArray() {
+        return yellowArray;
+    }
+
+    public void setYellowArray(List<String> yellowArray) {
+        this.yellowArray = yellowArray;
+    }
+
+    public List<String> getGreenArray() {
+        return greenArray;
+    }
+
+    public void setGreenArray(List<String> greenArray) {
+        this.greenArray = greenArray;
+    }
+
+    public List<String> getRedArray() {
+        return redArray;
+    }
+
+    public void setRedArray(List<String> redArray) {
+        this.redArray = redArray;
+    }
+
 
     public String[] getNodeArray() {
         return nodeArray;

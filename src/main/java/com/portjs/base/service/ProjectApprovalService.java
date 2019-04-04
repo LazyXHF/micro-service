@@ -1,9 +1,6 @@
 package com.portjs.base.service;
 
 import com.portjs.base.util.ResponseMessage;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Map;
 
 public interface ProjectApprovalService {
 
