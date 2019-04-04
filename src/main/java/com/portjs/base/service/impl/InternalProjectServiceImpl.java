@@ -485,7 +485,9 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             BigDecimal decimal = new BigDecimal(0);
             for (ProjectApplication projectApplication : projectApplications) {
                 /*money+=projectApplication.getApplicationAmount();*/
-                decimal = decimal.add(projectApplication.getApplicationAmount());
+                if(projectApplication.getApplicationAmount()!=null){
+                    decimal = decimal.add(projectApplication.getApplicationAmount());
+                }
             }
 
             map.put(list.get(i)+"年", decimal);

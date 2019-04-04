@@ -316,7 +316,7 @@ public class TXietongConferenceRoomImp extends BaseController implements TXieton
 			lDate.add(sd.format(calBegin.getTime()));
 
 		}
-		lDate.remove(lDate.size()-1);
+		/*lDate.remove(lDate.size()-1);*/
 		return lDate;
 	}
 

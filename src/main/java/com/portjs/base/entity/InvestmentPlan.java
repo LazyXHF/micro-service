@@ -54,6 +54,10 @@ public class InvestmentPlan extends BaseEntity {
     }
 
     public void setAmount(BigDecimal amount) {
+        if(amount==null){
+            BigDecimal decimal = new BigDecimal(0);
+            amount.add(decimal);
+        }
         this.amount = amount;
     }
 
