@@ -113,7 +113,7 @@ public interface InternalProjectMapper{
      * @return
      */
     int queryByPage(InternalProject record);
-    @Select("select name,id from internal_project")
+    @Select("select project_name,id from project")
     List<Project> selectProjectAll();
 
     //查询在建项目的存在哪些年份

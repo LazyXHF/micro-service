@@ -2,36 +2,21 @@ package com.portjs.base.vo;
 
 public class Project {
     private String Id;
-    private String name;
+    private String project_name;
 
     public String getId() {
         return Id;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public void setId(String id) {
         Id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getProject_name() {
+        return project_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProject_name(String project_name) {
+        this.project_name = project_name;
     }
 }

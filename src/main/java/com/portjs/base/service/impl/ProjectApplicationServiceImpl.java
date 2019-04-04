@@ -109,11 +109,10 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String pageNum=requestJson.getString("pageNum");
         String pageCount=requestJson.getString("pageCount");
         Page page=new Page();
-        int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,constructionMode,investor);
-
-
+        int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,constructionMode,investor,owneId);
         page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-        List<ProjectApplication> list=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,page.getRowNum(),page.getPageCount());
+        List<ProjectApplication> list=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,owneId,page.getRowNum(),page.getPageCount());
+       // List<ProjectApplication> list2=applicationMapper.queryProjectCaoGao(projectCode,projectName,projectType,organization,constructionMode,investor,page.getRowNum(),page.getPageCount());
         if(list.isEmpty()){
             return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
         }else{

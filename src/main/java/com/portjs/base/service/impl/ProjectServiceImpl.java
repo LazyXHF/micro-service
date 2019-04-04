@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,6 +71,33 @@ public class ProjectServiceImpl implements ProjectService {
              }
          }
         String[] allscheduleArray=project.getAllschedule().split(",");
+         //1：定义一个集合 存放所有已经完成的阶段
+
+        //2:将各个
+
+
+         //存放所有已经完成的集合
+
+
+        List<String>  stageList=new ArrayList<>();
+        for(String stage:allscheduleArray) {
+            List<String> Alist = new ArrayList<>();
+            List<String> A1list = new ArrayList<>();
+            for (String node : nodeArray) {
+                if (node.contains(stage)){
+                    Alist.add(node);
+                    for(String status : projectStatusArray) {
+                        if (status.contains(node)&&status.contains("1")) {
+                            A1list.add(status);
+                        }
+                    }
+                }
+            }
+            if (Alist.size() == A1list.size()) {
+                stageList.add(stage);
+            }
+        }
+        project.setStageList(stageList);
         project.setNodeArray(nodeArray);
         project.setProjectStatusArray(projectStatusArray);
         project.setAllscheduleArray(allscheduleArray);
