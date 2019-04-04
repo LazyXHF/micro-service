@@ -1,6 +1,7 @@
 package com.portjs.base.util;
 
 import com.portjs.base.dao.ProjectMapper;
+import com.portjs.base.dao.TUserMapper;
 import com.portjs.base.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,14 @@ import java.util.TimeZone;
 public class ProjectAddorUpdateUtil {
     @Autowired
     private ProjectMapper projectMapper;
+    @Autowired
+    private TUserMapper tUserMapper;
     public  void projectMethod(String projectId, String projectCode, String projectName, String projectType, String schedule,
                                String creator, String organization, String projectMoney, String projectStatus,String investor)throws Exception{
             Project project = new Project();
             project.setId(projectId);
+            //这里将创建人姓名添加进入数据库，传入进来的creator为Id
+            String creatorName= tUserMapper.queryUserNameByUserId(creator);
             if(projectCode == null || projectCode.length() == 0) {
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
@@ -39,6 +44,7 @@ public class ProjectAddorUpdateUtil {
             project.setProjectName(projectName);
             project.setProjectType(projectType);
             project.setSchedule(schedule);
+            project.setCreatorName(creatorName);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
             Date time = null;
