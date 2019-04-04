@@ -60,7 +60,10 @@ public class ProjectAddorUpdateUtil {
                 Project project1 = projectMapper.queryProjectById(projectId);
                 String stage = project1.getSchedule();
                 String status = project1.getProjectStatus();
+                //这个存放第一种情况
                 StringBuffer buffer = new StringBuffer();
+                //这个存放第二种情况
+                StringBuffer buffer2 = new StringBuffer();
                 String[] statusArray = status.split(",");
                 for (int i = 0; i < statusArray.length; i++) {
                     //如果有就替换，没有就在尾部添加
@@ -73,17 +76,19 @@ public class ProjectAddorUpdateUtil {
                     }
                     //如果没有就一只添加，直到最后一个也没有就追加
                     else {
-                        buffer.append(statusArray[i]).append(",");
+                        buffer2.append(statusArray[i]).append(",");
                         if (i == (statusArray.length - 1)) {
-                            buffer.append(projectStatus);
+                            buffer2.append(projectStatus);
                         }
                     }
                 }
-                //如果状态的长度没有发生变化了  说明是追加了  用新的，如果变了，说明追加了  用新的
+                //如果状态的长度没有发生变化了   说明替换了  用buffer
                 if (status.length() == buffer.toString().length()) {
                     projectMapper.updateProjectById(projectId, schedule, buffer.toString());
-                } else {
-                    String newStatus = buffer.toString();
+                }
+                //如果变了，说明追加了用新的
+                else {
+                    String newStatus = buffer2.toString();
                     projectMapper.updateProjectById(projectId, schedule, newStatus);
                 }
             }
