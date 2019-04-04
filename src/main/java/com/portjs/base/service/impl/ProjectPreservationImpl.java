@@ -78,16 +78,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
         JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
         String tTodoId = jsonObject.getString("tTodoId");
-        if (!StringUtils.isEmpty(tTodoId)){
-            TTodo todo = new TTodo();
-            todo.setId(tTodoId);
-            todo.setStatus("1");
-            todo.setActiontime(new Date());
-            int i = todoMapper.updateByPrimaryKeySelective(todo);
-            if(i!=1){
-                return new ResponseMessage(Code.CODE_ERROR,"提交失败");
-            }
-        }
+
 
 
 
@@ -117,6 +108,16 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             }
             if(CollectionUtils.isEmpty(resourcesJSON)){
                 return new ResponseMessage(Code.CODE_ERROR,"Files"+PARAM_MESSAGE_1);
+            }
+            if (!StringUtils.isEmpty(tTodoId)){
+                TTodo todo = new TTodo();
+                todo.setId(tTodoId);
+                todo.setStatus("1");
+                todo.setActiontime(new Date());
+                int i = todoMapper.updateByPrimaryKeySelective(todo);
+                if(i!=1){
+                    return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+                }
             }
             message1="提交失败";
             message2="提交失败";
@@ -251,9 +252,9 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 return new ResponseMessage(Code.CODE_ERROR,"提交失败");
             }
 
-            String id = String.valueOf(IDUtils.genItemId());
+            /*String id = String.valueOf(IDUtils.genItemId());*/
 
-            updateUtil.projectMethod(id,null,application.getProjectName(),
+            updateUtil.projectMethod(application.getProjectId(),null,application.getProjectName(),
                     application.getProjectType(),"A",userId,application.getOrganization()
                     ,application.getApplicationAmount().toString(),"Ab2",application.getInvestor());
             return new ResponseMessage(Code.CODE_OK,"提交成功");
