@@ -5,8 +5,8 @@ package com.portjs.base.util;
  * @author gumingyang
  **/
 public class ValidateUtils {
-    public static final String REG_1="[A-Z]+";
-    public static final String REG_2="[a-z]+";
+    public static final String REG_1="[A-Z]";
+    public static final String REG_2="[a-z]";
 
     /**
      *  大写字母校验

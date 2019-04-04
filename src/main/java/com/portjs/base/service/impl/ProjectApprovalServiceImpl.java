@@ -440,13 +440,6 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		if(StringUtils.isEmpty(pageNo)){
 			return new ResponseMessage(Code.CODE_ERROR, "pageNo"+PARAM_MESSAGE_1);
 		}
-		//规则校验
-		if(!ValidateUtils.CapitalizeEnglish(stage)){
-			return new ResponseMessage(Code.CODE_ERROR, "stage"+PARAM_MESSAGE_3);
-		}
-		if(!ValidateUtils.LowercaseEnglish(node)){
-			return new ResponseMessage(Code.CODE_ERROR, "stage"+PARAM_MESSAGE_3);
-		}
 		//A:立项阶段 B:工程准备阶段 C:设计阶段 D:建设阶段 E:验收阶段 F:收尾阶段 G:沟通记录
 		if(stage.equals("A")){
 			//a：投资计划 b:立项批复 c:项目交底

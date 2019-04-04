@@ -128,7 +128,7 @@
         AND ( step_desc like concat("%", #{params.keyword},"%") or relateddomain like concat("%", #{params.keyword},"%") )
       </if>
       <if test="params.pageNo!=null and params.pageSize!=null">
-        order by sender_time asc limit #{params.pageNo},#{params.pageSize}
+        order by sender_time desc limit #{params.pageNo},#{params.pageSize}
       </if>
     </where>
   </select>
