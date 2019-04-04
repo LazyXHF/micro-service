@@ -36,6 +36,7 @@ public class ProjectApplicationController extends BaseController {
     public ResponseMessage queryProject(@RequestBody String responseBody){
         logger.debug(TAG+"queryProject() begin");
         JSONObject requestJson=JSONObject.parseObject(responseBody);
+
         return  applicationService.queryProject(requestJson);
     }
 

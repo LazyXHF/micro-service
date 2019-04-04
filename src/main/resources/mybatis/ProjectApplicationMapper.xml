@@ -562,22 +562,22 @@
     from project_application  t1
     where    is_delete='0'  and status!='0'
       <if test="projectCode !=null and projectCode!=''">
-        and  a.project_code like "%" #{projectCode} "%"
+        and  project_code like "%" #{projectCode} "%"
       </if>
       <if test="projectName !=null and projectName!=''">
-        and  a.project_name like "%" #{projectName} "%"
+        and  project_name like "%" #{projectName} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
-        and  a.project_type like "%" #{projectType} "%"
+        and  project_type like "%" #{projectType} "%"
       </if>
       <if test="organization !=null and organization!=''">
-        and  a.organization like "%" #{organization} "%"
+        and  organization like "%" #{organization} "%"
       </if>
       <if test="constructionMode !=null and constructionMode!=''">
-        and  a.construction_mode like "%" #{constructionMode} "%"
+        and  construction_mode like "%" #{constructionMode} "%"
       </if>
       <if test="investor !=null and investor!=''">
-        and  a.investor like "%" #{investor} "%"
+        and  investor like "%" #{investor} "%"
       </if>
     UNION ALL
     select count(t2.id) as tmpcount
@@ -654,6 +654,7 @@
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
     from project_application
+
      where
       is_delete='0' and status='0' and creater=#{ownerId}
     <if test="projectCode !=null and projectCode!=''">
