@@ -3,6 +3,7 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.CommunicationLog;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.CommunicationLogRecord;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,8 @@ public interface CommunicationLogMapper {
     int updateByPrimaryKeySelective(CommunicationLog record);
 
     int updateByPrimaryKey(CommunicationLog record);
+
+    List<CommunicationLogRecord> selectBypreMessage(String id);
 
     /**
      * 根据项目问题id查询沟通记录信息

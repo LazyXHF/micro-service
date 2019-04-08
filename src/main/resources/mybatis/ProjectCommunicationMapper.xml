@@ -78,7 +78,7 @@
     where
     1=1
     <if test="projectId != null and projectId!=''">
-      and project_id  = #{projectId}
+      and project_id  like concat('%',#{projectId},'%')
     </if>
     <if test="sponsor != null and sponsor!=''">
       and sponsor like concat('%',#{sponsor},'%')
@@ -103,7 +103,7 @@
     where
     1=1
     <if test="projectId != null and projectId!=''">
-      and project_id  = #{projectId}
+      and project_id  like concat('%',#{projectId},'%')
     </if>
     <if test="sponsor != null and sponsor!=''">
       and sponsor like concat('%',#{sponsor},'%')

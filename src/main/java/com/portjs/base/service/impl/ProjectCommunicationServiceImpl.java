@@ -103,9 +103,7 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
         int pageNo = jsonObject.getInteger("pageNo");
         int pageSize = jsonObject.getInteger("pageSize");
 
-        if(StringUtils.isEmpty(projectId)){
-            return new ResponseMessage(Code.CODE_ERROR,"查询时项目id未传!",projectId);
-        }
+
 
         Page<ProjectCommunication> page = new Page<>();
         int totalCount = projectCommunicationMapper.projectCommunicationCounts(projectId,classification,priority,sponsor,phase);
