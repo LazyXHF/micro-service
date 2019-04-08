@@ -1,6 +1,7 @@
 package com.portjs.base.vo;
 
-public class FlashProject {
+public class
+FlashProject {
 
     private String id;//项目id
 

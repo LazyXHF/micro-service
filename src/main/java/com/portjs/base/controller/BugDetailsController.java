@@ -3,6 +3,7 @@ package com.portjs.base.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.BugDetails;
+import com.portjs.base.entity.BugDetailsRecord;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.BugDetailsRecordService;
 import com.portjs.base.service.BugDetailsService;
@@ -106,6 +107,18 @@ public class BugDetailsController extends BaseController{
         return responseMessage;
     }
 
+    /**
+     * 删除暂存
+     */
+    @RequestMapping("delete-bug-search-dealt-temporary")
+    @LogInfo(methodName = "删除暂存")
+    public ResponseMessage deleteBugSearchDealtTemporary(@RequestBody String requestBody) {
+        UnifiedExceptionHandler.method=  "updateBugSearchDealtTemporary==============================";
+        responseMessage = bugDetailsService.deleteBugSearchDealtTemporary(requestBody);
+        return responseMessage;
+    }
+
+
 
 
 
@@ -138,7 +151,18 @@ public class BugDetailsController extends BaseController{
         responseMessage = bugDetailsService.insertSelective(record);
         return responseMessage;
     }
-
+    /**
+     * 暂存后再提交
+     * @param record
+     * @return
+     */
+    @RequestMapping("submission")
+    @LogInfo(methodName = "暂存后再提交")
+    public ResponseMessage submission(@RequestBody BugDetails record,@RequestBody BugDetails details) {
+        UnifiedExceptionHandler.method=  "updateBugSearchDealtTemporary==============================";
+        responseMessage = bugDetailsService.updateTemporaryBugs(details);
+        return responseMessage;
+    }
 
 
     /**
@@ -252,6 +276,8 @@ public class BugDetailsController extends BaseController{
         responseMessage = bugDetailsService.selectBugSearchDealtTemporary(pageVo);
         return responseMessage;
     }
+
+
 
 
 

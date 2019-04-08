@@ -93,6 +93,7 @@ public class ProjectPreservationController  extends BaseController {
         logger.error(TAG + "insert-for-excel()begin....."+file );
         try {
             list = ExcelImportUtil.importExcel(file.getInputStream(), InvestmentPlan.class,importParams);
+
            if(!CollectionUtils.isEmpty(list)){
                ResponseMessage responseMessage = projectPreservationService.insertExcelByEasyPoi(list,loginId);
                return responseMessage;

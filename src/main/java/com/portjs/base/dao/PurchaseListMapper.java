@@ -2,13 +2,19 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.PurchaseList;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.entity.PurchaseListExample;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public interface PurchaseListMapper {
+    int countByExample(PurchaseListExample example);
+
+    int deleteByExample(PurchaseListExample example);
+
     int deleteByPrimaryKey(String id);
 
     int insert(PurchaseList record);
@@ -48,4 +54,16 @@ public interface PurchaseListMapper {
     PurchaseList queryPurchaseListById(@Param("id") String ids);
 
     int insertPurchaseListSelective(PurchaseList record);
+
+    List<PurchaseList> selectByExample(PurchaseListExample example);
+
+    /*PurchaseList selectByPrimaryKey(String id);*/
+
+    int updateByExampleSelective(@Param("record") PurchaseList record, @Param("example") PurchaseListExample example);
+
+    int updateByExample(@Param("record") PurchaseList record, @Param("example") PurchaseListExample example);
+
+    /*int updateByPrimaryKeySelective(PurchaseList record);
+
+    int updateByPrimaryKey(PurchaseList record);*/
 }

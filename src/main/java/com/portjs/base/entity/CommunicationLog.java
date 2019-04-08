@@ -1,9 +1,12 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.vo.CommunicationLogRecord;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class CommunicationLog implements Serializable {
+public class CommunicationLog {
     private String id;//留言
 
     private String communicationId;//沟通问题id
@@ -36,6 +39,26 @@ public class CommunicationLog implements Serializable {
 
     private String backup10;
 
+    private CommunicationLog communicationLog;
+
+    public CommunicationLog getCommunicationLog() {
+        return communicationLog;
+    }
+
+    public void setCommunicationLog(CommunicationLog communicationLog) {
+        this.communicationLog = communicationLog;
+    }
+
+    /*private List<CommunicationLog> list;
+
+            public List<CommunicationLog> getList() {
+                return list;
+            }
+
+            public void setList(List<CommunicationLog> list) {
+                this.list = list;
+            }
+        */
     private static final long serialVersionUID = 1L;
 
     public String getId() {

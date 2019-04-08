@@ -17,6 +17,7 @@ public interface PurchaseListService {
 
     ResponseMessage updateByPrimaryKeySelective(PurchaseList record);
 
+
     ResponseMessage insertPurchaseListSelective(PurchaseList record);
     //ResponseMessage updateByPrimaryKey(PurchaseList record);
     /**

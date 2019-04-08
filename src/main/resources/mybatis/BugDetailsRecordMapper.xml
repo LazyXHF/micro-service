@@ -35,6 +35,25 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectByBugId" resultMap="BaseResultMap">
+    select * from t_mgt_bug_record where  bug_id=#{bugId}
+  </select>
+
+
+  <update id="updateByBugId">
+    update t_mgt_bug_record
+    <set>
+      status="0"
+    </set>
+    where  status="3" and bug_id=#{bugId}
+  </update>
+  <update id="updateById">
+    update t_mgt_bug_record
+    <set>
+      status="1"
+    </set>
+    where id=#{id}
+  </update>
   <select id="queryBugIdByStatusAndOwnerId"  resultMap="BaseResultMap">
     select
     *
@@ -543,7 +562,7 @@
       <if test="ownerId != null">
         owner_id = #{ownerId,jdbcType=VARCHAR},
       </if>
-      <if test="isAgree != null">
+      <if test="isAgree != null and isAgree!= ''">
         is_agree = #{isAgree,jdbcType=INTEGER},
       </if>
       <if test="recordTime != null">
@@ -630,4 +649,14 @@
       and owner_id =#{owner_id,jdbcType=VARCHAR}
     </where>
   </select>
+  <!--根据BUG单id删除-->
+  <delete id="deleteByBugId" parameterType="java.lang.String">
+     delete from t_mgt_bug_record
+    where bug_id=#{id}
+  </delete>
+
+
+
+
+
 </mapper>

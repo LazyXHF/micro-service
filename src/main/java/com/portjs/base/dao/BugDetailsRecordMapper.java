@@ -107,4 +107,14 @@ public interface BugDetailsRecordMapper {
    @Update("UPDATE  t_mgt_bug_record   SET `status` = #{status}  where owner_id = #{ownerId} and bug_id=#{bugId}")
    int updateRecordStatus(@Param("status")String status,@Param("ownerId")String ownerId, @Param("bugId")String bugId);
 
+    int deleteByBugId(@Param("id") String id);
+
+    List<BugDetailsRecord> selectByBugId(@Param("bugId") String bugId);
+
+    int updateByBugId(@Param("bugId") String bugId);
+
+  @Select("select * from t_mgt_bug_record m  where m.status = '3'  and m.bug_id = #{id} ")
+  List<BugDetailsRecord> selectBugByBugIdAndStatus(@Param("id")String id);
+
+    int updateById(@Param("id") String id);
 }

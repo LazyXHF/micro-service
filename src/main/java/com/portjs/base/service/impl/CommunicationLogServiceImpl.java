@@ -7,6 +7,8 @@ import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.service.CommunicationLogService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.CommunicationLogDO;
+import com.portjs.base.vo.CommunicationLogRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -14,9 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CommunicationLogServiceImpl implements CommunicationLogService {
@@ -63,17 +63,20 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
     @Override
     public ResponseMessage queryCommunicationLog(String communicationId) {
         List<CommunicationLog> communicationLogs = communicationLogMapper.queryCommunicationLog(communicationId);
-        if(CollectionUtils.isEmpty(communicationLogs)){
+         if(CollectionUtils.isEmpty(communicationLogs)){
             return new ResponseMessage(Code.CODE_ERROR,"查询问题沟通记录信息失败！",communicationLogs);
-        }
+         }
         /*for(int i = 0 ; i<communicationLogs.size(); i++) {
-            String preMessage = communicationLogs.get(i).getPreMessage();
-            if (!StringUtils.isEmpty(preMessage)) {
-                String id = preMessage;
-                CommunicationLog communicationLog = communicationLogMapper.selectByPrimaryKey(id);
-            }
+            //String preMessage = communicationLogs.get(i).getPreMessage();
+            String id = communicationLogs.get(i).getId();
+            //if (!StringUtils.isEmpty(preMessage)) {
+                //String id = preMessage;
+                CommunicationLog communicationLog = communicationLogMapper.selectBypreMessage(id);
+                communicationLogs.add(communicationLog);
+            //}
         }*/
         return new ResponseMessage(Code.CODE_OK,"查询问题沟通记录信息成功！",communicationLogs);
+
     }
     /**
      * 查询问题沟通记录再回复信息
@@ -118,11 +121,10 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
      */
     @Override
     public ResponseMessage insertCommunicationLogSelective(CommunicationLog record) {
-        String uuid = UUID.randomUUID().toString();
         //如果前端传来了一个id的话意味着前端选中了一条言论要回复他，那么就生产一条新数据并把这个id存入新数据的preMessage
         //反之，意味着是一条新数据产生，那么除preMessage外全存进去
         if(StringUtils.isEmpty(record.getId())){
-            record.setId(uuid);
+            record.setId(UUID.randomUUID().toString());
             Date date = new Date();//获得系统时间.
             SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
             String nowTime = sdf.format(date);
@@ -143,8 +145,8 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
             return new ResponseMessage(Code.CODE_OK,"添加问题沟通记录信息成功！",i);
 
         }else {
-            record.setId(UUID.randomUUID().toString());
             record.setPreMessage(record.getId());
+            record.setId(UUID.randomUUID().toString());
             Date date = new Date();//获得系统时间.
             SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
             String nowTime = sdf.format(date);
@@ -167,4 +169,5 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
 
 
     }
+
 }

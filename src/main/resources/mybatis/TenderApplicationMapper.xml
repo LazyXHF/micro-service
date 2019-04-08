@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.TenderApplicationMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TenderApplication">
+    <id column="Id" jdbcType="VARCHAR" property="id" />
+    <result column="request_id" jdbcType="INTEGER" property="requestId" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="organization" jdbcType="VARCHAR" property="organization" />
+    <result column="dept" jdbcType="VARCHAR" property="dept" />
+    <result column="open_date" jdbcType="DATE" property="openDate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="tender_url" jdbcType="VARCHAR" property="tenderUrl" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="bid_date" jdbcType="DATE" property="bidDate" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="bid_url" jdbcType="VARCHAR" property="bidUrl" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, request_id, project_id, method, organization, dept, open_date, remark, status, 
+    tender_url, supplier, bid_date, amount, bid_url, creater, create_time, update_time, 
+    delete_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tender_application
+    where Id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tender_application
+    where Id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.TenderApplication">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tender_application (request_id, project_id, method, 
+      organization, dept, open_date, 
+      remark, status, tender_url, 
+      supplier, bid_date, amount, 
+      bid_url, creater, create_time, 
+      update_time, delete_time)
+    values (#{requestId,jdbcType=INTEGER}, #{projectId,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
+      #{organization,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR}, #{openDate,jdbcType=DATE}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{tenderUrl,jdbcType=VARCHAR}, 
+      #{supplier,jdbcType=VARCHAR}, #{bidDate,jdbcType=DATE}, #{amount,jdbcType=DECIMAL}, 
+      #{bidUrl,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TenderApplication">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tender_application
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="requestId != null">
+        request_id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
+      <if test="organization != null">
+        organization,
+      </if>
+      <if test="dept != null">
+        dept,
+      </if>
+      <if test="openDate != null">
+        open_date,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="tenderUrl != null">
+        tender_url,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="bidDate != null">
+        bid_date,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="bidUrl != null">
+        bid_url,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="requestId != null">
+        #{requestId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="organization != null">
+        #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null">
+        #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="openDate != null">
+        #{openDate,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="tenderUrl != null">
+        #{tenderUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="bidDate != null">
+        #{bidDate,jdbcType=DATE},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidUrl != null">
+        #{bidUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TenderApplication">
+    update tender_application
+    <set>
+      <if test="requestId != null">
+        request_id = #{requestId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="organization != null">
+        organization = #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null">
+        dept = #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="openDate != null">
+        open_date = #{openDate,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="tenderUrl != null">
+        tender_url = #{tenderUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="bidDate != null">
+        bid_date = #{bidDate,jdbcType=DATE},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="bidUrl != null">
+        bid_url = #{bidUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TenderApplication">
+    update tender_application
+    set request_id = #{requestId,jdbcType=INTEGER},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      organization = #{organization,jdbcType=VARCHAR},
+      dept = #{dept,jdbcType=VARCHAR},
+      open_date = #{openDate,jdbcType=DATE},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      tender_url = #{tenderUrl,jdbcType=VARCHAR},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      bid_date = #{bidDate,jdbcType=DATE},
+      amount = #{amount,jdbcType=DECIMAL},
+      bid_url = #{bidUrl,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
