@@ -3,28 +3,26 @@ package com.portjs.base.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PurchaseList {
+public class PurchaseRequest {
     private String id;
-
-    private String requestId;
 
     private String projectId;
 
-    private String name;
+    private String purchaseDept;
 
-    private String brand;
+    private String applicant;
 
-    private String model;
+    private String method;
 
-    private String spec;
+    private String agency;
 
-    private BigDecimal quantity;
+    private Date applyTime;
 
-    private BigDecimal unit;
+    private BigDecimal amount;
 
     private String desc;
 
-    private String demander;
+    private String status;
 
     private String creater;
 
@@ -42,14 +40,6 @@ public class PurchaseList {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
-
     public String getProjectId() {
         return projectId;
     }
@@ -58,52 +48,52 @@ public class PurchaseList {
         this.projectId = projectId == null ? null : projectId.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getPurchaseDept() {
+        return purchaseDept;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setPurchaseDept(String purchaseDept) {
+        this.purchaseDept = purchaseDept == null ? null : purchaseDept.trim();
     }
 
-    public String getBrand() {
-        return brand;
+    public String getApplicant() {
+        return applicant;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand == null ? null : brand.trim();
+    public void setApplicant(String applicant) {
+        this.applicant = applicant == null ? null : applicant.trim();
     }
 
-    public String getModel() {
-        return model;
+    public String getMethod() {
+        return method;
     }
 
-    public void setModel(String model) {
-        this.model = model == null ? null : model.trim();
+    public void setMethod(String method) {
+        this.method = method == null ? null : method.trim();
     }
 
-    public String getSpec() {
-        return spec;
+    public String getAgency() {
+        return agency;
     }
 
-    public void setSpec(String spec) {
-        this.spec = spec == null ? null : spec.trim();
+    public void setAgency(String agency) {
+        this.agency = agency == null ? null : agency.trim();
     }
 
-    public BigDecimal getQuantity() {
-        return quantity;
+    public Date getApplyTime() {
+        return applyTime;
     }
 
-    public void setQuantity(BigDecimal quantity) {
-        this.quantity = quantity;
+    public void setApplyTime(Date applyTime) {
+        this.applyTime = applyTime;
     }
 
-    public BigDecimal getUnit() {
-        return unit;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setUnit(BigDecimal unit) {
-        this.unit = unit;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public String getDesc() {
@@ -114,12 +104,12 @@ public class PurchaseList {
         this.desc = desc == null ? null : desc.trim();
     }
 
-    public String getDemander() {
-        return demander;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDemander(String demander) {
-        this.demander = demander == null ? null : demander.trim();
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getCreater() {

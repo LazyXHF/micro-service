@@ -109,6 +109,12 @@ public interface BugDetailsService {
      * @return
      */
     ResponseMessage updateTemporaryBugs(BugDetails details);
+    /**
+     * 修改暂存
+     * @param requestBody
+     * @return
+     */
+    ResponseMessage deleteBugSearchDealtTemporary(String requestBody);
 
     //int updateByPrimaryKeyWithBLOBs(BugDetails record);
 

@@ -247,13 +247,15 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         String backup7 = jsonObject.getString("backup7");//创建人得姓名
         String bugId = jsonObject.getString("id");//前端传来的主表id
         String remark = jsonObject.getString("remark");//从表的备注信息，前端传过来
-        Integer isAgree = jsonObject.getInteger("isAgree");//从表的同意意见
+        String isAgree = jsonObject.getString("isAgree");//从表的同意意见
+
         String backup1 = jsonObject.getString("backup1");//解决方案
         String backup2 = jsonObject.getString("backup2");//解决结果
         String fileUrl = jsonObject.getString("fileUrl");
         String backup5 = jsonObject.getString("backup5");
         String backup6 = jsonObject.getString("backup6");
         String loginAccount = jsonObject.getString("loginAccount");
+
 
 
 
@@ -277,7 +279,9 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord1.setFileUrl(fileUrl);
             bugDetailsRecord1.setBackup1(backup1);//解决结果
             bugDetailsRecord1.setBackup2(backup2);//解决方法
-            bugDetailsRecord1.setIsAgree(isAgree);
+            if(!StringUtils.isEmpty(isAgree)){
+                bugDetailsRecord1.setIsAgree(Integer.valueOf(isAgree));
+            }
             bugDetailsRecord1.setBackup6(backup6);//文件名称
             int j =     bugDetailsRecordMapper.updateBugRecordInfoss(bugDetailsRecord1);
             System.out.println(j);
@@ -292,10 +296,15 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord.setRecordTime(new Date());
             bugDetailsRecord.setBugId(bugId);
             bugDetailsRecord.setStatus(0);//代表流程下一步的状态值
-            bugDetailsRecord.setId(UUID.randomUUID().toString());
+
+                bugDetailsRecord.setId(UUID.randomUUID().toString());
+
+
 //            bugDetailsRecord.setRemark(remark);
             bugDetailsRecord.setOwnerId(ownerId);
-            bugDetailsRecord.setIsAgree(isAgree);
+            if(!StringUtils.isEmpty(isAgree)){
+                bugDetailsRecord.setIsAgree(Integer.valueOf(isAgree));
+            }
 //            bugDetailsRecord.setBackup1(backup1);
 //            bugDetailsRecord.setBackup2(backup2);
 
@@ -353,9 +362,8 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
 
             }
 
-
-            //插入一条新的流转数据到record表里
-            i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
+                //插入一条新的流转数据到record表里
+                i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
 
         }else {
 
@@ -370,7 +378,9 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord2.setFileUrl(fileUrl);
             bugDetailsRecord2.setBackup1(backup1);//解决结果
             bugDetailsRecord2.setBackup2(backup2);//解决方法
-//            bugDetailsRecord1.setIsAgree(isAgree);
+            if (!StringUtils.isEmpty(isAgree)) {
+                bugDetailsRecord2.setIsAgree(Integer.valueOf(isAgree));
+            }
             bugDetailsRecord2.setBackup6(backup6);//文件名称
             bugDetailsRecordMapper.updateBugRecordInfoss(bugDetailsRecord2);
             //1.改变属于我得record记录状态

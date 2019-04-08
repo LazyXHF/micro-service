@@ -106,6 +106,18 @@ public class BugDetailsController extends BaseController{
         return responseMessage;
     }
 
+    /**
+     * 删除暂存
+     */
+    @RequestMapping("delete-bug-search-dealt-temporary")
+    @LogInfo(methodName = "删除暂存")
+    public ResponseMessage deleteBugSearchDealtTemporary(@RequestBody String requestBody) {
+        UnifiedExceptionHandler.method=  "updateBugSearchDealtTemporary==============================";
+        responseMessage = bugDetailsService.deleteBugSearchDealtTemporary(requestBody);
+        return responseMessage;
+    }
+
+
 
 
 
@@ -252,6 +264,8 @@ public class BugDetailsController extends BaseController{
         responseMessage = bugDetailsService.selectBugSearchDealtTemporary(pageVo);
         return responseMessage;
     }
+
+
 
 
 

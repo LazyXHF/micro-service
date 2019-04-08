@@ -1,5 +1,6 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.BugDetailsMapper;
 import com.portjs.base.dao.BugDetailsRecordMapper;
@@ -67,136 +68,184 @@ public class BugDetailsServiceImpl implements BugDetailsService {
      */
     @Override
     public ResponseMessage insertSelective(BugDetails record) {
-        String uuid = UUID.randomUUID().toString();
-        record.setId(uuid);
-
-        int i = 0;
-        try {
-            if(StringUtils.isEmpty(record.getProjectId())){
-                return new ResponseMessage(Code.CODE_ERROR , "添加项目Bug信息,项目id未传");
-            }
-
-            //补充主表信息
-            record.setAcceptTime(new Date());
-            record.setBugCreateTime(new Date());
-            //result  0 未完成  1 已完成
-            record.setResult(0);
-            i = bugDetailsMapper.insertSelective(record);
-
-
-            //创建人的record
-            BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
-
-            bugDetailsRecord1.setCreaterId(record.getBackup7());
-            bugDetailsRecord1.setBackup7(record.getAccepter());
-
-            //属于人
-            bugDetailsRecord1.setOwnerId(record.getBackup7());
-            bugDetailsRecord1.setBackup8(record.getAccepter());
-
-            // Status  0 未完成   1已完成
-            bugDetailsRecord1.setStatus(1);
-
-            bugDetailsRecord1.setFileUrl(record.getFileUrl());
-            bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
-            bugDetailsRecord1.setId(UUID.randomUUID().toString());
-            bugDetailsRecord1.setBugId(uuid);
-            // accepter 提单人   创建者
-//            bugDetailsRecord.setOwnerId(record.getBackup3());
-//            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
-            bugDetailsRecord1.setBackup5("null");//身份标识 获取指派人
-            bugDetailsRecordMapper.insert(bugDetailsRecord1);
-
-
-
-
-            //指派人得record
-            BugDetailsRecord bugDetailsRecord = new BugDetailsRecord();
-           // designatedPersion姓名  Backup6提单人id    指派人  接受者
-            //Backup7提单人id   accept提单人姓名            主
-            //从    creater_id    创建人id    backUp7  创建人姓名
-            //      backUp8属于人得姓名    owner_id 属于人id
-            //创建人
-            bugDetailsRecord.setCreaterId(record.getBackup7());
-            bugDetailsRecord.setBackup7(record.getAccepter());
-
-
-            //属于人
-            bugDetailsRecord.setOwnerId(record.getBackup6());
-            bugDetailsRecord.setBackup8(record.getDesignatedPersion());
-
-            // Status  0 未完成   1已完成
-            bugDetailsRecord.setStatus(0);
-//            bugDetailsRecord.setFileUrl(record.getFileUrl());
-            bugDetailsRecord.setRecordTime(record.getBugCreateTime());
-            bugDetailsRecord.setBugId(uuid);
-            bugDetailsRecord.setId(UUID.randomUUID().toString());
-            // accepter 提单人   创建者
-//            bugDetailsRecord.setOwnerId(record.getBackup3());
-//            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
-
-
-            //指派人id
-            String ownerId = record.getBackup6();
-            //经理角色id
-            String managerId = "c2582665-3730-4b4b-896c-e50242e9471b";
-            //开发人员角色
-            String developerId = "565ecec0-6ed3-4f44-bd8d-faa6fe6c744e";
-            //测试人员角色
-            String testID = "d3bcbe76-604e-4d89-93e6-e19438daad96";
-//            //bugId
-//            String bugId = uuid;
-            //如果有指派人
-            if (!StringUtils.isEmpty(record.getBackup6())) {
-                //经理用户
-                List<TUser> managerUsers = tUserMapper.selectUserByRoleId(managerId);
-                if (CollectionUtils.isEmpty(managerUsers)) {
-                    return new ResponseMessage(Code.CODE_ERROR, "该经理角色下无用户");
+        if(record.getBackup15().equals("1")){
+            String uuid = UUID.randomUUID().toString();
+            record.setId(uuid);
+            int i = 0;
+            try {
+                if(StringUtils.isEmpty(record.getProjectId())){
+                    return new ResponseMessage(Code.CODE_ERROR , "添加项目Bug信息,项目id未传");
                 }
-                //开发人员用户
-                List<TUser> developerUsers = tUserMapper.selectUserByRoleId(developerId);
-                if (CollectionUtils.isEmpty(developerUsers)) {
-                    return new ResponseMessage(Code.CODE_ERROR, "该开发角色下无用户");
-                }
+
+                //补充主表信息
+                record.setAcceptTime(new Date());
+                record.setBugCreateTime(new Date());
+                //result  0 未完成  1 已完成
+                record.setResult(0);
+                i = bugDetailsMapper.insertSelective(record);
+
+
+                //创建人的record
+                BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
+
+                bugDetailsRecord1.setCreaterId(record.getBackup7());
+                bugDetailsRecord1.setBackup7(record.getAccepter());
+
+                //属于人
+                bugDetailsRecord1.setOwnerId(record.getBackup7());
+                bugDetailsRecord1.setBackup8(record.getAccepter());
+
+                // Status  0 未完成   1已完成
+                bugDetailsRecord1.setStatus(1);
+
+                bugDetailsRecord1.setFileUrl(record.getFileUrl());
+                bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
+                bugDetailsRecord1.setId(UUID.randomUUID().toString());
+                bugDetailsRecord1.setBugId(uuid);
+                // accepter 提单人   创建者
+    //            bugDetailsRecord.setOwnerId(record.getBackup3());
+    //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+                bugDetailsRecord1.setBackup5("null");//身份标识 获取指派人
+                bugDetailsRecordMapper.insert(bugDetailsRecord1);
+
+
+
+
+                //指派人得record
+                BugDetailsRecord bugDetailsRecord = new BugDetailsRecord();
+               // designatedPersion姓名  Backup6提单人id    指派人  接受者
+                //Backup7提单人id   accept提单人姓名            主
+                //从    creater_id    创建人id    backUp7  创建人姓名
+                //      backUp8属于人得姓名    owner_id 属于人id
+                //创建人
+                bugDetailsRecord.setCreaterId(record.getBackup7());
+                bugDetailsRecord.setBackup7(record.getAccepter());
+
+
+                //属于人
+                bugDetailsRecord.setOwnerId(record.getBackup6());
+                bugDetailsRecord.setBackup8(record.getDesignatedPersion());
+
+                // Status  0 未完成   1已完成
+                bugDetailsRecord.setStatus(0);
+    //            bugDetailsRecord.setFileUrl(record.getFileUrl());
+                bugDetailsRecord.setRecordTime(record.getBugCreateTime());
+                bugDetailsRecord.setBugId(uuid);
+                bugDetailsRecord.setId(UUID.randomUUID().toString());
+                // accepter 提单人   创建者
+    //            bugDetailsRecord.setOwnerId(record.getBackup3());
+    //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+
+
+                //指派人id
+                String ownerId = record.getBackup6();
+                //经理角色id
+                String managerId = "c2582665-3730-4b4b-896c-e50242e9471b";
+                //开发人员角色
+                String developerId = "565ecec0-6ed3-4f44-bd8d-faa6fe6c744e";
                 //测试人员角色
-                List<TUser> testUsers = tUserMapper.selectUserByRoleId(testID);
-                if (CollectionUtils.isEmpty(testUsers)) {
-                    return new ResponseMessage(Code.CODE_ERROR, "该测试角色下无用户");
-                }
-                //result  1  开发   2 经理   3 测试
-
-                //判断指派人是否是开发人员
-                for (int j = 0; j < developerUsers.size(); j++) {
-                    String developerIds = developerUsers.get(j).getId();
-                    if (developerIds.equals(ownerId)) {
-                        bugDetailsRecord.setBackup5("开发");
+                String testID = "d3bcbe76-604e-4d89-93e6-e19438daad96";
+    //            //bugId
+    //            String bugId = uuid;
+                //如果有指派人
+                if (!StringUtils.isEmpty(record.getBackup6())) {
+                    //经理用户
+                    List<TUser> managerUsers = tUserMapper.selectUserByRoleId(managerId);
+                    if (CollectionUtils.isEmpty(managerUsers)) {
+                        return new ResponseMessage(Code.CODE_ERROR, "该经理角色下无用户");
                     }
-                }
-
-                //判断指派人是否是经理
-                for (int j = 0; j < managerUsers.size(); j++) {
-                    String managerIds = managerUsers.get(j).getId();
-                    if (managerIds.equals(ownerId)) {
-                        bugDetailsRecord.setBackup5("经理");
+                    //开发人员用户
+                    List<TUser> developerUsers = tUserMapper.selectUserByRoleId(developerId);
+                    if (CollectionUtils.isEmpty(developerUsers)) {
+                        return new ResponseMessage(Code.CODE_ERROR, "该开发角色下无用户");
                     }
-                }
-                //判断指派人是否是测试人员
-                for (int j = 0; j < testUsers.size(); j++) {
-                    String testIds = testUsers.get(j).getId();
-                    if (testIds.equals(ownerId)) {
-                        bugDetailsRecord.setBackup5("测试");
+                    //测试人员角色
+                    List<TUser> testUsers = tUserMapper.selectUserByRoleId(testID);
+                    if (CollectionUtils.isEmpty(testUsers)) {
+                        return new ResponseMessage(Code.CODE_ERROR, "该测试角色下无用户");
                     }
-                }
-                int j = bugDetailsRecordMapper.insert(bugDetailsRecord);
+                    //result  1  开发   2 经理   3 测试
 
+                    //判断指派人是否是开发人员
+                    for (int j = 0; j < developerUsers.size(); j++) {
+                        String developerIds = developerUsers.get(j).getId();
+                        if (developerIds.equals(ownerId)) {
+                            bugDetailsRecord.setBackup5("开发");
+                        }
+                    }
+
+                    //判断指派人是否是经理
+                    for (int j = 0; j < managerUsers.size(); j++) {
+                        String managerIds = managerUsers.get(j).getId();
+                        if (managerIds.equals(ownerId)) {
+                            bugDetailsRecord.setBackup5("经理");
+                        }
+                    }
+                    //判断指派人是否是测试人员
+                    for (int j = 0; j < testUsers.size(); j++) {
+                        String testIds = testUsers.get(j).getId();
+                        if (testIds.equals(ownerId)) {
+                            bugDetailsRecord.setBackup5("测试");
+                        }
+                    }
+                    int j = bugDetailsRecordMapper.insert(bugDetailsRecord);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            if(i==0){
+                return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
+            }
+            return  new ResponseMessage(Code.CODE_OK,"添加成功！",i);
+        }else {
+            List<BugDetailsRecord> list = bugDetailsRecordMapper.selectByBugId(record.getId());
+            for (BugDetailsRecord record1 : list) {
+                if(record1.getStatus()==2){
+                    int i1 = bugDetailsRecordMapper.updateByBugId1(record.getId());
+                    if(i1!=1){
+                        return new ResponseMessage(Code.CODE_ERROR,"添加失败！");
+                    }
+                }
+                if(record1.getStatus()==3){
+                    int i = bugDetailsRecordMapper.updateByBugId(record.getId());
+                    if(i!=1){
+                        return new ResponseMessage(Code.CODE_ERROR,"添加失败！");
+                    }
+                }else{
+                    //创建人的record
+                    BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
+
+                    bugDetailsRecord1.setCreaterId(record.getBackup7());
+                    bugDetailsRecord1.setBackup7(record.getAccepter());
+
+                    //属于人
+                    bugDetailsRecord1.setOwnerId(record.getBackup6());
+                    bugDetailsRecord1.setBackup8(record.getDesignatedPersion());
+
+                    // Status  0 未完成   1已完成   2是暂存 3暂存未发
+                    bugDetailsRecord1.setStatus(0);
+
+                    bugDetailsRecord1.setFileUrl(record.getFileUrl());
+                    bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
+                    bugDetailsRecord1.setId(UUID.randomUUID().toString());
+                    bugDetailsRecord1.setBugId(record.getId());
+                    // accepter 提单人   创建者
+                    // bugDetailsRecord.setOwnerId(record.getBackup3());
+                    // bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+                    //调用身份识别方法
+                    String s = IdentityRecognition(record);
+
+                    bugDetailsRecord1.setBackup5(s);//身份标识 获取指派人
+                    bugDetailsRecordMapper.insert(bugDetailsRecord1);
+                }
+            }
+
+
+
+            return  new ResponseMessage(Code.CODE_OK,"添加成功！");
         }
-        if(i==0){
-            return new ResponseMessage(Code.CODE_ERROR,"添加失败！",i);
-        }
-        return  new ResponseMessage(Code.CODE_OK,"添加成功！",i);
+
     }
 
     /**
@@ -504,9 +553,38 @@ public class BugDetailsServiceImpl implements BugDetailsService {
      */
     @Override
     public ResponseMessage temporaryBugs(BugDetails record) {
-
         String uuid = UUID.randomUUID().toString();
         record.setId(uuid);
+        //首先判断是否输入指派人
+        if(!StringUtils.isEmpty(record.getBackup6())){
+            //创建人的record
+            BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
+
+            bugDetailsRecord1.setCreaterId(record.getBackup7());
+            bugDetailsRecord1.setBackup7(record.getAccepter());
+
+            //属于人
+            bugDetailsRecord1.setOwnerId(record.getBackup6());
+            bugDetailsRecord1.setBackup8(record.getDesignatedPersion());
+
+            // Status  0 未完成   1已完成   2是暂存 3暂存未发
+            bugDetailsRecord1.setStatus(3);
+
+            bugDetailsRecord1.setFileUrl(record.getFileUrl());
+            bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
+            bugDetailsRecord1.setId(UUID.randomUUID().toString());
+            bugDetailsRecord1.setBugId(uuid);
+            // accepter 提单人   创建者
+//            bugDetailsRecord.setOwnerId(record.getBackup3());
+//            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+            //调用身份识别方法
+            String s = IdentityRecognition(record);
+
+            bugDetailsRecord1.setBackup5(s);//身份标识 获取指派人
+            bugDetailsRecordMapper.insert(bugDetailsRecord1);
+        }
+
+
 
         int i = 0;
         if (StringUtils.isEmpty(record.getProjectId())) {
@@ -544,9 +622,12 @@ public class BugDetailsServiceImpl implements BugDetailsService {
             bugDetailsRecordMapper.insert(bugDetailsRecord1);
 
 
+
+
             if (i == 0) {
                 return new ResponseMessage(Code.CODE_ERROR, "添加失败！", i);
             }
+
             return new ResponseMessage(Code.CODE_OK, "添加成功！", i);
 
 
@@ -614,8 +695,11 @@ public class BugDetailsServiceImpl implements BugDetailsService {
         // accepter 提单人   创建者
 //            bugDetailsRecord.setOwnerId(record.getBackup3());
 //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+
         bugDetailsRecord1.setBackup5("null");//身份标识 获取指派人
+        if(!record.getBackup15().equals("2")){
         bugDetailsRecordMapper.insert(bugDetailsRecord1);
+        }
 
 
         if (i == 0) {
@@ -623,5 +707,91 @@ public class BugDetailsServiceImpl implements BugDetailsService {
         }
         return new ResponseMessage(Code.CODE_OK, "添加成功！", i);
 
+    }
+
+    /**
+     * 删除暂存
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage deleteBugSearchDealtTemporary(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        JSONArray ids = jsonObject.getJSONArray("ids");
+        //根据id删除主表记录
+        /*List list = new ArrayList();
+        list.add(id);*/
+        int i = bugDetailsMapper.deleteByPrimaryKey((List)ids);
+        if(i==0){
+            return new ResponseMessage(Code.CODE_ERROR, "删除失败！");
+        }
+        //然后根据主表id删除从表
+        for (Object id : ids) {
+            int i1 = bugDetailsRecordMapper.deleteByBugId(id.toString());
+            if(i1==0){
+                return new ResponseMessage(Code.CODE_ERROR, "删除失败！");
+            }
+        }
+
+
+
+
+        return new ResponseMessage(Code.CODE_OK, "删除成功！");
+    }
+
+    private String IdentityRecognition(BugDetails record) {
+        // 指派人id
+        String ownerId = record.getBackup6();
+        // 经理角色id
+        String managerId = "c2582665-3730-4b4b-896c-e50242e9471b";
+        // 开发人员角色
+        String developerId = "565ecec0-6ed3-4f44-bd8d-faa6fe6c744e";
+        // 测试人员角色
+        String testID = "d3bcbe76-604e-4d89-93e6-e19438daad96";
+        //            //bugId
+        //            String bugId = uuid;
+        // 如果有指派人
+        if (!StringUtils.isEmpty(record.getBackup6())) {
+          // 经理用户
+          List<TUser> managerUsers = tUserMapper.selectUserByRoleId(managerId);
+          if (CollectionUtils.isEmpty(managerUsers)) {
+            return "该经理角色下无用户";
+          }
+          // 开发人员用户
+          List<TUser> developerUsers = tUserMapper.selectUserByRoleId(developerId);
+          if (CollectionUtils.isEmpty(developerUsers)) {
+            return "该开发角色下无用户";
+          }
+          // 测试人员角色
+          List<TUser> testUsers = tUserMapper.selectUserByRoleId(testID);
+          if (CollectionUtils.isEmpty(testUsers)) {
+            return "该测试角色下无用户";
+          }
+          // result  1  开发   2 经理   3 测试
+
+          // 判断指派人是否是开发人员
+          for (int j = 0; j < developerUsers.size(); j++) {
+            String developerIds = developerUsers.get(j).getId();
+            if (developerIds.equals(ownerId)) {
+              return "开发";
+            }
+          }
+
+          // 判断指派人是否是经理
+          for (int j = 0; j < managerUsers.size(); j++) {
+            String managerIds = managerUsers.get(j).getId();
+            if (managerIds.equals(ownerId)) {
+              return "经理";
+            }
+          }
+          // 判断指派人是否是测试人员
+          for (int j = 0; j < testUsers.size(); j++) {
+            String testIds = testUsers.get(j).getId();
+            if (testIds.equals(ownerId)) {
+              return "测试";
+            }
+          }
+        }
+        return null;
     }
 }
