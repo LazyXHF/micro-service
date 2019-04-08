@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.PurchaseReviewMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.PurchaseReview">
+    <id column="Id" jdbcType="VARCHAR" property="id" />
+    <result column="request_id" jdbcType="VARCHAR" property="requestId" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="purchase_dept" jdbcType="VARCHAR" property="purchaseDept" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="submit_time" jdbcType="DATE" property="submitTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, request_id, project_id, purchase_dept, method, supplier, amount, submit_time, 
+    remark, file_url, status, creater, create_time, update_time, delete_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from purchase_review
+    where Id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from purchase_review
+    where Id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.PurchaseReview">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into purchase_review (request_id, project_id, purchase_dept, 
+      method, supplier, amount, 
+      submit_time, remark, file_url, 
+      status, creater, create_time, 
+      update_time, delete_time)
+    values (#{requestId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, 
+      #{method,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{submitTime,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.PurchaseReview">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into purchase_review
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="requestId != null">
+        request_id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="purchaseDept != null">
+        purchase_dept,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="fileUrl != null">
+        file_url,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="requestId != null">
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDept != null">
+        #{purchaseDept,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.PurchaseReview">
+    update purchase_review
+    <set>
+      <if test="requestId != null">
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDept != null">
+        purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.PurchaseReview">
+    update purchase_review
+    set request_id = #{requestId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      submit_time = #{submitTime,jdbcType=DATE},
+      remark = #{remark,jdbcType=VARCHAR},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
