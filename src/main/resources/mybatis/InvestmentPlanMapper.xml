@@ -369,8 +369,8 @@
       <if test="constructionMode!=null  and constructionMode!=''">
         and construction_mode = #{constructionMode,jdbcType=VARCHAR}
       </if>
-      <if test="amount!=null  and amount!=''">
-        and amount = #{amount,jdbcType=DECIMAL}
+      <if test="amount!=null">
+        and amount = #{amount}
       </if>
     </where>
   </select>

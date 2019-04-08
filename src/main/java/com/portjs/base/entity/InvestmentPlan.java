@@ -3,6 +3,8 @@ package com.portjs.base.entity;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.portjs.base.util.BaseEntity;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -29,7 +31,7 @@ public class InvestmentPlan extends BaseEntity {
     @Excel(name = "投资主体", orderNum = "5")
     private String investor;
 
-    @Excel(name = "投资金额(万元)", orderNum = "6")
+    @Excel(name = "投资金额(万元)", orderNum = "6" ,type=10)
     private BigDecimal amount;
 
 
@@ -56,9 +58,12 @@ public class InvestmentPlan extends BaseEntity {
     public void setAmount(BigDecimal amount) {
         if(amount==null){
             BigDecimal decimal = new BigDecimal(0);
-            amount.add(decimal);
+            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            this.amount = decimal;
+        }else {
+            this.amount = amount;
         }
-        this.amount = amount;
+
     }
 
     public int getRowNum() {

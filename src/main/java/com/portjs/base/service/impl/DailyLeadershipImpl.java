@@ -279,7 +279,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
     public ResponseMessage selectLeader(String requestBody) {
         JSONObject requestJson = JSONObject.parseObject(requestBody);
         String visualId = requestJson.getString("visualId");//可见人id
-        String type =  requestJson.getString("type");//可见人id
+        String type =  requestJson.getString("type");//类型
 
         TXietongUserMinisterRelationExample example1 = new TXietongUserMinisterRelationExample();
         TXietongUserMinisterRelationExample.Criteria criteria2 = example1.createCriteria();

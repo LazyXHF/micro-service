@@ -36,8 +36,10 @@
   </select>
 
   <select id="selectByBugId" resultMap="BaseResultMap">
-    select * from t_mgt_bug_record where status="2" and bug_id=#{bugId}
+    select * from t_mgt_bug_record where  bug_id=#{bugId}
   </select>
+
+
   <update id="updateByBugId">
     update t_mgt_bug_record
     <set>
@@ -45,12 +47,12 @@
     </set>
     where  status="3" and bug_id=#{bugId}
   </update>
-  <update id="updateByBugId1">
+  <update id="updateById">
     update t_mgt_bug_record
     <set>
       status="1"
     </set>
-    where  status="2" and bug_id=#{bugId}
+    where id=#{id}
   </update>
   <select id="queryBugIdByStatusAndOwnerId"  resultMap="BaseResultMap">
     select
@@ -652,4 +654,9 @@
      delete from t_mgt_bug_record
     where bug_id=#{id}
   </delete>
+
+
+
+
+
 </mapper>

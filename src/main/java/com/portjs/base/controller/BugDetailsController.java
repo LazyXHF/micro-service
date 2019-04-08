@@ -3,6 +3,7 @@ package com.portjs.base.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.BugDetails;
+import com.portjs.base.entity.BugDetailsRecord;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.BugDetailsRecordService;
 import com.portjs.base.service.BugDetailsService;
@@ -150,7 +151,18 @@ public class BugDetailsController extends BaseController{
         responseMessage = bugDetailsService.insertSelective(record);
         return responseMessage;
     }
-
+    /**
+     * 暂存后再提交
+     * @param record
+     * @return
+     */
+    @RequestMapping("submission")
+    @LogInfo(methodName = "暂存后再提交")
+    public ResponseMessage submission(@RequestBody BugDetails record,@RequestBody BugDetails details) {
+        UnifiedExceptionHandler.method=  "updateBugSearchDealtTemporary==============================";
+        responseMessage = bugDetailsService.updateTemporaryBugs(details);
+        return responseMessage;
+    }
 
 
     /**

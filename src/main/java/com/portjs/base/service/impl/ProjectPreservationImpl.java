@@ -540,6 +540,10 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) throws Exception{
 
         for (InvestmentPlan plan : list) {
+            BigDecimal decimal = new BigDecimal(0);
+            if(plan.getAmount()==decimal){
+                return new ResponseMessage(Code.CODE_ERROR, "导入失败");
+            }
             String id = String.valueOf(IDUtils.genItemId());
 
 

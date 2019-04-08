@@ -14,6 +14,7 @@ import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.BugSearchDO;
 import com.portjs.base.vo.PageVo;
 import com.portjs.base.vo.Project;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -68,6 +69,7 @@ public class BugDetailsServiceImpl implements BugDetailsService {
      */
     @Override
     public ResponseMessage insertSelective(BugDetails record) {
+        //backup15=1时是新增
         if(record.getBackup15().equals("1")){
             String uuid = UUID.randomUUID().toString();
             record.setId(uuid);
@@ -199,20 +201,31 @@ public class BugDetailsServiceImpl implements BugDetailsService {
             }
             return  new ResponseMessage(Code.CODE_OK,"添加成功！",i);
         }else {
+
+
+            //没有指派人的时候
             List<BugDetailsRecord> list = bugDetailsRecordMapper.selectByBugId(record.getId());
-            for (BugDetailsRecord record1 : list) {
-                if(record1.getStatus()==2){
-                    int i1 = bugDetailsRecordMapper.updateByBugId1(record.getId());
-                    if(i1!=1){
-                        return new ResponseMessage(Code.CODE_ERROR,"添加失败！");
-                    }
-                }
+      for (BugDetailsRecord record1 : list) {
+        // 判断审核状态
+        if (record1.getStatus() == 2) {
+          // 修改当前流程状态为1   改变自身从表的状态
+          int i1 = bugDetailsRecordMapper.updateById(record1.getId());
+          if (i1 != 1) {
+            return new ResponseMessage(Code.CODE_ERROR, "添加失败！");
+          }
+        }
+
                 if(record1.getStatus()==3){
+                    //改变指派人的从表状态
                     int i = bugDetailsRecordMapper.updateByBugId(record.getId());
                     if(i!=1){
                         return new ResponseMessage(Code.CODE_ERROR,"添加失败！");
                     }
-                }else{
+
+                }
+
+                // 暂存提交时没有审核人，创建指派人
+                if (record1.getStatus()!=2&&record1.getStatus()!=3){
                     //创建人的record
                     BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
 
@@ -555,6 +568,7 @@ public class BugDetailsServiceImpl implements BugDetailsService {
     public ResponseMessage temporaryBugs(BugDetails record) {
         String uuid = UUID.randomUUID().toString();
         record.setId(uuid);
+
         //首先判断是否输入指派人
         if(!StringUtils.isEmpty(record.getBackup6())){
             //创建人的record
@@ -567,7 +581,7 @@ public class BugDetailsServiceImpl implements BugDetailsService {
             bugDetailsRecord1.setOwnerId(record.getBackup6());
             bugDetailsRecord1.setBackup8(record.getDesignatedPersion());
 
-            // Status  0 未完成   1已完成   2是暂存 3暂存未发
+            // Status  0 未完成   1已完成   2是暂存  3相对于指派人
             bugDetailsRecord1.setStatus(3);
 
             bugDetailsRecord1.setFileUrl(record.getFileUrl());
@@ -583,7 +597,6 @@ public class BugDetailsServiceImpl implements BugDetailsService {
             bugDetailsRecord1.setBackup5(s);//身份标识 获取指派人
             bugDetailsRecordMapper.insert(bugDetailsRecord1);
         }
-
 
 
         int i = 0;
@@ -660,8 +673,7 @@ public class BugDetailsServiceImpl implements BugDetailsService {
      */
     @Override
     public ResponseMessage updateTemporaryBugs(BugDetails record) {
-//        String uuid = UUID.randomUUID().toString();
-//        record.setId(uuid);
+
 
         int i = 0;
         if (StringUtils.isEmpty(record.getProjectId())) {
@@ -673,34 +685,71 @@ public class BugDetailsServiceImpl implements BugDetailsService {
         //result  0 未完成  1 已完成
         record.setResult(0);
         i = bugDetailsMapper.updateByPrimaryKeySelective(record);
+        //判断是否有指派人
+        List<BugDetailsRecord> list = bugDetailsRecordMapper.selectBugByBugIdAndStatus(record.getId());
+        if (CollectionUtils.isEmpty(list)){
+            if (!StringUtils.isEmpty(record.getBackup6())){
+                //创建人的record
+                BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
+                bugDetailsRecord1.setCreaterId(record.getBackup7());
+                bugDetailsRecord1.setBackup7(record.getAccepter());
+                bugDetailsRecord1.setBugId(record.getId());
 
+                //属于人
+                bugDetailsRecord1.setOwnerId(record.getBackup6());
+                bugDetailsRecord1.setBackup8(record.getDesignatedPersion());
+                // Status  0 未完成   1已完成   2是暂存  3暂存未提交
+                bugDetailsRecord1.setStatus(3);
 
-        //创建人的record
-        BugDetailsRecord bugDetailsRecord1 = new BugDetailsRecord();
-
-        bugDetailsRecord1.setCreaterId(record.getBackup7());
-        bugDetailsRecord1.setBackup7(record.getAccepter());
-
-        //属于人
-        bugDetailsRecord1.setOwnerId(record.getBackup7());
-        bugDetailsRecord1.setBackup8(record.getAccepter());
-
-        // Status  0 未完成   1已完成   2是暂存
-        bugDetailsRecord1.setStatus(2);
-
-        bugDetailsRecord1.setFileUrl(record.getFileUrl());
-        bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
-        bugDetailsRecord1.setId(UUID.randomUUID().toString());
+                bugDetailsRecord1.setFileUrl(record.getFileUrl());
+                bugDetailsRecord1.setRecordTime(record.getBugCreateTime());
+                bugDetailsRecord1.setId(UUID.randomUUID().toString());
 //        bugDetailsRecord1.setBugId(uuid);
-        // accepter 提单人   创建者
+                // accepter 提单人   创建者
 //            bugDetailsRecord.setOwnerId(record.getBackup3());
 //            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
 
-        bugDetailsRecord1.setBackup5("null");//身份标识 获取指派人
-        if(!record.getBackup15().equals("2")){
-        bugDetailsRecordMapper.insert(bugDetailsRecord1);
+                bugDetailsRecord1.setBackup5(IdentityRecognition(record));//身份标识 获取指派人
+
+                bugDetailsRecordMapper.insert(bugDetailsRecord1);
+            }
+        }else {
+
+            List<BugDetailsRecord> bugDetailsRecord1 = bugDetailsRecordMapper.selectByBugId(record.getId());
+
+            for (BugDetailsRecord bugDetailsRecord : bugDetailsRecord1) {
+                if (bugDetailsRecord.getStatus() == 3){
+//                    bugDetailsRecord.setId();
+//                    bugDetailsRecord.setBugId(list.get(0).getId());
+                    bugDetailsRecord.setCreaterId(record.getBackup7());
+                    bugDetailsRecord.setBackup7(record.getAccepter());
+                    //属于
+                    bugDetailsRecord.setOwnerId(record.getBackup6());
+                    bugDetailsRecord.setBackup8(record.getDesignatedPersion());
+                    // Status  0 未完成  1已完成   2是暂存  3暂存未提交
+                    bugDetailsRecord.setStatus(3);
+                    bugDetailsRecord.setFileUrl(record.getFileUrl());
+                    bugDetailsRecord.setRecordTime(record.getBugCreateTime());
+//                    bugDetailsRecord.setId(UUID.randomUUID().toString());
+//        bugDetailsRecord1.setBugIduuid);
+                    // accepter 提单人   创建者
+//            bugDetailsRecord.setOwnerId(record.getBackup3());
+//            bugDetailsRecord.setStatus(record.getResult());//添加成功之后，所处的审批状态
+                    bugDetailsRecord.setBackup5(IdentityRecognition(record));//身份标识 获取指派人
+                    int q     =  bugDetailsRecordMapper.updateByPrimaryKey(bugDetailsRecord);
+                    System.out.println(q +"---------------------------------------------------");
+                }
+
+            }
+
+
+
+
         }
 
+
+
+//
 
         if (i == 0) {
             return new ResponseMessage(Code.CODE_ERROR, "添加失败！", i);
