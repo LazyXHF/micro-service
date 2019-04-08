@@ -78,10 +78,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
         JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
         String tTodoId = jsonObject.getString("tTodoId");
-
-
-
-
+        String projectName = jsonObject.getString("projectName");//项目名字
 
         if(StringUtils.isEmpty(status)){
             return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);
@@ -233,7 +230,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             TTodo todo = new TTodo();
             todo.setId(String.valueOf(IDUtils.genItemId()));
             todo.setCurrentstepId(tWorkflowstep.getId());
-            todo.setStepDesc("项目负责人提交");
+            todo.setStepDesc(projectName+"的立项批复流程等待您的处理");
             todo.setRelateddomain("项目立项");
             todo.setRelateddomainId(application.getId());
             todo.setSenderId(userId);
@@ -284,6 +281,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             String action  = jsonObject.getString("action_commont");//处理意见
             String todoId =  jsonObject.getString("todoId");//当前步骤待办id
             String fistId =  jsonObject.getString("fistId");//项目负责人id
+            String projectName = jsonObject.getString("projectName");//项目名字
 
              //将当前对应流程关闭
             TWorkflowstep workflowstep = new TWorkflowstep();
@@ -318,7 +316,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     TTodo todo = new TTodo();
                     todo.setId(String.valueOf(IDUtils.genItemId()));
                     todo.setCurrentstepId(workflowstep_id);
-                    todo.setStepDesc(stepDesc1+"退回");
+                    todo.setStepDesc(projectName+"的立项批复流程等待您的处理");
                     todo.setRelateddomain("项目立项");
                     todo.setRelateddomainId(application_id);
                     todo.setSenderId(user_id);
@@ -340,15 +338,17 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     if(i1!=1){
                         return new ResponseMessage(Code.CODE_ERROR,"退回失败");
                     }
+
+                    //改变当前立项表状态为退回
+                    ProjectApplication application = new ProjectApplication();
+                    application.setId(application_id);
+                    application.setStatus("8");
+                    int i11 = applicationMapper.updateByPrimaryKeySelective(application);
+                    if(i11==0){
+                        return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+                    }
                 }
-            //改变当前立项表状态为退回
-            ProjectApplication application = new ProjectApplication();
-            application.setId(application_id);
-            application.setStatus("8");
-            int i1 = applicationMapper.updateByPrimaryKeySelective(application);
-            if(i1==0){
-                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-            }
+
 
 
             //新增一条退回流程

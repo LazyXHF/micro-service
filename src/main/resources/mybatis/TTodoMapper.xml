@@ -103,6 +103,9 @@
     from t_todo
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="queryNotReviewProject" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from t_todo   where relateddomain_id = #{id,jdbcType=VARCHAR} and `status` ="0"
+  </select>
   <select id="selectBySomething" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TTodo" >
     select
     <include refid="Base_Column_List" />

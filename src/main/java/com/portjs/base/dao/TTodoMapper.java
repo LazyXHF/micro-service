@@ -34,5 +34,7 @@ public interface TTodoMapper {
 
     List<TTodo> selectBySomething(TTodo record);
 
+    List<TTodo> queryNotReviewProject(@Param("id") String id);
+
     int  selectCountBySomething(TTodo record);
 }
