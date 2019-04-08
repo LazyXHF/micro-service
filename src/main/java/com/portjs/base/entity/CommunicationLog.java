@@ -41,6 +41,16 @@ public class CommunicationLog {
 
     private CommunicationLog communicationLog;
 
+    private List list;
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
+    }
+
     public CommunicationLog getCommunicationLog() {
         return communicationLog;
     }

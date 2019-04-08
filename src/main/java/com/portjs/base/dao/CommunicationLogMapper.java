@@ -54,4 +54,8 @@ public interface CommunicationLogMapper {
      * @return
      */
     int deleteCommunicationLogPreMessage(@Param("preMessage") String preMessage);
+
+    List<CommunicationLog> selectDendrogram(@Param("communicationId") String communicationId);
+
+    List<CommunicationLog> selectByPreMessage(@Param("id") String id);
 }

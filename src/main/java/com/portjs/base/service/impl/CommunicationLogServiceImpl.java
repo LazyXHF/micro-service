@@ -3,12 +3,14 @@ package com.portjs.base.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.CommunicationLogMapper;
 import com.portjs.base.entity.CommunicationLog;
+import com.portjs.base.entity.MenuTree;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.service.CommunicationLogService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.CommunicationLogDO;
 import com.portjs.base.vo.CommunicationLogRecord;
+import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -62,10 +64,24 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
      */
     @Override
     public ResponseMessage queryCommunicationLog(String communicationId) {
-        List<CommunicationLog> communicationLogs = communicationLogMapper.queryCommunicationLog(communicationId);
+
+        //查询回复父节点
+        List<CommunicationLog> communicationLogs = communicationLogMapper.selectDendrogram(communicationId);
+        LinkedList linkedList = new LinkedList();
+        for (CommunicationLog o : communicationLogs) {
+            //查询回复子节点
+            List<CommunicationLog> communicationLogList = communicationLogMapper.selectByPreMessage(o.getId());
+            communicationLogList.add(o);
+            MenuTree menuTree = new MenuTree();
+            MenuTree tree = getMenuTree(communicationLogList, menuTree);
+            linkedList.add(tree);
+        }
+
+
+        /*List<CommunicationLog> communicationLogs = communicationLogMapper.queryCommunicationLog(communicationId);
          if(CollectionUtils.isEmpty(communicationLogs)){
             return new ResponseMessage(Code.CODE_ERROR,"查询问题沟通记录信息失败！",communicationLogs);
-         }
+         }*/
         /*for(int i = 0 ; i<communicationLogs.size(); i++) {
             //String preMessage = communicationLogs.get(i).getPreMessage();
             String id = communicationLogs.get(i).getId();
@@ -75,8 +91,29 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
                 communicationLogs.add(communicationLog);
             //}
         }*/
-        return new ResponseMessage(Code.CODE_OK,"查询问题沟通记录信息成功！",communicationLogs);
+        return new ResponseMessage(Code.CODE_OK,"查询问题沟通记录信息成功！",linkedList);
 
+    }
+
+    //获得指标树内部方法
+    private MenuTree getMenuTree(List<CommunicationLog> logs, MenuTree menuTree) {
+        Map<String, MenuTree> trees = new LinkedHashMap<>();
+        for (CommunicationLog log : logs) {
+            trees.put(log.getId(), new MenuTree(log));
+        }
+        for (Map.Entry<String, MenuTree> entry : trees.entrySet()) {
+            if (!StringUtil.isNullOrEmpty(entry.getValue().getParent_id())) {
+                try {
+                    trees.get(entry.getValue().getParent_id()).getChildren().add(entry.getValue());
+                } catch (Exception e) {
+                    System.out.println(entry.getKey() + "   " + entry.getValue() + "   " + entry.getValue().getParent_id());
+                }
+
+            } else {
+                menuTree = entry.getValue();
+            }
+        }
+        return menuTree;
     }
     /**
      * 查询问题沟通记录再回复信息
