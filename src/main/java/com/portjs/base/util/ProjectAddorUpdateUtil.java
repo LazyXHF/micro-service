@@ -92,12 +92,12 @@ public class ProjectAddorUpdateUtil {
                 }
                 //如果状态的长度没有发生变化了   说明替换了  用buffer
                 if (status.length() == buffer.toString().length()) {
-                    projectMapper.updateProjectById(projectId, schedule, buffer.toString());
+                    projectMapper.updateProjectById(projectId,projectCode, schedule, buffer.toString());
                 }
                 //如果变了，说明追加了用新的
                 else {
                     String newStatus = buffer2.toString();
-                    projectMapper.updateProjectById(projectId, schedule, newStatus);
+                    projectMapper.updateProjectById(projectId,projectCode, schedule, newStatus);
                 }
             }
 

@@ -524,7 +524,8 @@
   </select>
   <update id="updateProjectById" parameterType="String" >
     update project SET
-     schedule = #{schedule,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      schedule = #{schedule,jdbcType=VARCHAR},
       project_stage = #{schedule,jdbcType=VARCHAR},
       project_status = #{status,jdbcType=VARCHAR}
     where id = #{projectId,jdbcType=VARCHAR}
@@ -555,6 +556,7 @@
   <select id="queryProjectAllInfo" resultMap="BaseResultMap2" parameterType="String">
     select * from project a
     <where>
+      project_status like "%Ab1%"
     <if test="projectCode !=null and projectCode!=''">
       and a.project_code like "%" #{projectCode} "%"
     </if>

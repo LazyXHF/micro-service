@@ -600,12 +600,25 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 if(i!=1){
                     return new ResponseMessage(Code.CODE_ERROR, "会议删除失败");
                 }
+                //删除对应领导
+                TXietongAgendaHumanExample example = new TXietongAgendaHumanExample();
+                TXietongAgendaHumanExample.Criteria criteria = example.createCriteria();
+                criteria.andAgendaIdEqualTo(agenda_id.toString());
+                TXietongAgendaHuman human = new TXietongAgendaHuman();
+                human.setIsdelete(0);
+                int i1 = agendaHumanMapper.updateByExampleSelective(human, example);
+                if(i1!=1){
+                    return new ResponseMessage(Code.CODE_ERROR, "会议删除失败");
+                }
+
+                //查询对应审核表
                 TXietongAgendaProcessExample processExample = new TXietongAgendaProcessExample();
                 TXietongAgendaProcessExample.Criteria processCriteria = processExample.createCriteria();
                 processCriteria.andAgendaIdEqualTo(agenda_id.toString());
                 List<TXietongAgendaProcess> tXietongAgendaProcesses = agendaProcessMapper.selectByExample(processExample);
                 for (TXietongAgendaProcess process : tXietongAgendaProcesses) {
                     process.setIsdelete(0);
+                    //删除审核表
                     int update = agendaProcessMapper.updateByExampleSelective(process, processExample);
                     if(update!=1){
                         return new ResponseMessage(Code.CODE_ERROR, "审核表删除失败");
@@ -615,6 +628,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                     recordCriteria.andAgendaProcessIdEqualTo(process.getId());
                     TXietongAgendaRecord record = new TXietongAgendaRecord();
                     record.setIsdelete(0);
+                    //删除流程表
                     int byExample = agendaRecordMapper.updateByExampleSelective(record, recordExample);
                     if(byExample==0){
                         return new ResponseMessage(Code.CODE_ERROR, "流程表删除失败");
@@ -2005,6 +2019,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                   TXietongAgendaHumanExample.Criteria humanCriteria = humanExample.createCriteria();
                   humanCriteria.andAgendaIdEqualTo(agenda.getId());
                   List<TXietongAgendaHuman> agendaHumen = agendaHumanMapper.selectByExample(humanExample);
+
                   agenda.setList(agendaHumen);
                     long diff = (agenda.getBeginTime().getTime() - e.parse(begin_time).getTime()) / (24 * 60 * 60 * 1000);//这样得到的差值是微秒级别
                     if (j == diff) {
@@ -2042,53 +2057,55 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 }
             }
             Map map1 = new TreeMap();
+            Map map3 = new TreeMap();
             for (Object participant_id : participant_ids) {
                 String name = userMapper.selectById(participant_id.toString());
-                map1.put(name + "~~" + participant_id, map);
+                map.forEach((key, value) -> {
+                    List list = (ArrayList)value;
+                    if(CollectionUtils.isEmpty(list)){
+                        try {
+                            Map map2 = DailyLeadershipImpl.selectMap(end_time, begin_time);
+                            map3.put(name + "~~" + participant_id, map2);
+
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                    }else {
+                        for (Object o : list) {
+                            TXietongAgenda agenda = (TXietongAgenda)o;
+                            List<TXietongAgendaHuman> list1 = agenda.getList();
+                            for (TXietongAgendaHuman tXietongAgendaHuman : list1) {
+                                if(participant_id.equals(tXietongAgendaHuman.getParticipantId())){
+                                    map1.put(name + "~~" + participant_id, map);
+                                }else {
+                                    try {
+                                        Map map2 = DailyLeadershipImpl.selectMap(end_time, begin_time);
+                                        map1.put(name + "~~" + participant_id, map2);
+
+                                    } catch (Exception e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+
+                });
+
                 //map1.put(participant_id.toString(),map);
             }
+
             if (!CollectionUtils.isEmpty(map1)) {
                 return new ResponseMessage(Code.CODE_OK, "查询成功", map1);
+            }else {
+                return new ResponseMessage(Code.CODE_OK, "查询成功", map3);
             }
-            return new ResponseMessage(Code.CODE_ERROR, "查询失败");
+            /*return new ResponseMessage(Code.CODE_ERROR, "查询失败");*/
 
         }else {
-            Map map = new TreeMap();
-            SimpleDateFormat e = new SimpleDateFormat("yyyy-MM-dd");
-            //得到输入开始时间与结束时间的差
-            long a = (e.parse(end_time).getTime() - e.parse(begin_time).getTime()) / (24 * 60 * 60 * 1000) + 1;
-            for (int j = 0; j < a; j++) {
-                List list1 = new ArrayList();
-                Calendar rightNow = Calendar.getInstance();
-                rightNow.setTime(e.parse(begin_time));
-                rightNow.add(Calendar.DAY_OF_YEAR, j);
-                Date dt1 = rightNow.getTime();
-                switch (rightNow.get(Calendar.DAY_OF_WEEK) - 1) {
-                    case 0:
-                        map.put(e.format(dt1) + "~~" + "星期日", list1);
-                        break;
-                    case 1:
-                        map.put(e.format(dt1) + "~~" + "星期一", list1);
-                        break;
-                    case 2:
-                        map.put(e.format(dt1) + "~~" + "星期二", list1);
-                        break;
-                    case 3:
-                        map.put(e.format(dt1) + "~~" + "星期三", list1);
-                        break;
-                    case 4:
-                        map.put(e.format(dt1) + "~~" + "星期四", list1);
-                        break;
-                    case 5:
-                        map.put(e.format(dt1) + "~~" + "星期五", list1);
-                        break;
-                    case 6:
-                        map.put(e.format(dt1) + "~~" + "星期六", list1);
-                        break;
-                    default:
-                        map.put("error", "服务器异常");
-                }
-            }
+            Map map = DailyLeadershipImpl.selectMap(end_time, begin_time);
             Map map1 = new TreeMap();
             for (Object participant_id : participant_ids) {
                 String name = userMapper.selectById(participant_id.toString());
@@ -2121,6 +2138,45 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
         return new ResponseMessage(Code.CODE_OK, "查询成功", records);*/
     }
 
+    private  static Map selectMap(String end_time, String begin_time)throws Exception{
+        Map map = new TreeMap();
+        SimpleDateFormat e = new SimpleDateFormat("yyyy-MM-dd");
+        //得到输入开始时间与结束时间的差
+        long a = (e.parse(end_time).getTime() - e.parse(begin_time).getTime()) / (24 * 60 * 60 * 1000) + 1;
+        for (int j = 0; j < a; j++) {
+            List list1 = new ArrayList();
+            Calendar rightNow = Calendar.getInstance();
+            rightNow.setTime(e.parse(begin_time));
+            rightNow.add(Calendar.DAY_OF_YEAR, j);
+            Date dt1 = rightNow.getTime();
+            switch (rightNow.get(Calendar.DAY_OF_WEEK) - 1) {
+                case 0:
+                    map.put(e.format(dt1) + "~~" + "星期日", list1);
+                    break;
+                case 1:
+                    map.put(e.format(dt1) + "~~" + "星期一", list1);
+                    break;
+                case 2:
+                    map.put(e.format(dt1) + "~~" + "星期二", list1);
+                    break;
+                case 3:
+                    map.put(e.format(dt1) + "~~" + "星期三", list1);
+                    break;
+                case 4:
+                    map.put(e.format(dt1) + "~~" + "星期四", list1);
+                    break;
+                case 5:
+                    map.put(e.format(dt1) + "~~" + "星期五", list1);
+                    break;
+                case 6:
+                    map.put(e.format(dt1) + "~~" + "星期六", list1);
+                    break;
+                default:
+                    map.put("error", "服务器异常");
+            }
+        }
+        return map;
+    }
     /**
      * 根据部门id查询部门人员
      *

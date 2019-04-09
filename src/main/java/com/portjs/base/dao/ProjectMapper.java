@@ -38,7 +38,7 @@ public interface ProjectMapper {
 
     Project queryProjectById(@Param("projectId") String projectId);
 
-    void updateProjectById(@Param("projectId") String projectId,@Param("schedule") String schedule,@Param("status") String status);
+    void updateProjectById(@Param("projectId") String projectId,@Param("projectCode") String projectCode,@Param("schedule") String schedule,@Param("status") String status);
 
     List<Project> queryProjectAllInfo(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("organization") String organization,@Param("projectType") String projectType,@Param("creatorName") String creatorName,@Param("schedule") String schedule,@Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
 
