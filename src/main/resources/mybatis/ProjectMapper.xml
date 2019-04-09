@@ -608,4 +608,9 @@
   select a.* ,b.schedule as AllSchedule,b.node    from project a LEFT  JOIN  business_configuration  b on a.project_type=b.project_type
   where a.id=#{id} and a.project_type=#{projectType}
   </select>
+
+  <select id=" queryProjectDetails2" resultMap="BaseResultMap3">
+    select a.* ,b.schedule as AllSchedule,b.node    from project a ,business_configuration  b
+    where a.id=#{id} and b.project_type=#{projectType}
+  </select>
 </mapper>

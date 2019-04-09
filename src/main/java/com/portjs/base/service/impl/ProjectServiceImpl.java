@@ -1,8 +1,10 @@
 package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.portjs.base.dao.BusinessConfigurationMapper;
 import com.portjs.base.dao.ProjectMapper;
 import com.portjs.base.dao.TUserMapper;
+import com.portjs.base.entity.BusinessConfiguration;
 import com.portjs.base.entity.Project;
 import com.portjs.base.service.ProjectService;
 import com.portjs.base.util.Code;
@@ -27,6 +29,8 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMapper projectMapper;
     @Autowired
     TUserMapper userMapper;
+    @Autowired
+    BusinessConfigurationMapper businessConfigurationMapper;
     @Override
     public ResponseMessage queryProjectAllInfo(JSONObject requestJson) {
         String projectCode=requestJson.getString("projectCode");
@@ -54,7 +58,17 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseMessage queryProjectDetails(JSONObject requestJson) {
         String id=requestJson.getString("id");
         String projectType=requestJson.getString("projectType");
-        Project project=projectMapper.queryProjectDetails(id,projectType);
+        List<String>   typeList=businessConfigurationMapper.queryTypeList();
+        Project project;
+       if(typeList.contains(projectType)){
+            project=projectMapper.queryProjectDetails(id,projectType);
+       }else {
+            String Type="其他";
+            project=projectMapper.queryProjectById(id);
+           BusinessConfiguration businessConfiguration=businessConfigurationMapper.querybusinessConfiguration(Type);
+           project.setAllschedule(businessConfiguration.getSchedule());
+           project.setNode(businessConfiguration.getNode());
+       }
         String[] nodeArray=project.getNode().split(",");
        /* List<String>  nodeList=new ArrayList<>(nodeArray.length);*/
         String[] projectStatusArray=project.getProjectStatus().split(",");
@@ -72,9 +86,6 @@ public class ProjectServiceImpl implements ProjectService {
          }
         String[] allscheduleArray=project.getAllschedule().split(",");
          //1：定义一个集合 存放所有已经完成的阶段
-
-        //2:将各个
-
 
          //存放所有已经完成的集合
         List<String>  stageList=new ArrayList<>();

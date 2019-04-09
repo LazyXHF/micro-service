@@ -21,7 +21,8 @@
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
+     id, project_type, schedule, node, create_time, creator, Modifier, update_time, delete_time,
+    back_up1, back_up2, back_up3
     from business_configuration
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -175,4 +176,30 @@
       back_up3 = #{backUp3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="queryTypeList"  resultType="String">
+    select project_type
+    from business_configuration
+  </select>
+  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.BusinessConfiguration">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="project_type" jdbcType="VARCHAR" property="projectType" />
+    <result column="schedule" jdbcType="VARCHAR" property="schedule" />
+    <result column="node" jdbcType="VARCHAR" property="node" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="Modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
+    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
+    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
+  </resultMap>
+  <select id="querybusinessConfiguration" parameterType="java.lang.String" resultType="BusinessConfiguration">
+    select
+    id, project_type as projectType, schedule, node, create_time, creator, Modifier, update_time, delete_time,
+    back_up1, back_up2, back_up3
+    from business_configuration
+    where project_type = #{type}
+  </select>
 </mapper>

@@ -20,6 +20,10 @@ public interface BusinessConfigurationMapper {
 
     int updateByPrimaryKey(BusinessConfiguration record);
 
+    BusinessConfiguration querybusinessConfiguration(@Param("type") String type);
+
+    List<String> queryTypeList();
+
     /*@Select("select schedule from business_configuration where project_type = #{projectType}")
     List<BusinessConfiguration> selectBusinessConfigurationSchedule(@Param("projectType")String projectType);*/
 }
