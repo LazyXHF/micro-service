@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -213,12 +214,23 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
 
     @Override
     public ResponseMessage queryProjectPlan() {
-
+        //筛选未选用的的投资计划方式
         List<InvestmentPlan>  list=investmentPlanMapper.queryProjectPlan();
+        List<InvestmentPlan>  data=new ArrayList<InvestmentPlan>();
+
+        for ( InvestmentPlan p : list){
+            ProjectApplicationExample todoExample = new ProjectApplicationExample();
+            ProjectApplicationExample.Criteria todoCriteria = todoExample.createCriteria();
+            todoCriteria.andProjectIdEqualTo(p.getProjectId());
+            List<ProjectApplication> dataList = applicationMapper.selectByExample(todoExample);
+            if(CollectionUtils.isEmpty(dataList)){
+                data.add(p);
+            }
+        }
         if(list.isEmpty()){
             return  new ResponseMessage(Code.CODE_ERROR,"下拉信息为空");
         }
-        return  new ResponseMessage(Code.CODE_OK,"投资列表信息",list);
+        return  new ResponseMessage(Code.CODE_OK,"投资列表信息",data);
     }
 
     @Override
