@@ -512,7 +512,7 @@ select * from t_xietong_mr_apply where id =#{id} and isdelete!=0
 </select>
 
   <select id="selectMrApplyByPage" resultMap="BaseResultMap">
-    select * from t_xietong_mr_apply where isdelete!=0 and apply_id=#{apply_id} order by  status desc, createtime desc
+    select * from t_xietong_mr_apply where isdelete!=0 and apply_id=#{apply_id} order by  status, createtime desc
     limit #{rowNum},#{pageCount}
   </select>
 </mapper>

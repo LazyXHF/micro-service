@@ -155,10 +155,55 @@ public class TXietongConferenceRoomImp extends BaseController implements TXieton
 		String pageCount = requestJson.getString("pageCount");//每页显示记录数
 
 		List<TXietongMrApply> mrApply = mrApplyMapper.selectMrApplyByApplyId(apply_id);
+
+
 		Page page = new Page();
 		page.init(mrApply.size(),Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+
 		List<TXietongMrApply> applies =mrApplyMapper.selectMrApplyByPage(apply_id,page.getRowNum(),page.getPageCount());
-		page.setList(applies);
+		LinkedList list0 = new LinkedList();
+		LinkedList list1 = new LinkedList();
+		LinkedList list2 = new LinkedList();
+		LinkedList list3 = new LinkedList();
+		LinkedList list4 = new LinkedList();
+		LinkedList list5 = new LinkedList();
+		LinkedList list = new LinkedList();
+		for (TXietongMrApply mr : applies) {
+			if(mr.getStatus().equals("0")){
+				list0.add(mr);
+
+			}
+			if(mr.getStatus().equals("1")){
+				list1.add(mr);
+
+			}
+			if(mr.getStatus().equals("2")){
+				list2.add(mr);
+
+			}
+			if(mr.getStatus().equals("3")){
+				list3.add(mr);
+
+			}
+			if(mr.getStatus().equals("4")){
+				list4.add(mr);
+
+			}
+			if(mr.getStatus().equals("5")){
+				list5.add(mr);
+
+			}
+
+		}
+
+
+		list.addAll(list0);
+		list.addAll(list1);
+		list.addAll(list2);
+		list.addAll(list3);
+		list.addAll(list4);
+		list.addAll(list5);
+		page.setList(list);
 		return new ResponseMessage(Code.CODE_OK, "查询成功",page);
 	}
 
