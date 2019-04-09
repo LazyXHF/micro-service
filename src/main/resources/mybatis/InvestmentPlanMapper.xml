@@ -400,7 +400,7 @@
         and amount  = #{amount,jdbcType=DECIMAL}
       </if>
     </where>
-    order by create_time
+    order by create_time desc
     limit #{rowNum},#{pageCount}
   </select>
 

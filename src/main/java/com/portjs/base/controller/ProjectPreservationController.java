@@ -92,11 +92,18 @@ public class ProjectPreservationController  extends BaseController {
         importParams.setHeadRows(1);
         logger.error(TAG + "insert-for-excel()begin....."+file );
         try {
+            try {
             list = ExcelImportUtil.importExcel(file.getInputStream(), InvestmentPlan.class,importParams);
-
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseMessage(Code.CODE_ERROR,"导入表格数据错误，请修改");
+            }
            if(!CollectionUtils.isEmpty(list)){
-               ResponseMessage responseMessage = projectPreservationService.insertExcelByEasyPoi(list,loginId);
-               return responseMessage;
+
+
+                   ResponseMessage responseMessage = projectPreservationService.insertExcelByEasyPoi(list,loginId);
+                   return responseMessage;
+
            }
             return new ResponseMessage(Code.CODE_ERROR,"插入失败");
         } catch (Exception e) {
@@ -114,13 +121,13 @@ public class ProjectPreservationController  extends BaseController {
     @LogInfo(methodName = "Excel导入（poi）",modelName = "投资计划管理模块")
     @RequestMapping("insert-excel")
     @ResponseBody
-    public ResponseMessage insertExcel (@RequestParam("file") MultipartFile file) {
+    public ResponseMessage insertExcel (@RequestParam("file") MultipartFile file,String loginId) {
         logger.error(TAG + "insert-excel()begin....."+file );
         try {
             if(file == null){
                 return new ResponseMessage(Code.CODE_ERROR,"文件为空");
             }
-            ResponseMessage uploadResponse= projectPreservationService.insertExcel(file);
+            ResponseMessage uploadResponse= projectPreservationService.insertExcel(file,loginId);
             return uploadResponse;
         } catch (Exception e) {
             e.printStackTrace();

@@ -67,6 +67,9 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
 
         //查询回复父节点
         List<CommunicationLog> communicationLogs = communicationLogMapper.selectDendrogram(communicationId);
+        if(CollectionUtils.isEmpty(communicationLogs)){
+            return new ResponseMessage(Code.CODE_ERROR,"查询问题沟通记录信息失败！");
+        }
         LinkedList linkedList = new LinkedList();
         for (CommunicationLog o : communicationLogs) {
             //查询回复子节点

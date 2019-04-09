@@ -27,6 +27,8 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by dengshuangzhen on 2019\3\28 0028
@@ -472,7 +474,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      * @return
      */
     @Override
-    public ResponseMessage insertExcel(MultipartFile file)  throws IOException, ParseException {
+    public ResponseMessage insertExcel(MultipartFile file,String loginId)  throws Exception{
         InputStream is;
 
         // 判断文件的类型，是2003还是2007
@@ -488,10 +490,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             if(row!=null){
                 InvestmentPlan plan = new InvestmentPlan();
                 plan.setId(String.valueOf(IDUtils.genItemId()));
+
+
                 //设置计划编号
                 if(!StringUtils.isEmpty(row.getCell(0).toString())){
 
                     plan.setPlanNum(row.getCell(0).toString());
+                }else {
+                    return new ResponseMessage(Code.CODE_ERROR, "导入计划编号不得为空");
                 }
                 // 设置项目分类
                 if (!StringUtils.isEmpty(row.getCell(1).toString())) {
@@ -500,6 +506,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 // 设置项目名称
                 if (!StringUtils.isEmpty(row.getCell(2).toString())) {
                     plan.setProjectName(row.getCell(2).toString());
+                }else {
+                    return new ResponseMessage(Code.CODE_ERROR, "导入项目名称不得为空");
                 }
                 // 设置项目简介
                 if (!StringUtils.isEmpty(row.getCell(3).toString())) {
@@ -515,9 +523,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 }
                   // 设置金额
                 if (!StringUtils.isEmpty(row.getCell(6).toString())) {
-                  BigDecimal decimal = new BigDecimal(row.getCell(6).toString());
-                   decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
-                   plan.setAmount(decimal);
+                   boolean flag =ProjectPreservationImpl.isNumeric(row.getCell(6).toString());
+                    if(flag){
+                        return new ResponseMessage(Code.CODE_ERROR, "请输入正确投资金额");
+                    }
+                    BigDecimal decimal = new BigDecimal(row.getCell(6).toString());
+                    decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+                    plan.setAmount(decimal);
+                }else {
+                    return new ResponseMessage(Code.CODE_ERROR, "导入计划金额不得为空");
                 }
                  // 设置建设方式
                 if (!StringUtils.isEmpty(row.getCell(7).toString())) {
@@ -528,10 +542,28 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     plan.setRemark(row.getCell(8).toString());
                 }
                 plan.setCreateTime(new Date());
+
+                //查询所有项目校验导入计划编号和项目名称是否重复
+                InvestmentPlanExample example = new InvestmentPlanExample();
+                List<InvestmentPlan> plans = planMapper.selectByExample(example);
+                for (InvestmentPlan o : plans) {
+                    if(o.getPlanNum().equals(plan.getPlanNum())){
+                        return new ResponseMessage(Code.CODE_ERROR, "计划编号不可重复");
+                    }
+                    if(o.getProjectName().equals(plan.getProjectName())){
+                        return new ResponseMessage(Code.CODE_ERROR, "项目名称不可重复");
+                    }
+                }
+                String id = String.valueOf(IDUtils.genItemId());
+                plan.setProjectId(id);
+
                 int agendaInsert = planMapper.insertSelective(plan);
                 if (agendaInsert != 1) {
                     return new ResponseMessage(Code.CODE_ERROR, "导入失败");
                 }
+                updateUtil.projectMethod(id,null,plan.getProjectName(),
+                        plan.getProjectType(),"A",loginId,plan.getOrganization(),
+                        plan.getAmount().toString(),"Aa1",plan.getInvestor());
             }
         }
         return new ResponseMessage(Code.CODE_OK, "导入成功");
@@ -553,17 +585,18 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             String id = String.valueOf(IDUtils.genItemId());
 
 
-            /*Project project = new Project();
-            project.setId(String.valueOf(IDUtils.genItemId()));
-            project.setProjectName(plan.getProjectName());
-            project.setCreator(loginId);
-            project.setCreateTime(new Date());
-            project.setSchedule("1");
-            project.setProjectType(plan.getProjectType());
-            int i1 = projectMapper.insertSelective(project);
-            if(i1!=1){
-                return new ResponseMessage(Code.CODE_ERROR, "导入失败");
-            }*/
+            //查询所有项目
+            InvestmentPlanExample example = new InvestmentPlanExample();
+            List<InvestmentPlan> plans = planMapper.selectByExample(example);
+            for (InvestmentPlan o : plans) {
+                if(o.getPlanNum().equals(plan.getPlanNum())){
+                    return new ResponseMessage(Code.CODE_ERROR, "计划编号不可重复");
+                }
+                if(o.getProjectName().equals(plan.getProjectName())){
+                    return new ResponseMessage(Code.CODE_ERROR, "项目名称不可重复");
+                }
+            }
+            
 
             plan.setId(String.valueOf(IDUtils.genItemId()));
             plan.setCreateTime(new Date());
@@ -631,6 +664,13 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         return wb;
     }
 
-
+    public static boolean isNumeric(String str){
+        Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]+)?$");
+        Matcher isNum = pattern.matcher(str);
+        if(isNum.matches()){
+            return false;
+        }
+        return true;
+    }
 
 }

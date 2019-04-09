@@ -32,6 +32,9 @@ public class InvestmentPlan extends BaseEntity {
     private String investor;
 
     @Excel(name = "投资金额(万元)", orderNum = "6" ,type=10)
+    @NotNull
+
+    @Pattern(regexp = "/(^[1-9]([0-9]+)?(\\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\\.[0-9]([0-9])?$)/", message = "计划金额的输入格式不正确,请确认!")
     private BigDecimal amount;
 
 

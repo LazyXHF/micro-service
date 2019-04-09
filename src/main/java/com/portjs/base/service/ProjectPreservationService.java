@@ -45,7 +45,7 @@ public interface ProjectPreservationService {
      * @param file
      * @return
      */
-    ResponseMessage insertExcel(MultipartFile file)  throws IOException, ParseException;
+    ResponseMessage insertExcel(MultipartFile file,String loginId)  throws Exception;
     /**
      *Excel导入（EasyPoi）
      * @param list
