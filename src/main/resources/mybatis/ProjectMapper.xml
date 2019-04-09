@@ -524,8 +524,8 @@
   </select>
   <update id="updateProjectById" parameterType="String" >
     update project SET
-      projectCode = #{projectCode,jdbcType=VARCHAR},
-     schedule = #{schedule,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
+      schedule = #{schedule,jdbcType=VARCHAR},
       project_stage = #{schedule,jdbcType=VARCHAR},
       project_status = #{status,jdbcType=VARCHAR}
     where id = #{projectId,jdbcType=VARCHAR}
