@@ -499,7 +499,7 @@
     a.action_result as actionResult , a.file_url as fileUrl, a.action_comment as actionComment, a.enable, a.status as status,a.backup_3,a.back_up7,a.back_up8,a.back_up9,a.status as bstatus
     from t_workflowstep a left join project_application b
     on a.relateddomain_id=b.id
-    where relateddomain_id = #{id,jdbcType=VARCHAR} and action_result is NULL
+    where relateddomain_id = #{id,jdbcType=VARCHAR}
     order by case when action_time is null then 1 else 0 end asc,  action_time asc
   </select>
 

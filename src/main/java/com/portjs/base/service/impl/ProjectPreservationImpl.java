@@ -96,7 +96,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         application.setCreater(userId);
         application.setCreateTime(new Date());
         application.setStatus(status);
-
+        application.setEnable("1");
         String message1="";
         String message2="";
         //0暂存
@@ -347,6 +347,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     //改变当前立项表状态为退回
                     ProjectApplication application = new ProjectApplication();
                     application.setId(application_id);
+                     application.setEnable("0");
                     application.setStatus("8");
                     int i11 = applicationMapper.updateByPrimaryKeySelective(application);
                     if(i11==0){
@@ -354,8 +355,13 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     }
                 }
 
-
-
+        ProjectApplication application = new ProjectApplication();
+        application.setId(application_id);
+        application.setEnable("0");
+        int i11 = applicationMapper.updateByPrimaryKeySelective(application);
+        if(i11==0){
+            return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+        }
             //新增一条退回流程
             /*TWorkflowstep tWorkflowstep = new TWorkflowstep();
             tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));

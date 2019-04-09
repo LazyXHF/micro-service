@@ -144,20 +144,98 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			backup3=new String("6");
 		}
 
-		//判断多人是否有退回的状态
+		/*//判断多人是否有退回的状态
 		TWorkflowstepExample examples = new TWorkflowstepExample();
 		TWorkflowstepExample.Criteria criteria1 = examples.createCriteria();
 		criteria1.andRelateddomainIdEqualTo(relateddomain_id);
 		criteria1.andActionResultEqualTo(1);
 		List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.selectByExample(examples);
 
-		//此处待优化,查询所有的工作记录
+		//查询所有的工作记录
+		List<TWorkflowstep> tWorkfow =tWorkflowstepMapper.queryNotReviewProject(relateddomain_id);
+		TWorkflowstep t = null;
+		if(!CollectionUtils.isEmpty(tWorkfow)){
+			t=tWorkfow.get(tWorkfow.size()-1);
+		}*/
+		//三个条件进入审核
+		TWorkflowstepExample examples = new TWorkflowstepExample();
+		TWorkflowstepExample.Criteria criteria1 = examples.createCriteria();
+		criteria1.andRelateddomainIdEqualTo(relateddomain_id);
+		criteria1.andActionResultEqualTo(1);
+		criteria1.andBackup3EqualTo("4");
+		List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.selectByExample(examples);
+		//查询是否是最后一人审核
+		TWorkflowstepExample exampless = new TWorkflowstepExample();
+		TWorkflowstepExample.Criteria criteria1s = exampless.createCriteria();
+		criteria1s.andRelateddomainIdEqualTo(relateddomain_id);
+		criteria1s.andBackup3EqualTo("4");
+		criteria1s.andStatusEqualTo("0");
+		List<TWorkflowstep> tWorkflowstepss = tWorkflowstepMapper.selectByExample(exampless);
+
+		//查询所有的工作记录
 		List<TWorkflowstep> tWorkfow =tWorkflowstepMapper.queryNotReviewProject(relateddomain_id);
 		TWorkflowstep t = null;
 		if(!CollectionUtils.isEmpty(tWorkfow)){
 			t=tWorkfow.get(tWorkfow.size()-1);
 		}
-		if(CollectionUtils.isEmpty(tWorkflowsteps)||t!=null){
+		ProjectApplicationExample projectApplicationExample = new ProjectApplicationExample();
+		ProjectApplicationExample.Criteria  criteri = projectApplicationExample.createCriteria();
+		criteri.andEnableEqualTo("0");
+		criteri.andIdEqualTo(relateddomain_id);
+		List<ProjectApplication>  projectApplications = projectApplicationMapper.selectByExample(projectApplicationExample);
+
+		if(!CollectionUtils.isEmpty(tWorkflowsteps)&&CollectionUtils.isEmpty(tWorkflowstepss)&&t!=null&&t.getBackup3().equals("4")&&!CollectionUtils.isEmpty(projectApplications)){
+
+			//判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
+			TWorkflowstepExample example = new TWorkflowstepExample();
+			TWorkflowstepExample.Criteria criteria = example.createCriteria();
+			criteria.andRelateddomainIdEqualTo(relateddomain_id);
+			criteria.andStatusEqualTo("0");
+			List<TWorkflowstep> tWorkflowste = tWorkflowstepMapper.selectByExample(example);
+			if(tWorkflowste.size()==0){
+				//如果当前审核人员只有一个的话则生成待办
+				TTodo todo = new TTodo();
+				todo.setId(String.valueOf(IDUtils.genItemId()));
+				todo.setCurrentstepId(workflowstep_id);
+				todo.setStepDesc(projectName+"的立项批复流程等待您的处理");
+				todo.setRelateddomain("项目立项");
+				todo.setRelateddomainId(relateddomain_id);
+				todo.setSenderId(sender_id);
+				todo.setSenderTime(new Date());
+
+				todo.setBackUp7(userName);//发起人
+				//取项目流程中第一个项目负责人id
+				TWorkflowstepExample exampl = new TWorkflowstepExample();
+				exampl.setOrderByClause("prestep_id");
+				TWorkflowstepExample.Criteria criteria3 = exampl.createCriteria();
+				criteria3.andRelateddomainIdEqualTo(relateddomain_id);
+
+				List<TWorkflowstep> tWorkflow = tWorkflowstepMapper.selectByExample(exampl);
+				todo.setReceiverId(tWorkflow.get(0).getActionuserId());
+
+				//查询代办类型
+				TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+				TXietongDictionaryExample.Criteria criteria2 = example1.createCriteria();
+				criteria2.andTypeIdEqualTo("8");
+				criteria2.andTypeCodeEqualTo("38");
+				criteria2.andMidValueEqualTo("1");
+				List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
+				todo.setTodoType(dictionaryList.get(0).getMainValue());
+				todo.setStatus("0");
+				int i1 = tTodoMapper.insertSelective(todo);
+				if(i1!=1){
+					return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+				}
+			}
+			//改变当前立项表状态为退回
+			ProjectApplication application = new ProjectApplication();
+			application.setId(relateddomain_id);
+			application.setStatus("8");
+			int i1 = projectApplicationMapper.updateByPrimaryKeySelective(application);
+			if(i1==0){
+				return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+			}
+		}else{
 			//查询待办类型
 			TXietongDictionaryExample example = new TXietongDictionaryExample();
 			TXietongDictionaryExample.Criteria criteria = example.createCriteria();
@@ -166,11 +244,11 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			criteria.andMidValueEqualTo("1");
 			List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
 
-		/*
-		 * 选择下一个审核人进行的操作
-		 * 对todo表中进行添加操作
-		 * 对Workflowstep表中进行添加操作
-		 */
+			/*
+			 * 选择下一个审核人进行的操作
+			 * 对todo表中进行添加操作
+			 * 对Workflowstep表中进行添加操作
+			 */
 			boolean flag= false;//最后一人审核标识
 			for(int c=0;c<nextReviewerId.size();c++) {
 				//进入到多个人审核阶段，修改待办
@@ -259,7 +337,6 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					//审核开始
 					projectApplication.setStatus("3");
 				}
-				;
 			}else{
 				projectApplication.setStatus(ss);
 			}
@@ -268,58 +345,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			if(num<=0){
 				return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");
 			}
-		}else{
-			//判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
-			TWorkflowstepExample example = new TWorkflowstepExample();
-			TWorkflowstepExample.Criteria criteria = example.createCriteria();
-			criteria.andRelateddomainIdEqualTo(relateddomain_id);
-			criteria.andStatusEqualTo("0");
-			List<TWorkflowstep> tWorkflowste = tWorkflowstepMapper.selectByExample(example);
-			if(tWorkflowste.size()==0){
-				//如果当前审核人员只有一个的话则生成待办
-				TTodo todo = new TTodo();
-				todo.setId(String.valueOf(IDUtils.genItemId()));
-				todo.setCurrentstepId(workflowstep_id);
-				todo.setStepDesc(projectName+"的立项批复流程等待您的处理");
-				todo.setRelateddomain("项目立项");
-				todo.setRelateddomainId(relateddomain_id);
-				todo.setSenderId(sender_id);
-				todo.setSenderTime(new Date());
-
-				todo.setBackUp7(userName);//发起人
-				//取项目流程中第一个项目负责人id
-				TWorkflowstepExample exampl = new TWorkflowstepExample();
-				exampl.setOrderByClause("prestep_id");
-				TWorkflowstepExample.Criteria criteria3 = exampl.createCriteria();
-				criteria3.andRelateddomainIdEqualTo(relateddomain_id);
-
-				List<TWorkflowstep> tWorkflow = tWorkflowstepMapper.selectByExample(exampl);
-				todo.setReceiverId(tWorkflow.get(0).getActionuserId());
-
-				//查询代办类型
-				TXietongDictionaryExample example1 = new TXietongDictionaryExample();
-				TXietongDictionaryExample.Criteria criteria2 = example1.createCriteria();
-				criteria2.andTypeIdEqualTo("8");
-				criteria2.andTypeCodeEqualTo("38");
-				criteria2.andMidValueEqualTo("1");
-				List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
-				todo.setTodoType(dictionaryList.get(0).getMainValue());
-				todo.setStatus("0");
-				int i1 = tTodoMapper.insertSelective(todo);
-				if(i1!=1){
-					return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-				}
-			}
-			//改变当前立项表状态为退回
-			ProjectApplication application = new ProjectApplication();
-			application.setId(relateddomain_id);
-			application.setStatus("8");
-			int i1 = projectApplicationMapper.updateByPrimaryKeySelective(application);
-			if(i1==0){
-				return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-			}
 		}
-
    return new ResponseMessage(Code.CODE_OK, "审核完成");
 }
 
