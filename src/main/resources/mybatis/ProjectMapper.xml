@@ -533,6 +533,7 @@
   <select id="queryProjectAllInfoCount" resultType="Integer" parameterType="String">
     select count(*) from project a
     <where>
+      project_status like "%Ab1%"
       <if test="projectCode !=null and projectCode!=''">
         and a.project_code like "%" #{projectCode} "%"
       </if>
