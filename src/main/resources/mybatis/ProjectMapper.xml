@@ -555,6 +555,7 @@
   <select id="queryProjectAllInfo" resultMap="BaseResultMap2" parameterType="String">
     select * from project a
     <where>
+      project_status like "%Ab1%"
     <if test="projectCode !=null and projectCode!=''">
       and a.project_code like "%" #{projectCode} "%"
     </if>
