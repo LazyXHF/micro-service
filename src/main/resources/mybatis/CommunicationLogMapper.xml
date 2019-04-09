@@ -411,4 +411,17 @@
       backup10 = #{backup10,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectDendrogram" resultMap="BaseResultMap">
+    select * from communication_log where communication_id = #{communicationId}
+    and pre_message is null
+  </select>
+  <select id="selectByPreMessage" resultMap="BaseResultMap">
+    SELECT
+            *
+        FROM
+            communication_log t
+        WHERE
+ FIND_IN_SET(pre_message,getCommunication(#{id}))
+  </select>
 </mapper>
