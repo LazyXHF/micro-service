@@ -693,6 +693,6 @@
   </update>
 
   <select id="selectapplicationByYear" resultMap="BaseResultMap">
-    select * from project_application where is_delete="0" and DATE_FORMAT(create_time,'%Y')=#{niandu}
+    select * from project_application where is_delete="0" and DATE_FORMAT(create_time,'%Y')=#{niandu}  and project_code is not null
   </select>
 </mapper>

@@ -419,6 +419,8 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         LinkedHashMap<String,Integer> map=new LinkedHashMap<String,Integer>();
         //查询在建项目的时间点
         ProjectApplicationExample example = new ProjectApplicationExample();
+        ProjectApplicationExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectCodeIsNotNull();
         example.setOrderByClause("create_time");
         List<ProjectApplication> applications = applicationMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(applications)){
@@ -435,6 +437,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         for (int i = 0; i <= aa; i++) {
             list.add(Integer.valueOf(minYear.substring(0,4))+i);
         }
+
 
         for(int i=0;i<list.size();i++) {
             if(map.containsKey(list.get(i))) {
@@ -458,6 +461,8 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         //查询在建项目的时间点
         ProjectApplicationExample example = new ProjectApplicationExample();
         example.setOrderByClause("create_time");
+        ProjectApplicationExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectCodeIsNotNull();
         List<ProjectApplication> applications = applicationMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(applications)){
             return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
