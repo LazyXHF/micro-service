@@ -97,7 +97,7 @@
     select
     *
     from communication_log
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR} order by replytime desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
