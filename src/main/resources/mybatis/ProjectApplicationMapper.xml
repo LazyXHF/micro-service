@@ -647,7 +647,7 @@
         and  construction_mode like "%" #{constructionMode} "%"
       </if>
       <if test="investor !=null and investor!=''">
-        and  investor like "%" #{investor} "%"
+        and  investor = #{investor}
       </if>
     UNION ALL
     select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,

@@ -6,6 +6,8 @@ import java.util.Date;
 public class PurchaseRequest {
     private String id;
 
+    private String requestNum;
+
     private String projectId;
 
     private String purchaseDept;
@@ -20,7 +22,7 @@ public class PurchaseRequest {
 
     private BigDecimal amount;
 
-    private String desc;
+    private String content;
 
     private String status;
 
@@ -31,6 +33,42 @@ public class PurchaseRequest {
     private Date updateTime;
 
     private Date deleteTime;
+
+    private String  projectCode;
+
+    private String  projectName;
+
+    public String getRequestNum() {
+        return requestNum;
+    }
+
+    public void setRequestNum(String requestNum) {
+        this.requestNum = requestNum;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getId() {
         return id;
@@ -94,14 +132,6 @@ public class PurchaseRequest {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
     }
 
     public String getStatus() {

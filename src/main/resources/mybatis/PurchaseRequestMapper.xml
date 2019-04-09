@@ -350,4 +350,41 @@
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.PurchaseRequest" >
+    <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="request_num" property="requestNum" jdbcType="VARCHAR" />
+      <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="purchase_dept" property="purchaseDept" jdbcType="VARCHAR" />
+    <result column="applicant" property="applicant" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="agency" property="agency" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="queryPucharseList" resultMap="BaseResultMap2" parameterType="java.lang.String" >
+    select
+    a.Id, a.request_num,a.project_id, a.purchase_dept, a.applicant, a.method, a.agency, a.apply_date, a.amount, a.content,
+    a.status, a.creater, a.create_time, a.update_time, a.delete_time,b.project_code,b.project_name
+    from purchase_request a inner join project b on a.project_id=b.id
+    <where>
+      <if test="method !=null and method!=''">
+        and  a.method like "%" #{method} "%"
+      </if>
+      <if test="projectCode !=null and projectCode!=''">
+        and b.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and b.project_name like "%" #{projectName} "%"
+      </if>
+    </where>
+
+  </select>
 </mapper>

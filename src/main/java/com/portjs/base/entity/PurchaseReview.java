@@ -35,6 +35,16 @@ public class PurchaseReview implements Serializable {
 
     private Date deleteTime;
 
+    private String isDelete;
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {

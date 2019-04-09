@@ -22,6 +22,7 @@ public class ProjectAddorUpdateUtil {
     private ProjectMapper projectMapper;
     @Autowired
     private TUserMapper tUserMapper;
+    int i=001;
     public  void projectMethod(String projectId, String projectCode, String projectName, String projectType, String schedule,
                                String creator, String organization, String projectMoney, String projectStatus,String investor)throws Exception{
             Project project = new Project();
@@ -36,7 +37,8 @@ public class ProjectAddorUpdateUtil {
             int hour = cal.get(Calendar.HOUR_OF_DAY);
             int minute = cal.get(Calendar.MINUTE);
             int second = cal.get(Calendar.SECOND);
-            String time2 = year + "" + month + day + hour + minute + second;
+            i=i++;
+            String time2 ="PR"+year + "" + month + day + hour + minute + second+i;
             project.setProjectCode(time2);
             } else {
             project.setProjectCode(projectCode);

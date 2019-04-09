@@ -567,8 +567,8 @@
     <if test="projectType !=null and projectType!=''">
       and a.project_type like "%" #{projectType} "%"
     </if>
-    <if test="creator !=null and creator!=''">
-      and a.creator like "%" #{creator} "%"
+    <if test="creatorName !=null and creatorName!=''">
+      and a.creator_name like "%" #{creatorName} "%"
     </if>
       <if test="schedule !=null and schedule!=''">
         and a.schedule like "%" #{schedule} "%"

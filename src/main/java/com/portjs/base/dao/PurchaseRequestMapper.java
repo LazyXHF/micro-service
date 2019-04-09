@@ -2,6 +2,7 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.PurchaseRequest;
 import com.portjs.base.entity.PurchaseRequestExample;
+import com.portjs.base.util.ResponseMessage;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,6 @@ public interface PurchaseRequestMapper {
     int updateByPrimaryKeySelective(PurchaseRequest record);
 
     int updateByPrimaryKey(PurchaseRequest record);
+
+    List queryPucharseList(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName") String projectName);
 }
