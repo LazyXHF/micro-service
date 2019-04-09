@@ -232,6 +232,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.8.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<!-- 特别注意版本问题, 看到评论以后得以纠正 -->
+			<version>1.2.3</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
