@@ -31,7 +31,11 @@ public interface ProjectPreservationService {
      * @return
      */
     ResponseMessage selectBox(String requestBody);
-
+    /**
+     * 查询投资主体/责任单位
+     * @return
+     */
+    ResponseMessage selectBoxTwo(String requestBody);
 
     /**
      * 按条件分页查询投资计划
@@ -65,4 +69,6 @@ public interface ProjectPreservationService {
      * @return
      */
     ResponseMessage selectUser();
+
+
 }

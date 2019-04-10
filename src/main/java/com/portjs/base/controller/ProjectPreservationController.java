@@ -69,6 +69,19 @@ public class ProjectPreservationController  extends BaseController {
         }
     }
 
+    @LogInfo(methodName = "查询所有下拉框",modelName = "立项管理模块")
+    @RequestMapping("/select-box-two")
+    @ResponseBody
+    public ResponseMessage selectBoxTwo(@RequestBody String requestBody){
+        try {
+            logger.error(TAG + "select-box-two()begin....."+requestBody );
+            return projectPreservationService.selectBoxTwo(requestBody);
+        } catch (Exception e) {
+            logger.error(TAG + "select-box-two()error.....", e);
+            throw new RuntimeException();
+        }
+    }
+
     @LogInfo(methodName = "按条件分页查询投资计划",modelName = "投资计划管理模块")
     @RequestMapping("/select-investment")
     @ResponseBody
@@ -90,10 +103,12 @@ public class ProjectPreservationController  extends BaseController {
         ImportParams importParams =  new ImportParams();
         importParams.setTitleRows(0);
         importParams.setHeadRows(1);
+        importParams.setNeedVerfiy(true);
         logger.error(TAG + "insert-for-excel()begin....."+file );
         try {
             try {
             list = ExcelImportUtil.importExcel(file.getInputStream(), InvestmentPlan.class,importParams);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseMessage(Code.CODE_ERROR,"导入表格数据错误，请修改");

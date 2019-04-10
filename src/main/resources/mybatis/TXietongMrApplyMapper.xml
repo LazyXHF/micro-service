@@ -453,6 +453,7 @@ and a.id=r.apply_id and r.owner_id =#{owner_id} and d.TYPE_CODE='37'
 <if test="apply_id!=null and apply_id!=''">
  and a.apply_id =#{apply_id}
 </if>
+  GROUP BY a.ID
  order by a.status,a.begintime)as t1
  limit #{rowNum},#{pageCount}
 </select>

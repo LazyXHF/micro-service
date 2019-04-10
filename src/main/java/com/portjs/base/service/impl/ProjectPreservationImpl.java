@@ -382,7 +382,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     }
 
     /**
-     * 查询项目分类/投资主体/责任单位/建设方式
+     * 查询项目分类/投资主体/责任单位/建设方式 (投资计划导入管理模块)
      * @return
      */
     @Override
@@ -405,6 +405,38 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     list.add(plan.getOrganization());
                 }else if(Integer.valueOf(type)==4){
                     list.add(plan.getConstructionMode());
+                }else {
+                    return new ResponseMessage(Code.CODE_OK,"查询类型错误");
+                }
+
+            }
+        }
+        HashSet set = new HashSet(list);
+        list.clear();
+        list.addAll(set);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",list);
+    }
+
+    /**
+     * 查询投资主体/责任单位 (立项管理管理模块)
+     * @return
+     */
+    @Override
+    public ResponseMessage selectBoxTwo(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String type = jsonObject.getString("type");// 1 投资主体 2 责任单位
+        ProjectApplicationExample example = new ProjectApplicationExample();
+        example.setOrderByClause("create_time");
+        List<ProjectApplication> applications = applicationMapper.selectByExample(example);
+        LinkedList list = new LinkedList();
+        if(!applications.isEmpty()){
+            for (ProjectApplication application: applications) {
+                if(StringUtils.isEmpty(type)){
+                    return new ResponseMessage(Code.CODE_OK,"查询类型不得为空");
+                }else if(Integer.valueOf(type)==1){
+                    list.add(application.getInvestor());
+                }else if(Integer.valueOf(type)==2){
+                    list.add(application.getOrganization());
                 }else {
                     return new ResponseMessage(Code.CODE_OK,"查询类型错误");
                 }
@@ -494,7 +526,6 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
                 //设置计划编号
                 if(!StringUtils.isEmpty(row.getCell(0).toString())){
-
                     plan.setPlanNum(row.getCell(0).toString());
                 }else {
                     return new ResponseMessage(Code.CODE_ERROR, "导入计划编号不得为空");
@@ -577,11 +608,25 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     @Override
     public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) throws Exception{
 
-        for (InvestmentPlan plan : list) {
-            BigDecimal decimal = new BigDecimal(0);
+        for (int i =0;i<list.size();i++) {
+            InvestmentPlan plan = list.get(i);
+
+            if(StringUtils.isEmpty(plan.getPlanNum())){
+                int count = i+2;
+                return new ResponseMessage(Code.CODE_ERROR, "第"+count+"行的计划编号不可为空");
+            }
+            if(StringUtils.isEmpty(plan.getProjectName())){
+                int count = i+2;
+                return new ResponseMessage(Code.CODE_ERROR, "第"+count+"行的项目名称不可为空");
+            }
+
+
+
+
+            /*BigDecimal decimal = new BigDecimal(0);
             if(plan.getAmount()==decimal){
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
-            }
+            }*/
             String id = String.valueOf(IDUtils.genItemId());
 
 
@@ -601,8 +646,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             plan.setId(String.valueOf(IDUtils.genItemId()));
             plan.setCreateTime(new Date());
             plan.setProjectId(id);
-            int i = planMapper.insertSelective(plan);
-            if(i!=1){
+            int j = planMapper.insertSelective(plan);
+            if(j!=1){
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
             }
             updateUtil.projectMethod(id,null,plan.getProjectName(),
