@@ -1,9 +1,11 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PurchaseRequest {
+public class PurchaseRequest extends BaseEntity{
     private String id;
 
     private String requestNum;

@@ -1,5 +1,6 @@
 package com.portjs.base.dao;
 
+import com.portjs.base.entity.PurchaseRequest;
 import com.portjs.base.entity.TenderApplication;
 import com.portjs.base.entity.TenderApplicationExample;
 import com.portjs.base.vo.ContractVo;
@@ -31,6 +32,7 @@ public interface TenderApplicationMapper {
 
     int updateByPrimaryKey(TenderApplication record);
 
+    List<PurchaseRequest>selectRequests(PurchaseRequest purchaseRequest);
     /**
      * 查询总数
      * @param method
