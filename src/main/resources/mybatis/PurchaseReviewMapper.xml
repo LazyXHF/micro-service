@@ -398,4 +398,37 @@
       is_delete = #{isDelete,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <!--查询总数-->
+  <select id="selectByMethodCount" resultType="int">
+    select COUNT(*) from purchase_review r,project p
+    where r.project_id=p.id
+    <if test="projectName!=null">
+      and p.project_name like "%"#{projectName}"%"
+    </if>
+    <if test="projectCode!=null">
+      and p.project_code like "%"#{projectCode}"%"
+    </if>
+    <if test="method!=null">
+      and r.method=#{method}
+    </if>
+  </select>
+  <!--查询每页数据-->
+  <select id="selectByPage" resultType="com.portjs.base.vo.ContractVo">
+    select p.project_code as projectCode,p.project_name as projectName,r.purchase_dept as purchaseDept,
+    r.supplier as supplier,r.amount as amount
+    from purchase_review r,project p
+    where r.project_id=p.id
+    <if test="projectName!=null">
+      and p.project_name like "%"#{projectName,jdbcType=VARCHAR}"%"
+    </if>
+    <if test="projectCode!=null">
+      and p.project_code like "%"#{projectCode,jdbcType=VARCHAR}"%"
+    </if>
+    <if test="method!=null">
+      and r.method=#{method,jdbcType=VARCHAR}
+    </if>
+    ORDER BY r.create_time
+    LIMIT #{rowNum,jdbcType=INTEGER},#{pageCount,jdbcType=INTEGER}
+  </select>
 </mapper>
