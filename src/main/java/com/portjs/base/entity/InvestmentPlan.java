@@ -2,7 +2,6 @@ package com.portjs.base.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.portjs.base.util.BaseEntity;
-import com.sun.istack.internal.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,13 +10,11 @@ public class InvestmentPlan extends BaseEntity {
     private String id;
 
     @Excel(name = "计划编号", orderNum = "1", height = 20, width = 30, isImportField = "true_st")
-    @NotNull
     private String planNum;
 
     private String projectId;
 
     @Excel(name = "项目名称", orderNum = "2")
-    @NotNull
     private String projectName;
 
     @Excel(name = "项目分类", orderNum = "1")
