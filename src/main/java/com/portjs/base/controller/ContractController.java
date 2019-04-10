@@ -43,7 +43,7 @@ public class ContractController extends BaseController{
         logger.debug(TAG + responseBody);
         UnifiedExceptionHandler.method= responseBody + "insert-contract==============================" + responseBody;
         JSONObject requestJson = JSON.parseObject(responseBody);
-        Coord annex = JSONObject.toJavaObject(requestJson, Coord.class);
-        return coordService.insertSelective(annex);
+        Contract contract = JSONObject.toJavaObject(requestJson, Contract.class);
+        return contractService.insertContract(contract);
     }*/
 }

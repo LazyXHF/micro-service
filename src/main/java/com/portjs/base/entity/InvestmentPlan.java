@@ -9,7 +9,7 @@ import java.util.Date;
 public class InvestmentPlan extends BaseEntity {
     private String id;
 
-    @Excel(name = "计划编号", orderNum = "1", height = 20, width = 30, isImportField = "true_st")
+    @Excel(name = "计划编号", orderNum = "0")
     private String planNum;
 
     private String projectId;

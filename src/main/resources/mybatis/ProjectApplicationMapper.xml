@@ -654,7 +654,6 @@
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
     from project_application
-
      where
       is_delete='0' and status='0' and creater=#{ownerId}
     <if test="projectCode !=null and projectCode!=''">
@@ -675,10 +674,14 @@
       <if test="investor !=null and investor!=''">
         and  investor like "%" #{investor} "%"
       </if>
-    order by create_time desc
-    limit #{rowNum},#{pageCount}
+
+
   </select>
 
+
+  <!--order by create_time desc
+  limit #{rowNum},#{pageCount}
+  status="0" DESC ,status="8" DESC ,status,-->
   <select id="queryProjectBase" resultMap="BaseResultMap">
   select   Id, investment_id, project_code,project_id,  project_name, project_type, investor, organization,construction_mode,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,

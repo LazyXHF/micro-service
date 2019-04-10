@@ -2,6 +2,7 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.PurchaseReview;
 import com.portjs.base.entity.PurchaseReviewExample;
+import com.portjs.base.vo.ContractVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,24 @@ public interface PurchaseReviewMapper {
     int updateByPrimaryKeySelective(PurchaseReview record);
 
     int updateByPrimaryKey(PurchaseReview record);
+
+    /**
+     * 查询总数
+     * @param method
+     * @param projectCode
+     * @param projectName
+     * @return
+     */
+    int selectByMethodCount(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName")  String projectName);
+
+    /**
+     * 查询每页数据
+     * @param method
+     * @param projectCode
+     * @param projectName
+     * @param rowNum
+     * @param pageCount
+     * @return
+     */
+    List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("rowNum") Integer rowNum, @Param("pageCount") Integer pageCount);
 }

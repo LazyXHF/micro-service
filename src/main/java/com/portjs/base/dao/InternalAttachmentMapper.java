@@ -33,4 +33,6 @@ public interface InternalAttachmentMapper {
     List<InternalAttachment> queryProjectFiles(@Param("id") String id);
 
     List<InternalAttachment> queryProjectRecords(String id);
+
+    int updateByrelateddomainId(InternalAttachment internalAttachment);
 }

@@ -2,6 +2,7 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.TenderApplication;
 import com.portjs.base.entity.TenderApplicationExample;
+import com.portjs.base.vo.ContractVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -33,9 +34,20 @@ public interface TenderApplicationMapper {
     /**
      * 查询总数
      * @param method
-     * @param projectId
+     * @param projectCode
      * @param projectName
      * @return
      */
-    int selectByMethodCount(@Param("method") String method, @Param("projectId") String projectId,@Param("projectName")  String projectName);
+    int selectByMethodCount(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName")  String projectName);
+
+    /**
+     * 查询每页数据
+     * @param method
+     * @param projectCode
+     * @param projectName
+     * @param rowNum
+     * @param pageCount
+     * @return
+     */
+    List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
 }
