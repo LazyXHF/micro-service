@@ -597,7 +597,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 agenda.setId(agenda_id.toString());
                 agenda.setIsdelete(0);
                 int i = agendaMapper.updateByPrimaryKeySelective(agenda);
-                if(i!=1){
+                if(i>=0){
                     return new ResponseMessage(Code.CODE_ERROR, "会议删除失败");
                 }
                 //删除对应领导
@@ -607,7 +607,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 TXietongAgendaHuman human = new TXietongAgendaHuman();
                 human.setIsdelete(0);
                 int i1 = agendaHumanMapper.updateByExampleSelective(human, example);
-                if(i1!=1){
+                if(i1>=0){
                     return new ResponseMessage(Code.CODE_ERROR, "会议删除失败");
                 }
 
@@ -617,10 +617,12 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 processCriteria.andAgendaIdEqualTo(agenda_id.toString());
                 List<TXietongAgendaProcess> tXietongAgendaProcesses = agendaProcessMapper.selectByExample(processExample);
                 for (TXietongAgendaProcess process : tXietongAgendaProcesses) {
-                    process.setIsdelete(0);
+
+                    TXietongAgendaProcess process1 = new TXietongAgendaProcess();
+                    process1.setIsdelete(0);
                     //删除审核表
-                    int update = agendaProcessMapper.updateByExampleSelective(process, processExample);
-                    if(update!=1){
+                    int update = agendaProcessMapper.updateByExampleSelective(process1, processExample);
+                    if(update>=0){
                         return new ResponseMessage(Code.CODE_ERROR, "审核表删除失败");
                     }
                     TXietongAgendaRecordExample recordExample = new TXietongAgendaRecordExample();
@@ -630,7 +632,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                     record.setIsdelete(0);
                     //删除流程表
                     int byExample = agendaRecordMapper.updateByExampleSelective(record, recordExample);
-                    if(byExample==0){
+                    if(byExample>=0){
                         return new ResponseMessage(Code.CODE_ERROR, "流程表删除失败");
                     }
                 }

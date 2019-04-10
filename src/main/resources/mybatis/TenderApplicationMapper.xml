@@ -524,4 +524,18 @@
       back_up5 = #{backUp5,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+  <!--查询总数-->
+  <select id="selectByMethodCount">
+    select COUNT(*) from tender_application a,project p
+    where a.project_id=p.id
+    <if test="projectName!=null">
+    and p.project_name like "%"#{projectName}"%"
+    </if>
+    <if test="projectName!=null">
+    and p.project_code like "%""%"
+    </if>
+    <if test="projectName!=null">
+    and a.method=""
+    </if>
+  </select>
 </mapper>
