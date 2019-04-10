@@ -211,7 +211,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 if(i4!=1){
                     return new ResponseMessage(Code.CODE_ERROR,"生成当前人记录失败");
                 }
-
                 //遍历添加部门负责人记录
                 for (int i = 0; i < jsonArray1.size(); i++) {
                     JSONObject jo = jsonArray1.getJSONObject(i);
@@ -222,11 +221,10 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setPrestepId(tWorkflowstep.getId());
                     tWorkflowstep2.setStepDesc("采购评审提交");
                     String userId = jo.getString("userId");
-                    tWorkflowstep.setActionuserId(userId);
-                    tWorkflowstep.setStatus("0");
-                    tWorkflowstep.setBackup3("2");
-
-                    int f2 = workflowstepMapper.insertSelective(tWorkflowstep);
+                    tWorkflowstep2.setActionuserId(userId);
+                    tWorkflowstep2.setStatus("0");
+                    tWorkflowstep2.setBackup3("2");
+                    int f2 = workflowstepMapper.insertSelective(tWorkflowstep2);
                     TTodo todo = new TTodo();
                     todo.setId(UUID.randomUUID().toString());
                     todo.setCurrentstepId(tWorkflowstep2.getId());

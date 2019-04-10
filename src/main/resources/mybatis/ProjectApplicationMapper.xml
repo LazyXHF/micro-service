@@ -674,7 +674,7 @@
       <if test="investor !=null and investor!=''">
         and  investor like "%" #{investor} "%"
       </if>
-
+    order by   status="0" DESC ,status="8" DESC, create_time desc
 
   </select>
 
