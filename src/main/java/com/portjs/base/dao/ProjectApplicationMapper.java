@@ -32,7 +32,7 @@ public interface ProjectApplicationMapper {
 
     int queryProjectCount(@Param("projectCode") String projectCode,@Param("projectName")String projectName, @Param("projectType") String projectType,@Param("organization")String organization, @Param("constructionMode") String constructionMode, @Param("investor") String investor, @Param("ownerId") String ownerId);
 
-    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode,@Param("projectName")String projectName, @Param("projectType") String projectType,@Param("organization")String organization, @Param("constructionMode") String constructionMode, @Param("investor") String investor,@Param("ownerId")String ownerId,@Param("rowNum")Integer rowNum,@Param("pageCount")Integer pageCount);
+    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode,@Param("projectName")String projectName, @Param("projectType") String projectType,@Param("organization")String organization, @Param("constructionMode") String constructionMode, @Param("investor") String investor,@Param("ownerId")String ownerId);
 
     int updateProject(ProjectApplication projectApplication);
 

@@ -2,6 +2,8 @@ package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.AcceptanceService;
@@ -22,10 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author gumingyang
@@ -109,8 +108,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String owneId=requestJson.getString("ownerId");
         String pageNum=requestJson.getString("pageNum");
         String pageCount=requestJson.getString("pageCount");
-        Page page=new Page();
-        int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,constructionMode,investor,owneId);
+      /*  Page page=new Page();
+//
         page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
         List<ProjectApplication> list=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,owneId,page.getRowNum(),page.getPageCount());
        // List<ProjectApplication> list2=applicationMapper.queryProjectCaoGao(projectCode,projectName,projectType,organization,constructionMode,investor,page.getRowNum(),page.getPageCount());
@@ -130,7 +129,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 }else {
                     application.setIsApprover("1");
                 }
-              /*String id=application.getId();
+                page.setList(list);
+              *//*String id=application.getId();
                 //查询当前登录人是否是审批人
                 Integer  count=tWorkflowstepMapper.isApproveingId(id,owneId);
                 //isApprove(当前任是否是审批人 0：不是 1：是)
@@ -138,12 +138,96 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                   application.setIsApprover("0");
               }else {
                   application.setIsApprover("1");
-              }*/
+              }*//*
               }
-            page.setList(list);
-            return  new ResponseMessage(Code.CODE_OK,"项目分页信息",page);
+           *//* Collections.sort(list, new Comparator<ProjectApplication>() {
+                @Override
+                public int compare(ProjectApplication o1, ProjectApplication o2) {
+                    if (Integer.parseInt(o1.getIsApprover())>Integer.parseInt(o2.getIsApprover())) {
+                        return -1;
+                    }
+                    if (Integer.parseInt(o1.getIsApprover())>Integer.parseInt(o2.getIsApprover())) {
+                        return 0;
+                    }
+                    return -1;
+                }
+            });*//*
+        }*/
+        int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,constructionMode,investor,owneId);
+//            PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageCount));
+           List<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,owneId);
+        if(alllist.isEmpty()){
+            return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
+        }else {
+            for (ProjectApplication application : alllist) {
+                TTodoExample todoExample = new TTodoExample();
+                TTodoExample.Criteria todoCriteria = todoExample.createCriteria();
+                todoCriteria.andStatusEqualTo("0");
+                todoCriteria.andRelateddomainIdEqualTo(application.getId());
+                todoCriteria.andReceiverIdEqualTo(owneId);
+                List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
+                //isApprove(当前任是否是审批人 0：不是 1：是)
+                if (CollectionUtils.isEmpty(tTodos)) {
+                    application.setIsApprover("0");
+                } else {
+                    application.setIsApprover("1");
+                }
             }
+
+
+         /*   Collections.sort(alllist, new Comparator<ProjectApplication>() {
+                @Override
+                public int compare(ProjectApplication o1, ProjectApplication o2) {
+                    return -(Integer.parseInt(o2.getIsApprover()) - Integer.parseInt(o2.getIsApprover()));
+                }
+            });*/
+
+            Set<ProjectApplication> treeSet = new TreeSet<>(new Comparator<ProjectApplication>() {
+                @Override
+                public int compare(ProjectApplication o1, ProjectApplication o2) {
+                    //按照年龄排序，主要条件
+                    int num =Integer.parseInt(o2.getIsApprover())- Integer.parseInt(o1.getIsApprover());
+
+
+                    //如果年龄相同，比较姓名，如果姓名相同的话，才是同一个对象
+                    int num1 = num == 0 ? 1 : num;
+                    return num1;
+
+                }
+
+            });
+            treeSet.addAll(alllist);
+
+//            Collections.sort(alllist, new Comparator<ProjectApplication>() {
+//
+//                public int compare(ProjectApplication o1, ProjectApplication o2) {
+//                    // 按照学生的年龄进行降序排列
+//                    if (Integer.parseInt(o1.getIsApprover()) > Integer.parseInt(o2.getIsApprover())) {
+//                        return -1;
+//                    }
+//                    else if (Integer.parseInt(o1.getIsApprover()) < Integer.parseInt(o2.getIsApprover())) {
+//                        return 1;
+//                    }
+//                    return 1;
+//                }
+//            });
+            Page page=new Page();
+            ArrayList arrayList = new ArrayList(treeSet);
+            page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+            System.out.println(page);
+            if(page.getRowNum()+page.getPageCount()>arrayList.size()){
+                page.setList(arrayList.subList(page.getRowNum(),arrayList.size()));
+            }else {
+                page.setList(arrayList.subList(page.getRowNum(), page.getPageCount() * page.getPageNum()));
+            }
+//            PageInfo pageInfo = new PageInfo(alllist);
+            return new ResponseMessage(Code.CODE_OK, "项目分页信息", page);
+        }
          }
+
+
+
+
 
     @Override
     public ResponseMessage queryProjectBase(JSONObject requestJson){

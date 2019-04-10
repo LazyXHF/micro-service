@@ -9,7 +9,7 @@ public interface PucharseReviewService {
 
     ResponseMessage queryPucharseList(String requestBody);
 
-   /* ResponseMessage addPucharseReview(String requestBody);*/
+    ResponseMessage addPucharseReview(String requestBody);
 
 
 }

@@ -499,4 +499,33 @@
     from internal_attachment
     where relateddomain_id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <update id="updateByrelateddomainId" parameterType="com.portjs.base.entity.InternalAttachment" >
+    update internal_attachment
+    set upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+    uploader = #{uploader,jdbcType=VARCHAR},
+    modifer = #{modifer,jdbcType=VARCHAR},
+    modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+    relateddomain = #{relateddomain,jdbcType=VARCHAR},
+    file_url = #{fileUrl,jdbcType=VARCHAR},
+    file_module = #{fileModule,jdbcType=VARCHAR},
+    relateddomain_id = #{relateddomainId,jdbcType=VARCHAR},
+    file_type = #{fileType,jdbcType=VARCHAR},
+    file_name = #{fileName,jdbcType=VARCHAR},
+    file_size = #{fileSize,jdbcType=DOUBLE},
+    enable = #{enable,jdbcType=VARCHAR},
+    sort = #{sort,jdbcType=VARCHAR},
+    back_up2 = #{backUp2,jdbcType=VARCHAR},
+    back_up3 = #{backUp3,jdbcType=VARCHAR},
+    back_up4 = #{backUp4,jdbcType=VARCHAR},
+    back_up5 = #{backUp5,jdbcType=VARCHAR},
+    back_up6 = #{backUp6,jdbcType=VARCHAR},
+    back_up7 = #{backUp7,jdbcType=VARCHAR},
+    back_up8 = #{backUp8,jdbcType=VARCHAR},
+    back_up9 = #{backUp9,jdbcType=VARCHAR},
+    back_up10 = #{backUp10,jdbcType=VARCHAR}
+    where relateddomain_id = #{relateddomainId,jdbcType=VARCHAR}
+  </update>
+
+
 </mapper>

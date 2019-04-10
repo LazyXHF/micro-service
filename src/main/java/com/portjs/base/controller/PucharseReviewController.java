@@ -29,12 +29,12 @@ public class PucharseReviewController {
         logger.debug("queryPucharseList" + requestBody);
         return pucharseReviewService.queryPucharseList(requestBody);
     }
-   /* @LogInfo(methodName = "新增采购评审",modelName = "采购管理")
+   @LogInfo(methodName = "新增采购评审",modelName = "采购管理")
     @RequestMapping("/addPucharseReview")
     @ResponseBody
     public ResponseMessage addPucharseReview(@RequestBody String requestBody) {
         logger.debug("addPucharseReview" + requestBody);
             return pucharseReviewService.addPucharseReview(requestBody);
-    }*/
+    }
 
 }
