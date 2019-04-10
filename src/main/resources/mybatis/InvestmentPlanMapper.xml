@@ -16,6 +16,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="construction_mode" property="constructionMode" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -412,7 +413,8 @@
 
   <select id="queryProjectPlanInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
-    <include refid="Base_Column_List" />
+   Id, plan_num, project_id, project_name, project_type, project_desc, organization,
+    investor, amount, construction_mode, remark, create_time, update_time, delete_time,construction_mode
     from investment_plan
     where Id = #{id,jdbcType=VARCHAR}
   </select>
