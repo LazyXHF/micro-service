@@ -451,10 +451,18 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             }
         }
-        HashSet set = new HashSet(list);
+        list = new LinkedList(new LinkedHashSet<>(list));
+        Collections.sort(list);
+
+        List aa = new ArrayList();
+
+        for(Object i : list){
+            aa.add(i);
+        }
+        /*HashSet set = new HashSet(list);
         list.clear();
-        list.addAll(set);
-        return new ResponseMessage(Code.CODE_OK,"查询成功",list);
+        list.addAll(set);*/
+        return new ResponseMessage(Code.CODE_OK,"查询成功",aa);
     }
 
     /**

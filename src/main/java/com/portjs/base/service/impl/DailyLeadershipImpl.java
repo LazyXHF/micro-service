@@ -597,7 +597,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 agenda.setId(agenda_id.toString());
                 agenda.setIsdelete(0);
                 int i = agendaMapper.updateByPrimaryKeySelective(agenda);
-                if(i>=0){
+                if(i<=0){
                     return new ResponseMessage(Code.CODE_ERROR, "会议删除失败");
                 }
                 //删除对应领导
@@ -607,7 +607,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                 TXietongAgendaHuman human = new TXietongAgendaHuman();
                 human.setIsdelete(0);
                 int i1 = agendaHumanMapper.updateByExampleSelective(human, example);
-                if(i1>=0){
+                if(i1<=0){
                     return new ResponseMessage(Code.CODE_ERROR, "会议删除失败");
                 }
 
@@ -622,7 +622,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                     process1.setIsdelete(0);
                     //删除审核表
                     int update = agendaProcessMapper.updateByExampleSelective(process1, processExample);
-                    if(update>=0){
+                    if(update<=0){
                         return new ResponseMessage(Code.CODE_ERROR, "审核表删除失败");
                     }
                     TXietongAgendaRecordExample recordExample = new TXietongAgendaRecordExample();
@@ -632,7 +632,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
                     record.setIsdelete(0);
                     //删除流程表
                     int byExample = agendaRecordMapper.updateByExampleSelective(record, recordExample);
-                    if(byExample>=0){
+                    if(byExample<=0){
                         return new ResponseMessage(Code.CODE_ERROR, "流程表删除失败");
                     }
                 }
@@ -2000,7 +2000,7 @@ public class DailyLeadershipImpl implements DailyLeadershipService {
          //如果是审核人员是一级审核员查询当前审核员对应的流程数据
             TXietongAgendaRecordExample recordExample = new TXietongAgendaRecordExample();
             TXietongAgendaRecordExample.Criteria recordCriteria = recordExample.createCriteria();
-            recordCriteria.andOwnerIdEqualTo(user_id);
+                recordCriteria.andOwnerIdEqualTo(user_id);
             recordCriteria.andRstatusEqualTo("0");
             recordCriteria.andIsdeleteEqualTo(1);
             List<TXietongAgendaRecord> records = agendaRecordMapper.selectByExample(recordExample);
