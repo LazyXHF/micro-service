@@ -1,13 +1,14 @@
 package com.portjs.base.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TenderApplication implements Serializable {
+public class TenderApplication {
     private String id;
 
     private Integer requestId;
+
+    private String tenderNum;
 
     private String projectId;
 
@@ -41,7 +42,17 @@ public class TenderApplication implements Serializable {
 
     private Date deleteTime;
 
-    private static final long serialVersionUID = 1L;
+    private String review;
+
+    private String backUp1;
+
+    private String backUp2;
+
+    private String backUp3;
+
+    private String backUp4;
+
+    private String backUp5;
 
     public String getId() {
         return id;
@@ -57,6 +68,14 @@ public class TenderApplication implements Serializable {
 
     public void setRequestId(Integer requestId) {
         this.requestId = requestId;
+    }
+
+    public String getTenderNum() {
+        return tenderNum;
+    }
+
+    public void setTenderNum(String tenderNum) {
+        this.tenderNum = tenderNum == null ? null : tenderNum.trim();
     }
 
     public String getProjectId() {
@@ -185,5 +204,53 @@ public class TenderApplication implements Serializable {
 
     public void setDeleteTime(Date deleteTime) {
         this.deleteTime = deleteTime;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review == null ? null : review.trim();
+    }
+
+    public String getBackUp1() {
+        return backUp1;
+    }
+
+    public void setBackUp1(String backUp1) {
+        this.backUp1 = backUp1 == null ? null : backUp1.trim();
+    }
+
+    public String getBackUp2() {
+        return backUp2;
+    }
+
+    public void setBackUp2(String backUp2) {
+        this.backUp2 = backUp2 == null ? null : backUp2.trim();
+    }
+
+    public String getBackUp3() {
+        return backUp3;
+    }
+
+    public void setBackUp3(String backUp3) {
+        this.backUp3 = backUp3 == null ? null : backUp3.trim();
+    }
+
+    public String getBackUp4() {
+        return backUp4;
+    }
+
+    public void setBackUp4(String backUp4) {
+        this.backUp4 = backUp4 == null ? null : backUp4.trim();
+    }
+
+    public String getBackUp5() {
+        return backUp5;
+    }
+
+    public void setBackUp5(String backUp5) {
+        this.backUp5 = backUp5 == null ? null : backUp5.trim();
     }
 }

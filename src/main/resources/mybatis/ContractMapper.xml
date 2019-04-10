@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.portjs.base.dao.PurchaseReviewMapper" >
-  <resultMap id="BaseResultMap" type="com.portjs.base.entity.PurchaseReview" >
+<mapper namespace="com.portjs.base.dao.ContractMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.Contract" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
-    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
-    <result column="review_num" property="reviewNum" jdbcType="INTEGER" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="source_id" property="sourceId" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
     <result column="purchase_dept" property="purchaseDept" jdbcType="VARCHAR" />
-    <result column="method" property="method" jdbcType="VARCHAR" />
     <result column="supplier" property="supplier" jdbcType="VARCHAR" />
     <result column="amount" property="amount" jdbcType="DECIMAL" />
-    <result column="submit_time" property="submitTime" jdbcType="DATE" />
+    <result column="sign_date" property="signDate" jdbcType="DATE" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+    <result column="valid_date" property="validDate" jdbcType="DATE" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="creater" property="creater" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
-    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -79,65 +78,67 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, request_id, review_num, project_id, purchase_dept, method, supplier, amount, 
-    submit_time, remark, file_url, status, creater, create_time, update_time, delete_time, 
-    is_delete
+    Id, source, source_id, project_id, purchase_dept, supplier, amount, sign_date, remark, 
+    file_url, valid_date, status, creater, create_time, update_time, delete_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.PurchaseReviewExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ContractExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from purchase_review
+    from contract
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
+    <if test="offset != null &amp;&amp; limit != null">
+      limit ${offset},${limit}
+    </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from purchase_review
+    from contract
     where Id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from purchase_review
+    delete from contract
     where Id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.portjs.base.entity.PurchaseReviewExample" >
-    delete from purchase_review
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.ContractExample" >
+    delete from contract
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.portjs.base.entity.PurchaseReview" >
-    insert into purchase_review (Id, request_id, review_num, 
-      project_id, purchase_dept, method, 
-      supplier, amount, submit_time, 
-      remark, file_url, status, 
+  <insert id="insert" parameterType="com.portjs.base.entity.Contract" >
+    insert into contract (Id, source, source_id, 
+      project_id, purchase_dept, supplier, 
+      amount, sign_date, remark, 
+      file_url, valid_date, status, 
       creater, create_time, update_time, 
-      delete_time, is_delete)
-    values (#{id,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{reviewNum,jdbcType=INTEGER}, 
-      #{projectId,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
-      #{supplier,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{submitTime,jdbcType=DATE}, 
-      #{remark,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      delete_time)
+    values (#{id,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+      #{projectId,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{signDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, 
+      #{fileUrl,jdbcType=VARCHAR}, #{validDate,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, 
       #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleteTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=VARCHAR})
+      #{deleteTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.portjs.base.entity.PurchaseReview" >
-    insert into purchase_review
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.Contract" >
+    insert into contract
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         Id,
       </if>
-      <if test="requestId != null" >
-        request_id,
+      <if test="source != null" >
+        source,
       </if>
-      <if test="reviewNum != null" >
-        review_num,
+      <if test="sourceId != null" >
+        source_id,
       </if>
       <if test="projectId != null" >
         project_id,
@@ -145,23 +146,23 @@
       <if test="purchaseDept != null" >
         purchase_dept,
       </if>
-      <if test="method != null" >
-        method,
-      </if>
       <if test="supplier != null" >
         supplier,
       </if>
       <if test="amount != null" >
         amount,
       </if>
-      <if test="submitTime != null" >
-        submit_time,
+      <if test="signDate != null" >
+        sign_date,
       </if>
       <if test="remark != null" >
         remark,
       </if>
       <if test="fileUrl != null" >
         file_url,
+      </if>
+      <if test="validDate != null" >
+        valid_date,
       </if>
       <if test="status != null" >
         status,
@@ -178,19 +179,16 @@
       <if test="deleteTime != null" >
         delete_time,
       </if>
-      <if test="isDelete != null" >
-        is_delete,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="requestId != null" >
-        #{requestId,jdbcType=VARCHAR},
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
       </if>
-      <if test="reviewNum != null" >
-        #{reviewNum,jdbcType=INTEGER},
+      <if test="sourceId != null" >
+        #{sourceId,jdbcType=VARCHAR},
       </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=VARCHAR},
@@ -198,23 +196,23 @@
       <if test="purchaseDept != null" >
         #{purchaseDept,jdbcType=VARCHAR},
       </if>
-      <if test="method != null" >
-        #{method,jdbcType=VARCHAR},
-      </if>
       <if test="supplier != null" >
         #{supplier,jdbcType=VARCHAR},
       </if>
       <if test="amount != null" >
         #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="submitTime != null" >
-        #{submitTime,jdbcType=DATE},
+      <if test="signDate != null" >
+        #{signDate,jdbcType=DATE},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
       </if>
       <if test="fileUrl != null" >
         #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="validDate != null" >
+        #{validDate,jdbcType=DATE},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -231,28 +229,25 @@
       <if test="deleteTime != null" >
         #{deleteTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDelete != null" >
-        #{isDelete,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.portjs.base.entity.PurchaseReviewExample" resultType="java.lang.Integer" >
-    select count(*) from purchase_review
+  <select id="countByExample" parameterType="com.portjs.base.entity.ContractExample" resultType="java.lang.Integer" >
+    select count(*) from contract
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update purchase_review
+    update contract
     <set >
       <if test="record.id != null" >
         Id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.requestId != null" >
-        request_id = #{record.requestId,jdbcType=VARCHAR},
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=VARCHAR},
       </if>
-      <if test="record.reviewNum != null" >
-        review_num = #{record.reviewNum,jdbcType=INTEGER},
+      <if test="record.sourceId != null" >
+        source_id = #{record.sourceId,jdbcType=VARCHAR},
       </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=VARCHAR},
@@ -260,23 +255,23 @@
       <if test="record.purchaseDept != null" >
         purchase_dept = #{record.purchaseDept,jdbcType=VARCHAR},
       </if>
-      <if test="record.method != null" >
-        method = #{record.method,jdbcType=VARCHAR},
-      </if>
       <if test="record.supplier != null" >
         supplier = #{record.supplier,jdbcType=VARCHAR},
       </if>
       <if test="record.amount != null" >
         amount = #{record.amount,jdbcType=DECIMAL},
       </if>
-      <if test="record.submitTime != null" >
-        submit_time = #{record.submitTime,jdbcType=DATE},
+      <if test="record.signDate != null" >
+        sign_date = #{record.signDate,jdbcType=DATE},
       </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.fileUrl != null" >
         file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validDate != null" >
+        valid_date = #{record.validDate,jdbcType=DATE},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=VARCHAR},
@@ -293,45 +288,41 @@
       <if test="record.deleteTime != null" >
         delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.isDelete != null" >
-        is_delete = #{record.isDelete,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update purchase_review
+    update contract
     set Id = #{record.id,jdbcType=VARCHAR},
-      request_id = #{record.requestId,jdbcType=VARCHAR},
-      review_num = #{record.reviewNum,jdbcType=INTEGER},
+      source = #{record.source,jdbcType=VARCHAR},
+      source_id = #{record.sourceId,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=VARCHAR},
       purchase_dept = #{record.purchaseDept,jdbcType=VARCHAR},
-      method = #{record.method,jdbcType=VARCHAR},
       supplier = #{record.supplier,jdbcType=VARCHAR},
       amount = #{record.amount,jdbcType=DECIMAL},
-      submit_time = #{record.submitTime,jdbcType=DATE},
+      sign_date = #{record.signDate,jdbcType=DATE},
       remark = #{record.remark,jdbcType=VARCHAR},
       file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      valid_date = #{record.validDate,jdbcType=DATE},
       status = #{record.status,jdbcType=VARCHAR},
       creater = #{record.creater,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
-      is_delete = #{record.isDelete,jdbcType=VARCHAR}
+      delete_time = #{record.deleteTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.PurchaseReview" >
-    update purchase_review
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.Contract" >
+    update contract
     <set >
-      <if test="requestId != null" >
-        request_id = #{requestId,jdbcType=VARCHAR},
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
       </if>
-      <if test="reviewNum != null" >
-        review_num = #{reviewNum,jdbcType=INTEGER},
+      <if test="sourceId != null" >
+        source_id = #{sourceId,jdbcType=VARCHAR},
       </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=VARCHAR},
@@ -339,23 +330,23 @@
       <if test="purchaseDept != null" >
         purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
       </if>
-      <if test="method != null" >
-        method = #{method,jdbcType=VARCHAR},
-      </if>
       <if test="supplier != null" >
         supplier = #{supplier,jdbcType=VARCHAR},
       </if>
       <if test="amount != null" >
         amount = #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="submitTime != null" >
-        submit_time = #{submitTime,jdbcType=DATE},
+      <if test="signDate != null" >
+        sign_date = #{signDate,jdbcType=DATE},
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="fileUrl != null" >
         file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="validDate != null" >
+        valid_date = #{validDate,jdbcType=DATE},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
@@ -372,30 +363,26 @@
       <if test="deleteTime != null" >
         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDelete != null" >
-        is_delete = #{isDelete,jdbcType=VARCHAR},
-      </if>
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.PurchaseReview" >
-    update purchase_review
-    set request_id = #{requestId,jdbcType=VARCHAR},
-      review_num = #{reviewNum,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Contract" >
+    update contract
+    set source = #{source,jdbcType=VARCHAR},
+      source_id = #{sourceId,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
       purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
-      method = #{method,jdbcType=VARCHAR},
       supplier = #{supplier,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL},
-      submit_time = #{submitTime,jdbcType=DATE},
+      sign_date = #{signDate,jdbcType=DATE},
       remark = #{remark,jdbcType=VARCHAR},
       file_url = #{fileUrl,jdbcType=VARCHAR},
+      valid_date = #{validDate,jdbcType=DATE},
       status = #{status,jdbcType=VARCHAR},
       creater = #{creater,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=VARCHAR}
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

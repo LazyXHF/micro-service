@@ -3,28 +3,28 @@ package com.portjs.base.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PurchaseReview {
+public class Contract {
     private String id;
 
-    private String requestId;
+    private String source;
 
-    private Integer reviewNum;
+    private String sourceId;
 
     private String projectId;
 
     private String purchaseDept;
 
-    private String method;
-
     private String supplier;
 
     private BigDecimal amount;
 
-    private Date submitTime;
+    private Date signDate;
 
     private String remark;
 
     private String fileUrl;
+
+    private Date validDate;
 
     private String status;
 
@@ -36,7 +36,25 @@ public class PurchaseReview {
 
     private Date deleteTime;
 
-    private String isDelete;
+    private int pageNum;
+
+    private int pageCount;
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
 
     public String getId() {
         return id;
@@ -46,20 +64,20 @@ public class PurchaseReview {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getRequestId() {
-        return requestId;
+    public String getSource() {
+        return source;
     }
 
-    public void setRequestId(String requestId) {
-        this.requestId = requestId == null ? null : requestId.trim();
+    public void setSource(String source) {
+        this.source = source == null ? null : source.trim();
     }
 
-    public Integer getReviewNum() {
-        return reviewNum;
+    public String getSourceId() {
+        return sourceId;
     }
 
-    public void setReviewNum(Integer reviewNum) {
-        this.reviewNum = reviewNum;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId == null ? null : sourceId.trim();
     }
 
     public String getProjectId() {
@@ -78,14 +96,6 @@ public class PurchaseReview {
         this.purchaseDept = purchaseDept == null ? null : purchaseDept.trim();
     }
 
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method == null ? null : method.trim();
-    }
-
     public String getSupplier() {
         return supplier;
     }
@@ -102,12 +112,12 @@ public class PurchaseReview {
         this.amount = amount;
     }
 
-    public Date getSubmitTime() {
-        return submitTime;
+    public Date getSignDate() {
+        return signDate;
     }
 
-    public void setSubmitTime(Date submitTime) {
-        this.submitTime = submitTime;
+    public void setSignDate(Date signDate) {
+        this.signDate = signDate;
     }
 
     public String getRemark() {
@@ -124,6 +134,14 @@ public class PurchaseReview {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl == null ? null : fileUrl.trim();
+    }
+
+    public Date getValidDate() {
+        return validDate;
+    }
+
+    public void setValidDate(Date validDate) {
+        this.validDate = validDate;
     }
 
     public String getStatus() {
@@ -164,13 +182,5 @@ public class PurchaseReview {
 
     public void setDeleteTime(Date deleteTime) {
         this.deleteTime = deleteTime;
-    }
-
-    public String getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(String isDelete) {
-        this.isDelete = isDelete == null ? null : isDelete.trim();
     }
 }
