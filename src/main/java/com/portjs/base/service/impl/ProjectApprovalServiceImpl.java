@@ -463,6 +463,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			}else {
 				list.get(i).setSenderId("");
 			}
+
 			Map<String,Object> map = new HashMap<String,Object>();
 			ProjectApplicationExample projectApplicationExample = new ProjectApplicationExample();
 			ProjectApplicationExample.Criteria criteria2 = projectApplicationExample.createCriteria();
