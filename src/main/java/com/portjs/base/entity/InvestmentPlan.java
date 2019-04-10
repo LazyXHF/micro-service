@@ -2,9 +2,8 @@ package com.portjs.base.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.portjs.base.util.BaseEntity;
+import com.sun.istack.internal.NotNull;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,11 +11,13 @@ public class InvestmentPlan extends BaseEntity {
     private String id;
 
     @Excel(name = "计划编号", orderNum = "1", height = 20, width = 30, isImportField = "true_st")
+    @NotNull
     private String planNum;
 
     private String projectId;
 
     @Excel(name = "项目名称", orderNum = "2")
+    @NotNull
     private String projectName;
 
     @Excel(name = "项目分类", orderNum = "1")
@@ -31,10 +32,7 @@ public class InvestmentPlan extends BaseEntity {
     @Excel(name = "投资主体", orderNum = "5")
     private String investor;
 
-    @Excel(name = "投资金额(万元)", orderNum = "6" ,type=10)
-    @NotNull
-
-    @Pattern(regexp = "/(^[1-9]([0-9]+)?(\\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\\.[0-9]([0-9])?$)/", message = "计划金额的输入格式不正确,请确认!")
+    @Excel(name = "投资金额(万元)", orderNum = "6")
     private BigDecimal amount;
 
 
