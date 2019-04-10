@@ -2,7 +2,6 @@ package com.portjs.base.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.portjs.base.util.BaseEntity;
-import com.sun.istack.internal.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Date;
