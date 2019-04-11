@@ -556,9 +556,17 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				Map<String,Object> mapData = null;
 				if(!CollectionUtils.isEmpty(data)){
 					mapData = new HashMap<String,Object>();
+					ProjectApplication projectApplication = data.get(0);
 					//立项id
-					String id = data.get(0).getId();
-					mapData.put("Application",data.get(0));
+					String id = projectApplication.getId();
+					//根据获取到的计划id查询对应的计划编码
+					String planId=projectApplication.getInvestmentId();
+					InvestmentPlanExample planExamples = new InvestmentPlanExample();
+					InvestmentPlanExample.Criteria criterias = planExamples.createCriteria();
+					criterias.andIdEqualTo(planId);
+					List <InvestmentPlan> planData = planMapper.selectByExample(planExamples);
+					projectApplication.setPlanNum(planData.get(0).getPlanNum());
+					mapData.put("Application",projectApplication);
 					//人员
 					Page page=new Page();
 					int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
