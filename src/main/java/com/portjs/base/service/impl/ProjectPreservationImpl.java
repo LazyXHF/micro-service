@@ -359,11 +359,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         }else{
             ProjectApplication application = new ProjectApplication();
             application.setId(application_id);
-            if("技术委员会".equals(stepDesc1)){
-                application.setEnable("1");
-            }else{
-                application.setEnable("0");
-            }
+            application.setEnable("0");
             int i11 = applicationMapper.updateByPrimaryKeySelective(application);
             if(i11==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");

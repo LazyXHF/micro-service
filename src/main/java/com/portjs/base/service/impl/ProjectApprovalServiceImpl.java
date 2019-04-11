@@ -456,26 +456,32 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		List<TTodo> list = tTodoMapper.selectBySomething(todo);
 		//替换姓名
 		for(int i=0;i<list.size();i++){
+			TTodo tTodo = list.get(i);
 			//发送人
-			String name = tUserMapper.selectById(list.get(i).getSenderId());
+			String name = tUserMapper.selectById(tTodo.getSenderId());
 			if(!StringUtils.isEmpty(name)){
-				list.get(i).setSenderId(name);
+				tTodo.setSenderId(name);
 			}else {
-				list.get(i).setSenderId("");
+				tTodo.setSenderId("");
 			}
 
-			Map<String,Object> map = new HashMap<String,Object>();
-			ProjectApplicationExample projectApplicationExample = new ProjectApplicationExample();
-			ProjectApplicationExample.Criteria criteria2 = projectApplicationExample.createCriteria();
-			criteria2.andIdEqualTo(list.get(i).getRelateddomainId());
-			//查询此条数据的状态
-			List<ProjectApplication> list1 = projectApplicationMapper.selectByExample(projectApplicationExample);
-			if(!CollectionUtils.isEmpty(list1)){
-				//enable 1:审核中 0:退回状态
-				map.put("returnStatus",list1.get(0).getEnable());
-				list.get(i).setParams(map);
+			if("项目立项".equals(tTodo.getRelateddomain())){
+				Map<String,Object> map = new HashMap<String,Object>();
+				ProjectApplicationExample projectApplicationExample = new ProjectApplicationExample();
+				ProjectApplicationExample.Criteria criteria2 = projectApplicationExample.createCriteria();
+				criteria2.andIdEqualTo(list.get(i).getRelateddomainId());
+				//查询此条数据的状态
+				List<ProjectApplication> list1 = projectApplicationMapper.selectByExample(projectApplicationExample);
+				if(!CollectionUtils.isEmpty(list1)){
+					//status 8:退回状态,其余审核中
+					if("8".equals(list1.get(0).getStatus())){
+						map.put("returnStatus","0");
+					}else{
+						map.put("returnStatus","1");
+					}
+					tTodo.setParams(map);
+				}
 			}
-
 		}
 		pag.setList(list);
 		return new ResponseMessage(Code.CODE_OK, "查询成功",pag);
