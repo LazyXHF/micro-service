@@ -50,4 +50,6 @@ public interface PurchaseReviewMapper {
      * @return
      */
     List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("rowNum") Integer rowNum, @Param("pageCount") Integer pageCount);
+
+    String findMaxOdd();
 }

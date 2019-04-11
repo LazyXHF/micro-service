@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.PurchaseReview" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
     <result column="request_id" property="requestId" jdbcType="VARCHAR" />
-    <result column="review_num" property="reviewNum" jdbcType="INTEGER" />
+    <result column="review_num" property="reviewNum" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
     <result column="purchase_dept" property="purchaseDept" jdbcType="VARCHAR" />
     <result column="method" property="method" jdbcType="VARCHAR" />
@@ -120,7 +120,7 @@
       remark, file_url, status, 
       creater, create_time, update_time, 
       delete_time, is_delete)
-    values (#{id,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{reviewNum,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{reviewNum,jdbcType=VARCHAR},
       #{projectId,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
       #{supplier,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{submitTime,jdbcType=DATE}, 
       #{remark,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
@@ -190,7 +190,7 @@
         #{requestId,jdbcType=VARCHAR},
       </if>
       <if test="reviewNum != null" >
-        #{reviewNum,jdbcType=INTEGER},
+        #{reviewNum,jdbcType=VARCHAR},
       </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=VARCHAR},
@@ -252,7 +252,7 @@
         request_id = #{record.requestId,jdbcType=VARCHAR},
       </if>
       <if test="record.reviewNum != null" >
-        review_num = #{record.reviewNum,jdbcType=INTEGER},
+        review_num = #{record.reviewNum,jdbcType=VARCHAR},
       </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=VARCHAR},
@@ -305,7 +305,7 @@
     update purchase_review
     set Id = #{record.id,jdbcType=VARCHAR},
       request_id = #{record.requestId,jdbcType=VARCHAR},
-      review_num = #{record.reviewNum,jdbcType=INTEGER},
+      review_num = #{record.reviewNum,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=VARCHAR},
       purchase_dept = #{record.purchaseDept,jdbcType=VARCHAR},
       method = #{record.method,jdbcType=VARCHAR},
@@ -331,7 +331,7 @@
         request_id = #{requestId,jdbcType=VARCHAR},
       </if>
       <if test="reviewNum != null" >
-        review_num = #{reviewNum,jdbcType=INTEGER},
+        review_num = #{reviewNum,jdbcType=VARCHAR},
       </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=VARCHAR},
@@ -381,7 +381,7 @@
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.PurchaseReview" >
     update purchase_review
     set request_id = #{requestId,jdbcType=VARCHAR},
-      review_num = #{reviewNum,jdbcType=INTEGER},
+      review_num = #{reviewNum,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
       purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
       method = #{method,jdbcType=VARCHAR},
@@ -430,5 +430,8 @@
     </if>
     ORDER BY r.create_time
     LIMIT #{rowNum,jdbcType=INTEGER},#{pageCount,jdbcType=INTEGER}
+  </select>
+  <select id="findMaxOdd">
+    select max(review_num)  from purchase_review
   </select>
 </mapper>

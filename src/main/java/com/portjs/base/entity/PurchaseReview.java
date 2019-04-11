@@ -8,7 +8,7 @@ public class PurchaseReview {
 
     private String requestId;
 
-    private Integer reviewNum;
+    private String reviewNum;
 
     private String projectId;
 
@@ -54,11 +54,11 @@ public class PurchaseReview {
         this.requestId = requestId == null ? null : requestId.trim();
     }
 
-    public Integer getReviewNum() {
+    public String getReviewNum() {
         return reviewNum;
     }
 
-    public void setReviewNum(Integer reviewNum) {
+    public void setReviewNum(String reviewNum) {
         this.reviewNum = reviewNum;
     }
 

@@ -87,7 +87,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         //申请单
         //这是前段传过来的id  如果这个id存在寿命已经暂存过  进行更新  如果为null 说明是新增
         String id = jsonObject.getString("id");
-        String requestNum = jsonObject.getString("request_num");
+        String request_id = jsonObject.getString("request_id");
         String projectId = jsonObject.getString("project_id");
         String method = jsonObject.getString("method");
         //供应商
@@ -104,7 +104,9 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         //指定处理人的id
         String actionuserId = jsonObject.getString("actionuserId");
         PurchaseReview purchaseReview = new PurchaseReview();
-        purchaseReview.setRequestId(requestNum);
+        purchaseReview.setRequestId(request_id);
+        String  reviewNum= PucharseReviewServiceImpl.createOdd("CP");
+        purchaseReview.setReviewNum(reviewNum);
         purchaseReview.setProjectId(projectId);
         purchaseReview.setPurchaseDept(purchaseDept);
         purchaseReview.setMethod(method);
@@ -122,8 +124,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         String fieModule = "采购评审";
         internalAttachment.setFileModule(fieModule);
         internalAttachment.setRelateddomain("采购评审");
-
-
         JSONArray jsonArray = jsonObject.getJSONArray("filepaths");
         //获取所有审批人的id
         JSONArray jsonArray1 = jsonObject.getJSONArray("approvers");
@@ -409,23 +409,23 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
      *生成流水单号
      * @return rp  流水单前的类型编号
      */
-    public static String createOdd(String rp) {
+    public static String createOdd(String cp) {
 
         String nowOdd=null;
-        String oddMaxCode = odd.purchaseRequestMapper.findMaxOdd();
+        String oddMaxCode = odd.purchaseReviewMapper.findMaxOdd();
         //如果最大流水单号不为空
         if (!StringUtils.isEmpty(oddMaxCode)) {
             //如果当前时间不相同，例如：20181009=！20180809，重新开始以当天日期拼流水单号201810100001
             if (getNowTimeCode() != getOddSenttime(oddMaxCode)) {
                 int number = 1;
                 PurchaseRequest express = new PurchaseRequest();
-                express.setRequestNum(rp+getBody(number));
+                express.setRequestNum(cp+getBody(number));
                 nowOdd = express.getRequestNum();
                 //相同，则加1，例如：201810100002
             }else {
                 int number = odd.getOddCode(oddMaxCode);
                 PurchaseRequest express = new PurchaseRequest();
-                express.setRequestNum("PR"+getBody(getOddCode(oddMaxCode)+1));
+                express.setRequestNum("CP"+getBody(getOddCode(oddMaxCode)+1));
                 nowOdd = express.getRequestNum();
             }
             //如果没有流水单号，以当前日期重新开始生成流水单号
@@ -433,7 +433,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
             int number = 1;
             PurchaseRequest express = new PurchaseRequest();
 
-            express.setRequestNum("PR"+getBody(number));
+            express.setRequestNum("CP"+getBody(number));
 
             nowOdd = express.getRequestNum();
         }
