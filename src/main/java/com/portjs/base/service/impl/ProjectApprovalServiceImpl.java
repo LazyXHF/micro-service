@@ -463,6 +463,19 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			}else {
 				list.get(i).setSenderId("");
 			}
+
+			Map<String,Object> map = new HashMap<String,Object>();
+			ProjectApplicationExample projectApplicationExample = new ProjectApplicationExample();
+			ProjectApplicationExample.Criteria criteria2 = projectApplicationExample.createCriteria();
+			criteria2.andIdEqualTo(list.get(i).getRelateddomainId());
+			//查询此条数据的状态
+			List<ProjectApplication> list1 = projectApplicationMapper.selectByExample(projectApplicationExample);
+			if(!CollectionUtils.isEmpty(list1)){
+				//enable 1:审核中 0:退回状态
+				map.put("returnStatus",list1.get(0).getEnable());
+				list.get(i).setParams(map);
+			}
+
 		}
 		pag.setList(list);
 		return new ResponseMessage(Code.CODE_OK, "查询成功",pag);

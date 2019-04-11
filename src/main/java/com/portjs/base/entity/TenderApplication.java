@@ -1,58 +1,63 @@
 package com.portjs.base.entity;
 
+import com.portjs.base.util.BaseEntity;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TenderApplication {
+/**
+ * 招标审核
+ */
+public class TenderApplication extends BaseEntity{
     private String id;
 
-    private Integer requestId;
+    private Integer requestId;//采购申请单id
 
-    private String tenderNum;
+    private String tenderNum;//招标申请单号（ZB+YYMMDD+2位流水码）
 
-    private String projectId;
+    private String projectId;//项目id
 
-    private String method;
+    private String method;//招标方式1:公开招标、2:邀请招标、
 
-    private String organization;
+    private String organization;//招标组织
 
-    private String dept;
+    private String dept;//实施部门
 
-    private Date openDate;
+    private Date openDate;//开标日期
 
-    private String remark;
+    private String remark;//备注说明
 
-    private String status;
+    private String status;//流程状态
 
-    private String tenderUrl;
+    private String tenderUrl;//招标文件
 
-    private String supplier;
+    private String supplier;//中标厂商
 
-    private Date bidDate;
+    private Date bidDate;//中标日期
 
-    private BigDecimal amount;
+    private BigDecimal amount;//中标金额
 
-    private String bidUrl;
+    private String bidUrl;//中标文件
 
-    private String creater;
+    private String creater;//创建人
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Date deleteTime;
+    private Date deleteTime;//删除时间（软删除标记）
 
-    private String review;
+    private String review;//1审核0:退回
 
-    private String backUp1;
+    private String backUp1;//备用字段1
 
-    private String backUp2;
+    private String backUp2;//备用字段2
 
-    private String backUp3;
+    private String backUp3;//备用字段3
 
-    private String backUp4;
+    private String backUp4;//备用字段4
 
-    private String backUp5;
+    private String backUp5;//备用字段5
 
     public String getId() {
         return id;

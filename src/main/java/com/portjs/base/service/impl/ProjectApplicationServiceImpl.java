@@ -187,8 +187,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 public int compare(ProjectApplication o1, ProjectApplication o2) {
                     //按照年龄排序，主要条件
                     int num =Integer.parseInt(o2.getIsApprover())- Integer.parseInt(o1.getIsApprover());
-
-
                     //如果年龄相同，比较姓名，如果姓名相同的话，才是同一个对象
                     int num1 = num == 0 ? 1 : num;
                     return num1;
@@ -224,8 +222,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             return new ResponseMessage(Code.CODE_OK, "项目分页信息", page);
         }
          }
-
-
 
 
 
