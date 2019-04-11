@@ -103,7 +103,7 @@ public class ProjectPreservationController  extends BaseController {
         ImportParams importParams =  new ImportParams();
         importParams.setTitleRows(0);
         importParams.setHeadRows(1);
-        importParams.setNeedVerfiy(true);
+        importParams.setNeedSave(true);
         logger.error(TAG + "insert-for-excel()begin....."+file );
         try {
             try {
