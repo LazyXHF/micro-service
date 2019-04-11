@@ -103,23 +103,23 @@ public class ProjectPreservationController  extends BaseController {
         ImportParams importParams =  new ImportParams();
         importParams.setTitleRows(0);
         importParams.setHeadRows(1);
-        importParams.setNeedVerify(true);
+        importParams.setNeedVerfiy(true);
         logger.error(TAG + "insert-for-excel()begin....."+file );
         try {
             try {
-            list = ExcelImportUtil.importExcel(file.getInputStream(), InvestmentPlan.class,importParams);
+                list = ExcelImportUtil.importExcel(file.getInputStream(), InvestmentPlan.class,importParams);
 
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseMessage(Code.CODE_ERROR,"导入表格数据错误，请修改");
             }
-           if(!CollectionUtils.isEmpty(list)){
+            if(!CollectionUtils.isEmpty(list)){
 
 
-                   ResponseMessage responseMessage = projectPreservationService.insertExcelByEasyPoi(list,loginId);
-                   return responseMessage;
+                ResponseMessage responseMessage = projectPreservationService.insertExcelByEasyPoi(list,loginId);
+                return responseMessage;
 
-           }
+            }
             return new ResponseMessage(Code.CODE_ERROR,"插入失败");
         } catch (Exception e) {
             e.printStackTrace();

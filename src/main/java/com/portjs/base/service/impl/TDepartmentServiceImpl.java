@@ -8,17 +8,14 @@ import com.portjs.base.util.Code;
 import com.portjs.base.util.IDUtils;
 import com.portjs.base.util.Pinyin4jUtil;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.vo.ArrayVO;
 import com.portjs.base.vo.DepartmentTree;
 import com.portjs.base.vo.SortVo;
 import io.netty.util.internal.StringUtil;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import schemasMicrosoftComVml.STTrueFalse;
 
 import java.util.Date;
 import java.util.LinkedHashMap;

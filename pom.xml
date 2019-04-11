@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.port.base</groupId>
 
 	<artifactId>base</artifactId>
 
-	<version>0.0.1-SNAPSHOT</version>
-	<name>base</name>
+	<name>mgt</name>
 	<description>Demo project for Spring Boot</description>
-
 
 
 	<parent>
@@ -26,7 +24,7 @@
 		<spring-boot-admin.version>2.1.1</spring-boot-admin.version>
 		<spring-cloud.version>Greenwich.M1</spring-cloud.version>
 		<fastjson.version>1.2.8</fastjson.version>
-		<lang.version>3.8</lang.version>
+		<lang.version>3.6</lang.version>
 		<lombok.version>1.16.18</lombok.version>
 	</properties>
 
@@ -103,17 +101,17 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency><!-- session采用数据库存储（非redis存储） -->
-		<groupId>org.springframework.session</groupId>
-		<artifactId>spring-session-jdbc</artifactId>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
 		</dependency>
 		<dependency><!-- JDBC -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 		<!--<dependency>&lt;!&ndash; Oracle &ndash;&gt;-->
-			<!--<groupId>com.oracle</groupId>-->
-			<!--<artifactId>ojdbc</artifactId>-->
-			<!--<version>7</version>-->
+		<!--<groupId>com.oracle</groupId>-->
+		<!--<artifactId>ojdbc</artifactId>-->
+		<!--<version>7</version>-->
 		<!--</dependency>-->
 		<!-- 使用Mybatis操作数据库。MyBatis是基于一种SQL到POJO的模型，需要提供SQL、映射关系和POJO。当前的映射关系以XML为主 -->
 		<!-- MyBatis的配置文件包括两大部分，一是基础配置文件、一是映射文件 -->
@@ -151,7 +149,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>${lang.version}</version>
+			<version>3.6</version>
 		</dependency>
 		<!-- start poi -->
 		<dependency>
@@ -180,37 +178,55 @@
 			<artifactId>pinyin4j</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-base</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-web</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-annotation</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-
 		<!--alibaba 数据库驱动-->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>1.1.10</version>
 		</dependency>
-
-
-		                                      <!--lombok支持-->
+		<!--lombok支持-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.16.20</version>
 		</dependency>
-		<!--分页-->
+
+		<!--  easypoi  -->
+		<dependency>
+			<groupId>cn.afterturn</groupId>
+			<artifactId>easypoi-base</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.afterturn</groupId>
+			<artifactId>easypoi-web</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.afterturn</groupId>
+			<artifactId>easypoi-annotation</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -219,10 +235,9 @@
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<!-- 特别注意版本问题,   看 到评论以后得以纠正 -->
+			<!-- 特别注意版本问题, 看到评论以后得以纠正 -->
 			<version>1.2.3</version>
 		</dependency>
-
 	</dependencies>
 
 	<dependencyManagement>
@@ -243,12 +258,15 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.portjs.base.BaseApplication</mainClass>
+					<layout>JAR</layout>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -263,18 +281,7 @@
 						<verbose>true</verbose>
 						<overwrite>true</overwrite>
 					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.mybatis.generator</groupId>
-							<artifactId>mybatis-generator-core</artifactId>
-							<version>1.3.5</version>
-						</dependency>
-						<dependency>
-							<groupId>mysql</groupId>
-							<artifactId>mysql-connector-java</artifactId>
-							<version>5.1.26</version>
-						</dependency>
-					</dependencies>
+
 				</plugin>
 			</plugins>
 		</pluginManagement>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+<module version="4">
   <component name="ExternalSystem" externalSystem="Maven" />
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
@@ -226,14 +226,13 @@
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.yinjihuan:spring-boot-starter-encrypt:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.belerweb:pinyin4j:2.5.0" level="project" />
-    <orderEntry type="library" name="Maven: cn.afterturn:easypoi-base:4.0.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:16.0.1" level="project" />
-    <orderEntry type="library" name="Maven: ognl:ognl:3.2.6" level="project" />
-    <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: cn.afterturn:easypoi-web:4.0.0" level="project" />
-    <orderEntry type="library" name="Maven: cn.afterturn:easypoi-annotation:4.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.10" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.20" level="project" />
+    <orderEntry type="library" name="Maven: cn.afterturn:easypoi-base:3.0.3" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:16.0.1" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: cn.afterturn:easypoi-web:3.0.3" level="project" />
+    <orderEntry type="library" name="Maven: cn.afterturn:easypoi-annotation:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.github.pagehelper:pagehelper-spring-boot-starter:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: com.github.pagehelper:pagehelper-spring-boot-autoconfigure:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: com.github.pagehelper:pagehelper:5.1.2" level="project" />

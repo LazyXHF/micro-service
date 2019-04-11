@@ -108,7 +108,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             //暂存状态，不用接收负责人
             nextViewJSON.clear();
         }else{
-          //提交
+            //提交
             if(CollectionUtils.isEmpty(arrayJSON)){
                 return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);
             }
@@ -225,7 +225,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             tWorkflowstep.setPrestepId(workflowstep.getId());
             tWorkflowstep.setStepDesc("部门负责人审核");
             tWorkflowstep.setActionuserId(nextViewJSON.getString(i));
-           // tWorkflowstep.setActionTime(new Date());
+            // tWorkflowstep.setActionTime(new Date());
             tWorkflowstep.setStatus("0");
             tWorkflowstep.setBackup3("2");
 
@@ -277,85 +277,85 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      */
     @Override
     public ResponseMessage returnStorage(String responseBody) {
-            JSONObject jsonObject = JSONObject.parseObject(responseBody);
-            String application_id = jsonObject.getString("application_id");//立项记录id
-            String workflowstep_id = jsonObject.getString("workflowstep_id");//立项流程id
-            String stepDesc = jsonObject.getString("stepDesc");//当前流程步骤
-            String stepDesc1 =  stepDesc.substring(0,stepDesc.length()-2);
+        JSONObject jsonObject = JSONObject.parseObject(responseBody);
+        String application_id = jsonObject.getString("application_id");//立项记录id
+        String workflowstep_id = jsonObject.getString("workflowstep_id");//立项流程id
+        String stepDesc = jsonObject.getString("stepDesc");//当前流程步骤
+        String stepDesc1 =  stepDesc.substring(0,stepDesc.length()-2);
 
-            String user_id  = jsonObject.getString("user_id");//当前登录人id
-            String user_name  = jsonObject.getString("user_name");//当前登录人姓名
-            String action  = jsonObject.getString("action_commont");//处理意见
-            String todoId =  jsonObject.getString("todoId");//当前步骤待办id
-            String fistId =  jsonObject.getString("fistId");//项目负责人id
-            String projectName = jsonObject.getString("projectName");//项目名字
+        String user_id  = jsonObject.getString("user_id");//当前登录人id
+        String user_name  = jsonObject.getString("user_name");//当前登录人姓名
+        String action  = jsonObject.getString("action_commont");//处理意见
+        String todoId =  jsonObject.getString("todoId");//当前步骤待办id
+        String fistId =  jsonObject.getString("fistId");//项目负责人id
+        String projectName = jsonObject.getString("projectName");//项目名字
 
-             //将当前对应流程关闭
-            TWorkflowstep workflowstep = new TWorkflowstep();
-            workflowstep.setId(workflowstep_id);
-            workflowstep.setStepDesc(stepDesc1+"退回");
-            workflowstep.setStatus("1");
-            workflowstep.setActionResult(1);
-            workflowstep.setActionComment(action);
-            workflowstep.setActionTime(new Date());
-            int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
-            if(i==0){
+        //将当前对应流程关闭
+        TWorkflowstep workflowstep = new TWorkflowstep();
+        workflowstep.setId(workflowstep_id);
+        workflowstep.setStepDesc(stepDesc1+"退回");
+        workflowstep.setStatus("1");
+        workflowstep.setActionResult(1);
+        workflowstep.setActionComment(action);
+        workflowstep.setActionTime(new Date());
+        int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
+        if(i==0){
+            return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+        }
+        //修改当前待办表
+        TTodo tTodo = new TTodo();
+        tTodo.setId(todoId);
+        tTodo.setStatus("1");
+        tTodo.setActiontime(new Date());
+        int k = todoMapper.updateByPrimaryKeySelective(tTodo);
+        if(k!=1){
+            return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+        }
+
+        //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
+        TWorkflowstepExample example = new TWorkflowstepExample();
+        TWorkflowstepExample.Criteria criteria = example.createCriteria();
+        criteria.andRelateddomainIdEqualTo(application_id);
+        criteria.andStatusEqualTo("0");
+        List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(example);
+        if(tWorkflowsteps.size()==0){
+            //如果当前审核人员只有一个的话则生成待办
+            TTodo todo = new TTodo();
+            todo.setId(String.valueOf(IDUtils.genItemId()));
+            todo.setCurrentstepId(workflowstep_id);
+            todo.setStepDesc(projectName+"的立项批复流程等待您的处理");
+            todo.setRelateddomain("项目立项");
+            todo.setRelateddomainId(application_id);
+            todo.setSenderId(user_id);
+            todo.setSenderTime(new Date());
+
+            todo.setBackUp7(user_name);//发起人
+            /*ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);*/
+            todo.setReceiverId(fistId);
+            //查询代办类型
+            TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+            TXietongDictionaryExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andTypeIdEqualTo("8");
+            criteria1.andTypeCodeEqualTo("38");
+            criteria1.andMidValueEqualTo("1");
+            List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
+            todo.setTodoType(dictionaryList.get(0).getMainValue());
+            todo.setStatus("0");
+            int i1 = todoMapper.insertSelective(todo);
+            if(i1!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }
-            //修改当前待办表
-            TTodo tTodo = new TTodo();
-            tTodo.setId(todoId);
-            tTodo.setStatus("1");
-            tTodo.setActiontime(new Date());
-            int k = todoMapper.updateByPrimaryKeySelective(tTodo);
-            if(k!=1){
+
+            //改变当前立项表状态为退回
+            ProjectApplication application = new ProjectApplication();
+            application.setId(application_id);
+            application.setEnable("0");
+            application.setStatus("8");
+            int i11 = applicationMapper.updateByPrimaryKeySelective(application);
+            if(i11==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }
-
-            //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
-            TWorkflowstepExample example = new TWorkflowstepExample();
-            TWorkflowstepExample.Criteria criteria = example.createCriteria();
-            criteria.andRelateddomainIdEqualTo(application_id);
-            criteria.andStatusEqualTo("0");
-            List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(example);
-            if(tWorkflowsteps.size()==0){
-                    //如果当前审核人员只有一个的话则生成待办
-                    TTodo todo = new TTodo();
-                    todo.setId(String.valueOf(IDUtils.genItemId()));
-                    todo.setCurrentstepId(workflowstep_id);
-                    todo.setStepDesc(projectName+"的立项批复流程等待您的处理");
-                    todo.setRelateddomain("项目立项");
-                    todo.setRelateddomainId(application_id);
-                    todo.setSenderId(user_id);
-                    todo.setSenderTime(new Date());
-
-                    todo.setBackUp7(user_name);//发起人
-                    /*ProjectApplication application = applicationMapper.selectByPrimaryKey(application_id);*/
-                    todo.setReceiverId(fistId);
-                    //查询代办类型
-                    TXietongDictionaryExample example1 = new TXietongDictionaryExample();
-                    TXietongDictionaryExample.Criteria criteria1 = example1.createCriteria();
-                    criteria1.andTypeIdEqualTo("8");
-                    criteria1.andTypeCodeEqualTo("38");
-                    criteria1.andMidValueEqualTo("1");
-                    List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
-                    todo.setTodoType(dictionaryList.get(0).getMainValue());
-                    todo.setStatus("0");
-                    int i1 = todoMapper.insertSelective(todo);
-                    if(i1!=1){
-                        return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-                    }
-
-                    //改变当前立项表状态为退回
-                    ProjectApplication application = new ProjectApplication();
-                    application.setId(application_id);
-                     application.setEnable("0");
-                    application.setStatus("8");
-                    int i11 = applicationMapper.updateByPrimaryKeySelective(application);
-                    if(i11==0){
-                        return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-                    }
-                }
+        }
 
         ProjectApplication application = new ProjectApplication();
         application.setId(application_id);
@@ -364,7 +364,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         if(i11==0){
             return new ResponseMessage(Code.CODE_ERROR,"退回失败");
         }
-            //新增一条退回流程
+        //新增一条退回流程
             /*TWorkflowstep tWorkflowstep = new TWorkflowstep();
             tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));
             tWorkflowstep.setRelateddomain("项目立项");
@@ -378,7 +378,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             if(i4!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }*/
-            return new ResponseMessage(Code.CODE_OK,"退回成功");
+        return new ResponseMessage(Code.CODE_OK,"退回成功");
     }
 
     /**
@@ -497,7 +497,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             plan.setOrganization(organization);
         }
         if (!StringUtils.isEmpty(construction_mode)) {
-          plan.setConstructionMode(construction_mode);
+            plan.setConstructionMode(construction_mode);
         }
         if(!StringUtils.isEmpty(amount)){
             BigDecimal decimal = new BigDecimal(amount);
@@ -575,11 +575,11 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 }
                 // 设置投资主体
                 if (!StringUtils.isEmpty(row.getCell(5).toString())) {
-                   plan.setInvestor(row.getCell(5).toString());
+                    plan.setInvestor(row.getCell(5).toString());
                 }
-                  // 设置金额
+                // 设置金额
                 if (!StringUtils.isEmpty(row.getCell(6).toString())) {
-                   boolean flag =ProjectPreservationImpl.isNumeric(row.getCell(6).toString());
+                    boolean flag =ProjectPreservationImpl.isNumeric(row.getCell(6).toString());
                     if(flag){
                         return new ResponseMessage(Code.CODE_ERROR, "请输入正确投资金额");
                     }
@@ -589,7 +589,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 }else {
                     return new ResponseMessage(Code.CODE_ERROR, "导入计划金额不得为空");
                 }
-                 // 设置建设方式
+                // 设置建设方式
                 if (!StringUtils.isEmpty(row.getCell(7).toString())) {
                     plan.setConstructionMode(row.getCell(7).toString());
                 }
@@ -666,7 +666,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     return new ResponseMessage(Code.CODE_ERROR, "项目名称不可重复");
                 }
             }
-            
+
 
             plan.setId(String.valueOf(IDUtils.genItemId()));
             plan.setCreateTime(new Date());
