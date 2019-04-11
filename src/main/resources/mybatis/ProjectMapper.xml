@@ -526,6 +526,9 @@
     update project SET
       project_code = #{projectCode,jdbcType=VARCHAR},
       schedule = #{schedule,jdbcType=VARCHAR},
+    <if test="creator != null and creator!=''" >
+      creator = #{creator,jdbcType=VARCHAR},
+    </if>
       project_stage = #{schedule,jdbcType=VARCHAR},
       project_status = #{status,jdbcType=VARCHAR}
     where id = #{projectId,jdbcType=VARCHAR}
