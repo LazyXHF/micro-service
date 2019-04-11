@@ -50,6 +50,17 @@ public class ProjectApplication {
 
     private String isApprover;
 
+    //投资计划编号   连表字段
+    private String planNum;
+
+    public String getPlanNum() {
+        return planNum;
+    }
+
+    public void setPlanNum(String planNum) {
+        this.planNum = planNum;
+    }
+
     private TWorkflowstep workflowstep;
 
     public TWorkflowstep getWorkflowstep() {

@@ -25,6 +25,7 @@
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -683,11 +684,11 @@
   limit #{rowNum},#{pageCount}
   status="0" DESC ,status="8" DESC ,status,-->
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select   Id, investment_id, project_code,project_id,  project_name, project_type, investor, organization,construction_mode,
-    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete
-  from project_application  a
-   where id=#{id}
+  select   a.Id, a.investment_id, a.project_code,a.project_id,  a.project_name, a.project_type, a.investor, a.organization,a.construction_mode,
+    a.leval, a.investment_amount, a.range1, a.application_amount, a.project_desc, a.kickoff_date,
+    a.remark, a.creater, a.create_time, a.update_time, a.enable, a.file_url, a.status, a.is_delete,b.plan_num
+  from project_application  a  left JOIN   investment_plan b on  a.investment_id=b.id
+    where a.id=#{id}
   </select>
 
   <update id="deleteProject">

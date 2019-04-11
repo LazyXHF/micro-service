@@ -97,7 +97,7 @@ public class LSUtils {
             }else {
                 int number = odd.getOddCode(oddMaxCode);
                 PurchaseRequest express = new PurchaseRequest();
-                express.setRequestNum(rp+getBody(getOddCode(oddMaxCode)+1));
+                express.setRequestNum("PR"+getBody(getOddCode(oddMaxCode)+1));
                 nowOdd = express.getRequestNum();
             }
             //如果没有流水单号，以当前日期重新开始生成流水单号
@@ -105,7 +105,7 @@ public class LSUtils {
             int number = 1;
             PurchaseRequest express = new PurchaseRequest();
 
-            express.setRequestNum(rp+getBody(number));
+            express.setRequestNum("PR"+getBody(number));
 
             nowOdd = express.getRequestNum();
         }
