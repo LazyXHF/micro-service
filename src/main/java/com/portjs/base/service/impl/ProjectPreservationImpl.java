@@ -98,7 +98,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         application.setCreater(userId);
         application.setCreateTime(new Date());
         application.setStatus(status);
-        application.setEnable("1");
+
         String message1="";
         String message2="";
         //0暂存
@@ -108,6 +108,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             //暂存状态，不用接收负责人
             nextViewJSON.clear();
         }else{
+            application.setEnable("1");
             //提交
             if(CollectionUtils.isEmpty(arrayJSON)){
                 return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);
