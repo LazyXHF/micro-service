@@ -339,6 +339,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     public ResponseMessage abolishProject(JSONObject requestJson) {
         String  id=requestJson.getString("id");
         String  ownerId=requestJson.getString("ownerId");
+
         int f=applicationMapper.abolishProject(id);
         if(f!=1){
             return  new ResponseMessage(Code.CODE_ERROR,"废除数据失败");

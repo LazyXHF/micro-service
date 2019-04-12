@@ -548,7 +548,7 @@
         and a.project_name like "%" #{projectName} "%"
       </if>
       <if test="projectTime !=null and projectTime!=''">
-        and a.create_time like "%" #{projectTime} "%"
+        and a.application_end_time like "%" #{projectTime} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
         and a.project_type like "%" #{projectType} "%"
@@ -575,7 +575,7 @@
       and a.project_name like "%" #{projectName} "%"
     </if>
       <if test="projectTime !=null and projectTime!=''">
-        and a.create_time like "%" #{projectTime} "%"
+        and a.application_end_time like "%" #{projectTime} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
         and a.project_type like "%" #{projectType} "%"
@@ -604,7 +604,7 @@
         and a.project_name like "%" #{projectName} "%"
       </if>
       <if test="projectTime !=null and projectTime!=''">
-        and a.create_time like "%" #{projectTime} "%"
+        and a.application_end_time like "%" #{projectTime} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
         and a.project_type like "%" #{projectType} "%"
@@ -631,7 +631,7 @@
         and a.project_name like "%" #{projectName} "%"
       </if>
       <if test="projectTime !=null and projectTime!=''">
-        and a.create_time like "%" #{projectTime} "%"
+        and a.application_end_time like "%" #{projectTime} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
         and a.project_type like "%" #{projectType} "%"
