@@ -173,10 +173,12 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
 
         //添加一条数据时，改变之前添加到todo表里的数据状态，根据当前登录人id，并判断是否和todo表里的ReceiverId相同，相同则改变此数据status的状态改为1
         List<TTodo> tTodos = todoMapper.queryTodoInfos();
-        TTodo todo = new TTodo();
         for (int i = 0; i <tTodos.size() ; i++) {
             String receiverId = tTodos.get(i).getReceiverId();
             String backup1 = record.getBackup1();//当前登录人（回复人）id
+            if(backup1==null){
+                return new ResponseMessage(Code.CODE_ERROR,"回复人id为空",backup1);
+            }
             if(receiverId.equals(backup1)){
                 todoMapper.updateStatusByCommunicationLog(receiverId,record.getCommunicationId());
             }

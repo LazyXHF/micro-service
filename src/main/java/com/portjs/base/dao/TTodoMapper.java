@@ -43,14 +43,11 @@ public interface TTodoMapper {
      * 查询所有待办信息
      * @return ReceiverId 问题被 @ 人 （接收人，审核人id）
      */
-    @Select("select * from t_todo where todo_type = '事务处理' ")
     List<TTodo> queryTodoInfos();
 
     /**
      * 根据todo_type="事务处理" 和 receiver_id = #｛receiver_id｝还有问题单id relateddomain_id,
      * @return receiver_id 接收人id
      */
-    int updateStatusByCommunicationLog(String receiverId,String relateddomainId);
-
-    int deleteTodoRecord(@Param("id") String id, @Param("ownerId") String ownerId);
+    int updateStatusByCommunicationLog(@Param("receiverId") String receiverId,@Param("relateddomainId") String relateddomainId);
 }

@@ -16,6 +16,8 @@ public class PurchaseRequest implements Serializable {
 
     private String applicant;//采购申请人
 
+    private String applicantId;//采购申请人id
+
     private String method;//采购方式
 
     private String agency;//代理机构
@@ -78,6 +80,14 @@ public class PurchaseRequest implements Serializable {
 
     public void setApplicant(String applicant) {
         this.applicant = applicant == null ? null : applicant.trim();
+    }
+
+    public String getApplicantId() {
+        return applicantId;
+    }
+
+    public void setApplicantId(String applicantId) {
+        this.applicantId = applicantId;
     }
 
     public String getMethod() {

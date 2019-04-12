@@ -2,6 +2,7 @@ package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.PurchaseRequestMapper;
+import com.portjs.base.entity.PurchaseList;
 import com.portjs.base.entity.PurchaseRequest;
 import com.portjs.base.service.PuchaseRequestService;
 import com.portjs.base.util.Code;
@@ -11,6 +12,8 @@ import com.portjs.base.util.StringUtils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 @Service
@@ -36,31 +39,59 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
     @Override
     public ResponseMessage insertPurchaseRequestSelective(String responseBody) {
         //status为10：完成 ；0：暂存；1：提交（开始流程）2：根据前端传值来判断是暂存还是提交
-
-
         JSONObject jsonObject = JSONObject.parseObject(responseBody);
         String status = jsonObject.getString("status");//0暂存1提交
         String projectId = jsonObject.getString("projectId");//所属项目id
-
+        String purchaseDept = jsonObject.getString("purchaseDept");//采购部门
+        String applicantId = jsonObject.getString("applicantId");//申请人id
+        String applicant = jsonObject.getString("applicant");//申请人姓名
+        String method = jsonObject.getString("method");//采购方式1:公开招标、2:邀请招标、3:竞争性谈判、4:询价、5:单一来源、6:其他
+        String agency = jsonObject.getString("agency");//代理机构
+        BigDecimal amount = jsonObject.getBigDecimal("amount");//采购预算
+        String content = jsonObject.getString("content");//内容说明(字段名字已改 原：desc 现：content)
+        String creater = jsonObject.getString("creater");//创建人姓名
+        String createrId = jsonObject.getString("createrId");//创建人id
         String DS = jsonObject.getString("DS");//获取导入的清单列表JSON数组字符串
 
         if(StringUtils.isEmpty(status)){
             return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);
         }
-
-
+        if(StringUtils.isEmpty(projectId)){
+            return new ResponseMessage(Code.CODE_ERROR,"projectId"+PARAM_MESSAGE_1);
+        }
         PurchaseRequest purchaseRequest = new PurchaseRequest();
         purchaseRequest.setRequestNum(LSUtils.createOdd("PR"));
+        purchaseRequest.setId(UUID.randomUUID().toString());
+        purchaseRequest.setCreater(creater);
+        purchaseRequest.setStatus(status);
+        purchaseRequest.setCreateTime(new Date());
+        purchaseRequest.setAgency(agency);
+        purchaseRequest.setApplicant(applicant);
+        purchaseRequest.setPurchaseDept(purchaseDept);
+        purchaseRequest.setApplicantId(applicantId);
+        purchaseRequest.setMethod(method);
+        purchaseRequest.setApplyDate(new Date());
+        purchaseRequest.setAmount(amount);
+        purchaseRequest.setContent(content);
+        purchaseRequest.setCreaterId(createrId);
 
-        //int i = purchaseRequestMapper.insertPurchaseRequestSelective();
+        int i = purchaseRequestMapper.insertPurchaseRequestSelective(purchaseRequest);
+
+        PurchaseList purchaseList = new PurchaseList();
+
         net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(DS);//并将DS内容取出转为json数组
-        for (int i = 0; i < jsonArray.size(); i++) {     //遍历json数组内容
-            net.sf.json.JSONObject object = jsonArray.getJSONObject(i);
+        for (int j = 0; j < jsonArray.size(); j++) {     //遍历json数组内容
+            net.sf.json.JSONObject object = jsonArray.getJSONObject(j);
             System.out.println(object.getString("字段名1"));
 
-        }
-        //进入审核
 
+        }
+
+
+
+
+
+        //进入审核
         /*for(int i=0;i<nextViewJSON.size();i++){
             TWorkflowstep workflowstep = new TWorkflowstep();
             if(CollectionUtils.isEmpty(list)){
