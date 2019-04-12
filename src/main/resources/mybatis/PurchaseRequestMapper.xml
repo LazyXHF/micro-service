@@ -7,6 +7,7 @@
     <result column="project_id" jdbcType="VARCHAR" property="projectId" />
     <result column="purchase_dept" jdbcType="VARCHAR" property="purchaseDept" />
     <result column="applicant" jdbcType="VARCHAR" property="applicant" />
+    <result column="applicant_id" jdbcType="VARCHAR" property="applicantId" />
     <result column="method" jdbcType="VARCHAR" property="method" />
     <result column="agency" jdbcType="VARCHAR" property="agency" />
     <result column="apply_date" jdbcType="DATE" property="applyDate" />
@@ -20,8 +21,8 @@
     <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    Id, request_num, project_id, purchase_dept, applicant, method, agency, apply_date, 
-    amount, content, status, creater, creater_id, create_time, update_time, delete_time
+    Id, request_num, project_id, purchase_dept, applicant,applicant_id, method, agency, apply_date,
+    amount, content, status, creater,creater_id, create_time, update_time, delete_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -38,18 +39,129 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into purchase_request (request_num, project_id, purchase_dept, 
-      applicant, method, agency, 
+      applicant,applicant_id, method, agency,
       apply_date, amount, content, 
       status, creater, creater_id, 
       create_time, update_time, delete_time
       )
     values (#{requestNum,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, 
-      #{applicant,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{agency,jdbcType=VARCHAR}, 
+      #{applicant,jdbcType=VARCHAR},#{applicantId,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{agency,jdbcType=VARCHAR},
       #{applyDate,jdbcType=DATE}, #{amount,jdbcType=DECIMAL}, #{content,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createrId,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}
       )
   </insert>
+
+  <insert id="insertPurchaseRequestSelective" parameterType="com.portjs.base.entity.PurchaseRequest">
+    insert into purchase_request
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="requestNum != null">
+        request_num,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="purchaseDept != null">
+        purchase_dept,
+      </if>
+      <if test="applicant != null">
+        applicant,
+      </if>
+      <if test="applicantId != null">
+        applicant_id,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
+      <if test="agency != null">
+        agency,
+      </if>
+      <if test="applyDate != null">
+        apply_date,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="creater != null">
+        creater,
+      </if>
+      <if test="createrId != null">
+        creater_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{Id,jdbcType=VARCHAR},
+      </if>
+      <if test="requestNum != null">
+        #{requestNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDept != null">
+        #{purchaseDept,jdbcType=VARCHAR},
+      </if>
+      <if test="applicant != null">
+        #{applicant,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantId != null">
+        #{applicantId,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="agency != null">
+        #{agency,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null">
+        #{applyDate,jdbcType=DATE},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null">
+        #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
   <insert id="insertSelective" parameterType="com.portjs.base.entity.PurchaseRequest">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
@@ -67,6 +179,9 @@
       </if>
       <if test="applicant != null">
         applicant,
+      </if>
+      <if test="applicantId != null">
+        applicant_id,
       </if>
       <if test="method != null">
         method,
@@ -114,6 +229,9 @@
       </if>
       <if test="applicant != null">
         #{applicant,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantId != null">
+        #{applicantId,jdbcType=VARCHAR},
       </if>
       <if test="method != null">
         #{method,jdbcType=VARCHAR},
@@ -165,6 +283,9 @@
       <if test="applicant != null">
         applicant = #{applicant,jdbcType=VARCHAR},
       </if>
+      <if test="applicantId != null">
+        applicant_id = #{applicantId,jdbcType=VARCHAR},
+      </if>
       <if test="method != null">
         method = #{method,jdbcType=VARCHAR},
       </if>
@@ -207,6 +328,7 @@
       project_id = #{projectId,jdbcType=VARCHAR},
       purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
       applicant = #{applicant,jdbcType=VARCHAR},
+      applicant_id = #{applicantId,jdbcType=VARCHAR},
       method = #{method,jdbcType=VARCHAR},
       agency = #{agency,jdbcType=VARCHAR},
       apply_date = #{applyDate,jdbcType=DATE},
@@ -215,318 +337,6 @@
       status = #{status,jdbcType=VARCHAR},
       creater = #{creater,jdbcType=VARCHAR},
       creater_id = #{createrId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      delete_time = #{deleteTime,jdbcType=TIMESTAMP}
-    where Id = #{id,jdbcType=VARCHAR}
-  </update>
-  <resultMap id="BaseResultMap" type="com.portjs.base.entity.PurchaseRequest">
-    <id column="Id" jdbcType="VARCHAR" property="id" />
-    <result column="request_num" jdbcType="VARCHAR" property="requestNum" />
-    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
-    <result column="purchase_dept" jdbcType="VARCHAR" property="purchaseDept" />
-    <result column="applicant" jdbcType="VARCHAR" property="applicant" />
-    <result column="method" jdbcType="VARCHAR" property="method" />
-    <result column="agency" jdbcType="VARCHAR" property="agency" />
-    <result column="apply_date" jdbcType="DATE" property="applyDate" />
-    <result column="amount" jdbcType="DECIMAL" property="amount" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="creater" jdbcType="VARCHAR" property="creater" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    Id, request_num, project_id, purchase_dept, applicant, method, agency, apply_date, 
-    amount, content, status, creater, create_time, update_time, delete_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from purchase_request
-    where Id = #{id,jdbcType=VARCHAR}
-  </select>
-
-  <!--&lt;select id="findMaxOdd" resultMap="BaseResultMap" resultType="String"&gt;
-    select
-    max(request_num)
-    from purchase_request
-  &lt;/select&gt;-->
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from purchase_request
-    where Id = #{id,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.portjs.base.entity.PurchaseRequest">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into purchase_request (request_num, project_id, purchase_dept, 
-      applicant, method, agency, 
-      apply_date, amount, content, 
-      status, creater, create_time, 
-      update_time, delete_time)
-    values (#{requestNum,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, 
-      #{applicant,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{agency,jdbcType=VARCHAR}, 
-      #{applyDate,jdbcType=DATE}, #{amount,jdbcType=DECIMAL}, #{content,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.portjs.base.entity.PurchaseRequest">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into purchase_request
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="requestNum != null">
-        request_num,
-      </if>
-      <if test="projectId != null">
-        project_id,
-      </if>
-      <if test="purchaseDept != null">
-        purchase_dept,
-      </if>
-      <if test="applicant != null">
-        applicant,
-      </if>
-      <if test="method != null">
-        method,
-      </if>
-      <if test="agency != null">
-        agency,
-      </if>
-      <if test="applyDate != null">
-        apply_date,
-      </if>
-      <if test="amount != null">
-        amount,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="creater != null">
-        creater,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="deleteTime != null">
-        delete_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="requestNum != null">
-        #{requestNum,jdbcType=VARCHAR},
-      </if>
-      <if test="projectId != null">
-        #{projectId,jdbcType=VARCHAR},
-      </if>
-      <if test="purchaseDept != null">
-        #{purchaseDept,jdbcType=VARCHAR},
-      </if>
-      <if test="applicant != null">
-        #{applicant,jdbcType=VARCHAR},
-      </if>
-      <if test="method != null">
-        #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="agency != null">
-        #{agency,jdbcType=VARCHAR},
-      </if>
-      <if test="applyDate != null">
-        #{applyDate,jdbcType=DATE},
-      </if>
-      <if test="amount != null">
-        #{amount,jdbcType=DECIMAL},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="creater != null">
-        #{creater,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleteTime != null">
-        #{deleteTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-
-  <insert id="insertPurchaseRequestSelective" parameterType="com.portjs.base.entity.PurchaseRequest">
-    insert into purchase_request
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="Id != null">
-        Id,
-      </if>
-      <if test="requestNum != null">
-        request_num,
-      </if>
-      <if test="projectId != null">
-        project_id,
-      </if>
-      <if test="purchaseDept != null">
-        purchase_dept,
-      </if>
-      <if test="applicant != null">
-        applicant,
-      </if>
-      <if test="method != null">
-        method,
-      </if>
-      <if test="agency != null">
-        agency,
-      </if>
-      <if test="applyDate != null">
-        apply_date,
-      </if>
-      <if test="amount != null">
-        amount,
-      </if>
-      <if test="content != null">
-        content,
-      </if>
-      <if test="status != null">
-        status,
-      </if>
-      <if test="creater != null">
-        creater,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="deleteTime != null">
-        delete_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="Id != null">
-        #{Id,jdbcType=VARCHAR},
-      </if>
-      <if test="requestNum != null">
-        #{requestNum,jdbcType=VARCHAR},
-      </if>
-      <if test="projectId != null">
-        #{projectId,jdbcType=VARCHAR},
-      </if>
-      <if test="purchaseDept != null">
-        #{purchaseDept,jdbcType=VARCHAR},
-      </if>
-      <if test="applicant != null">
-        #{applicant,jdbcType=VARCHAR},
-      </if>
-      <if test="method != null">
-        #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="agency != null">
-        #{agency,jdbcType=VARCHAR},
-      </if>
-      <if test="applyDate != null">
-        #{applyDate,jdbcType=DATE},
-      </if>
-      <if test="amount != null">
-        #{amount,jdbcType=DECIMAL},
-      </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="creater != null">
-        #{creater,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleteTime != null">
-        #{deleteTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.PurchaseRequest">
-    update purchase_request
-    <set>
-      <if test="requestNum != null">
-        request_num = #{requestNum,jdbcType=VARCHAR},
-      </if>
-      <if test="projectId != null">
-        project_id = #{projectId,jdbcType=VARCHAR},
-      </if>
-      <if test="purchaseDept != null">
-        purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
-      </if>
-      <if test="applicant != null">
-        applicant = #{applicant,jdbcType=VARCHAR},
-      </if>
-      <if test="method != null">
-        method = #{method,jdbcType=VARCHAR},
-      </if>
-      <if test="agency != null">
-        agency = #{agency,jdbcType=VARCHAR},
-      </if>
-      <if test="applyDate != null">
-        apply_date = #{applyDate,jdbcType=DATE},
-      </if>
-      <if test="amount != null">
-        amount = #{amount,jdbcType=DECIMAL},
-      </if>
-      <if test="content != null">
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="creater != null">
-        creater = #{creater,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleteTime != null">
-        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.PurchaseRequest">
-    update purchase_request
-    set request_num = #{requestNum,jdbcType=VARCHAR},
-      project_id = #{projectId,jdbcType=VARCHAR},
-      purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
-      applicant = #{applicant,jdbcType=VARCHAR},
-      method = #{method,jdbcType=VARCHAR},
-      agency = #{agency,jdbcType=VARCHAR},
-      apply_date = #{applyDate,jdbcType=DATE},
-      amount = #{amount,jdbcType=DECIMAL},
-      content = #{content,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      creater = #{creater,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
