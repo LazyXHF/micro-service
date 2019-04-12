@@ -377,13 +377,11 @@
   </select>
 
   <select id="selectByPage" parameterType="com.portjs.base.entity.InvestmentPlan" resultMap="BaseResultMap">
-    select
-    *
-    from investment_plan
+    select * from investment_plan
     <where>
       delete_time is null
-      <if test="projectName!=null and projectName!=''">
-        and project_name  like "%"#{projectName,jdbcType=VARCHAR}"%"
+      <if test="projectName!=null  and projectName!=''">
+        and project_name like "%"#{projectName,jdbcType=VARCHAR}"%"
       </if>
       <if test="projectType!=null  and projectType!=''">
         and project_type = #{projectType,jdbcType=VARCHAR}
@@ -397,8 +395,8 @@
       <if test="constructionMode!=null  and constructionMode!=''">
         and construction_mode = #{constructionMode,jdbcType=VARCHAR}
       </if>
-      <if test="amount!=null  and amount!=''">
-        and amount  = #{amount,jdbcType=DECIMAL}
+      <if test="amount!=null">
+        and amount = #{amount}
       </if>
     </where>
     order by create_time desc

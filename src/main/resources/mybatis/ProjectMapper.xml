@@ -689,8 +689,8 @@
   <select id="selectByStatus" resultType="String">
     select min(application_end_time) from project where project_status like CONCAT("%","3","%")
   </select>
-  <select id="ProjectApplication" resultType="int">
-    select count(*) from project whereDATE_FORMAT(application_end_time,'%Y')=#{niandu}  and  project_status like CONCAT("%","3","%")
+  <select id="selectapplicationByYear" resultType="int">
+    select count(*) from project where DATE_FORMAT(application_end_time,'%Y')=#{niandu}  and  project_status like CONCAT("%","3","%")
   </select>
 
   <select id="queryYears" resultType="String">

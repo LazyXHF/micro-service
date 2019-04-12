@@ -419,7 +419,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
      */
     @Override
     public Map selectAbuildingProject() {
-        LinkedHashMap<String,Integer> map=new LinkedHashMap<String,Integer>();
+        LinkedHashMap map=new LinkedHashMap();
         //查询在建项目的时间点
         ProjectApplicationExample example = new ProjectApplicationExample();
         ProjectApplicationExample.Criteria criteria = example.createCriteria();
@@ -440,6 +440,9 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         for (int i = 0; i <= aa; i++) {
             list.add(Integer.valueOf(minYear.substring(0,4))+i);
         }
+        map.put("year",list);
+        LinkedList list1 = new LinkedList();
+        LinkedList list2 = new LinkedList();
         for(int i=0;i<list.size();i++) {
             if(map.containsKey(list.get(i))) {
                 continue;
@@ -448,9 +451,19 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             if (CollectionUtils.isEmpty(projectApplications)){
                 return map;
             }
-            map.put(list.get(i)+"年", projectApplications.size());
+            /*map.put(list.get(i)+"年", projectApplications.size());*/
+
+            int count = projectMapper.selectapplicationByYear(list.get(i).toString());
+            if (count==0){
+                return map;
+            }
+            /*map.put(list.get(i)+"年",projectApplications.size()+"~"+count);*/
+            list1.add(projectApplications.size());
+            list2.add(count);
 
         }
+        map.put("ok",list1);
+        map.put("error",list2);
         return map;
     }
 
@@ -461,8 +474,9 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         if (StringUtils.isEmpty(application_end_time)){
             return map;
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String minYear = format.format(application_end_time);
+        String minYear = application_end_time.substring(0, application_end_time.indexOf(" "));
+        /*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String minYear = format.format(application_end_time);*/
         Calendar cale = null;
         cale = Calendar.getInstance();
         int year = cale.get(Calendar.YEAR);
@@ -476,7 +490,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
                 continue;
             }
             int count = projectMapper.selectapplicationByYear(list.get(i).toString());
-            if (count!=0){
+            if (count==0){
                 return map;
             }
             map.put(list.get(i)+"年",count);

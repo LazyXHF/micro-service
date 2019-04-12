@@ -513,7 +513,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         }
         if(!StringUtils.isEmpty(amount)){
             BigDecimal decimal = new BigDecimal(amount);
-            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            decimal=decimal.setScale(0, BigDecimal.ROUND_HALF_UP);
             plan.setAmount(decimal);
         }
         int totelCount=planMapper.selectCountByExample(plan);

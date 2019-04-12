@@ -103,6 +103,7 @@ public class ContractImpl implements ContractService {
 
         contractCriteria.andProjectCodeEqualTo(contract.getProjectCode());
 
+
         List<Contract> contracts = contractMapper.selectByExample(contractExample);
 
         return null;

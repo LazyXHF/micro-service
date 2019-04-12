@@ -26,7 +26,6 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
     <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
-    <result column="construction_mode" property="constructionMode" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -89,7 +88,7 @@
   <sql id="Base_Column_List" >
     Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete
+    remark, creater, create_time, update_time, enable, file_url, status, is_delete,construction_mode
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectApplicationExample" >
     select
@@ -128,7 +127,7 @@
       range1, application_amount, project_desc,
       kickoff_date, remark, creater,
       create_time, update_time, enable,
-      file_url, status, is_delete
+      file_url, status, is_delete,construction_mode
       )
     values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},
       #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{investor,jdbcType=VARCHAR},
@@ -136,7 +135,7 @@
       #{range1,jdbcType=VARCHAR}, #{applicationAmount,jdbcType=DECIMAL}, #{projectDesc,jdbcType=VARCHAR},
       #{kickoffDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=VARCHAR},
-      #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR}
+      #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR},#{constructionMode,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectApplication" >
@@ -208,6 +207,9 @@
       <if test="isDelete != null" >
         is_delete,
       </if>
+      <if test="constructionMode != null">
+        construction_mode
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -275,6 +277,9 @@
       </if>
       <if test="isDelete != null" >
         #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="constructionMode != null">
+        constructionMode,
       </if>
     </trim>
   </insert>
@@ -353,6 +358,9 @@
       <if test="record.isDelete != null" >
         is_delete = #{record.isDelete,jdbcType=VARCHAR},
       </if>
+      <if test="record.constructionMode != null">
+        constructionMode = #{record.constructionMode,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -381,7 +389,8 @@
       enable = #{record.enable,jdbcType=VARCHAR},
       file_url = #{record.fileUrl,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
-      is_delete = #{record.isDelete,jdbcType=VARCHAR}
+      is_delete = #{record.isDelete,jdbcType=VARCHAR},
+    construction_mode=#{record.constructionMode,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -452,6 +461,9 @@
       <if test="isDelete != null" >
         is_delete = #{isDelete,jdbcType=VARCHAR},
       </if>
+      <if test="constructionMode != null" >
+        construction_mode = #{constructionMode,jdbcType=VARCHAR},
+      </if>
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
@@ -478,6 +490,7 @@
       file_url = #{fileUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       is_delete = #{isDelete,jdbcType=VARCHAR}
+      construction_mode= #{constructionMode,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <!--编辑项目信息-->
