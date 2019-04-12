@@ -515,4 +515,9 @@
     from t_todo
     where relateddomain_id=#{id} and receiver_id=#{ownerId} and status='0'
   </select>
+
+  <delete id="deleteTodoRecord" parameterType="java.lang.String" >
+    delete from t_todo
+    where relateddomain_id = #{id,jdbcType=VARCHAR} and  receiver_id=#{ownerId} and status='0'
+  </delete>
 </mapper>

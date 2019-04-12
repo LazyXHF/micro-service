@@ -418,4 +418,13 @@
     from investment_plan
     where Id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="queryPlans" resultType="String">
+    select
+    DISTINCT investor
+    from investment_plan where investor!=''
+    ORDER  BY create_time
+  </select>
+
+
 </mapper>

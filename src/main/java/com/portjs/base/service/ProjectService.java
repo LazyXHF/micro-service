@@ -11,4 +11,8 @@ public interface ProjectService {
     ResponseMessage queryProjectAllInfo(JSONObject requestJson);
 
     ResponseMessage queryProjectDetails(JSONObject requestJson);
+
+    ResponseMessage queryYears();
+
+    ResponseMessage queryPlans();
 }

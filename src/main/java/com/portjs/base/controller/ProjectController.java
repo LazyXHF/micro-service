@@ -182,12 +182,17 @@ public class ProjectController extends BaseController {
         JSONObject requestJson=JSONObject.parseObject(requestBody);
         return projectService.queryProjectDetails(requestJson);
     }
-    /*@LogInfo(methodName = "查询项目详细信息",modelName = "项目概览")
-    @RequestMapping("queryProjectDetails")
+    @LogInfo(methodName = "项目年份下拉框",modelName = "项目概览")
+    @RequestMapping("queryYears")
     @ResponseBody
-    public ResponseMessage queryProjectDetails(@RequestBody String requestBody) {
-        JSONObject requestJson=JSONObject.parseObject(requestBody);
-        return projectService.queryProjectDetails(requestJson);
-    }*/
+    public ResponseMessage queryYears(){
+        return projectService.queryYears();
+    }
+    @LogInfo(methodName = "投资计划",modelName = "项目概览")
+    @RequestMapping("queryPlans")
+    @ResponseBody
+    public ResponseMessage queryPlans(){
+        return projectService.queryPlans();
+    }
 
 }

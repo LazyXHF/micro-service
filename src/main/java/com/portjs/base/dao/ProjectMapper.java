@@ -64,4 +64,6 @@ public interface ProjectMapper {
     String selectByStatus();
 
     int selectapplicationByYear(String toString);
+
+    List<String> queryYears();
 }

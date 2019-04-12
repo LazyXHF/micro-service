@@ -47,4 +47,5 @@ public interface ProjectApplicationMapper {
     //查询对应年份的所有数据
     List<ProjectApplication> selectapplicationByYear(@Param("niandu")String niandu);
 
+    int abolishProject(@Param("id") String id);
 }

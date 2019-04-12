@@ -33,4 +33,6 @@ public interface ProjectApplicationService {
     ResponseMessage queryProjectPlanInfo(JSONObject requestJson);
 
     ResponseMessage toApprove(JSONObject requestJson);
+
+    ResponseMessage abolishProject(JSONObject requestJson);
 }

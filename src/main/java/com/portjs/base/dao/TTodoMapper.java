@@ -51,4 +51,6 @@ public interface TTodoMapper {
      * @return receiver_id 接收人id
      */
     int updateStatusByCommunicationLog(String receiverId,String relateddomainId);
+
+    int deleteTodoRecord(@Param("id") String id, @Param("ownerId") String ownerId);
 }

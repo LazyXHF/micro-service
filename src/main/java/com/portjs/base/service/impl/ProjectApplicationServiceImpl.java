@@ -335,4 +335,19 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         }
     }
 
+    @Override
+    public ResponseMessage abolishProject(JSONObject requestJson) {
+        String  id=requestJson.getString("id");
+        String  ownerId=requestJson.getString("ownerId");
+        int f=applicationMapper.abolishProject(id);
+        if(f!=1){
+            return  new ResponseMessage(Code.CODE_ERROR,"废除数据失败");
+        }
+       int f1=todoMapper.deleteTodoRecord(id,ownerId);
+        if(f1!=1){
+            return  new ResponseMessage(Code.CODE_ERROR,"废除待办记录失败");
+        }
+        return new ResponseMessage(Code.CODE_OK,"废除记录成功");
+    }
+
 }

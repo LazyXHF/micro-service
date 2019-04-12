@@ -699,4 +699,10 @@
   <select id="selectapplicationByYear" resultMap="BaseResultMap">
     select * from project_application where is_delete="0" and DATE_FORMAT(create_time,'%Y')=#{niandu}  and project_code is not null
   </select>
+
+
+  <update id="abolishProject">
+    update project_application set status='9'
+    where id=#{id}
+  </update>
 </mapper>

@@ -692,4 +692,8 @@
   <select id="ProjectApplication" resultType="int">
     select count(*) from project whereDATE_FORMAT(application_end_time,'%Y')=#{niandu}  and  project_status like CONCAT("%","3","%")
   </select>
+
+  <select id="queryYears" resultType="String">
+       select DISTINCT   year(application_end_time) from project where application_end_time!='' order by  year(application_end_time) desc
+  </select>
 </mapper>

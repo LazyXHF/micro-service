@@ -38,4 +38,7 @@ public interface InvestmentPlanMapper {
     List<InvestmentPlan> queryProjectPlan();
 
     InvestmentPlan queryProjectPlanInfo(@Param("id") String id);
+
+    List<String> queryPlans();
+
 }

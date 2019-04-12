@@ -2,6 +2,7 @@ package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.BusinessConfigurationMapper;
+import com.portjs.base.dao.InvestmentPlanMapper;
 import com.portjs.base.dao.ProjectMapper;
 import com.portjs.base.dao.TUserMapper;
 import com.portjs.base.entity.BusinessConfiguration;
@@ -31,6 +32,8 @@ public class ProjectServiceImpl implements ProjectService {
     TUserMapper userMapper;
     @Autowired
     BusinessConfigurationMapper businessConfigurationMapper;
+    @Autowired
+    InvestmentPlanMapper investmentPlanMapper;
     @Override
     public ResponseMessage queryProjectAllInfo(JSONObject requestJson) {
         String projectCode=requestJson.getString("projectCode");
@@ -125,6 +128,18 @@ public class ProjectServiceImpl implements ProjectService {
         project.setRedArray(redList);
         project.setYellowArray(yellowList);
         return   new ResponseMessage(Code.CODE_OK, "查询成功",project);
+    }
+
+    @Override
+    public ResponseMessage queryYears() {
+        List<String> yearsList=projectMapper.queryYears();
+        return  new ResponseMessage(Code.CODE_OK,"年份信息",yearsList);
+    }
+
+    @Override
+    public ResponseMessage queryPlans() {
+       List<String> planList=investmentPlanMapper.queryPlans();
+        return new ResponseMessage(Code.CODE_OK,"投资计划下拉",planList);
     }
 }
 
