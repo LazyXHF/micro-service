@@ -3,6 +3,7 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.PurchaseRequest;
 import com.portjs.base.entity.TenderApplication;
 import com.portjs.base.entity.TenderApplicationExample;
+import com.portjs.base.entity.TenderApplicationVo;
 import com.portjs.base.vo.ContractVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -32,7 +33,17 @@ public interface TenderApplicationMapper {
 
     int updateByPrimaryKey(TenderApplication record);
 
-    List<PurchaseRequest>selectRequests(PurchaseRequest purchaseRequest);
+    /**
+     * 项目招标的分页数据查询
+     * @param tenderApplicationVo
+     * @return
+     */
+    List<TenderApplicationVo>selectRequests(TenderApplicationVo tenderApplicationVo);
+    /**
+     * 项目招标的总数查询
+     */
+    int  selectRequestsCount(TenderApplicationVo tenderApplicationVo);
+
     /**
      * 查询总数
      * @param method
