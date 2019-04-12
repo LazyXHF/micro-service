@@ -182,11 +182,12 @@ public class ProjectController extends BaseController {
         JSONObject requestJson=JSONObject.parseObject(requestBody);
         return projectService.queryProjectDetails(requestJson);
     }
-
-
-
-
-
-
+    /*@LogInfo(methodName = "查询项目详细信息",modelName = "项目概览")
+    @RequestMapping("queryProjectDetails")
+    @ResponseBody
+    public ResponseMessage queryProjectDetails(@RequestBody String requestBody) {
+        JSONObject requestJson=JSONObject.parseObject(requestBody);
+        return projectService.queryProjectDetails(requestJson);
+    }*/
 
 }

@@ -87,6 +87,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         //申请单
         //这是前段传过来的id  如果这个id存在寿命已经暂存过  进行更新  如果为null 说明是新增
         String id = jsonObject.getString("id");
+        //带出来的采购单id
         String request_id = jsonObject.getString("request_id");
         String projectId = jsonObject.getString("project_id");
         String method = jsonObject.getString("method");
@@ -124,7 +125,10 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         String fieModule = "采购评审";
         internalAttachment.setFileModule(fieModule);
         internalAttachment.setRelateddomain("采购评审");
-        JSONArray jsonArray = jsonObject.getJSONArray("filepaths");
+        JSONArray jsonArray = jsonObject.getJSONArray("" +
+                "" +
+                "" +
+                "");
         //获取所有审批人的id
         JSONArray jsonArray1 = jsonObject.getJSONArray("approvers");
         //status ：0  暂存  1  提交

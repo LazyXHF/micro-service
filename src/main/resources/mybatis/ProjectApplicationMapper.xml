@@ -675,11 +675,11 @@
       <if test="investor !=null and investor!=''">
         and  investor like "%" #{investor} "%"
       </if>
-    order by   status="1"||"2"||"3"||"4"||"5"||"6", status="8"  desc,status="0" desc , create_time desc
+    order by   create_time desc
 
   </select>
 
-
+  <!--order by   status="1"||"2"||"3"||"4"||"5"||"6", status="8"  desc,status="0" desc , create_time desc-->
   <!--order by create_time desc
   limit #{rowNum},#{pageCount}
   status="0" DESC ,status="8" DESC ,status,-->

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 @Repository
 public interface ProjectMapper {
@@ -39,11 +40,11 @@ public interface ProjectMapper {
 
     Project queryProjectById(@Param("projectId") String projectId);
 
-    void updateProjectById(@Param("projectId") String projectId,@Param("projectCode") String projectCode,@Param("creator") String creator,@Param("schedule") String schedule,@Param("status") String status);
+    void updateProjectById(@Param("projectId") String projectId, @Param("projectCode") String projectCode,@Param("applicationEndTime") Date applicationEndTime, @Param("creator") String creator, @Param("schedule") String schedule, @Param("status") String status);
 
-    List<Project> queryProjectAllInfo(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("organization") String organization,@Param("projectType") String projectType,@Param("creatorName") String creatorName,@Param("schedule") String schedule,@Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
+    List<Project> queryProjectAllInfo(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("projectTime") String projectTime,@Param("projectType") String projectType,@Param("invertor") String invertor,@Param("organization") String organization,@Param("schedule") String schedule,@Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
 
-    int queryProjectAllInfoCount(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("organization") String organization,@Param("projectType") String projectType,@Param("creator") String creator,@Param("schedule") String schedule);
+    int queryProjectAllInfoCount(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("projectTime") String projectTime,@Param("projectType") String projectType,@Param("invertor") String invertor,@Param("organization") String organization,@Param("schedule") String schedule);
 
     Project queryProjectDetails(@Param("id") String id,@Param("projectType") String projectType);
 
@@ -55,6 +56,10 @@ public interface ProjectMapper {
     List<FlashProject> selectProjectAll();
 
     Project queryProjectDetails2(@Param("id") String id,@Param("projectType") String projectType);
+
+    List<Project> queryProjectAllExceptionInfo(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("projectTime") String projectTime,@Param("projectType") String projectType,@Param("invertor") String invertor,@Param("organization") String organization,@Param("schedule") String schedule,@Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
+
+    int queryProjectAllInfoExceptionCount(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("projectTime") String projectTime,@Param("projectType") String projectType,@Param("invertor") String invertor,@Param("organization") String organization,@Param("schedule") String schedule);
 
     String selectByStatus();
 

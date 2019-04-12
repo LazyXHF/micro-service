@@ -190,9 +190,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                     //如果年龄相同，比较姓名，如果姓名相同的话，才是同一个对象
                     int num1 = num == 0 ? 1 : num;
                     return num1;
-
                 }
-
             });
             treeSet.addAll(alllist);
 

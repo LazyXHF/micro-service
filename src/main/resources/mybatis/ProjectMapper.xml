@@ -473,7 +473,7 @@
     delete_time, back_up1, back_up2,
     back_up3, back_up4, back_up5,
     back_up6, back_up7, back_up8,
-    back_up9, back_up10,organization,project_money,project_stage,project_status,investor,creator_name
+    back_up9, back_up10,organization,project_money,project_stage,project_status,investor,creator_name,application_end_time,project_end_time
     )
     values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
     #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
@@ -481,7 +481,8 @@
     #{deleteTime,jdbcType=TIMESTAMP}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR},
     #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR},
     #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR},
-    #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR},#{projectMoney,jdbcType=VARCHAR},#{projectStage,jdbcType=VARCHAR},#{projectStatus,jdbcType=VARCHAR},#{investor,jdbcType=VARCHAR},#{creatorName,jdbcType=VARCHAR}
+    #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR},#{projectMoney,jdbcType=VARCHAR},#{projectStage,jdbcType=VARCHAR},#{projectStatus,jdbcType=VARCHAR},#{investor,jdbcType=VARCHAR},#{creatorName,jdbcType=VARCHAR},
+    #{applicationEndTime},#{projectEndTime}
     )
   </insert>
   <resultMap id="BaseResultMap2" type="com.portjs.base.entity.Project" >
@@ -529,12 +530,15 @@
     <if test="creator != null and creator!=''" >
       creator = #{creator,jdbcType=VARCHAR},
     </if>
+    <if test="applicationEndTime != null" >
+      application_end_time = #{applicationEndTime},
+    </if>
       project_stage = #{schedule,jdbcType=VARCHAR},
       project_status = #{status,jdbcType=VARCHAR}
     where id = #{projectId,jdbcType=VARCHAR}
   </update>
   <select id="queryProjectAllInfoCount" resultType="Integer" parameterType="String">
-    select count(*) from project a
+    select count(*)  from project a  left join  investment_plan  b on a.id=b.project_id
     <where>
       project_status like "%Ab1%"
       <if test="projectCode !=null and projectCode!=''">
@@ -543,14 +547,17 @@
       <if test="projectName !=null and projectName!=''">
         and a.project_name like "%" #{projectName} "%"
       </if>
-      <if test="organization !=null and organization!=''">
-        and a.organization like "%" #{organization} "%"
+      <if test="projectTime !=null and projectTime!=''">
+        and a.create_time like "%" #{projectTime} "%"
       </if>
       <if test="projectType !=null and projectType!=''">
         and a.project_type like "%" #{projectType} "%"
       </if>
-      <if test="creator !=null and creator!=''">
-        and a.creator like "%" #{creator} "%"
+      <if test="invertor !=null and invertor!=''">
+        and b.investor like "%" #{invertor} "%"
+      </if>
+      <if test="organization !=null and organization!=''">
+        and a.organization like "%" #{organization} "%"
       </if>
       <if test="schedule !=null and schedule!=''">
         and a.schedule like "%" #{schedule} "%"
@@ -558,7 +565,7 @@
     </where>
   </select>
   <select id="queryProjectAllInfo" resultMap="BaseResultMap2" parameterType="String">
-    select * from project a
+    select a.*,b.investor from project a  left join  investment_plan  b on a.id=b.project_id
     <where>
       project_status like "%Ab1%"
     <if test="projectCode !=null and projectCode!=''">
@@ -567,15 +574,74 @@
     <if test="projectName !=null and projectName!=''">
       and a.project_name like "%" #{projectName} "%"
     </if>
+      <if test="projectTime !=null and projectTime!=''">
+        and a.create_time like "%" #{projectTime} "%"
+      </if>
+      <if test="projectType !=null and projectType!=''">
+        and a.project_type like "%" #{projectType} "%"
+      </if>
+      <if test="invertor !=null and invertor!=''">
+        and b.investor like "%" #{invertor} "%"
+      </if>
     <if test="organization !=null and organization!=''">
       and a.organization like "%" #{organization} "%"
     </if>
-    <if test="projectType !=null and projectType!=''">
-      and a.project_type like "%" #{projectType} "%"
-    </if>
-    <if test="creatorName !=null and creatorName!=''">
-      and a.creator_name like "%" #{creatorName} "%"
-    </if>
+      <if test="schedule !=null and schedule!=''">
+        and a.schedule like "%" #{schedule} "%"
+      </if>
+    </where>
+    limit   #{rownum},#{pagecount}
+  </select>
+
+  <select id="queryProjectAllInfoExceptionCount" resultType="Integer" parameterType="String">
+  select count(*)  from project a  left join  investment_plan  b on a.id=b.project_id
+    <where>
+      project_status like "%3%"
+      <if test="projectCode !=null and projectCode!=''">
+        and a.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and a.project_name like "%" #{projectName} "%"
+      </if>
+      <if test="projectTime !=null and projectTime!=''">
+        and a.create_time like "%" #{projectTime} "%"
+      </if>
+      <if test="projectType !=null and projectType!=''">
+        and a.project_type like "%" #{projectType} "%"
+      </if>
+      <if test="invertor !=null and invertor!=''">
+        and b.investor like "%" #{invertor} "%"
+      </if>
+      <if test="organization !=null and organization!=''">
+        and a.organization like "%" #{organization} "%"
+      </if>
+      <if test="schedule !=null and schedule!=''">
+        and a.schedule like "%" #{schedule} "%"
+      </if>
+    </where>
+  </select>
+  <select id="queryProjectAllExceptionInfo" resultMap="BaseResultMap2" parameterType="String">
+    select a.*,b.investor from project a  left join  investment_plan  b on a.id=b.project_id
+    <where>
+      project_status like "%3%"
+      <if test="projectCode !=null and projectCode!=''">
+        and a.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and a.project_name like "%" #{projectName} "%"
+      </if>
+      <if test="projectTime !=null and projectTime!=''">
+        and a.create_time like "%" #{projectTime} "%"
+      </if>
+      <if test="projectType !=null and projectType!=''">
+        and a.project_type like "%" #{projectType} "%"
+      </if>
+      <if test="invertor !=null and invertor!=''">
+        and b.investor like "%" #{invertor} "%"
+      </if>
+      <if test="organization !=null and organization!=''">
+        and a.organization like "%" #{organization} "%"
+      </if>
       <if test="schedule !=null and schedule!=''">
         and a.schedule like "%" #{schedule} "%"
       </if>

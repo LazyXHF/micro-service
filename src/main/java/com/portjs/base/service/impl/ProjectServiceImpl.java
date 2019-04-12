@@ -37,20 +37,31 @@ public class ProjectServiceImpl implements ProjectService {
         String projectName=requestJson.getString("projectName");
         String organization=requestJson.getString("organization");
         String projectType=requestJson.getString("projectType");
-        String creatorName=requestJson.getString("creatorName");
         String schedule=requestJson.getString("schedule");
         String pageNum = requestJson.getString("pageNum");
         String pageCount = requestJson.getString("pageCount");
+        //新加字段
+        String projectTime=requestJson.getString("projectTime");
+        String invertor=requestJson.getString("invertor");
+        //如果type为nomal  为正常，如果type为exception 为异常
+        String type=requestJson.getString("type");
         Page<Project> page = new Page<>();
-        int totalcount=projectMapper.queryProjectAllInfoCount(projectCode,projectName,organization,projectType,creatorName,schedule);
-        page.init(totalcount, Integer.valueOf(pageNum), Integer.valueOf(pageCount));
-        List<Project> projectList=projectMapper.queryProjectAllInfo(projectCode,projectName,organization,projectType,creatorName,schedule,page.getRowNum(),page.getPageCount());
-        for(Project project:projectList){
-            String creatorId=project.getCreator();
-            String creatorName2=userMapper.queryUserNameByUserId(creatorId);
-            project.setCreatorName(creatorName2);
+        if(type.equals("nomal")) {
+            int totalcount=projectMapper.queryProjectAllInfoCount(projectCode,projectName,projectTime,projectType,invertor,organization,schedule);
+            page.init(totalcount, Integer.valueOf(pageNum), Integer.valueOf(pageCount));
+            List<Project> projectList = projectMapper.queryProjectAllInfo(projectCode, projectName, projectTime, projectType, invertor, organization, schedule, page.getRowNum(), page.getPageCount());
+            for (Project project : projectList) {
+                String creatorId = project.getCreator();
+                String creatorName2 = userMapper.queryUserNameByUserId(creatorId);
+                project.setCreatorName(creatorName2);
+            }
+            page.setList(projectList);
+        }else if(type.equals("exception")){
+            int totalcount=projectMapper.queryProjectAllInfoExceptionCount(projectCode,projectName,projectTime,projectType,invertor,organization,schedule);
+            page.init(totalcount, Integer.valueOf(pageNum), Integer.valueOf(pageCount));
+            List<Project> projectExceptionList = projectMapper.queryProjectAllExceptionInfo(projectCode, projectName, projectTime, projectType, invertor, organization, schedule, page.getRowNum(), page.getPageCount());
+            page.setList(projectExceptionList);
         }
-        page.setList(projectList);
         return   new ResponseMessage(Code.CODE_OK, "查询成功",page);
     }
 
