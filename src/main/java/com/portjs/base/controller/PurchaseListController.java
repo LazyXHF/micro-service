@@ -1,18 +1,23 @@
 package com.portjs.base.controller;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
+import com.portjs.base.entity.InvestmentPlan;
 import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.entity.PurchaseList;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.PurchaseListService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ArrayVO;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 采购清单列表
@@ -86,7 +91,7 @@ public class PurchaseListController extends BaseController {
     }
 
     /**
-     * 新建购清单列表信息
+     * TODO -----暂存/提交购清单列表信息
      * @param record
      * @return
      */
@@ -98,6 +103,50 @@ public class PurchaseListController extends BaseController {
         responseMessage = purchaseListService.insertPurchaseListSelective(record);
         return responseMessage;
     }
+
+    /**
+     *Excel导入（poi）
+     * @param file
+     * @return
+     */
+    @LogInfo(methodName = "Excel导入（poi）",modelName = "采购模块")
+    @RequestMapping("insert-excel")
+    @ResponseBody
+    public ResponseMessage insertExcel (@RequestParam("file") MultipartFile file) {
+        logger.error(TAG + "insert-excel()begin....."+file );
+        try {
+            if(file == null){
+                return new ResponseMessage(Code.CODE_ERROR,"文件为空");
+            }
+            ResponseMessage uploadResponse= purchaseListService.insertExcel(file);
+            return uploadResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("insert-excel() end...",e);
+            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+        }
+    }
+
+    /**
+     *Excel导出（EasyPoi）
+     * @param
+     * @return
+     */
+    /*@LogInfo(methodName = "Excel导出（EasyPoi）")
+    @RequestMapping("select-for-excel")
+    public ResponseMessage selectForExcel () {
+        try {
+            List list = purchaseListService.selectAll();
+            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("","江苏省港口集团2019年度投资计划表"), InvestmentPlan.class, list);
+            return new ResponseMessage(Code.CODE_OK,"",workbook);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("insert-for-excel() end...",e);
+            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+        }
+    }*/
 
 
 }

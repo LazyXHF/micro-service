@@ -1,76 +1,44 @@
 package com.portjs.base.entity;
 
-import com.portjs.base.util.BaseEntity;
-
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PurchaseRequest extends BaseEntity{
-    private String id;
+public class PurchaseRequest implements Serializable {
 
-    private String requestNum;
+    private String id;//采购申请单id
 
-    private String projectId;
+    private String requestNum;//采购申请单单号
 
-    private String purchaseDept;
+    private String projectId;//项目id
 
-    private String applicant;
+    private String purchaseDept;//采购部门
 
-    private String method;
+    private String applicant;//采购申请人
 
-    private String agency;
+    private String method;//采购方式
 
-    private Date applyTime;
+    private String agency;//代理机构
 
-    private BigDecimal amount;
+    private Date applyDate;//申请时间
 
-    private String content;
+    private BigDecimal amount;//采购预算
 
-    private String status;
+    private String content;//内容说明(字段名字已改 原：desc 现：content)
 
-    private String creater;
+    private String status;//流程状态
 
-    private Date createTime;
+    private String creater;//创建人姓名
 
-    private Date updateTime;
+    private String createrId;//创建人id
 
-    private Date deleteTime;
+    private Date createTime;//创建时间
 
-    private String  projectCode;
+    private Date updateTime;//更新时间
 
-    private String  projectName;
+    private Date deleteTime;//删除时间（软删除标记）
 
-    public String getRequestNum() {
-        return requestNum;
-    }
-
-    public void setRequestNum(String requestNum) {
-        this.requestNum = requestNum;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    private static final long serialVersionUID = 1L;
 
     public String getId() {
         return id;
@@ -78,6 +46,14 @@ public class PurchaseRequest extends BaseEntity{
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getRequestNum() {
+        return requestNum;
+    }
+
+    public void setRequestNum(String requestNum) {
+        this.requestNum = requestNum == null ? null : requestNum.trim();
     }
 
     public String getProjectId() {
@@ -120,12 +96,12 @@ public class PurchaseRequest extends BaseEntity{
         this.agency = agency == null ? null : agency.trim();
     }
 
-    public Date getApplyTime() {
-        return applyTime;
+    public Date getApplyDate() {
+        return applyDate;
     }
 
-    public void setApplyTime(Date applyTime) {
-        this.applyTime = applyTime;
+    public void setApplyDate(Date applyDate) {
+        this.applyDate = applyDate;
     }
 
     public BigDecimal getAmount() {
@@ -134,6 +110,14 @@ public class PurchaseRequest extends BaseEntity{
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public String getStatus() {
@@ -150,6 +134,14 @@ public class PurchaseRequest extends BaseEntity{
 
     public void setCreater(String creater) {
         this.creater = creater == null ? null : creater.trim();
+    }
+
+    public String getCreaterId() {
+        return createrId;
+    }
+
+    public void setCreaterId(String createrId) {
+        this.createrId = createrId == null ? null : createrId.trim();
     }
 
     public Date getCreateTime() {

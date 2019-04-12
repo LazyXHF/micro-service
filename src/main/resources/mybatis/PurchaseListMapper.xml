@@ -10,8 +10,8 @@
     <result column="model" property="model" jdbcType="VARCHAR" />
     <result column="spec" property="spec" jdbcType="VARCHAR" />
     <result column="quantity" property="quantity" jdbcType="DECIMAL" />
-    <result column="unit" property="unit" jdbcType="DECIMAL" />
-    <result column="desc" property="desc" jdbcType="VARCHAR" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="demander" property="demander" jdbcType="VARCHAR" />
     <result column="creater" property="creater" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -77,7 +77,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, request_id, project_id, name, brand, model, spec, quantity, unit, desc, demander,
+    Id, request_id, project_id, name, brand, model, spec, quantity, unit, content, demander,
     creater, create_time, update_time, delete_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.PurchaseListExample" >
@@ -114,13 +114,13 @@
     insert into purchase_list (Id, request_id, project_id,
       name, brand, model,
       spec, quantity, unit,
-      desc, demander, creater,
+      content, demander, creater,
       create_time, update_time, delete_time
       )
     values (#{id,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR},
       #{name,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
-      #{spec,jdbcType=VARCHAR}, #{quantity,jdbcType=DECIMAL}, #{unit,jdbcType=DECIMAL},
-      #{desc,jdbcType=VARCHAR}, #{demander,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR},
+      #{spec,jdbcType=VARCHAR}, #{quantity,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR}, #{demander,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -154,8 +154,8 @@
       <if test="unit != null" >
         unit,
       </if>
-      <if test="desc != null" >
-        desc,
+      <if test="content != null" >
+        content,
       </if>
       <if test="demander != null" >
         demander,
@@ -199,10 +199,10 @@
         #{quantity,jdbcType=DECIMAL},
       </if>
       <if test="unit != null" >
-        #{unit,jdbcType=DECIMAL},
+        #{unit,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        #{desc,jdbcType=VARCHAR},
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
       </if>
       <if test="demander != null" >
         #{demander,jdbcType=VARCHAR},
@@ -255,10 +255,10 @@
         quantity = #{record.quantity,jdbcType=DECIMAL},
       </if>
       <if test="record.unit != null" >
-        unit = #{record.unit,jdbcType=DECIMAL},
+        unit = #{record.unit,jdbcType=VARCHAR},
       </if>
-      <if test="record.desc != null" >
-        desc = #{record.desc,jdbcType=VARCHAR},
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.demander != null" >
         demander = #{record.demander,jdbcType=VARCHAR},
@@ -290,8 +290,8 @@
       model = #{record.model,jdbcType=VARCHAR},
       spec = #{record.spec,jdbcType=VARCHAR},
       quantity = #{record.quantity,jdbcType=DECIMAL},
-      unit = #{record.unit,jdbcType=DECIMAL},
-      desc = #{record.desc,jdbcType=VARCHAR},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
       demander = #{record.demander,jdbcType=VARCHAR},
       creater = #{record.creater,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -326,10 +326,10 @@
         quantity = #{quantity,jdbcType=DECIMAL},
       </if>
       <if test="unit != null" >
-        unit = #{unit,jdbcType=DECIMAL},
+        unit = #{unit,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="demander != null" >
         demander = #{demander,jdbcType=VARCHAR},
@@ -358,8 +358,8 @@
       model = #{model,jdbcType=VARCHAR},
       spec = #{spec,jdbcType=VARCHAR},
       quantity = #{quantity,jdbcType=DECIMAL},
-      unit = #{unit,jdbcType=DECIMAL},
-      desc = #{desc,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
       demander = #{demander,jdbcType=VARCHAR},
       creater = #{creater,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

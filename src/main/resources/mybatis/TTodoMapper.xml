@@ -359,6 +359,59 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
+  <update id="updateStatusByCommunicationLog" parameterType="com.portjs.base.entity.TTodo" >
+    update t_todo
+    <set >
+      <if test="id != null" >
+        id = #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="currentstepId != null" >
+        currentstep_id = #{currentstepId,jdbcType=VARCHAR},
+      </if>
+      <if test="stepDesc != null" >
+        step_desc = #{stepDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="relateddomain != null" >
+        relateddomain = #{relateddomain,jdbcType=VARCHAR},
+      </if>
+      <if test="senderId != null" >
+        sender_id = #{senderId,jdbcType=VARCHAR},
+      </if>
+      <if test="senderTime != null" >
+        sender_time = #{senderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="todoType != null" >
+        todo_type = #{todoType,jdbcType=VARCHAR},
+      </if>
+      <if test="actiontime != null" >
+        actiontime = SYSDATE(),
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = "1",
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null" >
+        backup_3 = #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null" >
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null" >
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null" >
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where todo_type="事务处理" and receiver_id=#{receiverId} and relateddomain_id=#{relateddomainId}
+  </update>
+
   <update id="updateByExample" parameterType="map" >
     update t_todo
     set id = #{record.id,jdbcType=VARCHAR},

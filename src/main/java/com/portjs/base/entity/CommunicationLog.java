@@ -19,7 +19,7 @@ public class CommunicationLog {
 
     private String content;//内容
 
-    private String backup1;
+    private String backup1;//回复人id
 
     private String backup2;
 

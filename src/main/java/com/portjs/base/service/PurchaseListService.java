@@ -1,10 +1,15 @@
 package com.portjs.base.service;
 
+import com.portjs.base.entity.InvestmentPlan;
 import com.portjs.base.entity.PurchaseList;
 import com.portjs.base.util.ResponseMessage;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
-
+@Repository
 public interface PurchaseListService {
 
     //ResponseMessage deleteByPrimaryKey(String id);
@@ -34,4 +39,20 @@ public interface PurchaseListService {
     ResponseMessage updateDeleteTimeByIds(List<String> ids);
 
     ResponseMessage queryPurchaseListById(String ids);
+
+
+    /**
+     *Excel导入（poi）
+     * @param file
+     * @return
+     */
+    ResponseMessage insertExcel(MultipartFile file)  throws IOException, ParseException;
+    /**
+     *Excel导入（EasyPoi）
+     * @param list
+     * @return
+     */
+    //ResponseMessage insertExcelByEasyPoi(List<PurchaseList> list,String loginId) throws Exception;
+
+
 }

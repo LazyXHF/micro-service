@@ -1,38 +1,49 @@
 package com.portjs.base.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.portjs.base.util.BaseEntity;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PurchaseList {
+public class PurchaseList extends BaseEntity {
     private String id;
 
-    private String requestId;
+    private String requestId;//采购申请表
 
-    private String projectId;
+    private String projectId;//项目id
 
-    private String name;
+    @Excel(name = "品名", orderNum = "1")
+    private String name;//品名
 
-    private String brand;
+    @Excel(name = "品牌", orderNum = "2")
+    private String brand;//品牌
 
-    private String model;
+    @Excel(name = "型号", orderNum = "3")
+    private String model;//型号
 
-    private String spec;
+    @Excel(name = "规格", orderNum = "4")
+    private String spec;//规格
 
-    private BigDecimal quantity;
+    @Excel(name = "数量", orderNum = "5")
+    private BigDecimal quantity;//数量
 
-    private BigDecimal unit;
+    @Excel(name = "单位", orderNum = "6")
+    private  String unit;//单位
 
-    private String desc;
+    @Excel(name = "需求说明", orderNum = "8")
+    private String content;//需求说明
 
-    private String demander;
+    @Excel(name = "需求人", orderNum = "7")
+    private String demander;//需求人
 
-    private String creater;
+    private String creater;//创建人
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private Date updateTime;
+    private Date updateTime;//更新时间
 
-    private Date deleteTime;
+    private Date deleteTime;//删除时间（软删除标记）
 
     public String getId() {
         return id;
@@ -98,20 +109,20 @@ public class PurchaseList {
         this.quantity = quantity;
     }
 
-    public BigDecimal getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(BigDecimal unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getContent() {
+        return content;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getDemander() {

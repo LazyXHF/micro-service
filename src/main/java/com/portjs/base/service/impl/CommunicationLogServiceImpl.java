@@ -2,9 +2,12 @@ package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.CommunicationLogMapper;
+import com.portjs.base.dao.TTodoMapper;
+import com.portjs.base.dao.TUserMapper;
 import com.portjs.base.entity.CommunicationLog;
 import com.portjs.base.entity.MenuTree;
 import com.portjs.base.entity.ProjectCommunication;
+import com.portjs.base.entity.TTodo;
 import com.portjs.base.service.CommunicationLogService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
@@ -26,6 +29,12 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
 
     @Autowired
     CommunicationLogMapper communicationLogMapper;
+
+    @Autowired
+    TUserMapper tUserMapper;
+
+    @Autowired
+    TTodoMapper todoMapper;
 
     /**
      * 批量删除
@@ -161,6 +170,17 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
      */
     @Override
     public ResponseMessage insertCommunicationLogSelective(CommunicationLog record) {
+
+        //添加一条数据时，改变之前添加到todo表里的数据状态，根据当前登录人id，并判断是否和todo表里的ReceiverId相同，相同则改变此数据status的状态改为1
+        List<TTodo> tTodos = todoMapper.queryTodoInfos();
+        TTodo todo = new TTodo();
+        for (int i = 0; i <tTodos.size() ; i++) {
+            String receiverId = tTodos.get(i).getReceiverId();
+            String backup1 = record.getBackup1();//当前登录人（回复人）id
+            if(receiverId.equals(backup1)){
+                todoMapper.updateStatusByCommunicationLog(receiverId,record.getCommunicationId());
+            }
+        }
         //如果前端传来了一个id的话意味着前端选中了一条言论要回复他，那么就生产一条新数据并把这个id存入新数据的preMessage
         //反之，意味着是一条新数据产生，那么除preMessage外全存进去
         if(StringUtils.isEmpty(record.getId())){
@@ -206,6 +226,7 @@ public class CommunicationLogServiceImpl implements CommunicationLogService {
             }
             return new ResponseMessage(Code.CODE_OK,"添加问题沟通记录信息成功！",i);
         }
+
 
 
     }

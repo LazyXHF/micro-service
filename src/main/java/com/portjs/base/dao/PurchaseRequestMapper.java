@@ -38,7 +38,7 @@ public interface PurchaseRequestMapper {
      * @return
      */
     List<PurchaseRequest> queryPurchaseRequestInfo(@Param("projectId") String projectId,@Param("requestId") String requestId,
-                                             @Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
+                                                   @Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
     /**
      * 批量软删除
      * @param ids

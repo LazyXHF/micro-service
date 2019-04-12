@@ -1,14 +1,13 @@
 package com.portjs.base.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.BusinessConfigurationMapper;
 import com.portjs.base.dao.ProjectCommunicationMapper;
 import com.portjs.base.dao.ProjectMapper;
+import com.portjs.base.dao.TTodoMapper;
 import com.portjs.base.entity.BusinessConfiguration;
 import com.portjs.base.entity.InternalPersionResource;
 import com.portjs.base.entity.ProjectCommunication;
+import com.portjs.base.entity.TTodo;
 import com.portjs.base.service.ProjectCommunicationService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
@@ -18,6 +17,8 @@ import com.portjs.base.vo.BugSearchDO;
 import com.portjs.base.vo.FlashProject;
 import com.portjs.base.vo.Project;
 import com.portjs.base.vo.ProjectSearchDO;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,9 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
     @Autowired
     ProjectMapper projectMapper;
 
+    @Autowired
+    TTodoMapper todoMapper;
+
     @Override
     public ResponseMessage deleteByPrimaryKey(String id) {
 
@@ -52,7 +56,8 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
      */
     @Override
     public ResponseMessage insertProjectCommunicationSelective(ProjectCommunication record) {
-        record.setId(UUID.randomUUID().toString());
+        String id = UUID.randomUUID().toString();//风控表里的问题自身id
+        record.setId(id);
         Date date = new Date();//获得系统时间.
         SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
         String nowTime = sdf.format(date);
@@ -66,6 +71,38 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
             return new ResponseMessage(Code.CODE_ERROR,"添加信息时未选择项目！");
         }
         int i = projectCommunicationMapper.insertProjectCommunicationSelective(record);
+
+        //再待办表里生成一条问题记录，并且选中了几个人就生成几条
+        //先把选中人的id遍历取出来，之后根据这些id分别存入数据库
+
+
+        /*JSONObject jsonObject = JSONObject.fromObject(record.getFollower());//字符串转json对象
+        String data = jsonObject.getString("DS");//获取DS内容
+        JSONArray jsonArray = JSONArray.fromObject(data);//并将DS内容取出转为json数组*/
+        JSONArray jsonArray= JSONArray.fromObject(record.getFollower());
+        for (int j = 0; j < jsonArray.size(); j++) {     //遍历json数组内容
+            TTodo todo = new TTodo();
+            JSONObject object = jsonArray.getJSONObject(j);
+            String name = object.getString("nameId");
+            //设置存入的值
+            String ids = UUID.randomUUID().toString();
+            todo.setId(ids);
+            todo.setSenderId(record.getBackup3());//发送人id
+            todo.setSenderTime(new Date());//发送时间
+            todo.setReceiverId(name);//接收人id（被提醒人）
+            todo.setRelateddomain("风控记录");//对应的业务模块
+            todo.setRelateddomainId(id);//把当前新建问题id存入待办表里
+            todo.setTodoType("事务处理");//待办类型
+            todo.setStatus("0");//0为待办未完成状态
+            todo.setBackup3(record.getPriority());//优先级
+            todo.setStepDesc(record.getTitle()+"存在问题，需要您的回复！");
+            todo.setBackUp7(record.getSponsor());//发起人姓名
+            //添加到待办表里
+            int i1 = todoMapper.insertSelective(todo);
+            if(i1==0){
+                return new ResponseMessage(Code.CODE_ERROR,"存入待办表失败！",i1);
+            }
+        }
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加信息失败！",i);
 
@@ -94,7 +131,7 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
      */
     @Override
     public ResponseMessage queryProjectCommunicationInfo(String requestBody) {
-        JSONObject jsonObject=JSONObject.parseObject(requestBody);
+        com.alibaba.fastjson.JSONObject jsonObject=com.alibaba.fastjson.JSONObject.parseObject(requestBody);
         String projectId = jsonObject.getString("projectId");
         String classification = jsonObject.getString("classification");//问题分类
         String priority = jsonObject.getString("priority");//优先级
