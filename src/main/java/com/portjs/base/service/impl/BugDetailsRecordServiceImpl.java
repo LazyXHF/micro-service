@@ -358,10 +358,7 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
                         bugDetailsRecord.setBackup5("测试");//身份标识 获取指派人
                     }
                 }
-
-
             }
-
                 //插入一条新的流转数据到record表里
                 i = bugDetailsRecordMapper.insertFlowOperation(bugDetailsRecord);
 

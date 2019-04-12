@@ -5,7 +5,6 @@ import com.portjs.base.entity.TUserExample;
 import com.portjs.base.vo.UserRoleDO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

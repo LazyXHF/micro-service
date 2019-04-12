@@ -546,7 +546,7 @@ AND r.`id` IN
   </select>
 
 
-  <select id="selectHomePageMenuByRids"  resultMap="BaseResultMap">
+        <select id="selectHomePageMenuByRids"  resultMap="BaseResultMap">
     SELECT DISTINCT mr.* FROM t_menu_resource mr
     INNER JOIN t_role_menu rm ON mr.`id` = rm.`menu_id`
     INNER JOIN t_role r ON rm.`role_id` = r.`id`

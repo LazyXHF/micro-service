@@ -175,9 +175,6 @@ public class MenuResourceController extends BaseController {
     }
 
 
-
-
-
     /**
      * 查询用户的首页菜单
      * @param
@@ -192,7 +189,5 @@ public class MenuResourceController extends BaseController {
         responseMessage = menuResourceService.selectHomePageMenuByRids(arrayVO);
         return responseMessage;
     }
-
-
 
 }

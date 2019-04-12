@@ -91,6 +91,7 @@ public class ConstructionServiceImpl implements ConstructionService {
             if (StringUtils.isEmpty(construction.getPlanEndTime().toString())) {
                 return new ResponseMessage(Code.CODE_ERROR, "添加项目开发模块,planEndTime未传");
             }
+
             construction.setId(UUID.randomUUID().toString());
             construction.setCreater(UserUtils.getCurrentUser().getId());
 

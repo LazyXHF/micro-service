@@ -3,10 +3,8 @@ package com.portjs.base.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.TUserMapper;
 import com.portjs.base.dao.TUserRoleMapper;
-import com.portjs.base.entity.TUser;
-import com.portjs.base.entity.TUserExample;
-import com.portjs.base.entity.TUserRole;
-import com.portjs.base.entity.TUserRoleExample;
+import com.portjs.base.dao.TXietongDictionaryMapper;
+import com.portjs.base.entity.*;
 import com.portjs.base.service.TErrcodeInfoService;
 import com.portjs.base.service.TUserService;
 import com.portjs.base.util.*;
@@ -43,6 +41,9 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
     @Autowired
     private TErrcodeInfoService errcodeInfoService;
 
+    @Autowired
+    private TXietongDictionaryMapper dictionaryMapper;
+
 
 
 
@@ -70,8 +71,8 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
     public ResponseMessage insertUser(UserRoleVO userRoleVO) {
         TUser user = userRoleVO.getUser();
         List<String> rids = userRoleVO.getRids();
-        if (StringUtils.isEmpty(user.getLoginAccount())){
-            responseMessage = new ResponseMessage(Code.CODE_ERROR,"请求参数有误");
+        if (StringUtils.isEmpty(user.getLoginAccount())||StringUtils.isEmpty(user.getNameCn())){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"必填项为空");
             return responseMessage;
         }
         if (!CollectionUtils.isEmpty(selectUserByAcccount(user.getLoginAccount()))){
@@ -121,8 +122,8 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         List<String> rids = userRoleVO.getRids();
         Date lastPasswordTime = userMapper.selectByPrimaryKey(userRoleVO.getUser().getId()).getLastUpdPasswdTime();
         String historyPassword = userMapper.selectByPrimaryKey(userRoleVO.getUser().getId()).getHistoryPassword();
-        if (StringUtils.isEmpty(user.getLoginAccount())){
-            responseMessage = new ResponseMessage(Code.CODE_ERROR,"请求参数有误");
+        if (StringUtils.isEmpty(user.getLoginAccount())||StringUtils.isEmpty(user.getNameCn())){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"必填项为空");
             return responseMessage;
         }
         if (!CollectionUtils.isEmpty(selectUserByAcccount(user.getLoginAccount()))){
@@ -163,6 +164,10 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         //更新用户信息
 //        user.setNameCn(user.getLoginName());
          user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getNameCn()));
+        if (!StringUtils.isEmpty(user.getNameCn())){
+            dictionaryMapper.updateMAINByMID(user.getId(),user.getNameCn());
+
+        }
         int i =   userMapper.updateByPrimaryKeySelective(user);
         if (i<0){
             responseMessage = new ResponseMessage(Code.CODE_ERROR, "修改失败");
@@ -269,17 +274,19 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         int status = user1.getStatus();
         if (status ==1){
             user.setStatus(0);
+            responseMessage = new ResponseMessage(Code.CODE_OK, "禁用成功");
         }else {
             user.setStatus(1);
+            responseMessage = new ResponseMessage(Code.CODE_OK, "启用成功");
             user.setPasswdWrongCount(0);
         }
-        int i = userMapper.updateByPrimaryKeySelective(user);
+        userMapper.updateByPrimaryKeySelective(user);
 
-        if (i<0){
-            responseMessage = new ResponseMessage(Code.CODE_ERROR, "禁用/启用失败");
-        }else {
-            responseMessage = new ResponseMessage(Code.CODE_OK,"禁用/启用成功");
-        }
+//        if (i<0){
+//            responseMessage = new ResponseMessage(Code.CODE_ERROR, "禁用/启用失败");
+//        }else {
+//            responseMessage = new ResponseMessage(Code.CODE_OK,"禁用/启用成功");
+//        }
 
         return responseMessage;
     }

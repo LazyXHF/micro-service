@@ -6,6 +6,7 @@ import com.portjs.base.entity.TXietongDictionaryExample;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
@@ -181,4 +182,7 @@ public interface TXietongDictionaryMapper {
      */
     int deleteResourceModelInfo(TXietongDictionary dictionary);
 
+
+    @Update("UPDATE t_xietong_dictionary SET MAIN_VALUE=#{name} WHERE MID_VALUE = #{id}")
+    int updateMAINByMID(@Param("name")String name,@Param("id")String id);
 }

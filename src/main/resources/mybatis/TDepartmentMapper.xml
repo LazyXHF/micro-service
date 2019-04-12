@@ -386,7 +386,7 @@
 
 
   <select id="selectAllDepartmentTree" resultMap="BaseResultMap">
-     SELECT d.*,u.`ID` AS uid ,u.`login_name` AS uname ,dd.`NAME` AS parentName FROM t_department d
+    SELECT d.*,u.`ID` AS uid ,u.`name_cn` AS uname ,dd.`NAME` AS parentName ,u.`name_cn` AS leaderName FROM t_department d
      LEFT JOIN t_department dd ON  d.`PARENT_ID` = dd.`ID`
      LEFT JOIN t_user u ON d.`leader_id` = u.`ID`
      WHERE FIND_IN_SET(d.`id`,

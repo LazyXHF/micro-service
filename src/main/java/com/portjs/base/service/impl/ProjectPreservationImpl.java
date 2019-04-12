@@ -391,8 +391,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         String type = jsonObject.getString("type");//1 项目类型 2 投资主体 3 责任单位 4 建设方式
         InvestmentPlanExample example = new InvestmentPlanExample();
-        example.setOrderByClause("constructionMode");
-        example.setOrderByClause("create_time");
+//        example.setOrderByClause("constructionMode");
+        example.setOrderByClause("construction_mode,create_time");
         List<InvestmentPlan> investmentPlans = planMapper.selectByExample(example);
         LinkedList list = new LinkedList();
         if(!investmentPlans.isEmpty()){
@@ -418,7 +418,6 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
               @Override
               public int compare(String o1, String o2) {
                 // 按照年龄排序，主要条件
-
                   if (!o1.equals(o2)) {
                     return 1;
                   }
@@ -442,7 +441,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         String type = jsonObject.getString("type");// 1 投资主体 2 责任单位
         ProjectApplicationExample example = new ProjectApplicationExample();
-        example.setOrderByClause("create_time");
+        example.setOrderByClause("construction_mode,create_time");
         List<ProjectApplication> applications = applicationMapper.selectByExample(example);
         LinkedList list = new LinkedList();
         if(!applications.isEmpty()){
@@ -459,23 +458,22 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             }
         }
+        while (list.remove(null));
         Set<String> treeSet = new TreeSet<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
                 // 按照年龄排序，主要条件
-                if (!StringUtils.isEmpty(o1)&&!StringUtils.isEmpty(o2)) {
-                    if (o1.equals(o2)) {
-                        return 0;
-                    }
+                if (!o1.equals(o2)) {
+                    return 1;
                 }
-                return 1;
+                return 0;
             }
         });
         treeSet.addAll(list);
         //放入新的list 或者把当前的list进行close
         List<String> arrayList = new ArrayList<>();
         arrayList.addAll(treeSet);
-        while (arrayList.remove(null));
+
         return new ResponseMessage(Code.CODE_OK,"查询成功",arrayList);
     }
 

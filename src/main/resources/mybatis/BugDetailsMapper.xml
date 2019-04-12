@@ -120,7 +120,7 @@
       <result column="backUp14" jdbcType="VARCHAR" property="backup4" />
       <result column="backUp15" jdbcType="VARCHAR" property="backup5" />
       <result column="backUp16" jdbcType="VARCHAR" property="backup6" />
-      <result column="backUp17" jdbcType="VARCHAR" property="backup7" />
+      <result column="backUp20" jdbcType="VARCHAR" property="backup7" />
       <result column="backUp18" jdbcType="VARCHAR" property="backup8" />
       <result column="backUp19" jdbcType="VARCHAR" property="backup9" />
       <result column="backUp100" jdbcType="VARCHAR" property="backup10" />
@@ -128,16 +128,16 @@
   </resultMap>
   <!--级联查询-->
   <select id="queryAllBugAndRecordInfo" resultMap="BaseResultMap1">
-    select tb.id as id ,tb.project_id as projectId,tb.file_url as fileUrl,tb.bug_number as bugNumber,tb.projected_name as projectedName,tb.type as type1,
-    tb.modules as modules1,tb.title as title1,tb.content as content1,tb.priority as priority1,tb.status as status1,tb.version_number as versionNumber,tb.backUp2 as backUp2,
-    tb.designated_persion as designatedPersion,tb.accepter as accepter1,tb.accept_time as acceptTime,tb.bug_create_time as bugCreateTime,tb.end_time as endTime,
-    tb.solution as solution,tb.solution_result as solutionResult,tb.remark as remark1,tb.result as result1,tb.backUp1 as backUp1,tb.backUp2 as backUp2,tb.reappear_method as reappearMethod,
-    tbr.id as recordId,tbr.bug_id as bugId,
-    tbr.creater_id as createrId,tbr.file_url as fileUrl1,tbr.remark as remark2,tbr.repeat_count as repeatCount,tbr.status as status2,tbr.owner_id as ownerId2,
-    tbr.is_agree as isAgree,tbr.record_time as recordTime1,tbr.backUp1 as backUp11,tbr.backUp2 as backUp12,tbr.backUp3 as backUp13,tbr.backUp4 as backUp14,
-    tbr.backUp3 as backUp13,tbr.backUp4 as backUp14,tbr.backUp5 as backUp15,tbr.backUp6 as backUp16,tbr.backUp7 as backUp18,tbr.backUp9 as backUp19,tbr.backUp10 as backUp100
-    from t_mgt_bug tb left join t_mgt_bug_record tbr
-    on tb.id=tbr.bug_id
+   SELECT tb.id AS id ,tb.project_id AS projectId,tb.file_url AS fileUrl,tb.bug_number AS bugNumber,tb.projected_name AS projectedName,tb.type AS type1,
+    tb.modules AS modules1,tb.title AS title1,tb.content AS content1,tb.priority AS priority1,tb.status AS status1,tb.version_number AS versionNumber,tb.backUp2 AS backUp2,
+    tb.designated_persion AS designatedPersion,tb.accepter AS accepter1,tb.accept_time AS acceptTime,tb.bug_create_time AS bugCreateTime,tb.end_time AS endTime,
+    tb.solution AS solution,tb.solution_result AS solutionResult,tb.remark AS remark1,tb.result AS result1,tb.backUp1 AS backUp1,tb.backUp2 AS backUp2,tb.reappear_method AS reappearMethod,
+    tbr.id AS recordId,tbr.bug_id AS bugId,
+    tbr.creater_id AS createrId,tbr.file_url AS fileUrl1,tbr.remark AS remark2,tbr.repeat_count AS repeatCount,tbr.status AS status2,tbr.owner_id AS ownerId2,
+    tbr.is_agree AS isAgree,tbr.record_time AS recordTime1,tbr.backUp1 AS backUp11,tbr.backUp2 AS backUp12,tbr.backUp3 AS backUp13,tbr.backUp4 AS backUp14,
+    tbr.backUp3 AS backUp13,tbr.backUp4 AS backUp14,tbr.backUp5 AS backUp15,tbr.backUp6 AS backUp16,tbr.backUp7 AS backUp18,tbr.backUp9 AS backUp19,tbr.backUp10 AS backUp100,tbr.`backUp8` AS backUp20
+    FROM t_mgt_bug tb LEFT JOIN t_mgt_bug_record tbr
+    ON tb.id=tbr.bug_id
     where tb.id=#{id} and tbr.status != 0  order by tbr.record_time asc
   </select>
 

@@ -193,7 +193,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         } else if (e instanceof DisabledException) {
                             responseMessage = new ResponseMessage(Code.CODE_ERROR, "账户被锁定，请联系管理员!");
                         } else {
-                            responseMessage = new ResponseMessage(Code.CODE_ERROR, "登录失败!");
+                            responseMessage = new ResponseMessage(Code.CODE_ERROR, "账号不存在!");
                         }
                         resp.setStatus(401);
                         ObjectMapper om = new ObjectMapper();
