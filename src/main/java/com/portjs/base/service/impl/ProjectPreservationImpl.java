@@ -137,8 +137,17 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         application.setStatus(status);*/
         //插入还是更新
         if(StringUtils.isEmpty(application.getId())){
+
+            String id = String.valueOf(IDUtils.genItemId());
+            //生成一条project记录
+            updateUtil.projectMethod(id,null,application.getProjectName(),
+                    application.getProjectType(),"A",userId,application.getOrganization()
+                    ,application.getApplicationAmount().toString(),"Ab2",application.getInvestor());
+
             application.setId(String.valueOf(IDUtils.genItemId()));
             application.setCreater(userId);
+            application.setProjectId(id);
+
             int i = applicationMapper.insertSelective(application);
             if(i!=1){
                 return new ResponseMessage(Code.CODE_ERROR,message1);
@@ -260,11 +269,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 return new ResponseMessage(Code.CODE_ERROR,"提交失败");
             }
 
-            /*String id = String.valueOf(IDUtils.genItemId());*/
 
-            updateUtil.projectMethod(application.getProjectId(),null,application.getProjectName(),
-                    application.getProjectType(),"A",userId,application.getOrganization()
-                    ,application.getApplicationAmount().toString(),"Ab2",application.getInvestor());
             return new ResponseMessage(Code.CODE_OK,"提交成功");
         }
 
@@ -664,7 +669,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             if(plan.getAmount()==decimal){
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
             }*/
-            String id = String.valueOf(IDUtils.genItemId());
+           /* String id = String.valueOf(IDUtils.genItemId());*/
 
 
             //查询所有项目
@@ -682,14 +687,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             plan.setId(String.valueOf(IDUtils.genItemId()));
             plan.setCreateTime(new Date());
-            plan.setProjectId(id);
+            /*plan.setProjectId(id);*/
             int j = planMapper.insertSelective(plan);
             if(j!=1){
                 return new ResponseMessage(Code.CODE_ERROR, "导入失败");
             }
-            updateUtil.projectMethod(id,null,plan.getProjectName(),
+            /*updateUtil.projectMethod(id,null,plan.getProjectName(),
                     plan.getProjectType(),"A",loginId,plan.getOrganization(),
-                    plan.getAmount().toString(),"Aa1",plan.getInvestor());
+                    plan.getAmount().toString(),"Aa1",plan.getInvestor());*/
         }
         return new ResponseMessage(Code.CODE_OK, "导入成功");
     }
