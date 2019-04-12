@@ -619,4 +619,11 @@
     select a.* ,b.schedule as AllSchedule,b.node    from project a ,business_configuration  b
     where a.id=#{id} and b.project_type=#{projectType}
   </select>
+
+  <select id="selectByStatus" resultType="String">
+    select min(application_end_time) from project where project_status like CONCAT("%","3","%")
+  </select>
+  <select id="ProjectApplication" resultType="int">
+    select count(*) from project whereDATE_FORMAT(application_end_time,'%Y')=#{niandu}  and  project_status like CONCAT("%","3","%")
+  </select>
 </mapper>

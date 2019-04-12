@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.InternalPersionResource;
+import com.portjs.base.entity.Project;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -55,6 +56,5 @@ public interface InternalPersionResourceMapper {
      * @return
      */
     int updatePersionInfo(InternalPersionResource record);
-
 
 }

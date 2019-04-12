@@ -42,6 +42,9 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     private InternalApprovalMapper approvalMapper;
     @Autowired
     private ProjectApplicationMapper applicationMapper;
+    @Autowired
+    private ProjectMapper projectMapper;
+
     /**
      * 查询所有项目信息和相关人员信息
      * @return
@@ -415,7 +418,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
      * 页面在建项目的根据年份查询总数
      */
     @Override
-    public ResponseMessage selectAbuildingProject() {
+    public Map selectAbuildingProject() {
         LinkedHashMap<String,Integer> map=new LinkedHashMap<String,Integer>();
         //查询在建项目的时间点
         ProjectApplicationExample example = new ProjectApplicationExample();
@@ -424,7 +427,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         example.setOrderByClause("create_time");
         List<ProjectApplication> applications = applicationMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(applications)){
-            return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
+            return map;
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String minYear = format.format(applications.get(0).getCreateTime());
@@ -437,19 +440,49 @@ public class InternalProjectServiceImpl implements InternalProjectService {
         for (int i = 0; i <= aa; i++) {
             list.add(Integer.valueOf(minYear.substring(0,4))+i);
         }
-
-
         for(int i=0;i<list.size();i++) {
             if(map.containsKey(list.get(i))) {
                 continue;
             }
             List<ProjectApplication> projectApplications = applicationMapper.selectapplicationByYear(list.get(i).toString());
             if (CollectionUtils.isEmpty(projectApplications)){
-                return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
+                return map;
             }
             map.put(list.get(i)+"年", projectApplications.size());
+
         }
-        return new ResponseMessage(Code.CODE_OK,"查询成功！",map);
+        return map;
+    }
+
+    @Override
+    public Map selectProject() {
+        LinkedHashMap<String,Integer> map=new LinkedHashMap<String,Integer>();
+        String application_end_time = projectMapper.selectByStatus();
+        if (StringUtils.isEmpty(application_end_time)){
+            return map;
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String minYear = format.format(application_end_time);
+        Calendar cale = null;
+        cale = Calendar.getInstance();
+        int year = cale.get(Calendar.YEAR);
+        LinkedList list = new LinkedList();
+        int aa = year-Integer.valueOf(minYear.substring(0,4));
+        for (int i = 0; i <= aa; i++) {
+            list.add(Integer.valueOf(minYear.substring(0,4))+i);
+        }
+        for(int i=0;i<list.size();i++) {
+            if(map.containsKey(list.get(i))) {
+                continue;
+            }
+            int count = projectMapper.selectapplicationByYear(list.get(i).toString());
+            if (count!=0){
+                return map;
+            }
+            map.put(list.get(i)+"年",count);
+
+        }
+        return map;
     }
 
     /**

@@ -6,11 +6,15 @@ import java.util.Date;
 public class Contract {
     private String id;
 
+    private String contractNum;
+
     private String source;
 
     private String sourceId;
 
     private String projectId;
+
+    private String projectCode;
 
     private String purchaseDept;
 
@@ -64,6 +68,14 @@ public class Contract {
         this.id = id == null ? null : id.trim();
     }
 
+    public String getContractNum() {
+        return contractNum;
+    }
+
+    public void setContractNum(String contractNum) {
+        this.contractNum = contractNum == null ? null : contractNum.trim();
+    }
+
     public String getSource() {
         return source;
     }
@@ -86,6 +98,14 @@ public class Contract {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId == null ? null : projectId.trim();
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode == null ? null : projectCode.trim();
     }
 
     public String getPurchaseDept() {

@@ -151,7 +151,13 @@ public class ProjectController extends BaseController {
     @RequestMapping("select-abuilding-project")
     @ResponseBody
     public ResponseMessage selectAbuildingProject() {
-        return internalProjectService.selectAbuildingProject();
+        LinkedHashMap map = new LinkedHashMap();
+
+        Map abuildingProject = internalProjectService.selectAbuildingProject();
+        Map project = internalProjectService.selectProject();
+        map.put("ok",abuildingProject);
+        map.put("error",project);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",map);
     }
 
     @LogInfo(methodName = "查询不同年份的在建项目总金额",modelName = "项目概览")

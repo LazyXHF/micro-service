@@ -391,6 +391,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         String type = jsonObject.getString("type");//1 项目类型 2 投资主体 3 责任单位 4 建设方式
         InvestmentPlanExample example = new InvestmentPlanExample();
+        example.setOrderByClause("constructionMode");
         example.setOrderByClause("create_time");
         List<InvestmentPlan> investmentPlans = planMapper.selectByExample(example);
         LinkedList list = new LinkedList();
@@ -412,18 +413,24 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             }
         }
-        list = new LinkedList(new LinkedHashSet<>(list));
-        Collections.sort(list);
+        while (list.remove(null));
+        Set<String> treeSet = new TreeSet<>(new Comparator<String>() {
+              @Override
+              public int compare(String o1, String o2) {
+                // 按照年龄排序，主要条件
 
-        List aa = new ArrayList();
+                  if (!o1.equals(o2)) {
+                    return 1;
+                  }
+                    return 0;
+              }
+            });
+        treeSet.addAll(list);
+        //放入新的list 或者把当前的list进行close
+        List<String> arrayList = new ArrayList<>();
+        arrayList.addAll(treeSet);
 
-        for(Object i : list){
-            aa.add(i);
-        }
-        /*HashSet set = new HashSet(list);
-        list.clear();
-        list.addAll(set);*/
-        return new ResponseMessage(Code.CODE_OK,"查询成功",aa);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",arrayList);
     }
 
     /**
@@ -452,18 +459,24 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             }
         }
-        list = new LinkedList(new LinkedHashSet<>(list));
-        Collections.sort(list);
-
-        List aa = new ArrayList();
-
-        for(Object i : list){
-            aa.add(i);
-        }
-        /*HashSet set = new HashSet(list);
-        list.clear();
-        list.addAll(set);*/
-        return new ResponseMessage(Code.CODE_OK,"查询成功",aa);
+        Set<String> treeSet = new TreeSet<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                // 按照年龄排序，主要条件
+                if (!StringUtils.isEmpty(o1)&&!StringUtils.isEmpty(o2)) {
+                    if (o1.equals(o2)) {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+        });
+        treeSet.addAll(list);
+        //放入新的list 或者把当前的list进行close
+        List<String> arrayList = new ArrayList<>();
+        arrayList.addAll(treeSet);
+        while (arrayList.remove(null));
+        return new ResponseMessage(Code.CODE_OK,"查询成功",arrayList);
     }
 
     /**

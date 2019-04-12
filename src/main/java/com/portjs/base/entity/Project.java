@@ -160,7 +160,25 @@ public class Project {
 
     private String investor;
 
+    private Date applicationEndTime;
 
+    private Date projectEndTime;
+
+    public Date getApplicationEndTime() {
+        return applicationEndTime;
+    }
+
+    public void setApplicationEndTime(Date applicationEndTime) {
+        this.applicationEndTime = applicationEndTime;
+    }
+
+    public Date getProjectEndTime() {
+        return projectEndTime;
+    }
+
+    public void setProjectEndTime(Date projectEndTime) {
+        this.projectEndTime = projectEndTime;
+    }
 
     public String getInvestor() {
         return investor;

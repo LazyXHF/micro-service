@@ -36,7 +36,7 @@ public class ContractController extends BaseController{
         return contractService.selectContractSource(responseBody);
     }
 
-    /*@LogInfo(methodName = "新增合同",modelName = "合同管理模块")
+    @LogInfo(methodName = "新增合同",modelName = "合同管理模块")
     @RequestMapping("/insert-contract")
     @ResponseBody
     public ResponseMessage insertContract(@RequestBody String responseBody){
@@ -45,5 +45,16 @@ public class ContractController extends BaseController{
         JSONObject requestJson = JSON.parseObject(responseBody);
         Contract contract = JSONObject.toJavaObject(requestJson, Contract.class);
         return contractService.insertContract(contract);
-    }*/
+    }
+
+    @LogInfo(methodName = "合同查询",modelName = "合同管理模块")
+    @RequestMapping("/select-contract")
+    @ResponseBody
+    public ResponseMessage selectContract(@RequestBody String responseBody){
+        logger.debug(TAG + responseBody);
+        UnifiedExceptionHandler.method= responseBody + "select-contract==============================" + responseBody;
+        JSONObject requestJson = JSON.parseObject(responseBody);
+        Contract contract = JSONObject.toJavaObject(requestJson, Contract.class);
+        return contractService.selectContract(contract);
+    }
 }

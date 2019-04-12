@@ -89,7 +89,11 @@ public interface InternalProjectService {
      */
     ResponseMessage queryProjectsByLoginer(InternalProject internalProject);
 
-    ResponseMessage selectAbuildingProject();
+    Map selectAbuildingProject();
+
+    Map selectProject();
 
     ResponseMessage selectAbuildingProjectMoney();
+
+
 }

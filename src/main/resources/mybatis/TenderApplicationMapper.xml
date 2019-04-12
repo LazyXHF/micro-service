@@ -541,7 +541,8 @@
   <!--查询每页数据-->
   <select id="selectByPage" resultType="com.portjs.base.vo.ContractVo">
     select p.project_code as projectCode,p.project_name as projectName,a.dept as purchaseDept,
-    a.supplier as supplier,a.amount as amount from tender_application a,project p
+    a.supplier as supplier,a.amount as amount,a.tender_num as tenderNum
+    from tender_application a,project p
     where a.project_id=p.id
     <if test="projectName!=null">
       and p.project_name like "%"#{projectName,jdbcType=VARCHAR}"%"

@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.portjs.base.entity.Contract;
 import com.portjs.base.util.ResponseMessage;
 
 /**
@@ -13,4 +14,18 @@ public interface ContractService {
      * @return
      */
     ResponseMessage selectContractSource(String responseBody);
+
+    /**
+     * 新增合同
+     * @param contract
+     * @return
+     */
+    ResponseMessage insertContract(Contract contract);
+
+    /**
+     * 合同查询
+     * @param contract
+     * @return
+     */
+    ResponseMessage selectContract(Contract contract);
 }

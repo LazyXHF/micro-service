@@ -1,6 +1,7 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.Project;
+import com.portjs.base.entity.ProjectApplication;
 import com.portjs.base.entity.ProjectExample;
 import com.portjs.base.vo.FlashProject;
 import org.apache.ibatis.annotations.Param;
@@ -54,4 +55,8 @@ public interface ProjectMapper {
     List<FlashProject> selectProjectAll();
 
     Project queryProjectDetails2(@Param("id") String id,@Param("projectType") String projectType);
+
+    String selectByStatus();
+
+    int selectapplicationByYear(String toString);
 }

@@ -1,11 +1,15 @@
 package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.portjs.base.dao.ContractMapper;
 import com.portjs.base.dao.PurchaseReviewMapper;
 import com.portjs.base.dao.TenderApplicationMapper;
+import com.portjs.base.entity.Contract;
+import com.portjs.base.entity.ContractExample;
 import com.portjs.base.entity.TenderApplicationExample;
 import com.portjs.base.service.ContractService;
 import com.portjs.base.util.Code;
+import com.portjs.base.util.IDUtils;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.StringUtils;
@@ -28,6 +32,8 @@ public class ContractImpl implements ContractService {
     private PurchaseReviewMapper reviewMapper;
     @Autowired
     private TenderApplicationMapper applicationMapper;
+    @Autowired
+    private ContractMapper contractMapper;
 
     /**
      * 查询合同来源
@@ -37,7 +43,7 @@ public class ContractImpl implements ContractService {
     @Override
     public ResponseMessage selectContractSource(String responseBody) {
         JSONObject jsonObject = JSONObject.parseObject(responseBody);
-        String method = jsonObject.getString("type");//采购方式
+        String method = jsonObject.getString("method");//采购方式
         String projectCode = jsonObject.getString("projectCode");//项目id
         String projectName = jsonObject.getString("projectName");//项目名称
         Integer pageNum = jsonObject.getInteger("pageNum");//当前页数
@@ -68,5 +74,37 @@ public class ContractImpl implements ContractService {
         }
 
         return new ResponseMessage(Code.CODE_ERROR,"查询失败");
+    }
+
+    /**
+     * 新增合同
+     * @param contract
+     * @return
+     */
+    @Override
+    public ResponseMessage insertContract(Contract contract) {
+        contract.setId(String.valueOf(IDUtils.genItemId()));
+        int i = contractMapper.insertSelective(contract);
+        if(i!=1){
+            return  new ResponseMessage(Code.CODE_ERROR,"新增失败");
+        }
+        return  new ResponseMessage(Code.CODE_OK,"新增成功");
+    }
+
+    /**
+     * 合同查询
+     * @param contract
+     * @return
+     */
+    @Override
+    public ResponseMessage selectContract(Contract contract) {
+        ContractExample contractExample = new ContractExample();
+        ContractExample.Criteria contractCriteria = contractExample.createCriteria();
+
+        contractCriteria.andProjectCodeEqualTo(contract.getProjectCode());
+
+        List<Contract> contracts = contractMapper.selectByExample(contractExample);
+
+        return null;
     }
 }

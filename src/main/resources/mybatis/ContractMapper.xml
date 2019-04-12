@@ -3,9 +3,11 @@
 <mapper namespace="com.portjs.base.dao.ContractMapper" >
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.Contract" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="contract_num" property="contractNum" jdbcType="VARCHAR" />
     <result column="source" property="source" jdbcType="VARCHAR" />
     <result column="source_id" property="sourceId" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="purchase_dept" property="purchaseDept" jdbcType="VARCHAR" />
     <result column="supplier" property="supplier" jdbcType="VARCHAR" />
     <result column="amount" property="amount" jdbcType="DECIMAL" />
@@ -78,8 +80,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, source, source_id, project_id, purchase_dept, supplier, amount, sign_date, remark, 
-    file_url, valid_date, status, creater, create_time, update_time, delete_time
+    Id, contract_num, source, source_id, project_id, project_code, purchase_dept, supplier, 
+    amount, sign_date, remark, file_url, valid_date, status, creater, create_time, update_time, 
+    delete_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ContractExample" >
     select
@@ -93,9 +96,6 @@
     </if>
     <if test="orderByClause != null" >
       order by ${orderByClause}
-    </if>
-    <if test="offset != null &amp;&amp; limit != null">
-      limit ${offset},${limit}
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -115,24 +115,29 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.Contract" >
-    insert into contract (Id, source, source_id, 
-      project_id, purchase_dept, supplier, 
-      amount, sign_date, remark, 
-      file_url, valid_date, status, 
-      creater, create_time, update_time, 
-      delete_time)
-    values (#{id,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
-      #{projectId,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
-      #{amount,jdbcType=DECIMAL}, #{signDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, 
-      #{fileUrl,jdbcType=VARCHAR}, #{validDate,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, 
-      #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleteTime,jdbcType=TIMESTAMP})
+    insert into contract (Id, contract_num, source, 
+      source_id, project_id, project_code, 
+      purchase_dept, supplier, amount, 
+      sign_date, remark, file_url, 
+      valid_date, status, creater, 
+      create_time, update_time, delete_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{contractNum,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
+      #{sourceId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
+      #{purchaseDept,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{signDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{validDate,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.Contract" >
     insert into contract
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         Id,
+      </if>
+      <if test="contractNum != null" >
+        contract_num,
       </if>
       <if test="source != null" >
         source,
@@ -142,6 +147,9 @@
       </if>
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="projectCode != null" >
+        project_code,
       </if>
       <if test="purchaseDept != null" >
         purchase_dept,
@@ -184,6 +192,9 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="contractNum != null" >
+        #{contractNum,jdbcType=VARCHAR},
+      </if>
       <if test="source != null" >
         #{source,jdbcType=VARCHAR},
       </if>
@@ -192,6 +203,9 @@
       </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null" >
+        #{projectCode,jdbcType=VARCHAR},
       </if>
       <if test="purchaseDept != null" >
         #{purchaseDept,jdbcType=VARCHAR},
@@ -243,6 +257,9 @@
       <if test="record.id != null" >
         Id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.contractNum != null" >
+        contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      </if>
       <if test="record.source != null" >
         source = #{record.source,jdbcType=VARCHAR},
       </if>
@@ -251,6 +268,9 @@
       </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCode != null" >
+        project_code = #{record.projectCode,jdbcType=VARCHAR},
       </if>
       <if test="record.purchaseDept != null" >
         purchase_dept = #{record.purchaseDept,jdbcType=VARCHAR},
@@ -296,9 +316,11 @@
   <update id="updateByExample" parameterType="map" >
     update contract
     set Id = #{record.id,jdbcType=VARCHAR},
+      contract_num = #{record.contractNum,jdbcType=VARCHAR},
       source = #{record.source,jdbcType=VARCHAR},
       source_id = #{record.sourceId,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=VARCHAR},
+      project_code = #{record.projectCode,jdbcType=VARCHAR},
       purchase_dept = #{record.purchaseDept,jdbcType=VARCHAR},
       supplier = #{record.supplier,jdbcType=VARCHAR},
       amount = #{record.amount,jdbcType=DECIMAL},
@@ -318,6 +340,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.Contract" >
     update contract
     <set >
+      <if test="contractNum != null" >
+        contract_num = #{contractNum,jdbcType=VARCHAR},
+      </if>
       <if test="source != null" >
         source = #{source,jdbcType=VARCHAR},
       </if>
@@ -326,6 +351,9 @@
       </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null" >
+        project_code = #{projectCode,jdbcType=VARCHAR},
       </if>
       <if test="purchaseDept != null" >
         purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
@@ -368,9 +396,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Contract" >
     update contract
-    set source = #{source,jdbcType=VARCHAR},
+    set contract_num = #{contractNum,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
       source_id = #{sourceId,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
       purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
       supplier = #{supplier,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL},
