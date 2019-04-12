@@ -473,8 +473,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				//查询此条数据的状态
 				List<ProjectApplication> list1 = projectApplicationMapper.selectByExample(projectApplicationExample);
 				if(!CollectionUtils.isEmpty(list1)){
-					//status 8:退回状态,其余审核中
-					if("8".equals(list1.get(0).getStatus())){
+					//status 8和0(暂存编辑状态):退回状态,其余审核中
+					if("8".equals(list1.get(0).getStatus())||"0".equals(list1.get(0).getStatus())){
 						map.put("returnStatus","0");
 					}else{
 						map.put("returnStatus","1");
