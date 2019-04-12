@@ -53,6 +53,17 @@ public class ProjectApplication {
     //投资计划编号   连表字段
     private String planNum;
 
+
+    private String   constructionMode;
+
+    public String getConstructionMode() {
+        return constructionMode;
+    }
+
+    public void setConstructionMode(String constructionMode) {
+        this.constructionMode = constructionMode;
+    }
+
     public String getPlanNum() {
         return planNum;
     }

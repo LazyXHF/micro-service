@@ -151,7 +151,7 @@ public class ProjectApplicationController extends BaseController {
         }
     }
     @LogInfo(methodName = "废除申请记录",modelName = "立项管理")
-    @RequestMapping("6f92b00b-09a4-4180-8d80-021ad91543c8")
+    @RequestMapping("abolishProject")
     @ResponseBody
     public ResponseMessage abolishProject(@RequestBody String responseBody){
         logger.debug(TAG+"abolishProject() begin");

@@ -26,6 +26,7 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
     <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
+    <result column="construction_mode" property="constructionMode" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -626,7 +627,7 @@
   </resultMap>
   <!--查询项目信息-->
   <select id="queryProject" resultMap="BaseResultMap">
-    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
+    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,construction_mode,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
     from project_application
@@ -651,7 +652,7 @@
         and  investor = #{investor}
       </if>
     UNION ALL
-    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
+    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,construction_mode,
     leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
     remark, creater, create_time, update_time, enable, file_url, status, is_delete
     from project_application
