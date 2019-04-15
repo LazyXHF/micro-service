@@ -63,6 +63,7 @@ public class TenderController extends BaseController {
             throw new RuntimeException();
         }
     }
+
     //TODO
     @LogInfo(methodName = "查询招标申请单",modelName = "招标模块")
     @RequestMapping("/query-tender")
