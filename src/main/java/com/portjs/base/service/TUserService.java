@@ -60,4 +60,15 @@ public interface TUserService {
 
 
     ResponseMessage userPassword(String requestBody);
+
+
+
+
+
+
+
+
+    //////-------------------------------------------------------------一人多部门
+
+    ResponseMessage insertUserDepartments(UserRoleVO userRoleVO);
 }

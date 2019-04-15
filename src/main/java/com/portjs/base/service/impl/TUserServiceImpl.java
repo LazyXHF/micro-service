@@ -1,6 +1,7 @@
 package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.portjs.base.dao.TUserDepartmentMapper;
 import com.portjs.base.dao.TUserMapper;
 import com.portjs.base.dao.TUserRoleMapper;
 import com.portjs.base.dao.TXietongDictionaryMapper;
@@ -43,6 +44,9 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
 
     @Autowired
     private TXietongDictionaryMapper dictionaryMapper;
+
+    @Autowired
+private TUserDepartmentMapper userDepartmentMapper;
 
 
 
@@ -318,6 +322,61 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         return responseMessage;
     }
 
+    /**
+     * 一人多门添加用户
+     * @param userRoleVO
+     * @return
+     */
+    @Override
+    public ResponseMessage insertUserDepartments(UserRoleVO userRoleVO) {
+        TUser user = userRoleVO.getUser();
+        List<String> rids = userRoleVO.getRids();
+        List<String> dids = userRoleVO.getDids();
+        if (StringUtils.isEmpty(user.getLoginAccount())||StringUtils.isEmpty(user.getNameCn())){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"必填项为空");
+            return responseMessage;
+        }
+        if (!CollectionUtils.isEmpty(selectUserByAcccount(user.getLoginAccount()))){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"登录名已存在");
+            return responseMessage;
+        }
+        //添加用户表
+        int sort = userMapper.selectMaxSort();
+        user.setId(UUID.randomUUID().toString());
+        user.setCreatetime(new Date());
+        user.setSort(sort);
+//        user.setNameCn(user.getLoginName());
+        user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getNameCn()));
+        user.setLastUpdPasswdTime(new Date());
+        user.setPasswdWrongCount(0);
+        //重置密码周期
+        user.setPasswordModifyCycle(90);
+        //删除所有角色信息
+        deleteUserRole(user.getId());
+        for (int i=0;i<rids.size();i++){
+            TUserRole userRole = new TUserRole();
+            userRole.setId(UUID.randomUUID().toString());
+            userRole.setUserId(user.getId());
+            userRole.setRoleId(rids.get(i));
+            userRoleMapper.insert(userRole);
+        }
+
+
+        //添加部门表
+        for (int i=0;i<dids.size();i++){
+            TUserDepartment userDepartment = new TUserDepartment();
+            userDepartment.setuId(user.getId());
+            userDepartment.setdId(dids.get(i));
+
+        }
+        int i =  userMapper.insert(user);
+        if (i<0){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR, "添加失败");
+        }else {
+            responseMessage = new ResponseMessage(Code.CODE_OK,"添加成功");
+        }
+        return responseMessage;
+    }
 
 
     //根据用户名查找用户

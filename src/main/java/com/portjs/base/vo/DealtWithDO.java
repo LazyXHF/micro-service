@@ -17,6 +17,7 @@ public class DealtWithDO {
     private String todoType;//待办类型
     private String status;//待办状态
     private String stepDesc;//待办描述
+
     private String receivedArray;//接受人字符串JSON数组
 
     public String getId() {
