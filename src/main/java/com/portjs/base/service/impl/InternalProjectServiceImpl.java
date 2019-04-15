@@ -448,20 +448,21 @@ public class InternalProjectServiceImpl implements InternalProjectService {
                 continue;
             }
             List<ProjectApplication> projectApplications = applicationMapper.selectapplicationByYear(list.get(i).toString());
-            if (CollectionUtils.isEmpty(projectApplications)){
-                return map;
-            }
+
             /*map.put(list.get(i)+"年", projectApplications.size());*/
 
             int count = projectMapper.selectapplicationByYear(list.get(i).toString());
-            if (count==0){
-                return map;
-            }
             /*map.put(list.get(i)+"年",projectApplications.size()+"~"+count);*/
-            list1.add(projectApplications.size());
+            if (CollectionUtils.isEmpty(projectApplications)){
+                list1.add(0);
+            }else {
+                list1.add(projectApplications.size());
+            }
+
             list2.add(count);
 
         }
+
         map.put("ok",list1);
         map.put("error",list2);
         return map;

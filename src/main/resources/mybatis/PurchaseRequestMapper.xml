@@ -342,4 +342,22 @@
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="queryPucharseList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from purchase_request a
+    <where>
+    <if test="method !=null and method!=''">
+       a.method like "%" #{method} "%"
+    </if>
+      <if test="projectCode !=null and projectCode!=''">
+        and a.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and a.project_name like "%" #{projectName} "%"
+      </if>
+  </where>
+  </select>
+
 </mapper>

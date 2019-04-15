@@ -52,7 +52,6 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         String creater = jsonObject.getString("creater");//创建人姓名
         String createrId = jsonObject.getString("createrId");//创建人id
         String DS = jsonObject.getString("DS");//获取导入的清单列表JSON数组字符串
-
         if(StringUtils.isEmpty(status)){
             return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);
         }
@@ -74,17 +73,12 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         purchaseRequest.setAmount(amount);
         purchaseRequest.setContent(content);
         purchaseRequest.setCreaterId(createrId);
-
         int i = purchaseRequestMapper.insertPurchaseRequestSelective(purchaseRequest);
-
         PurchaseList purchaseList = new PurchaseList();
-
         net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(DS);//并将DS内容取出转为json数组
         for (int j = 0; j < jsonArray.size(); j++) {     //遍历json数组内容
             net.sf.json.JSONObject object = jsonArray.getJSONObject(j);
             System.out.println(object.getString("字段名1"));
-
-
         }
 
 
@@ -168,7 +162,6 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
 
         return new ResponseMessage(Code.CODE_OK,"操作成功");
     }
-
 
     @Override
     public ResponseMessage queryPurchaseRequestInfo(String requestBody) {

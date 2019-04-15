@@ -57,5 +57,5 @@ public interface PurchaseRequestMapper {
     @Select("select max(request_num) from purchase_request")
     String findMaxOdd();
 
-    List queryPucharseList(String method, String projectCode, String projectName);
+    List queryPucharseList(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName") String projectName);
 }

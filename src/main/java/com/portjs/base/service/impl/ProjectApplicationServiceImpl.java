@@ -166,6 +166,12 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 todoCriteria.andRelateddomainIdEqualTo(application.getId());
                 todoCriteria.andReceiverIdEqualTo(owneId);
                 List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
+                String ownerId2=tWorkflowstepMapper.queryProjectRecords(application.getId()).get(0).getActionuserId();
+                if(ownerId2.equals(owneId)){
+                    application.setIsRight("1");
+                }else {
+                    application.setIsRight("0");
+                }
                 //isApprove(当前任是否是审批人 0：不是 1：是)
                 if (CollectionUtils.isEmpty(tTodos)) {
                     application.setIsApprover("0");
@@ -209,7 +215,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
 //            });
             Page page=new Page();
             ArrayList arrayList = new ArrayList(treeSet);
-
             page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
             System.out.println(page);
             if(page.getRowNum()+page.getPageCount()>arrayList.size()){
@@ -284,10 +289,19 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     @Override
     public ResponseMessage deleteProject(JSONObject requestJson) {
         String id=requestJson.getString("id");
+        String ownerId=requestJson.getString("ownerId");
+        int count=todoMapper.queryTodoRecord(id,ownerId);
+        if(count>0){
+         int f=todoMapper.deleteTodoRecord(id,ownerId);
+         if(f!=1){
+             return  new ResponseMessage(Code.CODE_ERROR,"删除失败");
+         }
+        }
         int f=applicationMapper.deleteProject(id);
         if(f!=1){
             return  new ResponseMessage(Code.CODE_ERROR,"删除失败");
         }
+
         return  new ResponseMessage(Code.CODE_OK,"删除成功");
     }
 
@@ -295,9 +309,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     public ResponseMessage queryProjectPlan() {
         //筛选未选用的的投资计划方式
         List<InvestmentPlan>  list=investmentPlanMapper.queryProjectPlan();
-        List<InvestmentPlan>  data=new ArrayList<InvestmentPlan>();
-
-        for ( InvestmentPlan p : list){
+         /*  List<InvestmentPlan>  data=new ArrayList<InvestmentPlan>();
+           for ( InvestmentPlan p : list){
             ProjectApplicationExample todoExample = new ProjectApplicationExample();
             ProjectApplicationExample.Criteria todoCriteria = todoExample.createCriteria();
             todoCriteria.andProjectIdEqualTo(p.getProjectId());
@@ -305,11 +318,11 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             if(CollectionUtils.isEmpty(dataList)){
                 data.add(p);
             }
-        }
+        }*/
         if(list.isEmpty()){
             return  new ResponseMessage(Code.CODE_ERROR,"下拉信息为空");
         }
-        return  new ResponseMessage(Code.CODE_OK,"投资列表信息",data);
+        return  new ResponseMessage(Code.CODE_OK,"投资列表信息",list);
     }
 
     @Override
