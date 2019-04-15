@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.ProjectApplication" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
     <result column="investment_id" property="investmentId" jdbcType="VARCHAR" />
-    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="investor" property="investor" jdbcType="VARCHAR" />
@@ -25,7 +25,6 @@
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
-    <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -86,9 +85,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
-    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete,construction_mode
+    Id, investment_id, project_id, project_code, project_name, project_type, investor,
+    organization, construction_mode, leval, investment_amount, range1, application_amount,
+    project_desc, kickoff_date, remark, creater, create_time, update_time, enable, file_url,
+    status, is_delete
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectApplicationExample" >
     select
@@ -105,7 +105,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from project_application
     where Id = #{id,jdbcType=VARCHAR}
@@ -121,22 +121,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.ProjectApplication" >
-    insert into project_application (Id, investment_id, project_code,project_id,
-      project_name, project_type, investor,
-      organization, leval, investment_amount,
-      range1, application_amount, project_desc,
-      kickoff_date, remark, creater,
-      create_time, update_time, enable,
-      file_url, status, is_delete,construction_mode
-      )
-    values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},
-      #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{investor,jdbcType=VARCHAR},
-      #{organization,jdbcType=VARCHAR}, #{leval,jdbcType=VARCHAR}, #{investmentAmount,jdbcType=DECIMAL},
-      #{range1,jdbcType=VARCHAR}, #{applicationAmount,jdbcType=DECIMAL}, #{projectDesc,jdbcType=VARCHAR},
-      #{kickoffDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=VARCHAR},
-      #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR},#{constructionMode,jdbcType=VARCHAR}
-      )
+    insert into project_application (Id, investment_id, project_id,
+      project_code, project_name, project_type,
+      investor, organization, construction_mode,
+      leval, investment_amount, range1,
+      application_amount, project_desc, kickoff_date,
+      remark, creater, create_time,
+      update_time, enable, file_url,
+      status, is_delete)
+    values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR},
+      #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR},
+      #{investor,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{constructionMode,jdbcType=VARCHAR},
+      #{leval,jdbcType=VARCHAR}, #{investmentAmount,jdbcType=DECIMAL}, #{range1,jdbcType=VARCHAR},
+      #{applicationAmount,jdbcType=DECIMAL}, #{projectDesc,jdbcType=VARCHAR}, #{kickoffDate,jdbcType=TIMESTAMP},
+      #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectApplication" >
     insert into project_application
@@ -147,11 +147,11 @@
       <if test="investmentId != null" >
         investment_id,
       </if>
-      <if test="projectCode != null" >
-        project_code,
-      </if>
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="projectCode != null" >
+        project_code,
       </if>
       <if test="projectName != null" >
         project_name,
@@ -164,6 +164,9 @@
       </if>
       <if test="organization != null" >
         organization,
+      </if>
+      <if test="constructionMode != null" >
+        construction_mode,
       </if>
       <if test="leval != null" >
         leval,
@@ -207,9 +210,6 @@
       <if test="isDelete != null" >
         is_delete,
       </if>
-      <if test="constructionMode != null">
-        construction_mode
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -218,11 +218,11 @@
       <if test="investmentId != null" >
         #{investmentId,jdbcType=VARCHAR},
       </if>
-      <if test="projectCode != null" >
-        #{projectCode,jdbcType=VARCHAR},
-      </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null" >
+        #{projectCode,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
@@ -235,6 +235,9 @@
       </if>
       <if test="organization != null" >
         #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="constructionMode != null" >
+        #{constructionMode,jdbcType=VARCHAR},
       </if>
       <if test="leval != null" >
         #{leval,jdbcType=VARCHAR},
@@ -278,9 +281,6 @@
       <if test="isDelete != null" >
         #{isDelete,jdbcType=VARCHAR},
       </if>
-      <if test="constructionMode != null">
-        constructionMode,
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.portjs.base.entity.ProjectApplicationExample" resultType="java.lang.Integer" >
@@ -298,11 +298,11 @@
       <if test="record.investmentId != null" >
         investment_id = #{record.investmentId,jdbcType=VARCHAR},
       </if>
-      <if test="record.projectCode != null" >
-        project_code = #{record.projectCode,jdbcType=VARCHAR},
-      </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCode != null" >
+        project_code = #{record.projectCode,jdbcType=VARCHAR},
       </if>
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
@@ -315,6 +315,9 @@
       </if>
       <if test="record.organization != null" >
         organization = #{record.organization,jdbcType=VARCHAR},
+      </if>
+      <if test="record.constructionMode != null" >
+        construction_mode = #{record.constructionMode,jdbcType=VARCHAR},
       </if>
       <if test="record.leval != null" >
         leval = #{record.leval,jdbcType=VARCHAR},
@@ -358,9 +361,6 @@
       <if test="record.isDelete != null" >
         is_delete = #{record.isDelete,jdbcType=VARCHAR},
       </if>
-      <if test="record.constructionMode != null">
-        constructionMode = #{record.constructionMode,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -369,28 +369,28 @@
   <update id="updateByExample" parameterType="map" >
     update project_application
     set Id = #{record.id,jdbcType=VARCHAR},
-      investment_id = #{record.investmentId,jdbcType=VARCHAR},
-      project_code = #{record.projectCode,jdbcType=VARCHAR},
-      project_id = #{record.projectId,jdbcType=VARCHAR},
-      project_name = #{record.projectName,jdbcType=VARCHAR},
-      project_type = #{record.projectType,jdbcType=VARCHAR},
-      investor = #{record.investor,jdbcType=VARCHAR},
-      organization = #{record.organization,jdbcType=VARCHAR},
-      leval = #{record.leval,jdbcType=VARCHAR},
-      investment_amount = #{record.investmentAmount,jdbcType=DECIMAL},
-      range1 = #{record.range1,jdbcType=VARCHAR},
-      application_amount = #{record.applicationAmount,jdbcType=DECIMAL},
-      project_desc = #{record.projectDesc,jdbcType=VARCHAR},
-      kickoff_date = #{record.kickoffDate,jdbcType=TIMESTAMP},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      creater = #{record.creater,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      enable = #{record.enable,jdbcType=VARCHAR},
-      file_url = #{record.fileUrl,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
-      is_delete = #{record.isDelete,jdbcType=VARCHAR},
-    construction_mode=#{record.constructionMode,jdbcType=VARCHAR}
+    investment_id = #{record.investmentId,jdbcType=VARCHAR},
+    project_id = #{record.projectId,jdbcType=VARCHAR},
+    project_code = #{record.projectCode,jdbcType=VARCHAR},
+    project_name = #{record.projectName,jdbcType=VARCHAR},
+    project_type = #{record.projectType,jdbcType=VARCHAR},
+    investor = #{record.investor,jdbcType=VARCHAR},
+    organization = #{record.organization,jdbcType=VARCHAR},
+    construction_mode = #{record.constructionMode,jdbcType=VARCHAR},
+    leval = #{record.leval,jdbcType=VARCHAR},
+    investment_amount = #{record.investmentAmount,jdbcType=DECIMAL},
+    range1 = #{record.range1,jdbcType=VARCHAR},
+    application_amount = #{record.applicationAmount,jdbcType=DECIMAL},
+    project_desc = #{record.projectDesc,jdbcType=VARCHAR},
+    kickoff_date = #{record.kickoffDate,jdbcType=TIMESTAMP},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    creater = #{record.creater,jdbcType=VARCHAR},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    enable = #{record.enable,jdbcType=VARCHAR},
+    file_url = #{record.fileUrl,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=VARCHAR},
+    is_delete = #{record.isDelete,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -418,6 +418,9 @@
       </if>
       <if test="organization != null" >
         organization = #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="constructionMode != null" >
+        construction_mode = #{constructionMode,jdbcType=VARCHAR},
       </if>
       <if test="leval != null" >
         leval = #{leval,jdbcType=VARCHAR},
@@ -461,21 +464,19 @@
       <if test="isDelete != null" >
         is_delete = #{isDelete,jdbcType=VARCHAR},
       </if>
-      <if test="constructionMode != null" >
-        construction_mode = #{constructionMode,jdbcType=VARCHAR},
-      </if>
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.ProjectApplication" >
     update project_application
     set investment_id = #{investmentId,jdbcType=VARCHAR},
-      project_code = #{projectCode,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_type = #{projectType,jdbcType=VARCHAR},
       investor = #{investor,jdbcType=VARCHAR},
       organization = #{organization,jdbcType=VARCHAR},
+      construction_mode = #{constructionMode,jdbcType=VARCHAR},
       leval = #{leval,jdbcType=VARCHAR},
       investment_amount = #{investmentAmount,jdbcType=DECIMAL},
       range1 = #{range1,jdbcType=VARCHAR},
@@ -490,7 +491,6 @@
       file_url = #{fileUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       is_delete = #{isDelete,jdbcType=VARCHAR}
-      construction_mode= #{constructionMode,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <!--编辑项目信息-->
