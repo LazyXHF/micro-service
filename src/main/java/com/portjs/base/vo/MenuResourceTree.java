@@ -17,6 +17,8 @@ public class MenuResourceTree {
     public  String path;
     public String grade;
     public Integer isMenuResource;
+
+    public String pic;
 //    public List<TXietongMenuResource> menuResources;
 
 
@@ -33,6 +35,7 @@ public class MenuResourceTree {
         path = menuResource.getPath();
         grade = menuResource.getGrade();
         isMenuResource = menuResource.getResourceMenu();
+        pic = menuResource.getReserved1();
     }
 
     public String getId() {

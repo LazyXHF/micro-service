@@ -10,13 +10,11 @@ import com.portjs.base.entity.ProjectCommunication;
 import com.portjs.base.entity.TTodo;
 import com.portjs.base.service.ProjectCommunicationService;
 import com.portjs.base.util.Code;
+import com.portjs.base.util.DealtWith;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.StringUtils;
-import com.portjs.base.vo.BugSearchDO;
-import com.portjs.base.vo.FlashProject;
-import com.portjs.base.vo.Project;
-import com.portjs.base.vo.ProjectSearchDO;
+import com.portjs.base.vo.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,9 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
 
     @Autowired
     TTodoMapper todoMapper;
+
+    @Autowired
+    DealtWith dealtWith;
 
     @Override
     public ResponseMessage deleteByPrimaryKey(String id) {
@@ -79,30 +80,40 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
         /*JSONObject jsonObject = JSONObject.fromObject(record.getFollower());//字符串转json对象
         String data = jsonObject.getString("DS");//获取DS内容
         JSONArray jsonArray = JSONArray.fromObject(data);//并将DS内容取出转为json数组*/
-        JSONArray jsonArray= JSONArray.fromObject(record.getFollower());
-        for (int j = 0; j < jsonArray.size(); j++) {     //遍历json数组内容
-            TTodo todo = new TTodo();
-            JSONObject object = jsonArray.getJSONObject(j);
-            String name = object.getString("nameId");
-            //设置存入的值
-            String ids = UUID.randomUUID().toString();
-            todo.setId(ids);
-            todo.setSenderId(record.getBackup3());//发送人id
-            todo.setSenderTime(new Date());//发送时间
-            todo.setReceiverId(name);//接收人id（被提醒人）
-            todo.setRelateddomain("风控记录");//对应的业务模块
-            todo.setRelateddomainId(id);//把当前新建问题id存入待办表里
-            todo.setTodoType("事务处理");//待办类型
-            todo.setStatus("0");//0为待办未完成状态
-            todo.setBackup3(record.getPriority());//优先级
-            todo.setStepDesc(record.getTitle()+"存在问题，需要您的回复！");
-            todo.setBackUp7(record.getSponsor());//发起人姓名
-            //添加到待办表里
-            int i1 = todoMapper.insertSelective(todo);
-            if(i1==0){
+//        JSONArray jsonArray= JSONArray.fromObject(record.getFollower());
+//        for (int j = 0; j < jsonArray.size(); j++) {     //遍历json数组内容
+//            TTodo todo = new TTodo();
+//            JSONObject object = jsonArray.getJSONObject(j);
+//            String name = object.getString("nameId");
+//            //设置存入的值
+//            String ids = UUID.randomUUID().toString();
+//            todo.setId(ids);
+//            todo.setSenderId(record.getBackup3());//发送人id
+//            todo.setSenderTime(new Date());//发送时间
+//            todo.setReceiverId(name);//接收人id（被提醒人）
+//            todo.setRelateddomain("风控记录");//对应的业务模块
+//            todo.setRelateddomainId(id);//把当前新建问题id存入待办表里
+//            todo.setTodoType("事务处理");//待办类型
+//            todo.setStatus("0");//0为待办未完成状态
+//            todo.setBackup3(record.getPriority());//优先级
+//            todo.setStepDesc(record.getTitle()+"存在问题，需要您的回复!");
+//            todo.setBackUp7(record.getSponsor());//发起人姓名
+//
+//            //添加到待办表里
+//            int i1 = todoMapper.insertSelective(todo);
+//            if(i1==0){
+//                return new ResponseMessage(Code.CODE_ERROR,"存入待办表失败！",i1);
+//            }
+//        }
+
+        int i1 = dealtWith.dealtWithMethodStringArray(record.getFollower(),record.getSponsor(),record.getSponsor(),
+                "风控记录",id,"事务处理",record.getTitle()+"存在问题，需要您的回复!",record.getPriority());
+
+
+        if(i1==0){
                 return new ResponseMessage(Code.CODE_ERROR,"存入待办表失败！",i1);
             }
-        }
+
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加信息失败！",i);
 
