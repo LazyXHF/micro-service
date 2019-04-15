@@ -296,8 +296,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         //筛选未选用的的投资计划方式
         List<InvestmentPlan>  list=investmentPlanMapper.queryProjectPlan();
         List<InvestmentPlan>  data=new ArrayList<InvestmentPlan>();
-
-        for ( InvestmentPlan p : list){
+      /*  for ( InvestmentPlan p : list){
             ProjectApplicationExample todoExample = new ProjectApplicationExample();
             ProjectApplicationExample.Criteria todoCriteria = todoExample.createCriteria();
             todoCriteria.andProjectIdEqualTo(p.getProjectId());
@@ -305,7 +304,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             if(CollectionUtils.isEmpty(dataList)){
                 data.add(p);
             }
-        }
+        }*/
         if(list.isEmpty()){
             return  new ResponseMessage(Code.CODE_ERROR,"下拉信息为空");
         }
