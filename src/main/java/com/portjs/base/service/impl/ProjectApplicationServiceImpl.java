@@ -344,6 +344,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         if(f!=1){
             return  new ResponseMessage(Code.CODE_ERROR,"废除数据失败");
         }
+
        int f1=todoMapper.deleteTodoRecord(id,ownerId);
         if(f1!=1){
             return  new ResponseMessage(Code.CODE_ERROR,"废除待办记录失败");
