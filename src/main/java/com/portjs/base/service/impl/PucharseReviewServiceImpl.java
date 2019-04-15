@@ -85,10 +85,11 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
     public ResponseMessage addPucharseReview(String requestBody) {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         //申请单
-        //这是前段传过来的id  如果这个id存在寿命已经暂存过  进行更新  如果为null 说明是新增
+        //这是前段传过来的id  如果这个id存在说明已经暂存过  进行更新  如果为null 说明是新增
         String id = jsonObject.getString("id");
         //带出来的采购单id
         String request_id = jsonObject.getString("request_id");
+        String  reviewNum= PucharseReviewServiceImpl.createOdd("CP");
         String projectId = jsonObject.getString("project_id");
         String method = jsonObject.getString("method");
         //供应商
@@ -106,7 +107,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         String actionuserId = jsonObject.getString("actionuserId");
         PurchaseReview purchaseReview = new PurchaseReview();
         purchaseReview.setRequestId(request_id);
-        String  reviewNum= PucharseReviewServiceImpl.createOdd("CP");
         purchaseReview.setReviewNum(reviewNum);
         purchaseReview.setProjectId(projectId);
         purchaseReview.setPurchaseDept(purchaseDept);
@@ -115,20 +115,17 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         BigDecimal amount1 = new BigDecimal(amount);
         purchaseReview.setAmount(amount1);
         purchaseReview.setRemark(remark);
+        purchaseReview.setSubmitTime(submit_time);
         purchaseReview.setCreater(ownerId);
         purchaseReview.setCreateTime(currentTime);
         purchaseReview.setIsDelete("0");
         InternalAttachment internalAttachment = new InternalAttachment();
-        internalAttachment.setId(UUID.randomUUID().toString());
         internalAttachment.setUploadTime(currentTime);
         internalAttachment.setUploader(ownerId);
         String fieModule = "采购评审";
         internalAttachment.setFileModule(fieModule);
         internalAttachment.setRelateddomain("采购评审");
-        JSONArray jsonArray = jsonObject.getJSONArray("" +
-                "" +
-                "" +
-                "");
+        JSONArray jsonArray = jsonObject.getJSONArray("files");
         //获取所有审批人的id
         JSONArray jsonArray1 = jsonObject.getJSONArray("approvers");
         //status ：0  暂存  1  提交
@@ -141,7 +138,10 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 int f = purchaseReviewMapper.insertSelective(purchaseReview);
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
-                    String filepath = jo.getString("filepath");
+                    internalAttachment.setId(UUID.randomUUID().toString());
+                    String fileType = jo.getString("fileType");
+                    internalAttachment.setFileType(fileType);
+                    String filepath = jo.getString("filePath");
                     String fileName = jsonObject.getString("fileName");
                     internalAttachment.setFileUrl(filepath);
                     internalAttachment.setFileName(fileName);
@@ -165,8 +165,12 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 }
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
+                    String fileid=jo.getString("id");
+                    String fileType = jo.getString("fileType");
+                    internalAttachment.setFileType(fileType);
                     String filepath = jo.getString("filepath");
                     String fileName = jsonObject.getString("fileName");
+                    internalAttachment.setId(fileid);
                     internalAttachment.setFileUrl(filepath);
                     internalAttachment.setFileName(fileName);
                     String relateddomainId = id;
@@ -178,10 +182,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 }
                 return new ResponseMessage(Code.CODE_OK, "暂存成功");
             }
-
             //提交
         } else if (status.equals("1")) {
-
             //id为空 直接添加
             if (id.isEmpty()) {
                 String id2 = UUID.randomUUID().toString();
@@ -192,6 +194,9 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 }
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
+                    internalAttachment.setId(UUID.randomUUID().toString());
+                    String fileType = jo.getString("fileType");
+                    internalAttachment.setFileType(fileType);
                     String filepath = jo.getString("filepath");
                     String fileName = jsonObject.getString("fileName");
                     internalAttachment.setFileUrl(filepath);
@@ -232,6 +237,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setStepDesc("采购评审提交");
                     //审批人id
                     String approveUserId = jo.getString("approveUserId");
+                    String approveUserName = jo.getString("approveUserName");
+                    tWorkflowstep2.setBackUp7(approveUserName);
                     tWorkflowstep2.setActionuserId(approveUserId);
                     tWorkflowstep2.setStatus("0");
                     tWorkflowstep2.setBackup3("2");
@@ -275,8 +282,12 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 }
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
+                    String fileid=jo.getString("id");
+                    String fileType = jo.getString("fileType");
+                    internalAttachment.setFileType(fileType);
                     String filepath = jo.getString("filepath");
                     String fileName = jsonObject.getString("fileName");
+                    internalAttachment.setId(fileid);
                     internalAttachment.setFileUrl(filepath);
                     internalAttachment.setFileName(fileName);
                     String relateddomainId = id;
@@ -314,6 +325,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setStepDesc("采购评审提交");
                     //审批人id
                     String approveUserId = jo.getString("approveUserId");
+                    String approveUserName = jo.getString("approveUserName");
+                    tWorkflowstep2.setBackUp7(approveUserName);
                     tWorkflowstep2.setActionuserId(approveUserId);
                     tWorkflowstep2.setStatus("0");
                     //提交给部门负责人为2
@@ -351,22 +364,27 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         return new ResponseMessage(Code.CODE_OK, "提交暂存成功");
     }
 
+    @Override
+    public ResponseMessage queryPucharseReview(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String projectCode = jsonObject.getString("projectCode");
+        String projectName = jsonObject.getString("projectName");
+        String  projectType= PucharseReviewServiceImpl.createOdd("projectType");
+        String projectId = jsonObject.getString("project_id");
+        String method = jsonObject.getString("method");
+        return  null;
+    }
+
+
+
+
     //生成流水单号
-
         private int number;
-
-
-
-        /**
-         *
-         */
         private static PucharseReviewServiceImpl odd;
-
         @PostConstruct
         public void init() {
             odd = this;
         }
-
         /**
          * 编写测试流水订单号
          * 测试流水订单号规则：自动生成(PR+8位日期+4位流水号)  示例：LL201809270001
@@ -380,7 +398,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         return sdf.format(new Date()).substring(0, 8) + str;
 
     }
-
     /**
      *截取流水尾号转换数字
      * @param string
@@ -391,7 +408,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         return oddCode;
 
     }
-
     /**
      * 截取流水单号入库日期
      * @param string
@@ -402,19 +418,12 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         return oddSenttime;
 
     }
-
     public static int getNowTimeCode() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         int nowTimeCode = Integer.parseInt(simpleDateFormat.format(new Date()).substring(0, 8));
         return nowTimeCode;
     }
-
-    /**
-     *生成流水单号
-     * @return rp  流水单前的类型编号
-     */
     public static String createOdd(String cp) {
-
         String nowOdd=null;
         String oddMaxCode = odd.purchaseReviewMapper.findMaxOdd();
         //如果最大流水单号不为空
@@ -444,6 +453,10 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
 
         return nowOdd;
     }
+
+
+
+
 
 
 }

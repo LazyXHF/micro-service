@@ -53,4 +53,6 @@ public interface TTodoMapper {
 
 
     int deleteTodoRecord(@Param("id") String id,@Param("ownerId") String ownerId);
+
+    int queryTodoRecord(@Param("id") String id, @Param("ownerId") String ownerId);
 }

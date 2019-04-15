@@ -524,7 +524,7 @@
     back_up8 = #{backUp8,jdbcType=VARCHAR},
     back_up9 = #{backUp9,jdbcType=VARCHAR},
     back_up10 = #{backUp10,jdbcType=VARCHAR}
-    where relateddomain_id = #{relateddomainId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 
 

@@ -11,5 +11,5 @@ public interface PucharseReviewService {
 
     ResponseMessage addPucharseReview(String requestBody);
 
-
+    ResponseMessage queryPucharseReview(String requestBody);
 }

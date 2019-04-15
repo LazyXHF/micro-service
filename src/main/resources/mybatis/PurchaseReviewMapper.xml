@@ -431,7 +431,7 @@
     ORDER BY r.create_time
     LIMIT #{rowNum,jdbcType=INTEGER},#{pageCount,jdbcType=INTEGER}
   </select>
-  <select id="findMaxOdd">
-    select max(review_num)  from purchase_review
-  </select>
+<!--  <select id="findMaxOdd" resultType="String">
+
+  </select>-->
 </mapper>

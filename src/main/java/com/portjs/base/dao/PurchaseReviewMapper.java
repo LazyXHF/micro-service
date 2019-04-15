@@ -4,6 +4,7 @@ import com.portjs.base.entity.PurchaseReview;
 import com.portjs.base.entity.PurchaseReviewExample;
 import com.portjs.base.vo.ContractVo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -50,6 +51,6 @@ public interface PurchaseReviewMapper {
      * @return
      */
     List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("rowNum") Integer rowNum, @Param("pageCount") Integer pageCount);
-
+    @Select(" select max(review_num)  from purchase_review")
     String findMaxOdd();
 }
