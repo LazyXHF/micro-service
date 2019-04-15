@@ -1,21 +1,19 @@
 package com.portjs.base.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.portjs.base.dao.TenderApplicationMapper;
-import com.portjs.base.entity.PurchaseRequest;
-import com.portjs.base.entity.TenderApplicationVo;
+import com.portjs.base.dao.*;
+import com.portjs.base.entity.*;
 import com.portjs.base.service.TenderService;
-import com.portjs.base.util.Code;
-import com.portjs.base.util.Page;
-import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.*;
+import com.portjs.base.util.StringUtils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author gumingyang
@@ -28,6 +26,14 @@ public class TenderServiceImpl implements TenderService {
 
     @Autowired
     private TenderApplicationMapper tenderApplicationMapper;
+    @Autowired
+    private TTodoMapper todoMapper;
+    @Autowired
+    private TWorkflowstepMapper workflowstepMapper;
+    @Autowired
+    private TXietongDictionaryMapper dictionaryMapper;
+    @Autowired
+    private InternalAttachmentMapper attachmentMapper;
 
     @Override
     public ResponseMessage queryRequests(String requestBody) throws Exception {
@@ -58,5 +64,591 @@ public class TenderServiceImpl implements TenderService {
         page.setList(tenderApplicationVos);
 
         return new ResponseMessage(Code.CODE_OK,"查询成功",page);
+    }
+
+    @Override
+    public ResponseMessage getTenderNum() {
+        //流水单号
+        String tenderNum="";
+        /**
+         * 获取当天的申请流水单号(倒序)
+         */
+        String date = DateUtils.dateTime();
+        TenderApplicationExample example = new TenderApplicationExample();
+        example.setOrderByClause("tender_num desc");
+        TenderApplicationExample.Criteria criteria = example.createCriteria();
+        criteria.andTenderNumLike("%"+date+"%");
+
+        List<TenderApplication> tenderApplications = tenderApplicationMapper.selectByExample(example);
+        if(!CollectionUtils.isEmpty(tenderApplications)){
+            //获取当天最后一个流水号
+            String tNum =tenderApplications.get(0).getTenderNum();
+            //截取最后流水号
+            String num = tNum.substring(10,tNum.length());
+            int count = Integer.parseInt(num);
+            tenderNum = count<9?"ZB"+date+"0"+(count+1):"ZB"+date+(count+1);
+        }else{
+            tenderNum="ZB"+ date +"01";
+        }
+        return new ResponseMessage(Code.CODE_OK,"生成成功",tenderNum);
+    }
+
+    /**
+     * 暂存/提交
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage insertTender(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String userId = jsonObject.getString("UserId");//登录用户
+        String userName = jsonObject.getString("UserName");//登录用户名
+        JSONObject application1JSON = jsonObject.getJSONObject("TenderApplication");
+        JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
+        String tTodoId = jsonObject.getString("tTodoId");
+        String projectName = jsonObject.getString("projectName");//项目名字
+
+        if(StringUtils.isEmpty(userId)){
+            return new ResponseMessage(Code.CODE_ERROR,"UserId"+PARAM_MESSAGE_1);
+        }
+        if(StringUtils.isEmpty(application1JSON)){
+            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication"+PARAM_MESSAGE_1);
+        }
+        //招标信息
+        TenderApplication application = JSONObject.toJavaObject(application1JSON,TenderApplication.class);
+
+        if(StringUtils.isEmpty(application.getStatus())){
+            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication中的status"+PARAM_MESSAGE_1);
+        }
+
+        String status = application.getStatus();
+        //提交和暂存的返回信息
+        String message1;
+        String message2;
+
+        //0暂存
+        if(status.equals("0")){
+            message1 = "暂存失败";
+            message2 = "更新失败";
+            //暂存状态，不用接收负责人
+            nextViewJSON.clear();
+        }else{
+            message1 = "提交失败";
+            message2 = message1;
+            //review 1:此条数据在审核 0:退回
+            application.setReview("1");
+            application.setStatus("1");
+            //提交首先更新待办表
+            if (!StringUtils.isEmpty(tTodoId)){
+                TTodo todo = new TTodo();
+                todo.setId(tTodoId);
+                todo.setStatus("1");
+                todo.setActiontime(new Date());
+                int i = todoMapper.updateByPrimaryKeySelective(todo);
+                if(i!=1){
+                    return new ResponseMessage(Code.CODE_ERROR,message1);
+                }
+            }
+        }
+
+        //操作招标,判断插入还是更新
+        if(StringUtils.isEmpty(application.getId())){
+            application.setId(String.valueOf(IDUtils.genItemId()));
+            application.setCreater(userId);
+            application.setCreateTime(new Date());
+
+            int i = tenderApplicationMapper.insertSelective(application);
+            if(i!=1){
+                return new ResponseMessage(Code.CODE_ERROR,message1);
+            }
+        }else{
+            application.setUpdateTime(new Date());
+
+            int i = tenderApplicationMapper.updateByPrimaryKeySelective(application);
+            if(i!=1){
+                return new ResponseMessage(Code.CODE_ERROR,message2);
+            }
+        }
+
+        if(nextViewJSON.size()>1){
+            return new ResponseMessage(Code.CODE_ERROR,"此流程只能选择一个人审核");
+        }
+
+        //进入流程
+        if(!CollectionUtils.isEmpty(nextViewJSON)){
+            //查询退回后的上个节点
+            TWorkflowstepExample workflowstepExample = new TWorkflowstepExample();
+            workflowstepExample.setOrderByClause("action_time desc");
+            TWorkflowstepExample.Criteria workflowstepCriteria = workflowstepExample.createCriteria();
+            workflowstepCriteria.andRelateddomainIdEqualTo(application.getId());
+            workflowstepCriteria.andActionResultEqualTo(1);
+
+            List<TWorkflowstep> list = workflowstepMapper.selectByExample(workflowstepExample);
+
+            TWorkflowstep workflowstep = new TWorkflowstep();
+            if(CollectionUtils.isEmpty(list)){
+                //然后新增一条当前登录人的流程记录
+                workflowstep.setId(String.valueOf(IDUtils.genItemId()));
+                workflowstep.setRelateddomain("项目招投标");
+                workflowstep.setPrestepId("0");
+                workflowstep.setRelateddomainId(application.getId());
+                workflowstep.setStepDesc("提交采购申请");
+                workflowstep.setActionuserId(userId);
+                workflowstep.setActionTime(new Date());
+                workflowstep.setActionResult(0);
+                workflowstep.setStatus("1");
+                workflowstep.setBackup3("1");
+
+                int i3 = workflowstepMapper.insertSelective(workflowstep);
+                if(i3!=1){
+                    return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+                }
+            }else {
+                workflowstep.setId(list.get(0).getId());
+            }
+            //接下来再新增一条部门负责人的流程记录
+            TWorkflowstep tWorkflowstep = new TWorkflowstep();
+            tWorkflowstep.setId(String.valueOf(IDUtils.genItemId()));
+            tWorkflowstep.setRelateddomain("项目招投标");
+            tWorkflowstep.setRelateddomainId(application.getId());
+            tWorkflowstep.setPrestepId(workflowstep.getId());
+            tWorkflowstep.setStepDesc("招标办人员审核");
+            tWorkflowstep.setActionuserId(nextViewJSON.getString(0));
+            tWorkflowstep.setStatus("0");
+            tWorkflowstep.setBackup3("2");
+
+            int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
+            if(i4!=1){
+                return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+            }
+            //最后新增一条代办
+            TTodo todo = new TTodo();
+            todo.setId(String.valueOf(IDUtils.genItemId()));
+            todo.setCurrentstepId(tWorkflowstep.getId());
+            todo.setStepDesc(projectName+"的招投标批复流程等待您的处理");
+            todo.setRelateddomain("项目招投标");
+            todo.setRelateddomainId(application.getId());
+            todo.setSenderId(userId);
+            todo.setSenderTime(new Date());
+            todo.setReceiverId(nextViewJSON.getString(0));
+            //查询代办类型
+            TXietongDictionaryExample example = new TXietongDictionaryExample();
+            TXietongDictionaryExample.Criteria criteria = example.createCriteria();
+            criteria.andTypeIdEqualTo("8");
+            criteria.andTypeCodeEqualTo("38");
+            criteria.andMidValueEqualTo("1");
+            List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
+            //查询待办类型
+            todo.setTodoType(dictionaryList.get(0).getMainValue());
+            todo.setStatus("0");
+            todo.setBackUp7(userName);//发起人
+            int i5 = todoMapper.insertSelective(todo);
+            if(i5!=1){
+                return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK,"操作成功");
+    }
+
+    /**
+     *查询招标申请单
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage queryTender(String requestBody) {
+        return null;
+    }
+
+    @Override
+    public ResponseMessage queryReviewTender(String requestBody) {
+        return null;
+    }
+
+    /**
+     *废除
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage abolitionTender(String requestBody) {
+        return null;
+    }
+
+    /**
+     *审核
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage reviewTender(String requestBody) {
+        JSONObject jsonObj=JSONObject.parseObject(requestBody);
+        String relateddomain="项目招投标";//业务模块
+        String relateddomain_id=jsonObj.getString("relateddomainId");//业务id
+        String sender_id=jsonObj.getString("userId");//当前人的id
+        String currentstep_id=jsonObj.getString("currentstepId");//当前处理步骤
+        String todo_id=jsonObj.getString("todoId");//当前todo表中id
+        String workflowstep_id=jsonObj.getString("workflowstepId");//当前workflowstep表中的id
+        String actionComment=jsonObj.getString("actionComment");//审核意见
+        String actionResult=jsonObj.getString("actionResult");//0 同意 1 不同意or退回
+        String backup3 = jsonObj.getString("sort");//第几个步骤
+        String reviewIds = jsonObj.getString("nextReviewerId");//下一个审核人的信息
+        String userName = jsonObj.getString("userName");//用户姓名
+        String projectName = jsonObj.getString("projectName");//项目名字
+
+        //必要参数空值判断
+        if(org.springframework.util.StringUtils.isEmpty(reviewIds)){
+            return new ResponseMessage(Code.CODE_ERROR, "nextReviewerId"+PARAM_MESSAGE_1);
+        }
+        JSONArray nextReviewerId=JSONArray.parseArray(reviewIds);
+
+        if(org.springframework.util.StringUtils.isEmpty(relateddomain_id)){
+            return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(sender_id)){
+            return new ResponseMessage(Code.CODE_ERROR, "userId"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(currentstep_id)){
+            return new ResponseMessage(Code.CODE_ERROR, "currentstepId"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(todo_id)){
+            return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(workflowstep_id)){
+            return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(actionResult)){
+            return new ResponseMessage(Code.CODE_ERROR, "actionResult"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(backup3)){
+            return new ResponseMessage(Code.CODE_ERROR, "sort"+PARAM_MESSAGE_1);
+        }
+
+		/*
+		 * 修改掉当前todo表对应的id的信息
+		 */
+        TTodo tTodo=new TTodo();
+        tTodo.setId(todo_id);
+        tTodo.setActiontime(new Date());
+        tTodo.setStatus("1");
+        int k=todoMapper.updateByPrimaryKeySelective(tTodo);
+        if(k<=0) {
+            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
+        }
+
+		/*
+		 * 修改当前workflowstep表中对应id的信息
+		 */
+        TWorkflowstep tWorkflowstep=new TWorkflowstep();
+        tWorkflowstep.setId(workflowstep_id);
+        tWorkflowstep.setActionTime(new Date());
+        tWorkflowstep.setActionComment(actionComment);
+        tWorkflowstep.setStatus("1");
+        if(actionResult.equals("0")) {
+            tWorkflowstep.setActionResult(0);
+        }else if(actionResult.equals("1")) {
+            tWorkflowstep.setActionResult(1);
+        }
+        int j=workflowstepMapper.updateByPrimaryKeySelective(tWorkflowstep);
+        if(j<=0) {
+            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
+        }
+
+        //步骤描述
+        String stepDesc="";
+        //状态值
+        String ss="1";
+        //backup3 :下一步的操作步骤 stepDesc: 下一步的审核步骤名称
+        if(backup3.equals("2")){
+            ss=backup3;
+            stepDesc="招标办人员审核";
+            backup3=new String("3");
+        }else if(backup3.equals("3")){
+            ss=backup3;
+            stepDesc="招标办主任审核";
+            backup3=new String("4");
+        }else if(backup3.equals("4")){
+            ss=backup3;
+            stepDesc="招标委员会审核";
+            backup3=new String("5");
+        }
+
+        //三个条件进入审核
+        TWorkflowstepExample examples = new TWorkflowstepExample();
+        TWorkflowstepExample.Criteria criteria1 = examples.createCriteria();
+        criteria1.andRelateddomainIdEqualTo(relateddomain_id);
+        criteria1.andActionResultEqualTo(1);
+        criteria1.andBackup3EqualTo("4");
+        List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(examples);
+
+        //查询是否是最后一人审核
+        TWorkflowstepExample exampless = new TWorkflowstepExample();
+        TWorkflowstepExample.Criteria criteria1s = exampless.createCriteria();
+        criteria1s.andRelateddomainIdEqualTo(relateddomain_id);
+        criteria1s.andBackup3EqualTo("4");
+        criteria1s.andStatusEqualTo("0");
+        List<TWorkflowstep> tWorkflowstepss = workflowstepMapper.selectByExample(exampless);
+
+        //查询所有的工作记录
+        List<TWorkflowstep> tWorkfow =workflowstepMapper.queryNotReviewProject(relateddomain_id);
+        TWorkflowstep t = null;
+        if(!CollectionUtils.isEmpty(tWorkfow)){
+            t=tWorkfow.get(tWorkfow.size()-1);
+        }
+        TenderApplicationExample projectApplicationExample = new TenderApplicationExample();
+        TenderApplicationExample.Criteria  criteri = projectApplicationExample.createCriteria();
+        criteri.andReviewEqualTo("0");
+        criteri.andIdEqualTo(relateddomain_id);
+        List<TenderApplication> tenderApplications = tenderApplicationMapper.selectByExample(projectApplicationExample);
+
+        //查询代办类型
+        TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+        TXietongDictionaryExample.Criteria criteria4 = example1.createCriteria();
+        criteria4.andTypeIdEqualTo("8");
+        criteria4.andTypeCodeEqualTo("38");
+        criteria4.andMidValueEqualTo("1");
+        List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
+
+        if(!CollectionUtils.isEmpty(tWorkflowsteps)&&CollectionUtils.isEmpty(tWorkflowstepss)&&t!=null&&t.getBackup3().equals("4")&&!CollectionUtils.isEmpty(tenderApplications)){
+
+            //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
+            TWorkflowstepExample example = new TWorkflowstepExample();
+            TWorkflowstepExample.Criteria criteria = example.createCriteria();
+            criteria.andRelateddomainIdEqualTo(relateddomain_id);
+            criteria.andStatusEqualTo("0");
+            List<TWorkflowstep> tWorkflowste = workflowstepMapper.selectByExample(example);
+            if(tWorkflowste.size()==0){
+                //如果当前审核人员只有一个的话则生成待办
+                TTodo todo = new TTodo();
+                todo.setId(String.valueOf(IDUtils.genItemId()));
+                todo.setCurrentstepId(workflowstep_id);
+                todo.setStepDesc(projectName+"的招投标批复流程等待您的处理");
+                todo.setRelateddomain("项目招投标");
+                todo.setRelateddomainId(relateddomain_id);
+                todo.setSenderId(sender_id);
+                todo.setSenderTime(new Date());
+
+                todo.setBackUp7(userName);//发起人
+                //取项目流程中第一个项目负责人id
+                TWorkflowstepExample exampl = new TWorkflowstepExample();
+                exampl.setOrderByClause("prestep_id");
+                TWorkflowstepExample.Criteria criteria3 = exampl.createCriteria();
+                criteria3.andRelateddomainIdEqualTo(relateddomain_id);
+
+                List<TWorkflowstep> tWorkflow = workflowstepMapper.selectByExample(exampl);
+                todo.setReceiverId(tWorkflow.get(0).getActionuserId());
+
+
+                todo.setTodoType(dictionaryList.get(0).getMainValue());
+                todo.setStatus("0");
+                int i1 = todoMapper.insertSelective(todo);
+                if(i1!=1){
+                    return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+                }
+            }
+            //改变当前立项表状态为退回
+            TenderApplication application = new TenderApplication();
+            application.setId(relateddomain_id);
+            application.setStatus("6");
+            int i1 = tenderApplicationMapper.updateByPrimaryKeySelective(application);
+            if(i1==0){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+        }else{
+			/*
+			 * 选择下一个审核人进行的操作
+			 * 对todo表中进行添加操作
+			 * 对Workflowstep表中进行添加操作
+			 */
+            boolean flag= false;//最后一人审核标识
+            for(int c=0;c<nextReviewerId.size();c++) {
+                //进入到多个人审核阶段，修改待办
+                if(ss.equals("4")){
+                    TWorkflowstepExample example2=new TWorkflowstepExample();
+                    TWorkflowstepExample.Criteria criteria2 = example2.createCriteria();
+                    criteria2.andStatusEqualTo("0");
+                    criteria2.andRelateddomainIdEqualTo(relateddomain_id);
+                    criteria2.andBackup3EqualTo("4");
+                    List<TWorkflowstep> list = workflowstepMapper.selectByExample(example2);
+                    //最后一人审核
+                    if(CollectionUtils.isEmpty(list)){
+                        TWorkflowstep workflowstep=new TWorkflowstep();
+                        workflowstep.setId(String.valueOf(UUID.randomUUID()));
+                        workflowstep.setRelateddomain(relateddomain);
+                        workflowstep.setRelateddomainId(relateddomain_id);
+                        workflowstep.setPrestepId(workflowstep_id);
+                        workflowstep.setActionuserId(nextReviewerId.getString(c));
+                        workflowstep.setStatus("0");
+                        workflowstep.setBackup3(backup3);
+                        workflowstep.setStepDesc(stepDesc);
+                        int m=workflowstepMapper.insertSelective(workflowstep);
+                        if(m<=0) {
+                            return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+                        }
+                        TTodo internalToDo=new TTodo();
+                        internalToDo.setId(String.valueOf(UUID.randomUUID()));
+                        internalToDo.setCurrentstepId(workflowstep.getId());
+                        internalToDo.setRelateddomain(relateddomain);
+                        internalToDo.setRelateddomainId(relateddomain_id);
+                        internalToDo.setSenderId(sender_id);
+                        internalToDo.setReceiverId(nextReviewerId.getString(c));
+                        internalToDo.setSenderTime(new Date());
+                        internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+                        internalToDo.setStepDesc(projectName+"的招投标批复流程等待您的处理");
+                        internalToDo.setStatus("0");
+                        internalToDo.setBackUp7(userName);//发起人
+
+                        int n=todoMapper.insertSelective(internalToDo);
+                        if(n<=0) {
+                            return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+                        }
+                        flag=true;
+                    }
+                }else{
+                    TWorkflowstep workflowstep=new TWorkflowstep();
+                    workflowstep.setId(String.valueOf(UUID.randomUUID()));
+                    workflowstep.setRelateddomain(relateddomain);
+                    workflowstep.setRelateddomainId(relateddomain_id);
+                    workflowstep.setPrestepId(workflowstep_id);
+                    workflowstep.setActionuserId(nextReviewerId.getString(c));
+                    workflowstep.setStatus("0");
+                    workflowstep.setBackup3(backup3);
+                    workflowstep.setStepDesc(stepDesc);
+                    int m=workflowstepMapper.insertSelective(workflowstep);
+                    if(m<=0) {
+                        return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+                    }
+                    TTodo internalToDo=new TTodo();
+                    internalToDo.setId(String.valueOf(UUID.randomUUID()));
+                    internalToDo.setCurrentstepId(workflowstep.getId());
+                    internalToDo.setRelateddomain(relateddomain);
+                    internalToDo.setRelateddomainId(relateddomain_id);
+                    internalToDo.setSenderId(sender_id);
+                    internalToDo.setReceiverId(nextReviewerId.getString(c));
+                    internalToDo.setSenderTime(new Date());
+                    internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+                    internalToDo.setStepDesc(projectName+"的招投标批复流程等待您的处理");
+                    internalToDo.setStatus("0");
+                    internalToDo.setBackUp7(userName);//发起人
+                    int n=todoMapper.insertSelective(internalToDo);
+                    if(n<=0) {
+                        return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+                    }
+                }
+            }
+            //更新projectApplication
+            TenderApplication projectApplication = new TenderApplication();
+            projectApplication.setId(relateddomain_id);
+            //多人审核阶段
+            if(backup3.equals("5")){
+                //审核结束
+                if(flag){
+                    projectApplication.setStatus("5");
+                }else{
+                    projectApplication.setStatus("4");
+                }
+            }else{
+                projectApplication.setStatus(ss);
+            }
+
+            int num =tenderApplicationMapper.updateByPrimaryKeySelective(projectApplication);
+            if(num<=0){
+                return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK, "审核完成");
+    }
+
+    /**
+     *定标
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage targetTender(String requestBody) {
+        JSONObject jsonObj=JSONObject.parseObject(requestBody);
+        //当前待办的ID
+        String todoId=jsonObj.getString("todoId");
+        //当前步骤ID
+        String workflowstepId=jsonObj.getString("workflowstepId");
+        //业务id
+        String relateddomainId=jsonObj.getString("relateddomainId");
+        //招标信息
+        JSONObject applicationJSON = jsonObj.getJSONObject("TenderApplication");
+        TenderApplication tenderApplication = JSONObject.toJavaObject(applicationJSON,TenderApplication.class);
+        //附件信息
+        JSONArray resourcesJSON = jsonObj.getJSONArray("Files");
+        //当前登录人id
+        String userId = jsonObj.getString("userId");
+
+        if(org.springframework.util.StringUtils.isEmpty(todoId)){
+            return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(workflowstepId)){
+            return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+PARAM_MESSAGE_1);
+        }
+        if(org.springframework.util.StringUtils.isEmpty(relateddomainId)){
+            return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+PARAM_MESSAGE_1);
+        }
+
+        //修改掉当前todo表对应的id的信息
+        TTodo tTodo=new TTodo();
+        tTodo.setId(todoId);
+        tTodo.setActiontime(new Date());
+        tTodo.setStatus("1");
+        int k=todoMapper.updateByPrimaryKeySelective(tTodo);
+        if(k<=0) {
+            return new ResponseMessage(Code.CODE_ERROR, "定标失败");
+        }
+        //修改当前workflowstep表中对应id的信息
+        TWorkflowstep tWorkflowstep=new TWorkflowstep();
+        tWorkflowstep.setId(workflowstepId);
+        tWorkflowstep.setActionTime(new Date());
+        tWorkflowstep.setStatus("1");
+        int j=workflowstepMapper.updateByPrimaryKeySelective(tWorkflowstep);
+        if(j<=0) {
+            return new ResponseMessage(Code.CODE_ERROR, "定标失败");
+        }
+
+        //更新招标表
+        tenderApplication.setStatus("7");
+        if(StringUtils.isEmpty(tenderApplication.getId())){
+            return  new ResponseMessage(Code.CODE_ERROR, "TenderApplication中缺少id参数");
+        }
+
+        int count = tenderApplicationMapper.updateByPrimaryKeySelective(tenderApplication);
+        if(count<=0){
+            return new ResponseMessage(Code.CODE_ERROR, "定标失败");
+        }
+        //保存定标信息附件 先删除后增加
+        InternalAttachmentExample exampleIn = new InternalAttachmentExample();
+        InternalAttachmentExample.Criteria criteriaIn = exampleIn.createCriteria();
+        criteriaIn.andRelateddomainIdEqualTo(tenderApplication.getId());
+        attachmentMapper.deleteByExample(exampleIn);
+        //增加附件
+        for(int i=0;i<resourcesJSON.size();i++){
+            JSONObject object = resourcesJSON.getJSONObject(i);
+            InternalAttachment projectMembers = JSONObject.toJavaObject(object,InternalAttachment.class);
+            projectMembers.setId(String.valueOf(IDUtils.genItemId()));
+            projectMembers.setUploadTime(new Date());
+            projectMembers.setUploader(userId);
+            projectMembers.setRelateddomain("项目招投标模块");
+            projectMembers.setRelateddomainId(tenderApplication.getId());
+            int num = attachmentMapper.insertSelective(projectMembers);
+            if(num<=0){
+                return new ResponseMessage(Code.CODE_ERROR,"保存招标附件异常");
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK, "定标完成");
+    }
+
+    /**
+     *退回
+     * @param requestBody
+     * @return
+     */
+    @Override
+    public ResponseMessage returnTender(String requestBody) {
+        return null;
     }
 }
