@@ -69,9 +69,6 @@ public interface TMenuResourceMapper {
     List<TMenuResource> selectHomePageMenuByRids(@Param("rids") List<String> rids);
 
 
-
-    List<TMenuResource>  selectMenuButtonTChildByRidsAndParentId(@Param("rids")List<String> rids,@Param("parentId")String parentId);
-
 //    //查询所有一级菜单
 //
 //    List<TMenuResource> selectOneMenuBuRids(@Param("rids")List<String> rids);

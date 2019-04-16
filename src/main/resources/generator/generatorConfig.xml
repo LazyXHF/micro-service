@@ -60,19 +60,12 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名 -->
-        <table tableName="project_communication" domainObjectName="ProjectCommunication"
+        <table tableName="t_user_department" domainObjectName="TUserDepartment"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
                enableDeleteByPrimaryKey="true">
             <!-- 需要插入时返回主键值，请将此属性打开，column值为主键的列明 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table tableName="communication_log" domainObjectName="communicationLog"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true">
-            &lt;!&ndash; 需要插入时返回主键值，请将此属性打开，column值为主键的列明 &ndash;&gt;
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
     </context>
 </generatorConfiguration>

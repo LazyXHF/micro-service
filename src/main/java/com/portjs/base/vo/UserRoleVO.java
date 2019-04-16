@@ -7,15 +7,6 @@ import java.util.List;
 public class UserRoleVO {
     private TUser user ;
     private List<String> rids;
-    private List<String> dids;
-
-    public List<String> getDids() {
-        return dids;
-    }
-
-    public void setDids(List<String> dids) {
-        this.dids = dids;
-    }
 
     public TUser getUser() {
         return user;

@@ -1,12 +1,14 @@
 package com.portjs.base.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class PurchaseRequest implements Serializable {
 
-    private String id;//采购申请单id
+    private String Id;//采购申请单id
 
     private String requestNum;//采购申请单单号
 
@@ -22,6 +24,7 @@ public class PurchaseRequest implements Serializable {
 
     private String agency;//代理机构
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date applyDate;//申请时间
 
     private BigDecimal amount;//采购预算
@@ -39,15 +42,33 @@ public class PurchaseRequest implements Serializable {
     private Date updateTime;//更新时间
 
     private Date deleteTime;//删除时间（软删除标记）
+    private String project_code;
+    private String project_name;
+
+    public String getProject_code() {
+        return project_code;
+    }
+
+    public void setProject_code(String project_code) {
+        this.project_code = project_code;
+    }
+
+    public String getProject_name() {
+        return project_name;
+    }
+
+    public void setProject_name(String project_name) {
+        this.project_name = project_name;
+    }
 
     private static final long serialVersionUID = 1L;
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+        Id = id;
     }
 
     public String getRequestNum() {

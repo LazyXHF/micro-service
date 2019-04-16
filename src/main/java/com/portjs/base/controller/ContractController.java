@@ -9,7 +9,6 @@ import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ContractService;
 import com.portjs.base.service.CoordService;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.vo.ContractVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,18 +54,7 @@ public class ContractController extends BaseController{
         logger.debug(TAG + responseBody);
         UnifiedExceptionHandler.method= responseBody + "select-contract==============================" + responseBody;
         JSONObject requestJson = JSON.parseObject(responseBody);
-        ContractVo contract = JSONObject.toJavaObject(requestJson, ContractVo.class);
+        Contract contract = JSONObject.toJavaObject(requestJson, Contract.class);
         return contractService.selectContract(contract);
-    }
-
-    @LogInfo(methodName = "合同详情查询",modelName = "合同管理模块")
-    @RequestMapping("/select-contract-details")
-    @ResponseBody
-    public ResponseMessage selectContractDetails(@RequestBody String responseBody){
-        logger.debug(TAG + responseBody);
-        UnifiedExceptionHandler.method= responseBody + "select-contract-details==============================" + responseBody;
-        JSONObject requestJson = JSON.parseObject(responseBody);
-        String id = requestJson.getString("id");
-        return contractService.selectContractDetails(id);
     }
 }

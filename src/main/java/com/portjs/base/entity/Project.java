@@ -41,16 +41,6 @@ public class Project {
 
     private List<String> stageList;
 
-    private String year;
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
     public List<String> getStageList() {
         return stageList;
     }

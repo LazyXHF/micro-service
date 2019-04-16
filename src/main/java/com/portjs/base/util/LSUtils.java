@@ -81,7 +81,7 @@ public class LSUtils {
      *生成流水单号
      * @return rp  流水单前的类型编号
      */
-    public static String createOdd(String rp) {
+    public static String createOdd() {
 
         String nowOdd=null;
         String oddMaxCode = odd.purchaseRequestMapper.findMaxOdd();
@@ -91,7 +91,7 @@ public class LSUtils {
             if (getNowTimeCode() != getOddSenttime(oddMaxCode)) {
                 int number = 1;
                 PurchaseRequest express = new PurchaseRequest();
-                express.setRequestNum(rp+getBody(number));
+                express.setRequestNum("PR"+getBody(number));
                 nowOdd = express.getRequestNum();
                 //相同，则加1，例如：201810100002
             }else {

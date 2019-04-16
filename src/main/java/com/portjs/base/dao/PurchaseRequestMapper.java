@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -24,21 +25,26 @@ public interface PurchaseRequestMapper {
     /**
      * 采购清单列表统计
      * @param projectId
-     * @param requestId
+     * @param applyDate
+     * @param status
+     * @param applicant
+     * @param method
      * @return
      */
-    int purchaseRequestCounts(@Param("projectId") String projectId, @Param("requestId") String requestId);
+    int purchaseRequestCounts(@Param("projectId") String projectId, @Param("applyDate") Date applyDate, @Param("status") String status,
+                              @Param("applicant")String applicant,@Param("method")String method);
 
     /**
      * 采购清单列表的分页
      * @param projectId
-     * @param requestId
+     * @param applyDate
      * @param pageNo
      * @param pageSize
      * @return
      */
-    List<PurchaseRequest> queryPurchaseRequestInfo(@Param("projectId") String projectId,@Param("requestId") String requestId,
-                                                   @Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
+    List<PurchaseRequest> queryPurchaseRequestInfo(@Param("projectId") String projectId, @Param("applyDate") Date applyDate,
+                                                   @Param("status") String status, @Param("applicant")String applicant,
+                                                   @Param("method")String method,@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
     /**
      * 批量软删除
      * @param ids
@@ -57,5 +63,5 @@ public interface PurchaseRequestMapper {
     @Select("select max(request_num) from purchase_request")
     String findMaxOdd();
 
-    List queryPucharseList(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName") String projectName);
+    List queryPucharseList(String method, String projectCode, String projectName);
 }

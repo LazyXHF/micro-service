@@ -47,6 +47,13 @@ public interface PurchaseListService {
      * @return
      */
     ResponseMessage insertExcel(MultipartFile file)  throws IOException, ParseException;
+
+    /**
+     * 根据request_id查询信息
+     * @param requestId
+     * @return
+     */
+    ResponseMessage queryPurchaseListByRequestId(String requestId);
     /**
      *Excel导入（EasyPoi）
      * @param list

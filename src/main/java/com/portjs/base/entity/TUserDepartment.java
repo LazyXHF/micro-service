@@ -1,11 +1,15 @@
 package com.portjs.base.entity;
 
-public class TUserDepartment {
+import java.io.Serializable;
+
+public class TUserDepartment implements Serializable {
     private Integer id;
 
-    private String uId;
+    private String uId;//用户id
 
-    private String dId;
+    private String dId;//部门id
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getId() {
         return id;

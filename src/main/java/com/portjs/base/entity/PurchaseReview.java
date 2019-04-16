@@ -38,36 +38,6 @@ public class PurchaseReview {
 
     private String isDelete;
 
-    private String projectCode;
-
-    private String projectName;
-
-    private String requestNum;
-
-    public String getRequestNum() {
-        return requestNum;
-    }
-
-    public void setRequestNum(String requestNum) {
-        this.requestNum = requestNum;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
     public String getId() {
         return id;
     }

@@ -9,8 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
-
 @Repository
 public interface TenderApplicationMapper {
     int countByExample(TenderApplicationExample example);
@@ -65,23 +63,4 @@ public interface TenderApplicationMapper {
      * @return
      */
     List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
-
-    /**
-     * 统计总数
-     * @param projectCode
-     * @param projectName
-     * @param method
-     * @param supplier
-     * @param bidDate
-     * @param status
-     * @param userId
-     * @return
-     */
-    int selectCount(@Param("projectCode")String projectCode,@Param("projectName") String projectName,@Param("method") String method,
-                    @Param("supplier")String supplier,@Param("bidDate") String bidDate,@Param("status") String status,
-                    @Param("userId")String userId);
-
-    List<Map<String,Object>> selectPage(@Param("projectCode")String projectCode,@Param("projectName") String projectName,@Param("method") String method,
-                         @Param("supplier")String supplier,@Param("bidDate") String bidDate,@Param("status") String status,
-                         @Param("userId")String userId,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
 }

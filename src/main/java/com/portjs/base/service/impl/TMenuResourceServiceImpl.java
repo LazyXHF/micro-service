@@ -337,11 +337,6 @@ public class TMenuResourceServiceImpl implements TMenuResourceService {
             responseMessage = new ResponseMessage(Code.CODE_ERROR,"请求参数为空");
         }else {
             List<TMenuResource> menuResources = menuResourceMapper.selectHomePageMenuByRids(arrayVO.getList());
-
-            for (int i=0;i<menuResources.size();i++){
-                List<TMenuResource> menuResources1 = menuResourceMapper.selectMenuButtonTChildByRidsAndParentId(arrayVO.getList(),menuResources.get(i).getId());
-                menuResources.get(i).setChildren(menuResources1);
-            }
             responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",menuResources);
         }
 

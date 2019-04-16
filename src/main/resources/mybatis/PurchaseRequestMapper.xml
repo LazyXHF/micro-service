@@ -13,12 +13,15 @@
     <result column="apply_date" jdbcType="DATE" property="applyDate" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="project_code" jdbcType="VARCHAR" property="project_code" />
+    <result column="project_name" jdbcType="VARCHAR" property="project_name" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="creater" jdbcType="VARCHAR" property="creater" />
     <result column="creater_id" jdbcType="VARCHAR" property="createrId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+
   </resultMap>
   <sql id="Base_Column_List">
     Id, request_num, project_id, purchase_dept, applicant,applicant_id, method, agency, apply_date,
@@ -30,6 +33,62 @@
     from purchase_request
     where Id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="queryPurchaseRequestById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    *
+    from purchase_request
+    where Id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryPurchaseRequestInfo" resultMap="BaseResultMap">
+    select
+    *
+    from purchase_request pr left join project p
+    on pr.project_id = p.id
+    where
+    pr.delete_time is null
+    <if test="projectId != null and projectId!=''">
+      and   pr.project_id like concat('%',#{projectId},'%')
+    </if>
+    <if test="applicant != null and applicant!=''">
+      and  pr.applicant like concat('%',#{applicant},'%')
+    </if>
+    <if test="method != null and method!=''">
+      and  pr.method like concat('%',#{method},'%')
+    </if>
+    <if test="applyDate != null and applyDate!=''">
+      and pr.apply_date like concat('%',#{applyDate},'%')
+    </if>
+    <if test="status != null and status!=''">
+      and pr.status like concat('%',#{status},'%')
+    </if>
+    order by pr.create_time DESC   LIMIT  #{pageNo},#{pageSize}
+  </select>
+  <select id="purchaseRequestCounts" resultType="Integer">
+    select
+    count(*)
+    from purchase_request
+    where
+    delete_time is null
+    <if test="projectId != null and projectId!=''">
+      and  project_id like concat('%',#{projectId},'%')
+    </if>
+    <if test="applicant != null and applicant!=''">
+      and  applicant like concat('%',#{applicant},'%')
+    </if>
+    <if test="method != null and method!=''">
+      and  method like concat('%',#{method},'%')
+    </if>
+    <if test="applyDate != null and applyDate!=''">
+      and apply_date like concat('%',#{applyDate},'%')
+    </if>
+    <if test="status != null and status!=''">
+      and status like concat('%',#{status},'%')
+    </if>
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from purchase_request
     where Id = #{id,jdbcType=VARCHAR}
@@ -342,22 +401,13 @@
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
-
-  <select id="queryPucharseList" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from purchase_request a
-    <where>
-    <if test="method !=null and method!=''">
-       a.method like "%" #{method} "%"
-    </if>
-      <if test="projectCode !=null and projectCode!=''">
-        and a.project_code like "%" #{projectCode} "%"
-      </if>
-      <if test="projectName !=null and projectName!=''">
-        and a.project_name like "%" #{projectName} "%"
-      </if>
-  </where>
-  </select>
+  <update id="updateDeleteTimeByIds" parameterType="com.portjs.base.entity.PurchaseRequest">
+    update purchase_request
+    set delete_time = SYSDATE()
+    where Id in
+    <foreach collection="id" index="index" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
 
 </mapper>

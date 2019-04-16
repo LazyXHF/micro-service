@@ -50,16 +50,6 @@ public class ProjectApplication {
 
     private String isApprover;
 
-    private String isRight;
-
-    public String getIsRight() {
-        return isRight;
-    }
-
-    public void setIsRight(String isRight) {
-        this.isRight = isRight;
-    }
-
     //投资计划编号   连表字段
     private String planNum;
 
