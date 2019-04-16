@@ -540,7 +540,7 @@
   </select>
   <!--查询每页数据-->
   <select id="selectByPage" resultType="com.portjs.base.vo.ContractVo">
-    select p.project_code as projectCode,p.project_name as projectName,a.dept as purchaseDept,
+    select a.id as id, p.id as projectId, p.project_code as projectCode,p.project_name as projectName,a.dept as purchaseDept,
     a.supplier as supplier,a.amount as amount,a.tender_num as tenderNum
     from tender_application a,project p
     where a.project_id=p.id
@@ -596,5 +596,70 @@
     <if test="method!=null">
       and r.method=#{method,jdbcType=VARCHAR}
     </if>
+  </select>
+  <!--统计总数-->
+  <select id="selectCount">
+    select COUNT(*) from tender_application a ,project p ,t_todo t
+    <where>
+      a.project_id = p.id
+      and a.delete_time is null
+      and t.relateddomain_id=a.id
+      <if test="projectCode !=null">
+        and p.project_code like CONCAT("%",#{projectCode},"%")
+      </if>
+      <if test="projectName !=null">
+      and p.project_name like CONCAT("%",#{projectName},"%")
+      </if>
+      <if test="method !=null">
+      and a.method = ""
+      </if>
+      <if test="supplier !=null">
+      and a.supplier like  CONCAT("%",#{supplier},"%")
+      </if>
+      <if test="bidDate !=null">
+      and DATE_FORMAT(a.bid_date,"%Y-%m-%d") =#{bidDate}
+      </if>
+      <if test="status !=null">
+      and a.status = #{status}
+      </if>
+      <if test="userId !=null">
+      and t.receiver_id=#{userId}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectPage"  resultType="java.util.HashMap">
+    select a.id as tenderId,p.project_Code as projectCode,p.project_name as projectName,
+    a.method as method,a.supplier as supplier, a.amount as amount,a.bid_date as bidDate,
+    a.status as status ,p.id as projectId
+    from tender_application a ,project p ,t_todo t
+    <where>
+      a.project_id = p.id
+      and a.delete_time is null
+      and t.relateddomain_id=a.id
+      <if test="projectCode !=null">
+        and p.project_code like CONCAT("%",#{projectCode},"%")
+      </if>
+      <if test="projectName !=null">
+        and p.project_name like CONCAT("%",#{projectName},"%")
+      </if>
+      <if test="method !=null">
+        and a.method = ""
+      </if>
+      <if test="supplier !=null">
+        and a.supplier like  CONCAT("%",#{supplier},"%")
+      </if>
+      <if test="bidDate !=null">
+        and DATE_FORMAT(a.bid_date,"%Y-%m-%d") =#{bidDate}
+      </if>
+      <if test="status !=null">
+        and a.status = #{status}
+      </if>
+      <if test="userId !=null">
+        and t.receiver_id=#{userId}
+      </if>
+    </where>
+    order by a.update_time
+    limit #{rowNum},#{pageCount}
   </select>
 </mapper>

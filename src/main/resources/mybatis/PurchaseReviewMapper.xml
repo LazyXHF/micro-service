@@ -415,7 +415,7 @@
   </select>
   <!--查询每页数据-->
   <select id="selectByPage" resultType="com.portjs.base.vo.ContractVo">
-    select p.project_code as projectCode,p.project_name as projectName,r.purchase_dept as purchaseDept,
+    select r.id as id, p.id as projectId, p.project_code as projectCode,p.project_name as projectName,r.purchase_dept as purchaseDept,
     r.supplier as supplier,r.amount as amount,r.review_num as tenderNum
     from purchase_review r,project p
     where r.project_id=p.id

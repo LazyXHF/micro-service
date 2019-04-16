@@ -4,12 +4,15 @@
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.Contract" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
     <result column="contract_num" property="contractNum" jdbcType="VARCHAR" />
+    <result column="contract_title" property="contractTitle" jdbcType="VARCHAR" />
     <result column="source" property="source" jdbcType="VARCHAR" />
     <result column="source_id" property="sourceId" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
     <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="purchase_dept" property="purchaseDept" jdbcType="VARCHAR" />
     <result column="supplier" property="supplier" jdbcType="VARCHAR" />
+    <result column="in_charge" property="inCharge" jdbcType="VARCHAR" />
+    <result column="phonenum" property="phonenum" jdbcType="VARCHAR" />
     <result column="amount" property="amount" jdbcType="DECIMAL" />
     <result column="sign_date" property="signDate" jdbcType="DATE" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -80,9 +83,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, contract_num, source, source_id, project_id, project_code, purchase_dept, supplier, 
-    amount, sign_date, remark, file_url, valid_date, status, creater, create_time, update_time, 
-    delete_time
+    Id, contract_num, contract_title, source, source_id, project_id, project_code, purchase_dept, 
+    supplier, in_charge, phonenum, amount, sign_date, remark, file_url, valid_date, status, 
+    creater, create_time, update_time, delete_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ContractExample" >
     select
@@ -115,16 +118,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.Contract" >
-    insert into contract (Id, contract_num, source, 
-      source_id, project_id, project_code, 
-      purchase_dept, supplier, amount, 
+    insert into contract (Id, contract_num, contract_title, 
+      source, source_id, project_id, 
+      project_code, purchase_dept, supplier, 
+      in_charge, phonenum, amount, 
       sign_date, remark, file_url, 
       valid_date, status, creater, 
       create_time, update_time, delete_time
       )
-    values (#{id,jdbcType=VARCHAR}, #{contractNum,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
-      #{sourceId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
-      #{purchaseDept,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=VARCHAR}, #{contractNum,jdbcType=VARCHAR}, #{contractTitle,jdbcType=VARCHAR}, 
+      #{source,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
+      #{projectCode,jdbcType=VARCHAR}, #{purchaseDept,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
+      #{inCharge,jdbcType=VARCHAR}, #{phonenum,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
       #{signDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, 
       #{validDate,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}
@@ -138,6 +143,9 @@
       </if>
       <if test="contractNum != null" >
         contract_num,
+      </if>
+      <if test="contractTitle != null" >
+        contract_title,
       </if>
       <if test="source != null" >
         source,
@@ -156,6 +164,12 @@
       </if>
       <if test="supplier != null" >
         supplier,
+      </if>
+      <if test="inCharge != null" >
+        in_charge,
+      </if>
+      <if test="phonenum != null" >
+        phonenum,
       </if>
       <if test="amount != null" >
         amount,
@@ -195,6 +209,9 @@
       <if test="contractNum != null" >
         #{contractNum,jdbcType=VARCHAR},
       </if>
+      <if test="contractTitle != null" >
+        #{contractTitle,jdbcType=VARCHAR},
+      </if>
       <if test="source != null" >
         #{source,jdbcType=VARCHAR},
       </if>
@@ -212,6 +229,12 @@
       </if>
       <if test="supplier != null" >
         #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="inCharge != null" >
+        #{inCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null" >
+        #{phonenum,jdbcType=VARCHAR},
       </if>
       <if test="amount != null" >
         #{amount,jdbcType=DECIMAL},
@@ -260,6 +283,9 @@
       <if test="record.contractNum != null" >
         contract_num = #{record.contractNum,jdbcType=VARCHAR},
       </if>
+      <if test="record.contractTitle != null" >
+        contract_title = #{record.contractTitle,jdbcType=VARCHAR},
+      </if>
       <if test="record.source != null" >
         source = #{record.source,jdbcType=VARCHAR},
       </if>
@@ -277,6 +303,12 @@
       </if>
       <if test="record.supplier != null" >
         supplier = #{record.supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inCharge != null" >
+        in_charge = #{record.inCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonenum != null" >
+        phonenum = #{record.phonenum,jdbcType=VARCHAR},
       </if>
       <if test="record.amount != null" >
         amount = #{record.amount,jdbcType=DECIMAL},
@@ -317,12 +349,15 @@
     update contract
     set Id = #{record.id,jdbcType=VARCHAR},
       contract_num = #{record.contractNum,jdbcType=VARCHAR},
+      contract_title = #{record.contractTitle,jdbcType=VARCHAR},
       source = #{record.source,jdbcType=VARCHAR},
       source_id = #{record.sourceId,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=VARCHAR},
       project_code = #{record.projectCode,jdbcType=VARCHAR},
       purchase_dept = #{record.purchaseDept,jdbcType=VARCHAR},
       supplier = #{record.supplier,jdbcType=VARCHAR},
+      in_charge = #{record.inCharge,jdbcType=VARCHAR},
+      phonenum = #{record.phonenum,jdbcType=VARCHAR},
       amount = #{record.amount,jdbcType=DECIMAL},
       sign_date = #{record.signDate,jdbcType=DATE},
       remark = #{record.remark,jdbcType=VARCHAR},
@@ -343,6 +378,9 @@
       <if test="contractNum != null" >
         contract_num = #{contractNum,jdbcType=VARCHAR},
       </if>
+      <if test="contractTitle != null" >
+        contract_title = #{contractTitle,jdbcType=VARCHAR},
+      </if>
       <if test="source != null" >
         source = #{source,jdbcType=VARCHAR},
       </if>
@@ -360,6 +398,12 @@
       </if>
       <if test="supplier != null" >
         supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="inCharge != null" >
+        in_charge = #{inCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null" >
+        phonenum = #{phonenum,jdbcType=VARCHAR},
       </if>
       <if test="amount != null" >
         amount = #{amount,jdbcType=DECIMAL},
@@ -397,12 +441,15 @@
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Contract" >
     update contract
     set contract_num = #{contractNum,jdbcType=VARCHAR},
+      contract_title = #{contractTitle,jdbcType=VARCHAR},
       source = #{source,jdbcType=VARCHAR},
       source_id = #{sourceId,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
       project_code = #{projectCode,jdbcType=VARCHAR},
       purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
       supplier = #{supplier,jdbcType=VARCHAR},
+      in_charge = #{inCharge,jdbcType=VARCHAR},
+      phonenum = #{phonenum,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL},
       sign_date = #{signDate,jdbcType=DATE},
       remark = #{remark,jdbcType=VARCHAR},
@@ -415,4 +462,57 @@
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectCount" parameterType="com.portjs.base.vo.ContractVo">
+    select count(c.id) from contract c, project p
+    <where>
+      c.project_id=p.id
+      <if test="projectCode !=null">
+        and p.project_code like CONCAT("%",#{projectCode},"%")
+      </if>
+      <if test="projectName !=null">
+        and p.project_name like CONCAT("%",#{projectName},"%")
+      </if>
+      <if test="amount !=null">
+        and c.amount like CONCAT("%",#{amount},"%")
+      </if>
+      <if test="supplier !=null">
+        and c.supplier like CONCAT("%",#{supplier},"%")
+      </if>
+      <if test="inCharge !=null">
+        and c.in_charge like CONCAT("%",#{inCharge},"%")
+      </if>
+      <if test="validDate !=null">
+        and DATE_FORMAT(c.valid_date,"%Y-%m-%d")=#{validDate}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectBypage" parameterType="com.portjs.base.vo.ContractVo" resultType="com.portjs.base.vo.ContractVo">
+    select c.id as id , p.project_code as proectCode ,p.project_name as projectName,
+    c.supplier as supplier,c.in_charge as inCharge, c.amount as amount ,c.valid_date as validDate
+    from contract c, project p
+    <where>
+      c.project_id=p.id
+      <if test="projectCode !=null">
+        and p.project_code like CONCAT("%",#{projectCode},"%")
+      </if>
+      <if test="projectName !=null">
+        and p.project_name like CONCAT("%",#{projectName},"%")
+      </if>
+      <if test="amount !=null">
+        and c.amount like CONCAT("%",#{amount},"%")
+      </if>
+      <if test="supplier !=null">
+        and c.supplier like CONCAT("%",#{supplier},"%")
+      </if>
+      <if test="inCharge !=null">
+        and c.in_charge like CONCAT("%",#{inCharge},"%")
+      </if>
+      <if test="validDate !=null">
+        and DATE_FORMAT(c.valid_date,"%Y-%m-%d")=#{validDate}
+      </if>
+    </where>
+    ORDER BY c.create_time
+    LIMIT #{rowNum},#{pageCount}
+  </select>
 </mapper>

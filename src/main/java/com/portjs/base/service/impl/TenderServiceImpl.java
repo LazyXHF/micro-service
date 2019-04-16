@@ -7,6 +7,7 @@ import com.portjs.base.entity.*;
 import com.portjs.base.service.TenderService;
 import com.portjs.base.util.*;
 import com.portjs.base.util.StringUtils.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -257,6 +258,22 @@ public class TenderServiceImpl implements TenderService {
      */
     @Override
     public ResponseMessage queryTender(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+
+        String projectCode = jsonObject.getString("projectCode");//项目编码
+        String projectName = jsonObject.getString("projectName");//项目名称
+        String method = jsonObject.getString("method");//招标方式
+        String supplier = jsonObject.getString("supplier");//中标厂商
+        String bidDate = jsonObject.getString("bidDate");//中标日期
+        String status = jsonObject.getString("status");//流程状态
+        String userId = jsonObject.getString("userId");//流程状态
+        int pageNum  = jsonObject.getInteger("userId");//当前页数
+        int pageCount  = jsonObject.getInteger("userId");//每页显示记录数
+        int count = tenderApplicationMapper.selectCount(projectCode,projectName,method,supplier,bidDate,status,userId);
+        Page page = new Page();
+        page.init(count,pageNum,pageCount);
+        List<Map<String,Object>> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
+
         return null;
     }
 
