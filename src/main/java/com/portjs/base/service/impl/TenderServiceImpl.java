@@ -260,26 +260,68 @@ public class TenderServiceImpl implements TenderService {
     public ResponseMessage queryTender(String requestBody) {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
 
-        String projectCode = jsonObject.getString("projectCode");//项目编码
-        String projectName = jsonObject.getString("projectName");//项目名称
-        String method = jsonObject.getString("method");//招标方式
-        String supplier = jsonObject.getString("supplier");//中标厂商
-        String bidDate = jsonObject.getString("bidDate");//中标日期
-        String status = jsonObject.getString("status");//流程状态
-        String userId = jsonObject.getString("userId");//流程状态
-        int pageNum  = jsonObject.getInteger("userId");//当前页数
-        int pageCount  = jsonObject.getInteger("userId");//每页显示记录数
+        //项目编码
+        String projectCode = jsonObject.getString("projectCode");
+        //项目名称
+        String projectName = jsonObject.getString("projectName");
+        //招标方式
+        String method = jsonObject.getString("method");
+        //中标厂商
+        String supplier = jsonObject.getString("supplier");
+        //中标日期
+        String bidDate = jsonObject.getString("bidDate");
+        //流程状态
+        String status = jsonObject.getString("status");
+        //当前登录人
+        String userId = jsonObject.getString("userId");
+        //当前页数
+        String pageNumS  = jsonObject.getString("pageNo");
+        //每页显示记录数
+        String pageCountS  = jsonObject.getString("pageSize");
+
+        if(StringUtils.isEmpty(userId)){
+            return new ResponseMessage(Code.CODE_ERROR,"userId"+PARAM_MESSAGE_1);
+        }
+        if(StringUtils.isEmpty(pageNumS)){
+            return new ResponseMessage(Code.CODE_ERROR,"pageNo"+PARAM_MESSAGE_1);
+        }
+        if(StringUtils.isEmpty(pageCountS)){
+            return new ResponseMessage(Code.CODE_ERROR,"pageSize"+PARAM_MESSAGE_1);
+        }
+
+        int pageNum = Integer.parseInt(pageNumS);
+        int pageCount = Integer.parseInt(pageCountS);
         int count = tenderApplicationMapper.selectCount(projectCode,projectName,method,supplier,bidDate,status,userId);
         Page page = new Page();
         page.init(count,pageNum,pageCount);
         List<Map<String,Object>> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
-        page.setList(list);
+
+        //处理操作状态
+        List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
+        for(int i=0;i<list.size();i++){
+            Map<String,Object> map = list.get(i);
+            //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
+            String  tenderId = map.get("tenderId").toString();
+            TTodoExample todoExample = new TTodoExample();
+            TTodoExample.Criteria criteria = todoExample.createCriteria();
+            criteria.andRelateddomainIdEqualTo(tenderId);
+            criteria.andReceiverIdEqualTo(userId);
+            criteria.andStatusEqualTo("0");
+            List<TTodo> todos = todoMapper.selectByExample(todoExample);
+            if(CollectionUtils.isEmpty(todos)){
+                map.put("operatingStatus",0);
+            }else{
+                map.put("operatingStatus",1);
+            }
+            datalist.add(map);
+        }
+        page.setList(datalist);
         return new ResponseMessage(Code.CODE_ERROR,"查询成功",page);
     }
 
     @Override
     public ResponseMessage queryReviewTender(String requestBody) {
-        //1.查询招标信息 2.查询待办 3.查询工作流程
+        //1.1查询招标信息1.2查询附件信息 2.查询待办 3.查询工作流程
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         JSONObject application1JSON = jsonObject.getJSONObject("TenderApplication");
         String userId = jsonObject.getString("UserId");//登录用户
@@ -302,6 +344,13 @@ public class TenderServiceImpl implements TenderService {
         //查询结果集
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("TenderApplication",tenderApplications.get(0));
+        //1.2查询附件信息
+        InternalAttachmentExample internalAttachmentExample = new InternalAttachmentExample();
+        InternalAttachmentExample.Criteria Incriteria = internalAttachmentExample.createCriteria();
+        Incriteria.andRelateddomainIdEqualTo(tenderApplications.get(0).getId());
+        List<InternalAttachment> InternalAttachments =attachmentMapper.selectByExample(internalAttachmentExample);
+        map.put("InternalAttachments",InternalAttachments);
+
 
         //2.查询待办
         TTodoExample tTodoExample = new TTodoExample();
@@ -645,9 +694,10 @@ public class TenderServiceImpl implements TenderService {
                     }
                 }
             }
-            //更新projectApplication
+            //更新TenderApplication
             TenderApplication projectApplication = new TenderApplication();
             projectApplication.setId(relateddomain_id);
+            projectApplication.setUpdateTime(new Date());
             //多人审核阶段
             if(backup3.equals("5")){
                 //审核结束
@@ -720,6 +770,7 @@ public class TenderServiceImpl implements TenderService {
         }
 
         //更新招标表
+        tenderApplication.setUpdateTime(new Date());
         tenderApplication.setStatus("7");
         if(StringUtils.isEmpty(tenderApplication.getId())){
             return  new ResponseMessage(Code.CODE_ERROR, "TenderApplication中缺少id参数");
@@ -831,6 +882,7 @@ public class TenderServiceImpl implements TenderService {
             application.setId(application_id);
             application.setReview("0");
             application.setStatus("6");
+            application.setUpdateTime(new Date());
             int i11 = tenderApplicationMapper.updateByPrimaryKeySelective(application);
             if(i11==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
@@ -839,6 +891,7 @@ public class TenderServiceImpl implements TenderService {
             TenderApplication application = new TenderApplication();
             application.setId(application_id);
             application.setReview("0");
+            application.setUpdateTime(new Date());
             int i11 = tenderApplicationMapper.updateByPrimaryKeySelective(application);
             if(i11==0){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");

@@ -598,68 +598,86 @@
     </if>
   </select>
   <!--统计总数-->
-  <select id="selectCount">
-    select COUNT(*) from tender_application a ,project p ,t_todo t
-    <where>
-      a.project_id = p.id
-      and a.delete_time is null
-      and t.relateddomain_id=a.id
-      <if test="projectCode !=null">
-        and p.project_code like CONCAT("%",#{projectCode},"%")
-      </if>
-      <if test="projectName !=null">
-      and p.project_name like CONCAT("%",#{projectName},"%")
-      </if>
-      <if test="method !=null">
-      and a.method = ""
-      </if>
-      <if test="supplier !=null">
+  <select id="selectCount" resultType="int">
+    select COUNT(*) from (
+    SELECT
+    t.id as tenderId,p.project_Code as projectCode,p.project_name as projectName,
+    t.method as method,t.supplier as supplier, t.amount as amount,t.bid_date as bidDate,
+    t.status as status ,p.id as projectId
+    FROM(SELECT a.* FROM tender_application a WHERE(a.delete_time IS  NULL
+    AND a.id IN (SELECT relateddomain_id AS id FROM t_workflowstep WHERE 1=1
+    <if test="userId !=null">
+      AND actionuser_id = #{userId}
+    </if>
+    AND relateddomain = "项目招投标"
+    GROUP BY relateddomain_id ))
+    OR
+    ( a.`status` = "0"
+    <if test="userId !=null">
+      AND a.creater =#{userId}
+    </if>
+    AND a.delete_time IS  NULL )
+    <if test="projectCode !=null">
+      and a.project_code like CONCAT("%",#{projectCode},"%")
+    </if>
+    <if test="method !=null">
+      and a.method = #{method,jdbcType=VARCHAR}
+    </if>
+    <if test="supplier !=null">
       and a.supplier like  CONCAT("%",#{supplier},"%")
-      </if>
-      <if test="bidDate !=null">
+    </if>
+    <if test="bidDate !=null">
       and DATE_FORMAT(a.bid_date,"%Y-%m-%d") =#{bidDate}
-      </if>
-      <if test="status !=null">
+    </if>
+    <if test="status !=null">
       and a.status = #{status}
-      </if>
-      <if test="userId !=null">
-      and t.receiver_id=#{userId}
-      </if>
-    </where>
+    </if>
+    ) t
+    LEFT JOIN project p ON t.project_id = p.id
+    <if test="projectName !=null">
+      and p.project_name like CONCAT("%",#{projectName},"%")
+    </if>
+    ) g
   </select>
 
   <select id="selectPage"  resultType="java.util.HashMap">
-    select a.id as tenderId,p.project_Code as projectCode,p.project_name as projectName,
-    a.method as method,a.supplier as supplier, a.amount as amount,a.bid_date as bidDate,
-    a.status as status ,p.id as projectId
-    from tender_application a ,project p ,t_todo t
-    <where>
-      a.project_id = p.id
-      and a.delete_time is null
-      and t.relateddomain_id=a.id
-      <if test="projectCode !=null">
-        and p.project_code like CONCAT("%",#{projectCode},"%")
-      </if>
-      <if test="projectName !=null">
-        and p.project_name like CONCAT("%",#{projectName},"%")
-      </if>
-      <if test="method !=null">
-        and a.method = ""
-      </if>
-      <if test="supplier !=null">
-        and a.supplier like  CONCAT("%",#{supplier},"%")
-      </if>
-      <if test="bidDate !=null">
-        and DATE_FORMAT(a.bid_date,"%Y-%m-%d") =#{bidDate}
-      </if>
-      <if test="status !=null">
-        and a.status = #{status}
-      </if>
-      <if test="userId !=null">
-        and t.receiver_id=#{userId}
-      </if>
-    </where>
-    order by a.update_time
-    limit #{rowNum},#{pageCount}
+    SELECT
+    t.id as tenderId,p.project_Code as projectCode,p.project_name as projectName,
+    t.method as method,t.supplier as supplier, t.amount as amount,t.bid_date as bidDate,
+    t.status as status ,p.id as projectId
+    FROM(SELECT a.* FROM tender_application a WHERE(a.delete_time IS  NULL
+    AND a.id IN (SELECT relateddomain_id AS id FROM t_workflowstep WHERE 1=1
+    <if test="userId !=null">
+     AND actionuser_id = #{userId}
+    </if>
+    AND relateddomain = "项目招投标"
+    GROUP BY relateddomain_id ))
+    OR
+    ( a.`status` = "0"
+    <if test="userId !=null">
+      AND a.creater =#{userId}
+    </if>
+    AND a.delete_time IS  NULL )
+    <if test="projectCode !=null">
+      and a.project_code like CONCAT("%",#{projectCode},"%")
+    </if>
+    <if test="method !=null">
+      and a.method = #{method,jdbcType=VARCHAR}
+    </if>
+    <if test="supplier !=null">
+      and a.supplier like  CONCAT("%",#{supplier},"%")
+    </if>
+    <if test="bidDate !=null">
+      and DATE_FORMAT(a.bid_date,"%Y-%m-%d") =#{bidDate}
+    </if>
+    <if test="status !=null">
+      and a.status = #{status}
+    </if>
+    ) t
+    LEFT JOIN project p ON t.project_id = p.id
+    <if test="projectName !=null">
+      and p.project_name like CONCAT("%",#{projectName},"%")
+    </if>
+    ORDER BY t.update_time DESC limit #{rowNum},#{pageCount}
   </select>
 </mapper>
