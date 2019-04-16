@@ -47,4 +47,10 @@ public interface TWorkflowstepMapper {
     TWorkflowstep toApprove(@Param("id") String id, @Param("ownerId") String ownerId);
 
     List<InternalWorkflowstep> queryPucharseReviewRecords(@Param("id") String id);
+
+    int queryBackUp3(@Param("id") String id);
+
+    int updatetWorkflowstepRecord(TWorkflowstep tWorkflowstep);
+
+    TWorkflowstep queryCurrentstepId(@Param("id") String id,@Param("ownerId") String ownerId, @Param("nowBackUp3") String nowBackUp3);
 }

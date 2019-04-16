@@ -212,13 +212,14 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 tWorkflowstep.setRelateddomain("采购评审");
                 tWorkflowstep.setRelateddomainId(id2);
                 tWorkflowstep.setPrestepId("0提交");
-                tWorkflowstep.setStepDesc("采购申请提交");
+                tWorkflowstep.setStepDesc("提交采购申请");
                 tWorkflowstep.setActionuserId(ownerId);
                 tWorkflowstep.setActionTime(new Date());
                 tWorkflowstep.setActionResult(0);
                 tWorkflowstep.setStatus("1");
-                //排序字段
+                //排序字段  1:提交
                 tWorkflowstep.setBackup3("1");
+                tWorkflowstep.setBackUp7(ownerName);
                 int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
                 if (i4 != 1) {
                     return new ResponseMessage(Code.CODE_ERROR, "生成当前人记录失败");
@@ -231,7 +232,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setRelateddomain("采购评审");
                     tWorkflowstep2.setRelateddomainId(id2);
                     tWorkflowstep2.setPrestepId(tWorkflowstep.getId());
-                    tWorkflowstep2.setStepDesc("采购评审提交");
+                    tWorkflowstep2.setStepDesc("采购办人员审核");
                     //审批人id
                     String approveUserId = jo.getString("approveUserId");
                     String approveUserName = jo.getString("approveUserName");
@@ -239,6 +240,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setActionuserId(approveUserId);
                     tWorkflowstep2.setStatus("0");
                     tWorkflowstep2.setBackup3("2");
+                    tWorkflowstep2.setBackUp7(approveUserName);
                     int f2 = workflowstepMapper.insertSelective(tWorkflowstep2);
                     if (f2 != 1) {
                         return new ResponseMessage(Code.CODE_ERROR, "添加流程表信息失败");
@@ -246,7 +248,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     TTodo todo = new TTodo();
                     todo.setId(UUID.randomUUID().toString());
                     todo.setCurrentstepId(tWorkflowstep2.getId());
-                    todo.setStepDesc("采购评审提交");
+                    todo.setStepDesc("采购办人员审核");
                     todo.setRelateddomain("采购评审");
                     todo.setRelateddomainId(id);
                     todo.setSenderId(ownerId);
@@ -307,6 +309,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 tWorkflowstep.setStatus("1");
                 //排序字段  生成给自身为1
                 tWorkflowstep.setBackup3("1");
+                tWorkflowstep.setBackUp7(ownerName);
                 int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
                 if (i4 != 1) {
                     return new ResponseMessage(Code.CODE_ERROR, "生成当前人记录失败");
@@ -319,7 +322,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setRelateddomain("采购评审");
                     tWorkflowstep2.setRelateddomainId(id);
                     tWorkflowstep2.setPrestepId(tWorkflowstep.getId());
-                    tWorkflowstep2.setStepDesc("采购评审提交");
+                    tWorkflowstep2.setStepDesc("采购办人员审核");
                     //审批人id
                     String approveUserId = jo.getString("approveUserId");
                     String approveUserName = jo.getString("approveUserName");
@@ -328,6 +331,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setStatus("0");
                     //提交给部门负责人为2
                     tWorkflowstep2.setBackup3("2");
+                    tWorkflowstep2.setBackUp7(approveUserName);
                     int f2 = workflowstepMapper.insertSelective(tWorkflowstep2);
                     if (f2 != 1) {
                         return new ResponseMessage(Code.CODE_ERROR, "添加流程表信息失败");
@@ -335,7 +339,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     TTodo todo = new TTodo();
                     todo.setId(UUID.randomUUID().toString());
                     todo.setCurrentstepId(tWorkflowstep2.getId());
-                    todo.setStepDesc("采购评审提交");
+                    todo.setStepDesc("采购办人员审核");
                     todo.setRelateddomain("采购评审");
                     todo.setRelateddomainId(id);
                     todo.setSenderId(ownerId);
@@ -380,7 +384,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         PageInfo pageInfo=new PageInfo(list);
         return  new ResponseMessage(Code.CODE_OK,"采购评审列表",pageInfo);
     }
-    //编辑  详情   审批  查询接口
+
     @Override
     public ResponseMessage queryPucharseReviewAll(String requestBody) {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
@@ -397,33 +401,161 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
     }
     //编辑  详情   审批  查询接口
     @Override
+    @Transactional
     public ResponseMessage handlePucharseReview(String requestBody) {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         //采购评审单的Id  从基本信息里面取
-        String id= jsonObject.getString("id");
-        String pucharseReviewRecordsId=jsonObject.getString("pucharseReviewRecordsId");
-        String ownerId= jsonObject.getString("ownerId");
+        String id = jsonObject.getString("id");
+        /*//toWorkFlow表的id
+        String pucharseReviewRecordsId = jsonObject.getString("pucharseReviewRecordsId");*/
+        String ownerId = jsonObject.getString("ownerId");
         //处理结果,0:通过1:退回
-        Integer actionResult=jsonObject.getInteger("actionResult");
-        String actionComment=jsonObject.getString("actionComment");
-        String nextApproverId=jsonObject.getString("nextApproverId");
-        String nextApproverName=jsonObject.getString("nextApproverName");
-        TWorkflowstep tWorkflowstep=new TWorkflowstep();
-        /*tWorkflowstep.setId*/
-        return  null;
-
-
-
+        Integer actionResult = jsonObject.getInteger("actionResult");
+        String actionComment = jsonObject.getString("actionComment");
+        TWorkflowstep tWorkflowstep = new TWorkflowstep();
+        tWorkflowstep.setActionTime(new Date());
+        tWorkflowstep.setActionResult(actionResult);
+        int maxBackUp3 = workflowstepMapper.queryBackUp3(id);
+        tWorkflowstep.setActionComment(actionComment);
+        tWorkflowstep.setStatus("1");
+        tWorkflowstep.setActionuserId(ownerId);
+        tWorkflowstep.setRelateddomainId(id);
+        int nowBackUp3=maxBackUp3+1;
+       /* String prestep_id=workflowstepMapper.queryprestepId(id,);*/
+        String StepDesc=null;
+        if (nowBackUp3 == 2) {
+             StepDesc="提交采购申请";
+        }else if(nowBackUp3==3){
+             StepDesc="采购办人员审核";
+        }else if(nowBackUp3==4){
+             StepDesc="采购办主任审核";
+        }else if(nowBackUp3==5){
+             StepDesc="采购管理委员会审核";
+        }else if (nowBackUp3==6){
+             StepDesc="执行董事审核";
+        }
+        //获取所有审批人的id
+        JSONArray jsonArray1 = jsonObject.getJSONArray("approvers");
+        //遍历添加部门负责人记录
+        for (int i = 0; i < jsonArray1.size(); i++) {
+            JSONObject jo = jsonArray1.getJSONObject(i);
+            TWorkflowstep tWorkflowstep2 = new TWorkflowstep();
+            tWorkflowstep2.setId(UUID.randomUUID().toString());
+            tWorkflowstep2.setRelateddomain("采购评审");
+            tWorkflowstep2.setRelateddomainId(id);
+            tWorkflowstep2.setPrestepId(tWorkflowstep.getId());
+            tWorkflowstep2.setStepDesc(StepDesc);
+            //审批人id
+            String approveUserId = jo.getString("approveUserId");
+            String approveUserName = jo.getString("approveUserName");
+            tWorkflowstep2.setActionuserId(approveUserId);
+            tWorkflowstep2.setActionTime(new Date());
+            tWorkflowstep2.setStatus("0");
+            //提交给部门负责人为2
+            tWorkflowstep2.setBackup3(String.valueOf(nowBackUp3));
+            tWorkflowstep2.setBackUp7(approveUserName);
+            int f2 = workflowstepMapper.insertSelective(tWorkflowstep2);
+            if (f2 != 1) {
+                return new ResponseMessage(Code.CODE_ERROR, "添加流程表信息失败");
+            }
+            TTodo todo = new TTodo();
+            todo.setId(UUID.randomUUID().toString());
+            todo.setCurrentstepId(tWorkflowstep2.getId());
+            todo.setStepDesc(StepDesc);
+            todo.setRelateddomain("采购评审");
+            todo.setRelateddomainId(id);
+            todo.setSenderId(ownerId);
+            todo.setSenderTime(currentTime);
+            todo.setReceiverId(approveUserId);
+            TXietongDictionaryExample example = new TXietongDictionaryExample();
+            TXietongDictionaryExample.Criteria criteria = example.createCriteria();
+            criteria.andTypeIdEqualTo("8");
+            criteria.andTypeCodeEqualTo("38");
+            criteria.andMidValueEqualTo("1");
+            List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
+            todo.setTodoType(dictionaryList.get(0).getMainValue());
+            todo.setStatus("0");
+            int i5 = todoMapper.insertSelective(todo);
+            if (i5 != 1) {
+                return new ResponseMessage(Code.CODE_ERROR, "提交失败");
+            }
+        }
+        int f=workflowstepMapper.updatetWorkflowstepRecord(tWorkflowstep);
+        if(f!=1){
+            return  new ResponseMessage(Code.CODE_ERROR,"更新审批记录失败");
+        }
+        TTodo tTodo = new TTodo();
+        tTodo.setRelateddomainId(id);
+        tTodo.setReceiverId(ownerId);
+        tTodo.setStatus("1");
+        int f2=todoMapper.updateTodoRecord(tTodo);
+        if(f2!=1){
+            return  new ResponseMessage(Code.CODE_ERROR,"更新待办失败");
+        }
+        int f3=purchaseReviewMapper.updateProjectReviewStatus(id,nowBackUp3+"");
+        if(f3!=1){
+            return new ResponseMessage(Code.CODE_ERROR,"更新主表状态失败");
+        }
+        return  new ResponseMessage(Code.CODE_OK ,"处理成功");
     }
 
-
-
-
-
-
-
-
-
+    @Override
+    public ResponseMessage returnRecord(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        //采购评审单的Id  从基本信息里面取
+        String id = jsonObject.getString("id");
+        String ownerId = jsonObject.getString("ownerId");
+        String actionComment = jsonObject.getString("actionComment");
+        int f3=purchaseReviewMapper.updateProjectReviewStatus(id,"6");
+        if(f3!=1){
+            return new ResponseMessage(Code.CODE_ERROR,"更新主表状态失败");
+        }
+        TTodo tTodo = new TTodo();
+        tTodo.setRelateddomainId(id);
+        tTodo.setReceiverId(ownerId);
+        tTodo.setStatus("1");
+        int f2=todoMapper.updateTodoRecord(tTodo);
+        String backUp3="6";
+        TWorkflowstep tWorkflowstep = new TWorkflowstep();
+        tWorkflowstep.setActionTime(new Date());
+        tWorkflowstep.setActionResult(1);
+        tWorkflowstep.setActionComment(actionComment);
+        tWorkflowstep.setStatus("1");
+        tWorkflowstep.setActionuserId(ownerId);
+        tWorkflowstep.setRelateddomainId(id);
+        tWorkflowstep.setBackup3(backUp3);
+        int f=workflowstepMapper.updatetWorkflowstepRecord(tWorkflowstep);
+        if (f != 1) {
+            return new ResponseMessage(Code.CODE_ERROR, "退回失败");
+        }
+        //查询对应的步骤id;
+        String  nowBackUp3="5";
+        TWorkflowstep tWorkflowstep1=workflowstepMapper.queryCurrentstepId(id,ownerId,nowBackUp3);
+        TTodo todo = new TTodo();
+        todo.setId(UUID.randomUUID().toString());
+        todo.setCurrentstepId(tWorkflowstep1.getId());
+        todo.setStepDesc("退回");
+        todo.setRelateddomain("采购评审");
+        todo.setRelateddomainId(id);
+        todo.setSenderId(ownerId);
+        todo.setSenderTime(currentTime);
+        String  firstBackUp3="1";
+        TWorkflowstep tWorkflowstep2=workflowstepMapper.queryCurrentstepId(id,ownerId,firstBackUp3);
+        todo.setReceiverId(tWorkflowstep2.getActionuserId());
+        TXietongDictionaryExample example = new TXietongDictionaryExample();
+        TXietongDictionaryExample.Criteria criteria = example.createCriteria();
+        criteria.andTypeIdEqualTo("8");
+        criteria.andTypeCodeEqualTo("38");
+        criteria.andMidValueEqualTo("1");
+        List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
+        todo.setTodoType(dictionaryList.get(0).getMainValue());
+        todo.setStatus("0");
+        int i5 = todoMapper.insertSelective(todo);
+        if (i5 != 1) {
+            return new ResponseMessage(Code.CODE_ERROR, "提交失败");
+        }
+        return new ResponseMessage(Code.CODE_OK, "退回成功");
+    }
 
 
     //生成流水单号
@@ -498,7 +630,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
 
             nowOdd = express.getRequestNum();
         }
-
         return nowOdd;
     }
 

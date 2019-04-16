@@ -58,4 +58,6 @@ public interface PurchaseReviewMapper {
     List<PurchaseReview> queryPucharseReview(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("method") String method,@Param("supplier") String supplier,@Param("submitTime") String submitTime,@Param("status") String status);
 
     PurchaseReview queryPucharseReviewBase(@Param("id") String id);
+
+    int updateProjectReviewStatus(@Param("id") String id, @Param("nowBackUp3")String nowBackUp3);
 }

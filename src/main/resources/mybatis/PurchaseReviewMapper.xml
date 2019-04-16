@@ -507,4 +507,10 @@
   left JOIN  project c  on a.project_id=c.id
   where a.id=#{id}
 </select>
+  <update id="updateProjectReviewStatus" parameterType="String">
+  update purchase_review set status=#{nowBackUp3}
+  where id=#{id}
+  </update>
+
+
 </mapper>

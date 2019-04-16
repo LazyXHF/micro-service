@@ -45,7 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
         String pageCount = requestJson.getString("pageCount");
         //新加字段
         String projectTime=requestJson.getString("projectTime");
-        String invertor=requestJson.getString("invertor");
+        String invertor=requestJson.getString("investor");
         //如果type为nomal  为正常，如果type为exception 为异常
         String type=requestJson.getString("type");
         Page<Project> page = new Page<>();
