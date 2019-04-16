@@ -12,4 +12,8 @@ public interface PucharseReviewService {
     ResponseMessage addPucharseReview(String requestBody);
 
     ResponseMessage queryPucharseReview(String requestBody);
+
+    ResponseMessage queryPucharseReviewAll(String requestBody);
+
+    ResponseMessage handlePucharseReview(String requestBody);
 }

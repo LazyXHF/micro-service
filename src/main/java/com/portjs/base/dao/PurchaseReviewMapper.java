@@ -2,6 +2,7 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.PurchaseReview;
 import com.portjs.base.entity.PurchaseReviewExample;
+import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.vo.ContractVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -53,4 +54,8 @@ public interface PurchaseReviewMapper {
     List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("rowNum") Integer rowNum, @Param("pageCount") Integer pageCount);
     @Select(" select max(review_num)  from purchase_review")
     String findMaxOdd();
+
+    List<PurchaseReview> queryPucharseReview(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("method") String method,@Param("supplier") String supplier,@Param("submitTime") String submitTime,@Param("status") String status);
+
+    PurchaseReview queryPucharseReviewBase(@Param("id") String id);
 }

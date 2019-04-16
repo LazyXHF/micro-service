@@ -1,5 +1,6 @@
 package com.portjs.base.dao;
 
+import com.portjs.base.entity.InternalWorkflowstep;
 import com.portjs.base.entity.TWorkflowstep;
 import com.portjs.base.entity.TWorkflowstepExample;
 import org.apache.ibatis.annotations.Param;
@@ -44,4 +45,6 @@ public interface TWorkflowstepMapper {
     List<TWorkflowstep> queryNotReviewProject(@Param("id") String id);
 
     TWorkflowstep toApprove(@Param("id") String id, @Param("ownerId") String ownerId);
+
+    List<InternalWorkflowstep> queryPucharseReviewRecords(@Param("id") String id);
 }

@@ -44,6 +44,26 @@ public class PucharseReviewController {
         return pucharseReviewService.queryPucharseReview(requestBody);
     }
 
+    @LogInfo(methodName = "采购评审所有信息",modelName = "采购管理")
+    @RequestMapping("/queryPucharseReviewAll")
+    @ResponseBody
+    public ResponseMessage queryPucharseReviewAll(@RequestBody String requestBody) {
+        logger.debug("queryPucharseReview" + requestBody);
+        return pucharseReviewService.queryPucharseReviewAll(requestBody);
+    }
+
+    @LogInfo(methodName = "采购评审审核",modelName = "采购评审")
+    @RequestMapping("/handlePucharseReview")
+    @ResponseBody
+    public ResponseMessage handlePucharseReview(@RequestBody String requestBody) {
+        logger.debug("handlePucharseReview" + requestBody);
+        return pucharseReviewService.handlePucharseReview(requestBody);
+    }
+
+
+
+
+
 
 
 

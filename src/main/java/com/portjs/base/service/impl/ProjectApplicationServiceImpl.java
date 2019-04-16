@@ -166,9 +166,14 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 todoCriteria.andRelateddomainIdEqualTo(application.getId());
                 todoCriteria.andReceiverIdEqualTo(owneId);
                 List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
-                String ownerId2=tWorkflowstepMapper.queryProjectRecords(application.getId()).get(0).getActionuserId();
-                if(ownerId2.equals(owneId)){
-                    application.setIsRight("1");
+                List<TWorkflowstep> tworkList= tWorkflowstepMapper.queryProjectRecords(application.getId());
+                if(tworkList!=null&&tworkList.size()>0) {
+                    String ownerId2 = tworkList.get(0).getActionuserId();
+                    if (ownerId2.equals(owneId)) {
+                        application.setIsRight("1");
+                    } else {
+                        application.setIsRight("0");
+                    }
                 }else {
                     application.setIsRight("0");
                 }

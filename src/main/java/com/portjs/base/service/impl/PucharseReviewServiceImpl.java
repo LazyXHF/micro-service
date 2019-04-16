@@ -19,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Administrator on 2019/4/8.
@@ -369,11 +366,62 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         String projectCode = jsonObject.getString("projectCode");
         String projectName = jsonObject.getString("projectName");
-        String  projectType= PucharseReviewServiceImpl.createOdd("projectType");
-        String projectId = jsonObject.getString("project_id");
-        String method = jsonObject.getString("method");
-        return  null;
+        String method=jsonObject.getString("method");
+        String supplier = jsonObject.getString("supplier");
+        String submitTime = jsonObject.getString("submitTime");
+        String status = jsonObject.getString("status");
+        int pageNum = jsonObject.getInteger("pageNum");
+        int pageCount = jsonObject.getInteger("pageCount");
+        PageHelper.startPage(pageNum,pageCount);
+        List<PurchaseReview> list=purchaseReviewMapper.queryPucharseReview(projectCode,projectName,method,supplier,submitTime,status);
+        if(list.isEmpty()){
+            return  new ResponseMessage(Code.CODE_OK,"查询信息为空");
+        }
+        PageInfo pageInfo=new PageInfo(list);
+        return  new ResponseMessage(Code.CODE_OK,"采购评审列表",pageInfo);
     }
+    //编辑  详情   审批  查询接口
+    @Override
+    public ResponseMessage queryPucharseReviewAll(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        //采购评审单的Id
+        String Id= jsonObject.getString("Id");
+        PurchaseReview  purchaseReviewBase=purchaseReviewMapper.queryPucharseReviewBase(Id);
+        List<InternalAttachment> pucharseReviewFiles=internalAttachmentMapper.queryPucharseReviewFiles(Id);
+        List<InternalWorkflowstep> pucharseReviewRecords=workflowstepMapper.queryPucharseReviewRecords(Id);
+        Map<String,Object> map=new HashMap<>();
+        map.put("purchaseReviewBase",purchaseReviewBase);
+        map.put("pucharseReviewFiles",pucharseReviewFiles);
+        map.put("pucharseReviewRecords",pucharseReviewRecords);
+        return  new ResponseMessage(Code.CODE_OK,"页面详细信息",map);
+    }
+    //编辑  详情   审批  查询接口
+    @Override
+    public ResponseMessage handlePucharseReview(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        //采购评审单的Id  从基本信息里面取
+        String id= jsonObject.getString("id");
+        String pucharseReviewRecordsId=jsonObject.getString("pucharseReviewRecordsId");
+        String ownerId= jsonObject.getString("ownerId");
+        //处理结果,0:通过1:退回
+        Integer actionResult=jsonObject.getInteger("actionResult");
+        String actionComment=jsonObject.getString("actionComment");
+        String nextApproverId=jsonObject.getString("nextApproverId");
+        String nextApproverName=jsonObject.getString("nextApproverName");
+        TWorkflowstep tWorkflowstep=new TWorkflowstep();
+        /*tWorkflowstep.setId*/
+        return  null;
+
+
+
+    }
+
+
+
+
+
+
+
 
 
 
