@@ -273,13 +273,54 @@ public class TenderServiceImpl implements TenderService {
         Page page = new Page();
         page.init(count,pageNum,pageCount);
         List<Map<String,Object>> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
-
-        return null;
+        page.setList(list);
+        return new ResponseMessage(Code.CODE_ERROR,"查询成功",page);
     }
 
     @Override
     public ResponseMessage queryReviewTender(String requestBody) {
-        return null;
+        //1.查询招标信息 2.查询待办 3.查询工作流程
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        JSONObject application1JSON = jsonObject.getJSONObject("TenderApplication");
+        String userId = jsonObject.getString("UserId");//登录用户
+
+        TenderApplication application = JSONObject.toJavaObject(application1JSON,TenderApplication.class);
+        //1.查询招标信息
+        if(StringUtils.isEmpty(application.getId())){
+            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication中的id"+PARAM_MESSAGE_1);
+        }
+        if(StringUtils.isEmpty(userId)){
+            return new ResponseMessage(Code.CODE_ERROR,"UserId"+PARAM_MESSAGE_1);
+        }
+        TenderApplicationExample example = new TenderApplicationExample();
+        TenderApplicationExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(application.getId());
+        List<TenderApplication> tenderApplications = tenderApplicationMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(tenderApplications)){
+            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication查询失败");
+        }
+        //查询结果集
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("TenderApplication",tenderApplications.get(0));
+
+        //2.查询待办
+        TTodoExample tTodoExample = new TTodoExample();
+        TTodoExample.Criteria  tTodoExampleCriteria = tTodoExample.createCriteria();
+        tTodoExampleCriteria.andReceiverIdEqualTo(userId);
+        tTodoExampleCriteria.andRelateddomainIdEqualTo(application.getId());
+        tTodoExampleCriteria.andStatusEqualTo("0");
+        List<TTodo> list = todoMapper.selectByExample(tTodoExample);
+        map.put("TTodo",list);
+
+        //3.查询工作流程
+        TWorkflowstepExample tWorkflowstepExample = new TWorkflowstepExample();
+        tWorkflowstepExample.setOrderByClause("IF(ISNULL(action_time),1,0),action_time");
+        TWorkflowstepExample.Criteria criteria1 = tWorkflowstepExample.createCriteria();
+        criteria1.andRelateddomainEqualTo(application.getId());
+        List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(tWorkflowstepExample);
+        map.put("TWorkflowstep",tWorkflowsteps);
+
+        return new ResponseMessage(Code.CODE_OK,"查询成功",map);
     }
 
     /**
@@ -289,7 +330,58 @@ public class TenderServiceImpl implements TenderService {
      */
     @Override
     public ResponseMessage abolitionTender(String requestBody) {
-        return null;
+        //更新待办,更改招标的信息的状态
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+
+        JSONObject application1JSON = jsonObject.getJSONObject("TenderApplication");
+        String userId = jsonObject.getString("UserId");//登录用户
+
+        //更新招标信息
+        TenderApplication application = JSONObject.toJavaObject(application1JSON,TenderApplication.class);
+        //废除状态
+        application.setStatus("8");
+        application.setUpdateTime(new Date());
+        if(StringUtils.isEmpty(application.getId())){
+            return new ResponseMessage(Code.CODE_ERROR,"id"+PARAM_MESSAGE_1);
+        }
+        int count = tenderApplicationMapper.updateByPrimaryKeySelective(application);
+        if(count!=1){
+            return new ResponseMessage(Code.CODE_ERROR,"废除失败");
+        }
+
+        TTodoExample example = new TTodoExample();
+        TTodoExample.Criteria  criteria = example.createCriteria();
+        criteria.andReceiverIdEqualTo(userId);
+        criteria.andRelateddomainIdEqualTo(application.getId());
+        criteria.andStatusEqualTo("0");
+        List<TTodo> list = todoMapper.selectByExample(example);
+
+        //更新待办
+        TTodo tTodo = list.get(0);
+        tTodo.setStatus("1");
+        tTodo.setActiontime(new Date());
+        int i = todoMapper.updateByPrimaryKeySelective(tTodo);
+        if(i!=1){
+            return new ResponseMessage(Code.CODE_ERROR,"废除失败");
+        }
+
+        return new ResponseMessage(Code.CODE_ERROR,"废除成功");
+    }
+
+    @Override
+    public ResponseMessage deleteTender(String requestBody) {
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        //更新招标信息
+        TenderApplication application = JSONObject.toJavaObject(jsonObject,TenderApplication.class);
+        if(StringUtils.isEmpty(application.getId())){
+            return new ResponseMessage(Code.CODE_ERROR,"id"+PARAM_MESSAGE_1);
+        }
+        application.setDeleteTime(new Date());
+        int count = tenderApplicationMapper.updateByPrimaryKeySelective(application);
+        if(count!=1){
+            return new ResponseMessage(Code.CODE_ERROR,"删除失败");
+        }
+        return new ResponseMessage(Code.CODE_ERROR,"删除成功");
     }
 
     /**
@@ -666,6 +758,92 @@ public class TenderServiceImpl implements TenderService {
      */
     @Override
     public ResponseMessage returnTender(String requestBody) {
-        return null;
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        String application_id = jsonObject.getString("application_id");//招标id
+        String workflowstep_id = jsonObject.getString("workflowstep_id");//招标流程id
+        String stepDesc = jsonObject.getString("stepDesc");//当前流程步骤
+        String stepDesc1 =  stepDesc.substring(0,stepDesc.length()-2);
+
+        String user_id  = jsonObject.getString("user_id");//当前登录人id
+        String user_name  = jsonObject.getString("user_name");//当前登录人姓名
+        String action  = jsonObject.getString("action_commont");//处理意见
+        String todoId =  jsonObject.getString("todoId");//当前步骤待办id
+        String fistId =  jsonObject.getString("fistId");//项目负责人id
+        String projectName = jsonObject.getString("projectName");//项目名字
+
+        //将当前对应流程关闭
+        TWorkflowstep workflowstep = new TWorkflowstep();
+        workflowstep.setId(workflowstep_id);
+        workflowstep.setStepDesc(stepDesc1+"退回");
+        workflowstep.setStatus("1");
+        workflowstep.setActionResult(1);
+        workflowstep.setActionComment(action);
+        workflowstep.setActionTime(new Date());
+        int i = workflowstepMapper.updateByPrimaryKeySelective(workflowstep);
+        if(i==0){
+            return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+        }
+        //修改当前待办表
+        TTodo tTodo = new TTodo();
+        tTodo.setId(todoId);
+        tTodo.setStatus("1");
+        tTodo.setActiontime(new Date());
+        int k = todoMapper.updateByPrimaryKeySelective(tTodo);
+        if(k!=1){
+            return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+        }
+
+        //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
+        TWorkflowstepExample example = new TWorkflowstepExample();
+        TWorkflowstepExample.Criteria criteria = example.createCriteria();
+        criteria.andRelateddomainIdEqualTo(application_id);
+        criteria.andStatusEqualTo("0");
+        List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(example);
+        if(tWorkflowsteps.size()==0){
+            //如果当前审核人员只有一个的话则生成待办
+            TTodo todo = new TTodo();
+            todo.setId(String.valueOf(IDUtils.genItemId()));
+            todo.setCurrentstepId(workflowstep_id);
+            todo.setStepDesc(projectName+"的项目招投标流程等待您的处理");
+            todo.setRelateddomain("项目招投标");
+            todo.setRelateddomainId(application_id);
+            todo.setSenderId(user_id);
+            todo.setSenderTime(new Date());
+
+            todo.setBackUp7(user_name);//发起人
+            todo.setReceiverId(fistId);
+            //查询代办类型
+            TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+            TXietongDictionaryExample.Criteria criteria1 = example1.createCriteria();
+            criteria1.andTypeIdEqualTo("8");
+            criteria1.andTypeCodeEqualTo("38");
+            criteria1.andMidValueEqualTo("1");
+            List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
+            todo.setTodoType(dictionaryList.get(0).getMainValue());
+            todo.setStatus("0");
+            int i1 = todoMapper.insertSelective(todo);
+            if(i1!=1){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+
+            //改变当前招标表状态为退回
+            TenderApplication application = new TenderApplication();
+            application.setId(application_id);
+            application.setReview("0");
+            application.setStatus("6");
+            int i11 = tenderApplicationMapper.updateByPrimaryKeySelective(application);
+            if(i11==0){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+        }else{
+            TenderApplication application = new TenderApplication();
+            application.setId(application_id);
+            application.setReview("0");
+            int i11 = tenderApplicationMapper.updateByPrimaryKeySelective(application);
+            if(i11==0){
+                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+            }
+        }
+        return new ResponseMessage(Code.CODE_OK,"退回成功");
     }
 }

@@ -50,7 +50,7 @@ public class TenderController extends BaseController {
             throw new RuntimeException();
         }
     }
-    //TODO
+
     @LogInfo(methodName = "查询招标流程申请单",modelName = "招标模块")
     @RequestMapping("/query-review-tender")
     @ResponseBody
@@ -64,7 +64,6 @@ public class TenderController extends BaseController {
         }
     }
 
-    //TODO
     @LogInfo(methodName = "查询招标申请单",modelName = "招标模块")
     @RequestMapping("/query-tender")
     @ResponseBody
@@ -77,6 +76,7 @@ public class TenderController extends BaseController {
             throw new RuntimeException();
         }
     }
+
     @LogInfo(methodName = "暂存/提交",modelName = "招标模块")
     @RequestMapping("/insert-tender")
     @ResponseBody
@@ -89,16 +89,29 @@ public class TenderController extends BaseController {
             throw new RuntimeException();
         }
     }
-    //TODO
+
     @LogInfo(methodName = "废除",modelName = "招标模块")
     @RequestMapping("/abolition-tender")
     @ResponseBody
     public ResponseMessage abolitionTender(@RequestBody String requestBody){
         try {
             logger.error(TAG+"abolition-tender()begin....."+requestBody);
-            return tenderService.getTenderNum();
+            return tenderService.abolitionTender(requestBody);
         } catch (Exception e) {
             logger.error(TAG+"abolition-tender()error.....",e);
+            throw new RuntimeException();
+        }
+    }
+
+    @LogInfo(methodName = "删除",modelName = "招标模块")
+    @RequestMapping("/delete-tender")
+    @ResponseBody
+    public ResponseMessage deleteTender(@RequestBody String requestBody){
+        try {
+            logger.error(TAG+"delete-tender()begin....."+requestBody);
+            return tenderService.deleteTender(requestBody);
+        } catch (Exception e) {
+            logger.error(TAG+"delete-tender()error.....",e);
             throw new RuntimeException();
         }
     }
@@ -128,14 +141,14 @@ public class TenderController extends BaseController {
             throw new RuntimeException();
         }
     }
-    //TODO
+
     @LogInfo(methodName = "退回",modelName = "招标模块")
     @RequestMapping("/return-tender")
     @ResponseBody
     public ResponseMessage returnTender(@RequestBody String responseBody){
         try {
             logger.error(TAG+"return-tender()begin....."+responseBody);
-            return tenderService.getTenderNum();
+            return tenderService.returnTender(responseBody);
         } catch (Exception e) {
             logger.error(TAG+"return-tender()error.....",e);
             throw new RuntimeException();

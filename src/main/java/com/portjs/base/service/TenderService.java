@@ -43,7 +43,12 @@ public interface TenderService {
 	 * @return
 	 */
 	ResponseMessage abolitionTender(String requestBody);
-
+	/**
+	 *删除
+	 * @param requestBody
+	 * @return
+	 */
+	ResponseMessage deleteTender(String requestBody);
 	/**
 	 *审核
 	 * @param requestBody
