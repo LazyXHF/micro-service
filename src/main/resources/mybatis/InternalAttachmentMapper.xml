@@ -527,5 +527,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-
+  <select id="queryPucharseReviewFiles" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from internal_attachment
+    where relateddomain_id = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>

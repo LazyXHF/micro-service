@@ -79,8 +79,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, request_id, review_num, project_id, purchase_dept, method, supplier, amount, 
-    submit_time, remark, file_url, status, creater, create_time, update_time, delete_time, 
+    Id, request_id, review_num, project_id, purchase_dept, method, supplier, amount,
+    submit_time, remark, file_url, status, creater, create_time, update_time, delete_time,
     is_delete
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.PurchaseReviewExample" >
@@ -431,7 +431,80 @@
     ORDER BY r.create_time
     LIMIT #{rowNum,jdbcType=INTEGER},#{pageCount,jdbcType=INTEGER}
   </select>
-<!--  <select id="findMaxOdd" resultType="String">
-
-  </select>-->
+  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.PurchaseReview" >
+    <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="review_num" property="reviewNum" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="purchase_dept" property="purchaseDept" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="supplier" property="supplier" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="submit_time" property="submitTime" jdbcType="DATE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="queryPucharseReview" resultMap="BaseResultMap2" parameterType="java.lang.String" >
+    select
+    a.Id, a.request_id, a.review_num, a.project_id, a.purchase_dept, a.method, a.supplier, a.amount,
+    a.submit_time, a.remark, a.file_url, a.status, a.creater, a.create_time, a.update_time, a.delete_time,
+    a.is_delete,b.project_code,b.project_name
+    from purchase_review a left JOIN   project b on a.project_id=b.id
+    <if test="projectCode !=null and projectCode!=''">
+      and b.project_code like "%" #{projectCode} "%"
+    </if>
+    <if test="projectName !=null and projectName!=''">
+      and b.project_name like "%" #{projectName} "%"
+    </if>
+    <if test="method !=null and method!=''">
+      and a.method like "%" #{method} "%"
+    </if>
+    <if test="supplier !=null and supplier!=''">
+      and a.supplier like "%" #{supplier} "%"
+    </if>
+    <if test="submitTime !=null and submitTime!=''">
+      and a.submit_time like "%" #{submitTime} "%"
+    </if>
+    <if test="status !=null and status!=''">
+      and a.status like "%" #{status} "%"
+    </if>
+  </select>
+  <resultMap id="BaseResultMap3" type="com.portjs.base.entity.PurchaseReview" >
+    <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="review_num" property="reviewNum" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="purchase_dept" property="purchaseDept" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="supplier" property="supplier" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="submit_time" property="submitTime" jdbcType="DATE" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="request_num" property="requestNum" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="queryPucharseReviewBase" resultMap="BaseResultMap3" parameterType="java.lang.String" >
+  select
+  a.Id, a.request_id, a.review_num, a.project_id, a.purchase_dept, a.method, a.supplier, a.amount,
+  a.submit_time, a.remark, a.file_url, a.status, a.creater, a.create_time, a.update_time, a.delete_time,
+  a.is_delete,b.request_num,c.project_code
+  from purchase_review a    left JOIN   purchase_request b on a.request_id=b.Id
+  left JOIN  project c  on a.project_id=c.id
+  where a.id=#{id}
+</select>
 </mapper>
