@@ -1,6 +1,5 @@
 package com.portjs.base.entity;
 
-import java.sql.Array;
 import java.util.Date;
 import java.util.List;
 
@@ -19,124 +18,23 @@ public class Project {
 
     private String creator;
 
-    private String creatorName;
-
-
-    //便于存放数据添加的几个字段  数据库并没有对应
-    private String node;
-
-    private String Allschedule;
-
-    private String[] nodeArray;
-
-    private String[] projectStatusArray;
-
-    private String[] allscheduleArray;
-
-    private  List<String> greenArray;
-
-    private List<String> yellowArray;
-
-    private List<String> redArray;
-
-    private List<String> stageList;
-
-    private String year;
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public List<String> getStageList() {
-        return stageList;
-    }
-
-    public void setStageList(List<String> stageList) {
-        this.stageList = stageList;
-    }
-
-    public List<String> getYellowArray() {
-        return yellowArray;
-    }
-
-    public void setYellowArray(List<String> yellowArray) {
-        this.yellowArray = yellowArray;
-    }
-
-    public List<String> getGreenArray() {
-        return greenArray;
-    }
-
-    public void setGreenArray(List<String> greenArray) {
-        this.greenArray = greenArray;
-    }
-
-    public List<String> getRedArray() {
-        return redArray;
-    }
-
-    public void setRedArray(List<String> redArray) {
-        this.redArray = redArray;
-    }
-
-
-    public String[] getNodeArray() {
-        return nodeArray;
-    }
-
-    public void setNodeArray(String[] nodeArray) {
-        this.nodeArray = nodeArray;
-    }
-
-    public String[] getProjectStatusArray() {
-        return projectStatusArray;
-    }
-
-    public void setProjectStatusArray(String[] projectStatusArray) {
-        this.projectStatusArray = projectStatusArray;
-    }
-
-    public String[] getAllscheduleArray() {
-        return allscheduleArray;
-    }
-
-    public void setAllscheduleArray(String[] allscheduleArray) {
-        this.allscheduleArray = allscheduleArray;
-    }
-
-    public String getAllschedule() {
-        return Allschedule;
-    }
-
-    public void setAllschedule(String allschedule) {
-        Allschedule = allschedule;
-    }
-
-    public String getNode() {
-        return node;
-    }
-
-    public void setNode(String node) {
-        this.node = node;
-    }
-
-    public String getCreatorName() {
-        return creatorName;
-    }
-
-    public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
-    }
-
     private String modifier;
 
     private Date updateTime;
 
     private Date deleteTime;
+
+    private String organization;
+
+    private String projectMoney;
+
+    private String projectStage;
+
+    private String projectStatus;
+
+    private String investor;
+
+    private String creatorName;
 
     private String backUp1;
 
@@ -158,45 +56,30 @@ public class Project {
 
     private String backUp10;
 
-    private String applicationId;
-
-    private String organization;
-
-    private String projectMoney;
-
-    private String projectStage;
-
-    private String projectStatus;
-
-    private String investor;
-
     private Date applicationEndTime;
 
     private Date projectEndTime;
 
-    public Date getApplicationEndTime() {
-        return applicationEndTime;
-    }
+    //便于存放数据添加的几个字段  数据库并没有对应
+    private String node;
 
-    public void setApplicationEndTime(Date applicationEndTime) {
-        this.applicationEndTime = applicationEndTime;
-    }
+    private String Allschedule;
 
-    public Date getProjectEndTime() {
-        return projectEndTime;
-    }
+    private String[] nodeArray;
 
-    public void setProjectEndTime(Date projectEndTime) {
-        this.projectEndTime = projectEndTime;
-    }
+    private String[] projectStatusArray;
 
-    public String getInvestor() {
-        return investor;
-    }
+    private String[] allscheduleArray;
 
-    public void setInvestor(String investor) {
-        this.investor = investor;
-    }
+    private List<String> greenArray;
+
+    private List<String> yellowArray;
+
+    private List<String> redArray;
+
+    private List<String> stageList;
+
+    private String year;
 
     public String getId() {
         return id;
@@ -276,6 +159,54 @@ public class Project {
 
     public void setDeleteTime(Date deleteTime) {
         this.deleteTime = deleteTime;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization == null ? null : organization.trim();
+    }
+
+    public String getProjectMoney() {
+        return projectMoney;
+    }
+
+    public void setProjectMoney(String projectMoney) {
+        this.projectMoney = projectMoney == null ? null : projectMoney.trim();
+    }
+
+    public String getProjectStage() {
+        return projectStage;
+    }
+
+    public void setProjectStage(String projectStage) {
+        this.projectStage = projectStage == null ? null : projectStage.trim();
+    }
+
+    public String getProjectStatus() {
+        return projectStatus;
+    }
+
+    public void setProjectStatus(String projectStatus) {
+        this.projectStatus = projectStatus == null ? null : projectStatus.trim();
+    }
+
+    public String getInvestor() {
+        return investor;
+    }
+
+    public void setInvestor(String investor) {
+        this.investor = investor == null ? null : investor.trim();
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName == null ? null : creatorName.trim();
     }
 
     public String getBackUp1() {
@@ -358,43 +289,99 @@ public class Project {
         this.backUp10 = backUp10 == null ? null : backUp10.trim();
     }
 
-    public String getApplicationId() {
-        return applicationId;
+    public Date getApplicationEndTime() {
+        return applicationEndTime;
     }
 
-    public void setApplicationId(String applicationId) {
-        this.applicationId = applicationId == null ? null : applicationId.trim();
+    public void setApplicationEndTime(Date applicationEndTime) {
+        this.applicationEndTime = applicationEndTime;
     }
 
-    public String getOrganization() {
-        return organization;
+    public Date getProjectEndTime() {
+        return projectEndTime;
     }
 
-    public void setOrganization(String organization) {
-        this.organization = organization;
+    public void setProjectEndTime(Date projectEndTime) {
+        this.projectEndTime = projectEndTime;
     }
 
-    public String getProjectMoney() {
-        return projectMoney;
+    public String getNode() {
+        return node;
     }
 
-    public void setProjectMoney(String projectMoney) {
-        this.projectMoney = projectMoney;
+    public void setNode(String node) {
+        this.node = node;
     }
 
-    public String getProjectStage() {
-        return projectStage;
+    public String getAllschedule() {
+        return Allschedule;
     }
 
-    public void setProjectStage(String projectStage) {
-        this.projectStage = projectStage;
+    public void setAllschedule(String allschedule) {
+        Allschedule = allschedule;
     }
 
-    public String getProjectStatus() {
-        return projectStatus;
+    public String[] getNodeArray() {
+        return nodeArray;
     }
 
-    public void setProjectStatus(String projectStatus) {
-        this.projectStatus = projectStatus;
+    public void setNodeArray(String[] nodeArray) {
+        this.nodeArray = nodeArray;
+    }
+
+    public String[] getProjectStatusArray() {
+        return projectStatusArray;
+    }
+
+    public void setProjectStatusArray(String[] projectStatusArray) {
+        this.projectStatusArray = projectStatusArray;
+    }
+
+    public String[] getAllscheduleArray() {
+        return allscheduleArray;
+    }
+
+    public void setAllscheduleArray(String[] allscheduleArray) {
+        this.allscheduleArray = allscheduleArray;
+    }
+
+    public List<String> getGreenArray() {
+        return greenArray;
+    }
+
+    public void setGreenArray(List<String> greenArray) {
+        this.greenArray = greenArray;
+    }
+
+    public List<String> getYellowArray() {
+        return yellowArray;
+    }
+
+    public void setYellowArray(List<String> yellowArray) {
+        this.yellowArray = yellowArray;
+    }
+
+    public List<String> getRedArray() {
+        return redArray;
+    }
+
+    public void setRedArray(List<String> redArray) {
+        this.redArray = redArray;
+    }
+
+    public List<String> getStageList() {
+        return stageList;
+    }
+
+    public void setStageList(List<String> stageList) {
+        this.stageList = stageList;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 }

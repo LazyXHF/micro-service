@@ -16,6 +16,8 @@ public class ContractVo {
     private String validDate;//合同有效期
     private String signDate;//合同签订日期
     private String fileUrl;//合同附件
+    private String source;//来源单据
+    private String contractNum;//合同编号
     private int pageNum;//当前页数
     private int pageCount;//每页显示记录数
     private int rowNum;
@@ -114,6 +116,22 @@ public class ContractVo {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getContractNum() {
+        return contractNum;
+    }
+
+    public void setContractNum(String contractNum) {
+        this.contractNum = contractNum;
     }
 
     public int getPageNum() {
