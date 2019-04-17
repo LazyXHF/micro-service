@@ -299,7 +299,7 @@ public class TenderServiceImpl implements TenderService {
 
         //处理操作状态
         List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
-        datalist.forEach(map->{
+        list.forEach(map->{
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
             String  tenderId = map.get("tenderId").toString();
             TTodoExample todoExample = new TTodoExample();
