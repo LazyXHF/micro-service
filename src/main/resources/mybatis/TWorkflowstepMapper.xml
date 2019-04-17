@@ -549,4 +549,9 @@
     where relateddomain_id = #{id,jdbcType=VARCHAR} and actionuser_id=#{ownerId} and backup_3=#{nowBackUp3}
   </select>
 
+  <select id="isApprover" resultType="int" parameterType="java.lang.String" >
+    select count(*) from t_workflowstep
+    where relateddomain_id = #{id,jdbcType=VARCHAR} and actionuser_id=#{ownerId} and status='0'
+  </select>
+
 </mapper>
