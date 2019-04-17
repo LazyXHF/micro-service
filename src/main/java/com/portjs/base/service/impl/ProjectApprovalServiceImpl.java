@@ -566,7 +566,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					InvestmentPlanExample.Criteria criterias = planExamples.createCriteria();
 					criterias.andIdEqualTo(planId);
 					List <InvestmentPlan> planData = planMapper.selectByExample(planExamples);
-					projectApplication.setPlanNum(planData.get(0).getPlanNum());
+					/*projectApplication.setPlanNum(planData.get(0).getPlanNum());*/
 					mapData.put("Application",projectApplication);
 					//人员
 					Page page=new Page();

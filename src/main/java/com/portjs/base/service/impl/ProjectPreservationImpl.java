@@ -59,6 +59,12 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     private TUserMapper userMapper;
     @Autowired
     private TUserRoleMapper userRoleMapper;
+    @Autowired
+    private ProjectBudgetMapper budgetMapper;
+    @Autowired
+    private ProjectDeclarationMapper declarationMapper;
+    @Autowired
+    private BusinessConfigurationMapper configurationMapper;
 
 
     //返参信息
@@ -76,29 +82,36 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         String userId = jsonObject.getString("UserId");//登录用户
         String userName = jsonObject.getString("UserName");//登录用户名
         JSONObject application1JSON = jsonObject.getJSONObject("Application");
+        JSONObject budgetJSON = jsonObject.getJSONObject("Budget");//立项预算
+        JSONObject declarationJSON = jsonObject.getJSONObject("Declaration");//申报信息
+        JSONArray configurationJSON = jsonObject.getJSONArray("Configuration");//项目里程碑
         JSONArray arrayJSON = jsonObject.getJSONArray("Persons");
         JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
         JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
         String tTodoId = jsonObject.getString("tTodoId");
         String projectName = jsonObject.getString("projectName");//项目名字
+        String type = jsonObject.getString("type");//1立项申请 2 项目注册
 
         if(StringUtils.isEmpty(status)){
-            return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);
+            /*return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);*/
+            throw  new Exception("Status"+PARAM_MESSAGE_1);
         }
         if(StringUtils.isEmpty(userId)){
-            return new ResponseMessage(Code.CODE_ERROR,"UserId"+PARAM_MESSAGE_1);
+            /*return new ResponseMessage(Code.CODE_ERROR,"UserId"+PARAM_MESSAGE_1);*/
+            throw  new Exception("UserId"+PARAM_MESSAGE_1);
         }
         if(StringUtils.isEmpty(application1JSON)){
-            return new ResponseMessage(Code.CODE_ERROR,"Application"+PARAM_MESSAGE_1);
+            /*return new ResponseMessage(Code.CODE_ERROR,"Application"+PARAM_MESSAGE_1);*/
+            throw  new Exception("Application"+PARAM_MESSAGE_1);
         }
 
 
         //项目基本信息
         ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
         application.setCreater(userId);
-        application.setCreateTime(new Date());
-        application.setStatus(status);
 
+        application.setStatus(status);
+        application.setUpdateTime(new Date());
         String message1="";
         String message2="";
         //0暂存
@@ -110,11 +123,28 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         }else{
             application.setEnable("1");
             //提交
-            if(CollectionUtils.isEmpty(arrayJSON)){
-                return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);
-            }
-            if(CollectionUtils.isEmpty(resourcesJSON)){
-                return new ResponseMessage(Code.CODE_ERROR,"Files"+PARAM_MESSAGE_1);
+            if(type.equals("2")){
+                if(CollectionUtils.isEmpty(arrayJSON)){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);*/
+                    throw  new Exception("Persons"+PARAM_MESSAGE_1);
+                }
+                if(CollectionUtils.isEmpty(resourcesJSON)){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"Files"+PARAM_MESSAGE_1);*/
+                    throw  new Exception("Files"+PARAM_MESSAGE_1);
+                }
+                if(CollectionUtils.isEmpty(budgetJSON)){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"Budget"+PARAM_MESSAGE_1);*/
+                    throw  new Exception("Budget"+PARAM_MESSAGE_1);
+                }
+                if(CollectionUtils.isEmpty(declarationJSON)){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"declaration"+PARAM_MESSAGE_1);*/
+                    throw  new Exception("Declaration"+PARAM_MESSAGE_1);
+                }
+                if(CollectionUtils.isEmpty(configurationJSON)){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"declaration"+PARAM_MESSAGE_1);*/
+                    throw  new Exception("Configuration"+PARAM_MESSAGE_1);
+                }
+
             }
             if (!StringUtils.isEmpty(tTodoId)){
                 TTodo todo = new TTodo();
@@ -123,7 +153,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 todo.setActiontime(new Date());
                 int i = todoMapper.updateByPrimaryKeySelective(todo);
                 if(i!=1){
-                    return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+                    /*return new ResponseMessage(Code.CODE_ERROR,"提交失败");*/
+                    throw  new Exception("提交失败");
                 }
             }
             message1="提交失败";
@@ -139,6 +170,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         if(StringUtils.isEmpty(application.getId())){
 
             String id = String.valueOf(IDUtils.genItemId());
+
             //生成一条project记录
             updateUtil.projectMethod(id,null,application.getProjectName(),
                     application.getProjectType(),"A",userId,application.getOrganization()
@@ -147,56 +179,118 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             application.setId(String.valueOf(IDUtils.genItemId()));
             application.setCreater(userId);
             application.setProjectId(id);
+            application.setCreateTime(new Date());
 
             int i = applicationMapper.insertSelective(application);
             if(i!=1){
-                return new ResponseMessage(Code.CODE_ERROR,message1);
+                /*return new ResponseMessage(Code.CODE_ERROR,message1);*/
+                throw  new Exception("操作失败");
             }
         }else{
             application.setUpdateTime(new Date());
             int i = applicationMapper.updateByPrimaryKeySelective(application);
             if(i!=1){
-                return new ResponseMessage(Code.CODE_ERROR,message2);
-            }
-        }
-        //新增人员 先删除后增加
-        ProjectMembersExample exampleMem = new ProjectMembersExample();
-        ProjectMembersExample.Criteria criteriaMem = exampleMem.createCriteria();
-        criteriaMem.andApplicationIdEqualTo(application.getId());
-        membersMapper.deleteByExample(exampleMem);
-        //增加人员
-        for(int i=0;i<arrayJSON.size();i++){
-            JSONObject object = arrayJSON.getJSONObject(i);
-            ProjectMembers projectMembers = JSONObject.toJavaObject(object,ProjectMembers.class);
-            projectMembers.setId(String.valueOf(IDUtils.genItemId()));
-            projectMembers.setApplicationId(application.getId());
-            projectMembers.setCreater(userId);
-            projectMembers.setCreateTime(new Date());
-            int num = membersMapper.insertSelective(projectMembers);
-            if(num<=0){
-                return new ResponseMessage(Code.CODE_ERROR,"未知异常");
-            }
-        }
-        //新增立项 先删除后增加
-        InternalAttachmentExample exampleIn = new InternalAttachmentExample();
-        InternalAttachmentExample.Criteria criteriaIn = exampleIn.createCriteria();
-        criteriaIn.andRelateddomainIdEqualTo(application.getId());
-        attachmentMapper.deleteByExample(exampleIn);
-        //增加附件
-        for(int i=0;i<resourcesJSON.size();i++){
-            JSONObject object = resourcesJSON.getJSONObject(i);
-            InternalAttachment projectMembers = JSONObject.toJavaObject(object,InternalAttachment.class);
-            projectMembers.setId(String.valueOf(IDUtils.genItemId()));
-            projectMembers.setUploadTime(new Date());
-            projectMembers.setUploader(userId);
-            projectMembers.setRelateddomain("项目立项模块");
-            projectMembers.setRelateddomainId(application.getId());
-            int num = attachmentMapper.insertSelective(projectMembers);
-            if(num<=0){
-                return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+                /*return new ResponseMessage(Code.CODE_ERROR,message2);*/
+                throw  new Exception("操作失败");
             }
         }
 
+        if(type.equals("2")){
+            //新增申报信息 先删除后增加
+            ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
+            ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
+            declarationCriteria.andApplicationIdEqualTo(application.getId());
+            declarationMapper.deleteByExample(declarationExample);
+            //增加申报信息
+            ProjectDeclaration declaration = JSONObject.toJavaObject(declarationJSON, ProjectDeclaration.class);
+            declaration.setId(String.valueOf(IDUtils.genItemId()));
+            declaration.setCreateTime(new Date());
+            declaration.setProjectId(application.getProjectId());
+            declaration.setCreator(userId);
+            int i2 = declarationMapper.insertSelective(declaration);
+            if(i2<=0){
+                /*return new ResponseMessage(Code.CODE_ERROR,message2);*/
+                throw  new Exception("操作失败");
+            }
+
+            //新增人员 先删除后增加
+            ProjectMembersExample exampleMem = new ProjectMembersExample();
+            ProjectMembersExample.Criteria criteriaMem = exampleMem.createCriteria();
+            criteriaMem.andApplicationIdEqualTo(application.getId());
+            membersMapper.deleteByExample(exampleMem);
+            //增加人员
+            for(int i=0;i<arrayJSON.size();i++){
+                JSONObject object = arrayJSON.getJSONObject(i);
+                ProjectMembers projectMembers = JSONObject.toJavaObject(object,ProjectMembers.class);
+                projectMembers.setId(String.valueOf(IDUtils.genItemId()));
+                projectMembers.setApplicationId(application.getId());
+                projectMembers.setCreater(userId);
+                projectMembers.setCreateTime(new Date());
+                int num = membersMapper.insertSelective(projectMembers);
+                if(num<=0){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"未知异常");*/
+                    throw  new Exception("操作失败");
+                }
+            }
+            //新增附件 先删除后增加
+            InternalAttachmentExample exampleIn = new InternalAttachmentExample();
+            InternalAttachmentExample.Criteria criteriaIn = exampleIn.createCriteria();
+            criteriaIn.andRelateddomainIdEqualTo(application.getId());
+            attachmentMapper.deleteByExample(exampleIn);
+            //增加附件
+            for(int i=0;i<resourcesJSON.size();i++){
+                JSONObject object = resourcesJSON.getJSONObject(i);
+                InternalAttachment projectMembers = JSONObject.toJavaObject(object,InternalAttachment.class);
+                projectMembers.setId(String.valueOf(IDUtils.genItemId()));
+                projectMembers.setUploadTime(new Date());
+                projectMembers.setUploader(userId);
+                projectMembers.setRelateddomain("项目立项模块");
+                projectMembers.setRelateddomainId(application.getId());
+                int num = attachmentMapper.insertSelective(projectMembers);
+                if(num<=0){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"未知异常");*/
+                    throw  new Exception("操作失败");
+                }
+            }
+
+            //新增预算 先删除后增加
+            ProjectBudgetExample budgetExample = new ProjectBudgetExample();
+            ProjectBudgetExample.Criteria budgetMem = budgetExample.createCriteria();
+            budgetMem.andApplicationIdEqualTo(application.getId());
+            budgetMapper.deleteByExample(budgetExample);
+            //增加预算
+            ProjectBudget budget = JSONObject.toJavaObject(budgetJSON, ProjectBudget.class);
+            budget.setId(String.valueOf(IDUtils.genItemId()));
+            budget.setCreateTime(new Date());
+            budget.setProjectId(application.getProjectId());
+            budget.setCreator(userId);
+
+            int i1 = budgetMapper.insertSelective(budget);
+            if(i1<=0){
+                /*return new ResponseMessage(Code.CODE_ERROR,message2);*/
+                throw  new Exception("操作失败");
+            }
+
+            //新增附件 先删除后增加
+            BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
+            BusinessConfigurationExample.Criteria configurationCriteria = configurationExample.createCriteria();
+            configurationCriteria.andProjectIdEqualTo(application.getProjectId());
+            configurationMapper.deleteByExample(configurationExample);
+            //增加附件
+            for(int i=0;i<configurationJSON.size();i++){
+                JSONObject object = configurationJSON.getJSONObject(i);
+                BusinessConfiguration configuration = JSONObject.toJavaObject(object,BusinessConfiguration.class);
+                configuration.setId(String.valueOf(IDUtils.genItemId()));
+                configuration.setCreator(userId);
+                configuration.setCreateTime(new Date());
+                int num = configurationMapper.insertSelective(configuration);
+                if(num<=0){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"未知异常");*/
+                    throw  new Exception("操作失败");
+                }
+            }
+
+        }
         TWorkflowstepExample workflowstepExample = new TWorkflowstepExample();
         TWorkflowstepExample.Criteria workflowstepCriteria = workflowstepExample.createCriteria();
         workflowstepCriteria.andRelateddomainIdEqualTo(application.getId());
@@ -222,7 +316,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
                 int i3 = workflowstepMapper.insertSelective(workflowstep);
                 if(i3!=1){
-                    return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+                    /*return new ResponseMessage(Code.CODE_ERROR,"提交失败");*/
+                    throw  new Exception("操作失败");
                 }
             }else {
                 workflowstep.setId(list.get(0).getId());
@@ -241,7 +336,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
             if(i4!=1){
-                return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+                /*return new ResponseMessage(Code.CODE_ERROR,"提交失败");*/
+                throw  new Exception("操作失败");
             }
             //最后新增一条代办
             TTodo todo = new TTodo();
@@ -266,7 +362,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             todo.setBackUp7(userName);//发起人
             int i5 = todoMapper.insertSelective(todo);
             if(i5!=1){
-                return new ResponseMessage(Code.CODE_ERROR,"提交失败");
+               /* return new ResponseMessage(Code.CODE_ERROR,"提交失败");*/
+                throw  new Exception("操作失败");
             }
 
 

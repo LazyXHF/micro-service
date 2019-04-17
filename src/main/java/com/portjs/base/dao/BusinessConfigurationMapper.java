@@ -1,20 +1,30 @@
 package com.portjs.base.dao;
 
 import com.portjs.base.entity.BusinessConfiguration;
+import com.portjs.base.entity.BusinessConfigurationExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 @Repository
 public interface BusinessConfigurationMapper {
+    int countByExample(BusinessConfigurationExample example);
+
+    int deleteByExample(BusinessConfigurationExample example);
+
     int deleteByPrimaryKey(String id);
 
     int insert(BusinessConfiguration record);
 
     int insertSelective(BusinessConfiguration record);
 
+    List<BusinessConfiguration> selectByExample(BusinessConfigurationExample example);
+
     BusinessConfiguration selectByPrimaryKey(String id);
+
+    int updateByExampleSelective(@Param("record") BusinessConfiguration record, @Param("example") BusinessConfigurationExample example);
+
+    int updateByExample(@Param("record") BusinessConfiguration record, @Param("example") BusinessConfigurationExample example);
 
     int updateByPrimaryKeySelective(BusinessConfiguration record);
 
@@ -23,7 +33,4 @@ public interface BusinessConfigurationMapper {
     BusinessConfiguration querybusinessConfiguration(@Param("type") String type);
 
     List<String> queryTypeList();
-
-    /*@Select("select schedule from business_configuration where project_type = #{projectType}")
-    List<BusinessConfiguration> selectBusinessConfigurationSchedule(@Param("projectType")String projectType);*/
 }
