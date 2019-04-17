@@ -2,6 +2,7 @@ package com.portjs.base.service;
 
 import com.portjs.base.entity.Contract;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.ContractVo;
 
 /**
  * Created by dengshuangzhen on 2019\4\10 0010
@@ -27,5 +28,13 @@ public interface ContractService {
      * @param contract
      * @return
      */
-    ResponseMessage selectContract(Contract contract);
+    ResponseMessage selectContract(ContractVo contract);
+
+    /**
+     * 合同详情查询
+     * @param id
+     * @return
+     */
+    ResponseMessage selectContractDetails(String id);
+
 }
