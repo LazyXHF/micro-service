@@ -195,7 +195,13 @@ public class ProjectApplication {
     }
 
     public void setApplicationAmount(BigDecimal applicationAmount) {
-        this.applicationAmount = applicationAmount;
+        if(applicationAmount==null){
+            BigDecimal decimal = new BigDecimal(0);
+            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            this.applicationAmount = decimal;
+        }else {
+            this.applicationAmount = applicationAmount;
+        }
     }
 
     public String getProjectDesc() {
