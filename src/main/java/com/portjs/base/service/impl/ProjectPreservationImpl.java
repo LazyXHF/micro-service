@@ -648,53 +648,38 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      * @return
      */
     @Override
-    public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId){
+    public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId)throws Exception{
 
         for (int i =0;i<list.size();i++) {
             InvestmentPlan plan = list.get(i);
 
             if(StringUtils.isEmpty(plan.getPlanNum())){
                 int count = i+2;
-                return new ResponseMessage(Code.CODE_ERROR, "第"+count+"行的计划编号不可为空");
+                throw new Exception("第"+count+"行的计划编号不可为空");
             }
             if(StringUtils.isEmpty(plan.getProjectName())){
                 int count = i+2;
-                return new ResponseMessage(Code.CODE_ERROR, "第"+count+"行的项目名称不可为空");
+                throw new Exception("第"+count+"行的项目名称不可为空");
             }
-
-
-
-
-            /*BigDecimal decimal = new BigDecimal(0);
-            if(plan.getAmount()==decimal){
-                return new ResponseMessage(Code.CODE_ERROR, "导入失败");
-            }*/
-           /* String id = String.valueOf(IDUtils.genItemId());*/
-
 
             //查询所有项目
             InvestmentPlanExample example = new InvestmentPlanExample();
             List<InvestmentPlan> plans = planMapper.selectByExample(example);
             for (InvestmentPlan o : plans) {
                 if(o.getPlanNum().equals(plan.getPlanNum())){
-                    return new ResponseMessage(Code.CODE_ERROR, "计划编号不可重复");
+                    throw new Exception("计划编号不可重复");
                 }
                 if(o.getProjectName().equals(plan.getProjectName())){
-                    return new ResponseMessage(Code.CODE_ERROR, "项目名称不可重复");
+                    throw new Exception("项目名称不可重复");
                 }
             }
-
 
             plan.setId(String.valueOf(IDUtils.genItemId()));
             plan.setCreateTime(new Date());
-            /*plan.setProjectId(id);*/
             int j = planMapper.insertSelective(plan);
             if(j!=1){
-                return new ResponseMessage(Code.CODE_ERROR, "导入失败");
+                throw new Exception("导入失败");
             }
-            /*updateUtil.projectMethod(id,null,plan.getProjectName(),
-                    plan.getProjectType(),"A",loginId,plan.getOrganization(),
-                    plan.getAmount().toString(),"Aa1",plan.getInvestor());*/
         }
         return new ResponseMessage(Code.CODE_OK, "导入成功");
     }
