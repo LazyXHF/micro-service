@@ -59,6 +59,13 @@ public class PucharseReviewController {
         logger.debug("handlePucharseReview" + requestBody);
         return pucharseReviewService.handlePucharseReview(requestBody);
     }
+    @LogInfo(methodName = "退回",modelName = "采购评审")
+    @RequestMapping("/returnRecord")
+    @ResponseBody
+    public ResponseMessage returnRecord(@RequestBody String requestBody) {
+        logger.debug("returnRecord" + requestBody);
+        return pucharseReviewService.returnRecord(requestBody);
+    }
 
 
 

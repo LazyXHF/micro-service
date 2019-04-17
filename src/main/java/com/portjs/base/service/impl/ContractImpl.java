@@ -59,6 +59,12 @@ public class ContractImpl implements ContractService {
             page.init(count,pageNum,pageCount);
             //查询每页数据
             List<ContractVo> contractVoList= applicationMapper.selectByPage(method,projectCode,projectName,page.getRowNum(),page.getPageCount());
+            if (!CollectionUtils.isEmpty(contractVoList)) {
+                for (ContractVo vo : contractVoList) {
+                  vo.setSource("招标申请单");
+                }
+            }
+
             page.setList(contractVoList);
             return new ResponseMessage(Code.CODE_OK,"查询成功",page);
         }
@@ -70,6 +76,11 @@ public class ContractImpl implements ContractService {
             page.init(count,pageNum,pageCount);
             //查询每页数据
             List<ContractVo> contractVoList= reviewMapper.selectByPage(method,projectCode,projectName,page.getRowNum(),page.getPageCount());
+            if(!CollectionUtils.isEmpty(contractVoList)){
+                for (ContractVo vo : contractVoList) {
+                    vo.setSource("采购申请单");
+                }
+            }
             page.setList(contractVoList);
             return new ResponseMessage(Code.CODE_OK,"查询成功",page);
         }
@@ -138,13 +149,14 @@ public class ContractImpl implements ContractService {
         vo.setSignDate(format.format(contract.getSignDate()));
         vo.setValidDate(format.format(contract.getValidDate()));
         vo.setFileUrl(contract.getFileUrl());
+        vo.setContractNum(contract.getContractNum());
         Project project = projectMapper.selectByPrimaryKey(contract.getProjectId());
         vo.setProjectName(project.getProjectName());
 
-        if(contract.getSource().equals("采购结果")){
+        if(contract.getSource().equals("采购申请单")){
             PurchaseReview review = reviewMapper.selectByPrimaryKey(contract.getSourceId());
             vo.setTenderNum(review.getReviewNum());
-        }else if(contract.getSource().equals("招标申请")) {
+        }else if(contract.getSource().equals("招标申请单")) {
             TenderApplication tender = applicationMapper.selectByPrimaryKey(contract.getSourceId());
             vo.setTenderNum(tender.getTenderNum());
         }

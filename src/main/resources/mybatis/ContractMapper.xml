@@ -462,53 +462,54 @@
       delete_time = #{deleteTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectCount" parameterType="com.portjs.base.vo.ContractVo">
+  <select id="selectCount" parameterType="com.portjs.base.vo.ContractVo" resultType="int">
     select count(c.id) from contract c, project p
     <where>
       c.project_id=p.id
-      <if test="projectCode !=null">
+      <if test="projectCode !=null and projectCode!=''">
         and p.project_code like CONCAT("%",#{projectCode},"%")
       </if>
-      <if test="projectName !=null">
+      <if test="projectName !=null and projectName!=''">
         and p.project_name like CONCAT("%",#{projectName},"%")
       </if>
-      <if test="amount !=null">
+      <if test="amount !=null and amount!=''">
         and c.amount like CONCAT("%",#{amount},"%")
       </if>
-      <if test="supplier !=null">
+      <if test="supplier !=null and supplier!=''">
         and c.supplier like CONCAT("%",#{supplier},"%")
       </if>
-      <if test="inCharge !=null">
+      <if test="inCharge !=null and inCharge!=''">
         and c.in_charge like CONCAT("%",#{inCharge},"%")
       </if>
-      <if test="validDate !=null">
+      <if test="validDate !=null and validDate!=''">
         and DATE_FORMAT(c.valid_date,"%Y-%m-%d")=#{validDate}
       </if>
     </where>
   </select>
 
   <select id="selectBypage" parameterType="com.portjs.base.vo.ContractVo" resultType="com.portjs.base.vo.ContractVo">
-    select c.id as id , p.project_code as proectCode ,p.project_name as projectName,
-    c.supplier as supplier,c.in_charge as inCharge, c.amount as amount ,c.valid_date as validDate
+    select c.id as id , p.project_code as projectCode ,p.project_name as projectName,
+    c.supplier as supplier,c.in_charge as inCharge, c.amount as amount ,c.valid_date as validDate,
+    c.contract_num as contractNum
     from contract c, project p
     <where>
       c.project_id=p.id
-      <if test="projectCode !=null">
+      <if test="projectCode !=null and projectCode!=''">
         and p.project_code like CONCAT("%",#{projectCode},"%")
       </if>
-      <if test="projectName !=null">
+      <if test="projectName !=null and projectName!=''">
         and p.project_name like CONCAT("%",#{projectName},"%")
       </if>
-      <if test="amount !=null">
+      <if test="amount !=null and amount!=''">
         and c.amount like CONCAT("%",#{amount},"%")
       </if>
-      <if test="supplier !=null">
+      <if test="supplier !=null and supplier!=''">
         and c.supplier like CONCAT("%",#{supplier},"%")
       </if>
-      <if test="inCharge !=null">
+      <if test="inCharge !=null and inCharge!=''">
         and c.in_charge like CONCAT("%",#{inCharge},"%")
       </if>
-      <if test="validDate !=null">
+      <if test="validDate !=null and validDate!=''">
         and DATE_FORMAT(c.valid_date,"%Y-%m-%d")=#{validDate}
       </if>
     </where>

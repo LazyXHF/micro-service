@@ -36,5 +36,6 @@ public interface InternalAttachmentMapper {
 
     int updateByrelateddomainId(InternalAttachment internalAttachment);
 
+
     List<InternalAttachment> queryPucharseReviewFiles(@Param("id") String id);
 }

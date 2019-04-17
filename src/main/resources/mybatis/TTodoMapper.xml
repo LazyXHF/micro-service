@@ -489,4 +489,65 @@
     from t_todo
     where relateddomain_id=#{id} and receiver_id=#{ownerId} and status='0'
   </select>
+   <update id="updateTodoRecord" parameterType="com.portjs.base.entity.TTodo" >
+     update t_todo
+     <set >
+     <if test="currentstepId != null" >
+       currentstep_id = #{currentstepId,jdbcType=VARCHAR},
+     </if>
+     <if test="stepDesc != null" >
+       step_desc = #{stepDesc,jdbcType=VARCHAR},
+     </if>
+     <if test="relateddomain != null" >
+       relateddomain = #{relateddomain,jdbcType=VARCHAR},
+     </if>
+     <if test="relateddomainId != null" >
+       relateddomain_id = #{relateddomainId,jdbcType=VARCHAR},
+     </if>
+     <if test="senderId != null" >
+       sender_id = #{senderId,jdbcType=VARCHAR},
+     </if>
+     <if test="senderTime != null" >
+       sender_time = #{senderTime,jdbcType=TIMESTAMP},
+     </if>
+     <if test="receiverId != null" >
+       receiver_id = #{receiverId,jdbcType=VARCHAR},
+     </if>
+     <if test="todoType != null" >
+       todo_type = #{todoType,jdbcType=VARCHAR},
+     </if>
+     <if test="actiontime != null" >
+       actiontime = #{actiontime,jdbcType=TIMESTAMP},
+     </if>
+     <if test="enable != null" >
+       enable = #{enable,jdbcType=VARCHAR},
+     </if>
+     <if test="status != null" >
+       status = #{status,jdbcType=VARCHAR},
+     </if>
+     <if test="sort != null" >
+       sort = #{sort,jdbcType=VARCHAR},
+     </if>
+     <if test="backup3 != null" >
+       backup_3 = #{backup3,jdbcType=VARCHAR},
+     </if>
+     <if test="backUp7 != null" >
+       back_up7 = #{backUp7,jdbcType=VARCHAR},
+     </if>
+     <if test="backUp8 != null" >
+       back_up8 = #{backUp8,jdbcType=VARCHAR},
+     </if>
+     <if test="backUp9 != null" >
+       back_up9 = #{backUp9,jdbcType=VARCHAR},
+     </if>
+     </set>
+     <where>
+       relateddomain_id=#{relateddomainId} and receiver_id=#{receiverId} and status='0'
+     </where>
+   </update>
+
+
+
+
+
 </mapper>

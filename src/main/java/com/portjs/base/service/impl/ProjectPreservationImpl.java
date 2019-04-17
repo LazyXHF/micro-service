@@ -648,7 +648,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
      * @return
      */
     @Override
-    public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) throws Exception{
+    public ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId){
 
         for (int i =0;i<list.size();i++) {
             InvestmentPlan plan = list.get(i);
