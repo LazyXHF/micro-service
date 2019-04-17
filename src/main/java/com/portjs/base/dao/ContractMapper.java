@@ -2,6 +2,7 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.Contract;
 import com.portjs.base.entity.ContractExample;
+import com.portjs.base.vo.ContractVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,9 @@ public interface ContractMapper {
     int updateByPrimaryKeySelective(Contract record);
 
     int updateByPrimaryKey(Contract record);
+
+    int selectCount(ContractVo contract);
+
+    List<ContractVo> selectBypage(ContractVo contract);
+
 }
