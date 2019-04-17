@@ -15,7 +15,7 @@ public class TenderApplicationVo extends BaseEntity{
 
     private String projectName;//项目名称
 
-    private Integer requestId;//采购申请单id
+    private String requestId;//采购申请单id
 
     private String tenderNum;//采购申请单单号（PR+YYMMDD+2位流水码）
 
