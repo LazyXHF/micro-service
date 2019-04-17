@@ -425,6 +425,7 @@ public class TenderServiceImpl implements TenderService {
         if(StringUtils.isEmpty(application.getId())){
             return new ResponseMessage(Code.CODE_ERROR,"id"+PARAM_MESSAGE_1);
         }
+
         application.setDeleteTime(new Date());
         int count = tenderApplicationMapper.updateByPrimaryKeySelective(application);
         if(count!=1){

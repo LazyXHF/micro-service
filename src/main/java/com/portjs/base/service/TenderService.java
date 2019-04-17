@@ -49,6 +49,7 @@ public interface TenderService {
 	 * @return
 	 */
 	ResponseMessage deleteTender(String requestBody);
+
 	/**
 	 *审核
 	 * @param requestBody
