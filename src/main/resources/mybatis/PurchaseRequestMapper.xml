@@ -21,7 +21,6 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
-
   </resultMap>
   <sql id="Base_Column_List">
     Id, request_num, project_id, purchase_dept, applicant,applicant_id, method, agency, apply_date,
@@ -409,5 +408,44 @@
       #{id}
     </foreach>
   </update>
+
+  <resultMap id="BaseResultMap2" type="com.portjs.base.entity.PurchaseRequest">
+    <id column="Id" jdbcType="VARCHAR" property="id" />
+    <result column="request_num" jdbcType="VARCHAR" property="requestNum" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="purchase_dept" jdbcType="VARCHAR" property="purchaseDept" />
+    <result column="applicant" jdbcType="VARCHAR" property="applicant" />
+    <result column="applicant_id" jdbcType="VARCHAR" property="applicantId" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="agency" jdbcType="VARCHAR" property="agency" />
+    <result column="apply_date" jdbcType="DATE" property="applyDate" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="creater_id" jdbcType="VARCHAR" property="createrId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="project_code" jdbcType="VARCHAR" property="projectCode" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+  </resultMap>
+  <select id="queryPucharseList" parameterType="java.lang.String" resultMap="BaseResultMap2">
+    select
+    a.Id, a.request_num, a.project_id, a.purchase_dept, a.applicant,a.applicant_id, a.method, a.agency, a.apply_date,
+    a.amount, a.content, a.status, a.creater,a.creater_id, a.create_time, a.update_time, a.delete_time,b.project_code,b.project_name
+    from purchase_request a  LEFT JOIN project b  on  a.project_id=b.id
+    <where>
+    <if test="method !=null and method!=''">
+       a.method like "%" #{method} "%"
+    </if>
+      <if test="projectCode !=null and projectCode!=''">
+        and b.project_code like "%" #{projectCode} "%"
+      </if>
+      <if test="projectName !=null and projectName!=''">
+        and b.project_name like "%" #{projectName} "%"
+      </if>
+  </where>
+  </select>
 
 </mapper>

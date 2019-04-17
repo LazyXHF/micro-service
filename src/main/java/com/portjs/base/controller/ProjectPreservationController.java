@@ -120,7 +120,7 @@ public class ProjectPreservationController  extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("insert-for-excel() end...",e);
-            return new ResponseMessage(Code.CODE_ERROR,"未知异常");
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
         }
     }
 

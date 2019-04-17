@@ -70,9 +70,9 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         int pageCount = jsonObject.getInteger("pageCount");
         PageHelper.startPage(pageNum, pageCount);
         List list = purchaseRequestMapper.queryPucharseList(method, projectCode, projectName);
-        if (list.isEmpty()) {
+      /*  if (list.isEmpty()) {
             return new ResponseMessage(Code.CODE_OK, "分页信息为空");
-        }
+        }*/
         PageInfo pageInfo = new PageInfo(list);
         return new ResponseMessage(Code.CODE_OK, "采购单信息列表", pageInfo);
     }
@@ -403,7 +403,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
     //编辑  详情   审批  查询接口
     @Override
     @Transactional
-    public ResponseMessage handlePucharseReview(String requestBody) {
+    public ResponseMessage handlePucharseReview(String requestBody) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(requestBody);
         //采购评审单的Id  从基本信息里面取
         String id = jsonObject.getString("id");
@@ -495,7 +495,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         }
         int f3=purchaseReviewMapper.updateProjectReviewStatus(id,nowBackUp3+"");
         if(f3!=1){
-            return new ResponseMessage(Code.CODE_ERROR,"更新主表状态失败");
+            throw  new Exception();
+            /*return new ResponseMessage(Code.CODE_ERROR,"更新主表状态失败");*/
         }
         return  new ResponseMessage(Code.CODE_OK ,"处理成功");
     }
