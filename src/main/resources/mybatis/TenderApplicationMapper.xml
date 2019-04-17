@@ -556,6 +556,7 @@
     ORDER BY a.create_time
     LIMIT #{rowNum,jdbcType=INTEGER},#{pageCount,jdbcType=INTEGER}
   </select>
+
   <!--招标中的采购清单查询-->
   <select id="selectRequests" parameterType="com.portjs.base.entity.TenderApplicationVo" resultType="com.portjs.base.entity.TenderApplicationVo">
     select
