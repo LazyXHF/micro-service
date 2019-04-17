@@ -44,6 +44,16 @@ public class PurchaseReview {
 
     private String requestNum;
 
+    private String isApprover;
+
+    public String getIsApprover() {
+        return isApprover;
+    }
+
+    public void setIsApprover(String isApprover) {
+        this.isApprover = isApprover;
+    }
+
     public String getRequestNum() {
         return requestNum;
     }
