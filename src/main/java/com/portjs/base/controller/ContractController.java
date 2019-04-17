@@ -69,4 +69,5 @@ public class ContractController extends BaseController{
         String id = requestJson.getString("id");
         return contractService.selectContractDetails(id);
     }
+
 }

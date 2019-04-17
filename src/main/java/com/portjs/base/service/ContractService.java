@@ -36,4 +36,5 @@ public interface ContractService {
      * @return
      */
     ResponseMessage selectContractDetails(String id);
+
 }
