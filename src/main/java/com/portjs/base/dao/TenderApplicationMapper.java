@@ -42,6 +42,7 @@ public interface TenderApplicationMapper {
      */
     List<TenderApplicationVo>selectRequests(TenderApplicationVo tenderApplicationVo);
 
+
     /**
      * 项目招标的总数查询
      */
