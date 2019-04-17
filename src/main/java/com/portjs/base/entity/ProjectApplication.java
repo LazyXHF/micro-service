@@ -68,6 +68,15 @@ public class ProjectApplication {
 
     private String isApprover;
 
+    private String planNum;//计划编码
+
+    public String getPlanNum() {
+        return planNum;
+    }
+
+    public void setPlanNum(String planNum) {
+        this.planNum = planNum;
+    }
 
     private String isRight;
 
