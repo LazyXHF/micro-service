@@ -12,6 +12,12 @@
     <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="organization" property="organization" jdbcType="VARCHAR" />
+    <result column="project_money" property="projectMoney" jdbcType="VARCHAR" />
+    <result column="project_stage" property="projectStage" jdbcType="VARCHAR" />
+    <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
+    <result column="investor" property="investor" jdbcType="VARCHAR" />
+    <result column="creator_name" property="creatorName" jdbcType="VARCHAR" />
     <result column="back_up1" property="backUp1" jdbcType="VARCHAR" />
     <result column="back_up2" property="backUp2" jdbcType="VARCHAR" />
     <result column="back_up3" property="backUp3" jdbcType="VARCHAR" />
@@ -22,7 +28,8 @@
     <result column="back_up8" property="backUp8" jdbcType="VARCHAR" />
     <result column="back_up9" property="backUp9" jdbcType="VARCHAR" />
     <result column="back_up10" property="backUp10" jdbcType="VARCHAR" />
-    <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
+    <result column="application_end_time" property="applicationEndTime" jdbcType="TIMESTAMP" />
+    <result column="project_end_time" property="projectEndTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,9 +90,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_code, project_name, project_type, schedule, create_time, creator, Modifier, 
-    update_time, delete_time, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6, 
-    back_up7, back_up8, back_up9, back_up10, application_id
+    id, project_code, project_name, project_type, schedule, create_time, creator, Modifier,
+    update_time, delete_time, organization, project_money, project_stage, project_status,
+    investor, creator_name, back_up1, back_up2, back_up3, back_up4, back_up5, back_up6,
+    back_up7, back_up8, back_up9, back_up10, application_end_time, project_end_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectExample" >
     select
@@ -102,7 +110,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from project
     where id = #{id,jdbcType=VARCHAR}
@@ -118,22 +126,26 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.Project" >
-    insert into project (id, project_code, project_name, 
-      project_type, schedule, create_time, 
-      creator, Modifier, update_time, 
-      delete_time, back_up1, back_up2, 
-      back_up3, back_up4, back_up5, 
-      back_up6, back_up7, back_up8, 
-      back_up9, back_up10, application_id
-      )
-    values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, 
-      #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleteTime,jdbcType=TIMESTAMP}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR}, 
-      #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR}, 
-      #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR}, 
-      #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}
-      )
+    insert into project (id, project_code, project_name,
+      project_type, schedule, create_time,
+      creator, Modifier, update_time,
+      delete_time, organization, project_money,
+      project_stage, project_status, investor,
+      creator_name, back_up1, back_up2,
+      back_up3, back_up4, back_up5,
+      back_up6, back_up7, back_up8,
+      back_up9, back_up10, application_end_time,
+      project_end_time)
+    values (#{id,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
+      #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{deleteTime,jdbcType=TIMESTAMP}, #{organization,jdbcType=VARCHAR}, #{projectMoney,jdbcType=VARCHAR},
+      #{projectStage,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, #{investor,jdbcType=VARCHAR},
+      #{creatorName,jdbcType=VARCHAR}, #{backUp1,jdbcType=VARCHAR}, #{backUp2,jdbcType=VARCHAR},
+      #{backUp3,jdbcType=VARCHAR}, #{backUp4,jdbcType=VARCHAR}, #{backUp5,jdbcType=VARCHAR},
+      #{backUp6,jdbcType=VARCHAR}, #{backUp7,jdbcType=VARCHAR}, #{backUp8,jdbcType=VARCHAR},
+      #{backUp9,jdbcType=VARCHAR}, #{backUp10,jdbcType=VARCHAR}, #{applicationEndTime,jdbcType=TIMESTAMP},
+      #{projectEndTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.Project" >
     insert into project
@@ -168,6 +180,24 @@
       <if test="deleteTime != null" >
         delete_time,
       </if>
+      <if test="organization != null" >
+        organization,
+      </if>
+      <if test="projectMoney != null" >
+        project_money,
+      </if>
+      <if test="projectStage != null" >
+        project_stage,
+      </if>
+      <if test="projectStatus != null" >
+        project_status,
+      </if>
+      <if test="investor != null" >
+        investor,
+      </if>
+      <if test="creatorName != null" >
+        creator_name,
+      </if>
       <if test="backUp1 != null" >
         back_up1,
       </if>
@@ -198,8 +228,11 @@
       <if test="backUp10 != null" >
         back_up10,
       </if>
-      <if test="applicationId != null" >
-        application_id,
+      <if test="applicationEndTime != null" >
+        application_end_time,
+      </if>
+      <if test="projectEndTime != null" >
+        project_end_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -233,6 +266,24 @@
       <if test="deleteTime != null" >
         #{deleteTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="organization != null" >
+        #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="projectMoney != null" >
+        #{projectMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStage != null" >
+        #{projectStage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStatus != null" >
+        #{projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="investor != null" >
+        #{investor,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorName != null" >
+        #{creatorName,jdbcType=VARCHAR},
+      </if>
       <if test="backUp1 != null" >
         #{backUp1,jdbcType=VARCHAR},
       </if>
@@ -263,8 +314,11 @@
       <if test="backUp10 != null" >
         #{backUp10,jdbcType=VARCHAR},
       </if>
-      <if test="applicationId != null" >
-        #{applicationId,jdbcType=VARCHAR},
+      <if test="applicationEndTime != null" >
+        #{applicationEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectEndTime != null" >
+        #{projectEndTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -307,6 +361,24 @@
       <if test="record.deleteTime != null" >
         delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.organization != null" >
+        organization = #{record.organization,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectMoney != null" >
+        project_money = #{record.projectMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectStage != null" >
+        project_stage = #{record.projectStage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectStatus != null" >
+        project_status = #{record.projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investor != null" >
+        investor = #{record.investor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatorName != null" >
+        creator_name = #{record.creatorName,jdbcType=VARCHAR},
+      </if>
       <if test="record.backUp1 != null" >
         back_up1 = #{record.backUp1,jdbcType=VARCHAR},
       </if>
@@ -337,8 +409,11 @@
       <if test="record.backUp10 != null" >
         back_up10 = #{record.backUp10,jdbcType=VARCHAR},
       </if>
-      <if test="record.applicationId != null" >
-        application_id = #{record.applicationId,jdbcType=VARCHAR},
+      <if test="record.applicationEndTime != null" >
+        application_end_time = #{record.applicationEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.projectEndTime != null" >
+        project_end_time = #{record.projectEndTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -348,26 +423,33 @@
   <update id="updateByExample" parameterType="map" >
     update project
     set id = #{record.id,jdbcType=VARCHAR},
-      project_code = #{record.projectCode,jdbcType=VARCHAR},
-      project_name = #{record.projectName,jdbcType=VARCHAR},
-      project_type = #{record.projectType,jdbcType=VARCHAR},
-      schedule = #{record.schedule,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      creator = #{record.creator,jdbcType=VARCHAR},
-      Modifier = #{record.modifier,jdbcType=VARCHAR},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
-      back_up1 = #{record.backUp1,jdbcType=VARCHAR},
-      back_up2 = #{record.backUp2,jdbcType=VARCHAR},
-      back_up3 = #{record.backUp3,jdbcType=VARCHAR},
-      back_up4 = #{record.backUp4,jdbcType=VARCHAR},
-      back_up5 = #{record.backUp5,jdbcType=VARCHAR},
-      back_up6 = #{record.backUp6,jdbcType=VARCHAR},
-      back_up7 = #{record.backUp7,jdbcType=VARCHAR},
-      back_up8 = #{record.backUp8,jdbcType=VARCHAR},
-      back_up9 = #{record.backUp9,jdbcType=VARCHAR},
-      back_up10 = #{record.backUp10,jdbcType=VARCHAR},
-      application_id = #{record.applicationId,jdbcType=VARCHAR}
+    project_code = #{record.projectCode,jdbcType=VARCHAR},
+    project_name = #{record.projectName,jdbcType=VARCHAR},
+    project_type = #{record.projectType,jdbcType=VARCHAR},
+    schedule = #{record.schedule,jdbcType=VARCHAR},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    creator = #{record.creator,jdbcType=VARCHAR},
+    Modifier = #{record.modifier,jdbcType=VARCHAR},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
+    organization = #{record.organization,jdbcType=VARCHAR},
+    project_money = #{record.projectMoney,jdbcType=VARCHAR},
+    project_stage = #{record.projectStage,jdbcType=VARCHAR},
+    project_status = #{record.projectStatus,jdbcType=VARCHAR},
+    investor = #{record.investor,jdbcType=VARCHAR},
+    creator_name = #{record.creatorName,jdbcType=VARCHAR},
+    back_up1 = #{record.backUp1,jdbcType=VARCHAR},
+    back_up2 = #{record.backUp2,jdbcType=VARCHAR},
+    back_up3 = #{record.backUp3,jdbcType=VARCHAR},
+    back_up4 = #{record.backUp4,jdbcType=VARCHAR},
+    back_up5 = #{record.backUp5,jdbcType=VARCHAR},
+    back_up6 = #{record.backUp6,jdbcType=VARCHAR},
+    back_up7 = #{record.backUp7,jdbcType=VARCHAR},
+    back_up8 = #{record.backUp8,jdbcType=VARCHAR},
+    back_up9 = #{record.backUp9,jdbcType=VARCHAR},
+    back_up10 = #{record.backUp10,jdbcType=VARCHAR},
+    application_end_time = #{record.applicationEndTime,jdbcType=TIMESTAMP},
+    project_end_time = #{record.projectEndTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -402,6 +484,24 @@
       <if test="deleteTime != null" >
         delete_time = #{deleteTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="organization != null" >
+        organization = #{organization,jdbcType=VARCHAR},
+      </if>
+      <if test="projectMoney != null" >
+        project_money = #{projectMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStage != null" >
+        project_stage = #{projectStage,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStatus != null" >
+        project_status = #{projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="investor != null" >
+        investor = #{investor,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorName != null" >
+        creator_name = #{creatorName,jdbcType=VARCHAR},
+      </if>
       <if test="backUp1 != null" >
         back_up1 = #{backUp1,jdbcType=VARCHAR},
       </if>
@@ -432,8 +532,11 @@
       <if test="backUp10 != null" >
         back_up10 = #{backUp10,jdbcType=VARCHAR},
       </if>
-      <if test="applicationId != null" >
-        application_id = #{applicationId,jdbcType=VARCHAR},
+      <if test="applicationEndTime != null" >
+        application_end_time = #{applicationEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projectEndTime != null" >
+        project_end_time = #{projectEndTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -449,6 +552,12 @@
       Modifier = #{modifier,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      organization = #{organization,jdbcType=VARCHAR},
+      project_money = #{projectMoney,jdbcType=VARCHAR},
+      project_stage = #{projectStage,jdbcType=VARCHAR},
+      project_status = #{projectStatus,jdbcType=VARCHAR},
+      investor = #{investor,jdbcType=VARCHAR},
+      creator_name = #{creatorName,jdbcType=VARCHAR},
       back_up1 = #{backUp1,jdbcType=VARCHAR},
       back_up2 = #{backUp2,jdbcType=VARCHAR},
       back_up3 = #{backUp3,jdbcType=VARCHAR},
@@ -459,9 +568,11 @@
       back_up8 = #{backUp8,jdbcType=VARCHAR},
       back_up9 = #{backUp9,jdbcType=VARCHAR},
       back_up10 = #{backUp10,jdbcType=VARCHAR},
-      application_id = #{applicationId,jdbcType=VARCHAR}
+      application_end_time = #{applicationEndTime,jdbcType=TIMESTAMP},
+      project_end_time = #{projectEndTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
   <select id="isHaveProject" resultType="int" parameterType="String">
     select count(*) from project where id=#{projectId}
   </select>

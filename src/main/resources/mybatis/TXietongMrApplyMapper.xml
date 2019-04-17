@@ -454,7 +454,7 @@ and a.id=r.apply_id and r.owner_id =#{owner_id} and d.TYPE_CODE='37'
  and a.apply_id =#{apply_id}
 </if>
   GROUP BY a.ID
- order by a.status,a.begintime)as t1
+ order by a.status,a.createtime desc )as t1
  limit #{rowNum},#{pageCount}
 </select>
 <!--会议室预定详情-->
