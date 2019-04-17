@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @author gumingyang
@@ -298,8 +299,7 @@ public class TenderServiceImpl implements TenderService {
 
         //处理操作状态
         List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
-        for(int i=0;i<list.size();i++){
-            Map<String,Object> map = list.get(i);
+        datalist.forEach(map->{
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
             String  tenderId = map.get("tenderId").toString();
             TTodoExample todoExample = new TTodoExample();
@@ -314,7 +314,7 @@ public class TenderServiceImpl implements TenderService {
                 map.put("operatingStatus",1);
             }
             datalist.add(map);
-        }
+        });
         page.setList(datalist);
         return new ResponseMessage(Code.CODE_ERROR,"查询成功",page);
     }
@@ -425,7 +425,6 @@ public class TenderServiceImpl implements TenderService {
         if(StringUtils.isEmpty(application.getId())){
             return new ResponseMessage(Code.CODE_ERROR,"id"+PARAM_MESSAGE_1);
         }
-
         application.setDeleteTime(new Date());
         int count = tenderApplicationMapper.updateByPrimaryKeySelective(application);
         if(count!=1){
@@ -786,6 +785,7 @@ public class TenderServiceImpl implements TenderService {
         InternalAttachmentExample.Criteria criteriaIn = exampleIn.createCriteria();
         criteriaIn.andRelateddomainIdEqualTo(tenderApplication.getId());
         attachmentMapper.deleteByExample(exampleIn);
+
         //增加附件
         for(int i=0;i<resourcesJSON.size();i++){
             JSONObject object = resourcesJSON.getJSONObject(i);

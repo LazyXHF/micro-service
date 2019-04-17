@@ -181,6 +181,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
             }
             //提交
         } else if (status.equals("1")) {
+            purchaseReview.setStatus("1");
             //id为空 直接添加
             if (id.isEmpty()) {
                 String id2 = UUID.randomUUID().toString();
@@ -217,8 +218,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 tWorkflowstep.setActionTime(new Date());
                 tWorkflowstep.setActionResult(0);
                 tWorkflowstep.setStatus("1");
-                //排序字段  1:提交
-                tWorkflowstep.setBackup3("1");
+                //排序字段  1:提交   暂存是没有流程记录的智力用0作为他自己的开始起点
+                tWorkflowstep.setBackup3("0");
                 tWorkflowstep.setBackUp7(ownerName);
                 int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
                 if (i4 != 1) {
@@ -239,7 +240,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setBackUp7(approveUserName);
                     tWorkflowstep2.setActionuserId(approveUserId);
                     tWorkflowstep2.setStatus("0");
-                    tWorkflowstep2.setBackup3("2");
+                    //
+                    tWorkflowstep2.setBackup3("1");
                     tWorkflowstep2.setBackUp7(approveUserName);
                     int f2 = workflowstepMapper.insertSelective(tWorkflowstep2);
                     if (f2 != 1) {
@@ -274,7 +276,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
             //id不为空 主记录已经暂存过  存在id   更新主表状态
             else {
                 purchaseReview.setId(id);
-                purchaseReview.setStatus("0");
                 int f = purchaseReviewMapper.updateByPrimaryKeySelective(purchaseReview);
                 if (f != 1) {
                     return new ResponseMessage(Code.CODE_ERROR, "更新采购评审失败");
@@ -374,13 +375,20 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         String supplier = jsonObject.getString("supplier");
         String submitTime = jsonObject.getString("submitTime");
         String status = jsonObject.getString("status");
+        String ownerId = jsonObject.getString("ownerId");
         int pageNum = jsonObject.getInteger("pageNum");
         int pageCount = jsonObject.getInteger("pageCount");
         PageHelper.startPage(pageNum,pageCount);
         List<PurchaseReview> list=purchaseReviewMapper.queryPucharseReview(projectCode,projectName,method,supplier,submitTime,status);
-        if(list.isEmpty()){
-            return  new ResponseMessage(Code.CODE_OK,"查询信息为空");
+        for(PurchaseReview purchaseReview:list) {
+            int count = workflowstepMapper.isApprover(purchaseReview.getId(), ownerId);
+            if (count == 1) {
+                purchaseReview.setIsApprover("1");
+            }else {
+                purchaseReview.setIsApprover("0");
+            }
         }
+
         PageInfo pageInfo=new PageInfo(list);
         return  new ResponseMessage(Code.CODE_OK,"采购评审列表",pageInfo);
     }
@@ -400,7 +408,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         map.put("pucharseReviewRecords",pucharseReviewRecords);
         return  new ResponseMessage(Code.CODE_OK,"页面详细信息",map);
     }
-    //编辑  详情   审批  查询接口
+    //   审批接口
     @Override
     @Transactional
     public ResponseMessage handlePucharseReview(String requestBody) throws Exception {
