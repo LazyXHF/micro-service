@@ -39,6 +39,24 @@ public class PurchaseRequest implements Serializable {
     private Date updateTime;//更新时间
 
     private Date deleteTime;//删除时间（软删除标记）
+    private String projectName;//项目id
+    private String projectCode;//项目id
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
 
     private static final long serialVersionUID = 1L;
 

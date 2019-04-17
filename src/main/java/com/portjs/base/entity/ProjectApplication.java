@@ -50,6 +50,7 @@ public class ProjectApplication {
 
     private String isApprover;
 
+
     private String isRight;
 
     public String getIsRight() {
