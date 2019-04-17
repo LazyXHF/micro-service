@@ -15,7 +15,7 @@ public interface PucharseReviewService {
 
     ResponseMessage queryPucharseReviewAll(String requestBody);
 
-    ResponseMessage handlePucharseReview(String requestBody);
+    ResponseMessage handlePucharseReview (String requestBody) throws Exception;
 
     ResponseMessage returnRecord(String requestBody);
 }

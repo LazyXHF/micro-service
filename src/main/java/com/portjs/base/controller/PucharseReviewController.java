@@ -2,6 +2,7 @@ package com.portjs.base.controller;
 
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.service.PucharseReviewService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,12 @@ public class PucharseReviewController {
     @ResponseBody
     public ResponseMessage handlePucharseReview(@RequestBody String requestBody) {
         logger.debug("handlePucharseReview" + requestBody);
-        return pucharseReviewService.handlePucharseReview(requestBody);
+        try {
+            return pucharseReviewService.handlePucharseReview(requestBody);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage(Code.CODE_ERROR,"服务器异常");
+        }
     }
     @LogInfo(methodName = "退回",modelName = "采购评审")
     @RequestMapping("/returnRecord")
