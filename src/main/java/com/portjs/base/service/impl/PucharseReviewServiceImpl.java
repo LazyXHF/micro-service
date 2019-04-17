@@ -391,6 +391,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         //采购评审单的Id
         String Id= jsonObject.getString("Id");
         PurchaseReview  purchaseReviewBase=purchaseReviewMapper.queryPucharseReviewBase(Id);
+
         List<InternalAttachment> pucharseReviewFiles=internalAttachmentMapper.queryPucharseReviewFiles(Id);
         List<InternalWorkflowstep> pucharseReviewRecords=workflowstepMapper.queryPucharseReviewRecords(Id);
         Map<String,Object> map=new HashMap<>();
