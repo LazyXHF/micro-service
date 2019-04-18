@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
-    <result column="doc_num" property="docNum" jdbcType="INTEGER" />
+    <result column="doc_num" property="docNum" jdbcType="BIGINT" />
     <result column="doc_name" property="docName" jdbcType="VARCHAR" />
     <result column="nature" property="nature" jdbcType="VARCHAR" />
     <result column="form" property="form" jdbcType="VARCHAR" />
@@ -120,7 +120,7 @@
       create_time, creator, Modifier, 
       update_time, delete_time)
     values (#{id,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
-      #{docNum,jdbcType=INTEGER}, #{docName,jdbcType=VARCHAR}, #{nature,jdbcType=VARCHAR}, 
+      #{docNum,jdbcType=BIGINT}, #{docName,jdbcType=VARCHAR}, #{nature,jdbcType=VARCHAR},
       #{form,jdbcType=VARCHAR}, #{client,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
       #{technosphere,jdbcType=VARCHAR}, #{achievement,jdbcType=VARCHAR}, #{escheatage,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
@@ -192,7 +192,7 @@
         #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="docNum != null" >
-        #{docNum,jdbcType=INTEGER},
+        #{docNum,jdbcType=BIGINT},
       </if>
       <if test="docName != null" >
         #{docName,jdbcType=VARCHAR},
@@ -254,7 +254,7 @@
         project_id = #{record.projectId,jdbcType=VARCHAR},
       </if>
       <if test="record.docNum != null" >
-        doc_num = #{record.docNum,jdbcType=INTEGER},
+        doc_num = #{record.docNum,jdbcType=BIGINT},
       </if>
       <if test="record.docName != null" >
         doc_name = #{record.docName,jdbcType=VARCHAR},
@@ -305,7 +305,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       application_id = #{record.applicationId,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=VARCHAR},
-      doc_num = #{record.docNum,jdbcType=INTEGER},
+      doc_num = #{record.docNum,jdbcType=BIGINT},
       doc_name = #{record.docName,jdbcType=VARCHAR},
       nature = #{record.nature,jdbcType=VARCHAR},
       form = #{record.form,jdbcType=VARCHAR},
@@ -333,7 +333,7 @@
         project_id = #{projectId,jdbcType=VARCHAR},
       </if>
       <if test="docNum != null" >
-        doc_num = #{docNum,jdbcType=INTEGER},
+        doc_num = #{docNum,jdbcType=BIGINT},
       </if>
       <if test="docName != null" >
         doc_name = #{docName,jdbcType=VARCHAR},
@@ -381,7 +381,7 @@
     update project_declaration
     set application_id = #{applicationId,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
-      doc_num = #{docNum,jdbcType=INTEGER},
+      doc_num = #{docNum,jdbcType=BIGINT},
       doc_name = #{docName,jdbcType=VARCHAR},
       nature = #{nature,jdbcType=VARCHAR},
       form = #{form,jdbcType=VARCHAR},

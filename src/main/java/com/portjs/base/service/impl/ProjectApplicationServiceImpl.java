@@ -97,14 +97,19 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String projectCode=requestJson.getString("projectCode");
         //项目名称
         String projectName=requestJson.getString("projectName");
-        //项目分类
-        String projectType=requestJson.getString("projectType");
-        //责任单位
+        //申请部门（业务单位）
         String organization=requestJson.getString("organization");
-        //建设方式
+        //项目等级
+        String leval=requestJson.getString("leval");
+        //项目类型
+        String projectType=requestJson.getString("projectType");
+        //承建负责人
+        String projectManager=requestJson.getString("projectManager");
+
+        /*//建设方式
         String  constructionMode=requestJson.getString("constructionMode");
         //投资主体
-        String investor=requestJson.getString("investor");
+        String investor=requestJson.getString("investor");*/
         String owneId=requestJson.getString("ownerId");
         String pageNum=requestJson.getString("pageNum");
         String pageCount=requestJson.getString("pageCount");
@@ -153,9 +158,9 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 }
             });*//*
         }*/
-        int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,constructionMode,investor,owneId);
+        int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
 //            PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageCount));
-           List<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,owneId);
+           List<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
         if(alllist.isEmpty()){
             return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
         }else {

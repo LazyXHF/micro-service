@@ -82,14 +82,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         String userId = jsonObject.getString("UserId");//登录用户
         String userName = jsonObject.getString("UserName");//登录用户名
         JSONObject application1JSON = jsonObject.getJSONObject("Application");
-        JSONObject budgetJSON = jsonObject.getJSONObject("Budget");//立项预算
         JSONObject declarationJSON = jsonObject.getJSONObject("Declaration");//申报信息
         JSONArray configurationJSON = jsonObject.getJSONArray("Configuration");//项目里程碑
+        JSONObject budgetJSON = jsonObject.getJSONObject("Budget");//立项预算
         JSONArray arrayJSON = jsonObject.getJSONArray("Persons");
         JSONArray resourcesJSON = jsonObject.getJSONArray("Files");
         JSONArray nextViewJSON = jsonObject.getJSONArray("NextViews");
         String tTodoId = jsonObject.getString("tTodoId");
-        String projectName = jsonObject.getString("projectName");//项目名字
+        /*String projectName = jsonObject.getString("projectName");//项目名字*/
         String type = jsonObject.getString("type");//1立项申请 2 项目注册
 
         if(StringUtils.isEmpty(status)){
@@ -123,7 +123,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         }else{
             application.setEnable("1");
             //提交
-            if(type.equals("2")){
+            if(type.equals("1")){
                 if(CollectionUtils.isEmpty(arrayJSON)){
                     /*return new ResponseMessage(Code.CODE_ERROR,"Persons"+PARAM_MESSAGE_1);*/
                     throw  new Exception("Persons"+PARAM_MESSAGE_1);
@@ -195,7 +195,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             }
         }
 
-        if(type.equals("2")){
+        if(type.equals("1")){
             //新增申报信息 先删除后增加
             ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
             ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
@@ -205,6 +205,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             ProjectDeclaration declaration = JSONObject.toJavaObject(declarationJSON, ProjectDeclaration.class);
             declaration.setId(String.valueOf(IDUtils.genItemId()));
             declaration.setCreateTime(new Date());
+            declaration.setApplicationId(application.getId());
             declaration.setProjectId(application.getProjectId());
             declaration.setCreator(userId);
             int i2 = declarationMapper.insertSelective(declaration);
@@ -262,6 +263,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             ProjectBudget budget = JSONObject.toJavaObject(budgetJSON, ProjectBudget.class);
             budget.setId(String.valueOf(IDUtils.genItemId()));
             budget.setCreateTime(new Date());
+            budget.setApplicationId(application.getId());
             budget.setProjectId(application.getProjectId());
             budget.setCreator(userId);
 
@@ -271,12 +273,12 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 throw  new Exception("操作失败");
             }
 
-            //新增附件 先删除后增加
+            //新增里程碑 先删除后增加
             BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
             BusinessConfigurationExample.Criteria configurationCriteria = configurationExample.createCriteria();
             configurationCriteria.andProjectIdEqualTo(application.getProjectId());
             configurationMapper.deleteByExample(configurationExample);
-            //增加附件
+            //增加里程碑
             for(int i=0;i<configurationJSON.size();i++){
                 JSONObject object = configurationJSON.getJSONObject(i);
                 BusinessConfiguration configuration = JSONObject.toJavaObject(object,BusinessConfiguration.class);
@@ -343,7 +345,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             TTodo todo = new TTodo();
             todo.setId(String.valueOf(IDUtils.genItemId()));
             todo.setCurrentstepId(tWorkflowstep.getId());
-            todo.setStepDesc(projectName+"的立项批复流程等待您的处理");
+            todo.setStepDesc(application.getProjectName()+"的立项批复流程等待您的处理");
             todo.setRelateddomain("项目立项");
             todo.setRelateddomainId(application.getId());
             todo.setSenderId(userId);

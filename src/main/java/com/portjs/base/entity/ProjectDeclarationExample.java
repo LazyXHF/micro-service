@@ -325,52 +325,52 @@ public class ProjectDeclarationExample {
             return (Criteria) this;
         }
 
-        public Criteria andDocNumEqualTo(Integer value) {
+        public Criteria andDocNumEqualTo(Long value) {
             addCriterion("doc_num =", value, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumNotEqualTo(Integer value) {
+        public Criteria andDocNumNotEqualTo(Long value) {
             addCriterion("doc_num <>", value, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumGreaterThan(Integer value) {
+        public Criteria andDocNumGreaterThan(Long value) {
             addCriterion("doc_num >", value, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDocNumGreaterThanOrEqualTo(Long value) {
             addCriterion("doc_num >=", value, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumLessThan(Integer value) {
+        public Criteria andDocNumLessThan(Long value) {
             addCriterion("doc_num <", value, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumLessThanOrEqualTo(Integer value) {
+        public Criteria andDocNumLessThanOrEqualTo(Long value) {
             addCriterion("doc_num <=", value, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumIn(List<Integer> values) {
+        public Criteria andDocNumIn(List<Long> values) {
             addCriterion("doc_num in", values, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumNotIn(List<Integer> values) {
+        public Criteria andDocNumNotIn(List<Long> values) {
             addCriterion("doc_num not in", values, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumBetween(Integer value1, Integer value2) {
+        public Criteria andDocNumBetween(Long value1, Integer value2) {
             addCriterion("doc_num between", value1, value2, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andDocNumNotBetween(Long value1, Integer value2) {
             addCriterion("doc_num not between", value1, value2, "docNum");
             return (Criteria) this;
         }

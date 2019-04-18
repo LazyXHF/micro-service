@@ -33,6 +33,7 @@
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -715,11 +716,11 @@
       <if test="organization !=null and organization!=''">
         and  organization like "%" #{organization} "%"
       </if>
-      <if test="constructionMode !=null and constructionMode!=''">
-        and  construction_mode like "%" #{constructionMode} "%"
+      <if test="leval !=null and leval!=''">
+        and  leval like "%" #{leval} "%"
       </if>
-      <if test="investor !=null and investor!=''">
-        and  investor like "%" #{investor} "%"
+      <if test="projectManager !=null and projectManager!=''">
+        and  project_manager like "%" #{projectManager} "%"
       </if>
     UNION ALL
     select count(t2.id) as tmpcount
@@ -738,11 +739,11 @@
     <if test="organization !=null and organization!=''">
       and  organization like "%" #{organization} "%"
     </if>
-    <if test="constructionMode !=null and constructionMode!=''">
-      and  construction_mode like "%" #{constructionMode} "%"
+    <if test="leval !=null and leval!=''">
+      and  leval like "%" #{leval} "%"
     </if>
-    <if test="investor !=null and investor!=''">
-      and  investor like "%" #{investor} "%"
+    <if test="projectManager !=null and projectManager!=''">
+      and  project_manager like "%" #{projectManager} "%"
     </if> ) A
   </select>
 
@@ -767,9 +768,7 @@
   </resultMap>
   <!--查询项目信息-->
   <select id="queryProject" resultMap="BaseResultMap">
-    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,construction_mode,
-    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete
+    select  *
     from project_application
      where
       is_delete='0' and status!='0'
@@ -785,16 +784,14 @@
       <if test="organization !=null and organization!=''">
         and  organization = #{organization}
       </if>
-      <if test="constructionMode !=null and constructionMode!=''">
-        and  construction_mode like "%" #{constructionMode} "%"
+      <if test="leval !=null and leval!=''">
+        and  leval like "%" #{leval} "%"
       </if>
-      <if test="investor !=null and investor!=''">
-        and  investor = #{investor}
+      <if test="projectManager !=null and projectManager!=''">
+        and  project_manager = #{projectManager}
       </if>
     UNION ALL
-    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,construction_mode,
-    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete
+    select  *
     from project_application
      where
       is_delete='0' and status='0' and creater=#{ownerId}
@@ -810,11 +807,11 @@
       <if test="organization !=null and organization!=''">
         and  organization like "%" #{organization} "%"
       </if>
-      <if test="constructionMode !=null and constructionMode!=''">
-        and  construction_mode like "%" #{constructionMode} "%"
+      <if test="leval !=null and leval!=''">
+        and  leval like "%" #{leval} "%"
       </if>
-      <if test="investor !=null and investor!=''">
-        and  investor like "%" #{investor} "%"
+      <if test="projectManager !=null and projectManager!=''">
+        and  project_manager like "%" #{projectManager} "%"
       </if>
     order by   create_time desc
 
@@ -825,9 +822,7 @@
   limit #{rowNum},#{pageCount}
   status="0" DESC ,status="8" DESC ,status,-->
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select   a.Id, a.investment_id, a.project_code,a.project_id,  a.project_name, a.project_type, a.investor, a.organization,a.construction_mode,
-    a.leval, a.investment_amount, a.range1, a.application_amount, a.project_desc, a.kickoff_date,
-    a.remark, a.creater, a.create_time, a.update_time, a.enable, a.file_url, a.status, a.is_delete,b.plan_num
+  select   a.*,b.plan_num
   from project_application  a  left JOIN   investment_plan b on  a.investment_id=b.id
     where a.id=#{id}
   </select>

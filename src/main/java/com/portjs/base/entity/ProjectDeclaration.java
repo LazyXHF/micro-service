@@ -9,7 +9,7 @@ public class ProjectDeclaration {
 
     private String projectId;
 
-    private Integer docNum;
+    private Long docNum;
 
     private String docName;
 
@@ -61,11 +61,11 @@ public class ProjectDeclaration {
         this.projectId = projectId == null ? null : projectId.trim();
     }
 
-    public Integer getDocNum() {
+    public Long getDocNum() {
         return docNum;
     }
 
-    public void setDocNum(Integer docNum) {
+    public void setDocNum(Long docNum) {
         this.docNum = docNum;
     }
 
