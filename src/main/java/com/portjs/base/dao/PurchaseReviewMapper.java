@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 @Repository
 public interface PurchaseReviewMapper {
@@ -60,4 +61,8 @@ public interface PurchaseReviewMapper {
     PurchaseReview queryPucharseReviewBase(@Param("id") String id);
 
     int updateProjectReviewStatus(@Param("id") String id, @Param("nowBackUp3")String nowBackUp3);
+
+    int deleteProjectReview(@Param("id") String id);
+
+    int updateProjectReviewStatus2(PurchaseReview p);
 }
