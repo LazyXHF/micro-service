@@ -209,6 +209,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
 				todo.setTodoType(dictionaryList.get(0).getMainValue());
 				todo.setStatus("0");
+				//加入待办的立项分类
+				todo.setBackUp8("1");
 				int i1 = tTodoMapper.insertSelective(todo);
 				if(i1!=1){
 					return new ResponseMessage(Code.CODE_ERROR,"退回失败");
@@ -273,7 +275,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 						internalToDo.setStepDesc(projectName+"的立项批复流程等待您的处理");
 						internalToDo.setStatus("0");
 						internalToDo.setBackUp7(userName);//发起人
-
+						//加入待办的立项分类
+						internalToDo.setBackUp8("1");
 						int n=tTodoMapper.insertSelective(internalToDo);
 						if(n<=0) {
 							return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
@@ -306,6 +309,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					internalToDo.setStepDesc(projectName+"的立项批复流程等待您的处理");
 					internalToDo.setStatus("0");
 					internalToDo.setBackUp7(userName);//发起人
+					//加入待办的立项分类
+					internalToDo.setBackUp8("1");
 					int n=tTodoMapper.insertSelective(internalToDo);
 					if(n<=0) {
 						return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
@@ -608,6 +613,12 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		return null;
 	}
 
+	/**
+	 * 项目注册
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	public ResponseMessage insertProjectProcedureRegistration(String requestBody) throws Exception {
 		JSONObject jsonObj=JSONObject.parseObject(requestBody);
@@ -735,6 +746,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			internalToDo.setStepDesc(projectName+"的立项批复流程等待您的处理");
 			internalToDo.setStatus("0");
 			internalToDo.setBackUp7(userName);//发起人
+			//加入待办的立项分类
+			internalToDo.setBackUp8("2");
 			int n=tTodoMapper.insertSelective(internalToDo);
 			if(n<=0) {
 				return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");

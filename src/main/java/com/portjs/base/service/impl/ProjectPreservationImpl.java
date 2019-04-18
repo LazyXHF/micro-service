@@ -136,15 +136,16 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     /*return new ResponseMessage(Code.CODE_ERROR,"Budget"+PARAM_MESSAGE_1);*/
                     throw  new Exception("Budget"+PARAM_MESSAGE_1);
                 }
-                if(CollectionUtils.isEmpty(declarationJSON)){
-                    /*return new ResponseMessage(Code.CODE_ERROR,"declaration"+PARAM_MESSAGE_1);*/
-                    throw  new Exception("Declaration"+PARAM_MESSAGE_1);
-                }
+
                 if(CollectionUtils.isEmpty(configurationJSON)){
                     /*return new ResponseMessage(Code.CODE_ERROR,"declaration"+PARAM_MESSAGE_1);*/
                     throw  new Exception("Configuration"+PARAM_MESSAGE_1);
                 }
 
+            }
+            if(CollectionUtils.isEmpty(declarationJSON)){
+                    /*return new ResponseMessage(Code.CODE_ERROR,"declaration"+PARAM_MESSAGE_1);*/
+                throw  new Exception("Declaration"+PARAM_MESSAGE_1);
             }
             if (!StringUtils.isEmpty(tTodoId)){
                 TTodo todo = new TTodo();
@@ -168,9 +169,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         application.setStatus(status);*/
         //插入还是更新
         if(StringUtils.isEmpty(application.getId())){
-
             String id = String.valueOf(IDUtils.genItemId());
-
             //生成一条project记录
             updateUtil.projectMethod(id,null,application.getProjectName(),
                     application.getProjectType(),"A",userId,application.getOrganization()
@@ -194,26 +193,24 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 throw  new Exception("操作失败");
             }
         }
-
-        if(type.equals("1")){
-            //新增申报信息 先删除后增加
-            ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
-            ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
-            declarationCriteria.andApplicationIdEqualTo(application.getId());
-            declarationMapper.deleteByExample(declarationExample);
-            //增加申报信息
-            ProjectDeclaration declaration = JSONObject.toJavaObject(declarationJSON, ProjectDeclaration.class);
-            declaration.setId(String.valueOf(IDUtils.genItemId()));
-            declaration.setCreateTime(new Date());
-            declaration.setApplicationId(application.getId());
-            declaration.setProjectId(application.getProjectId());
-            declaration.setCreator(userId);
-            int i2 = declarationMapper.insertSelective(declaration);
-            if(i2<=0){
+        //新增申报信息 先删除后增加
+        ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
+        ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
+        declarationCriteria.andApplicationIdEqualTo(application.getId());
+        declarationMapper.deleteByExample(declarationExample);
+        //增加申报信息
+        ProjectDeclaration declaration = JSONObject.toJavaObject(declarationJSON, ProjectDeclaration.class);
+        declaration.setId(String.valueOf(IDUtils.genItemId()));
+        declaration.setCreateTime(new Date());
+        declaration.setApplicationId(application.getId());
+        declaration.setProjectId(application.getProjectId());
+        declaration.setCreator(userId);
+        int i2 = declarationMapper.insertSelective(declaration);
+        if(i2<=0){
                 /*return new ResponseMessage(Code.CODE_ERROR,message2);*/
-                throw  new Exception("操作失败");
-            }
-
+            throw  new Exception("操作失败");
+        }
+        if(type.equals("1")){
             //新增人员 先删除后增加
             ProjectMembersExample exampleMem = new ProjectMembersExample();
             ProjectMembersExample.Criteria criteriaMem = exampleMem.createCriteria();
@@ -362,6 +359,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             todo.setTodoType(dictionaryList.get(0).getMainValue());
             todo.setStatus("0");
             todo.setBackUp7(userName);//发起人
+            todo.setBackUp8(type);
             int i5 = todoMapper.insertSelective(todo);
             if(i5!=1){
                /* return new ResponseMessage(Code.CODE_ERROR,"提交失败");*/
@@ -394,6 +392,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         String todoId =  jsonObject.getString("todoId");//当前步骤待办id
         String fistId =  jsonObject.getString("fistId");//项目负责人id
         String projectName = jsonObject.getString("projectName");//项目名字
+        String backUp8 =  jsonObject.getString("type");//立项的退回类型
 
         //将当前对应流程关闭
         TWorkflowstep workflowstep = new TWorkflowstep();
@@ -446,6 +445,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
             todo.setTodoType(dictionaryList.get(0).getMainValue());
             todo.setStatus("0");
+            todo.setBackUp8(backUp8);
             int i1 = todoMapper.insertSelective(todo);
             if(i1!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
@@ -517,7 +517,9 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             }
         }
-        while (list.remove(null));
+        while (list.remove(null)){
+
+        };
         Set<String> treeSet = new TreeSet<>(new Comparator<String>() {
               @Override
               public int compare(String o1, String o2) {
@@ -562,7 +564,9 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
             }
         }
-        while (list.remove(null));
+        while (list.remove(null)){
+
+        };
         Set<String> treeSet = new TreeSet<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -640,15 +644,6 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     @Override
     public ResponseMessage insertExcel(MultipartFile file,String loginId)  throws Exception{
         InputStream is;
-
-
-
-
-
-
-
-
-
 
         // 判断文件的类型，是2003还是2007
         boolean isExcel2003 = true;
