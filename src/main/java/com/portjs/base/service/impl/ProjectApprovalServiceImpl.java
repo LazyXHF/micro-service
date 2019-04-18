@@ -41,7 +41,6 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
 	public final static String PARAM_MESSAGE_2 = "已存在";
-	public final static String PARAM_MESSAGE_3 = "不规范";
 
 
 	//项目立项阶段的审批流程添加
@@ -145,19 +144,6 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			backup3=new String("6");
 		}
 
-		/*//判断多人是否有退回的状态
-		TWorkflowstepExample examples = new TWorkflowstepExample();
-		TWorkflowstepExample.Criteria criteria1 = examples.createCriteria();
-		criteria1.andRelateddomainIdEqualTo(relateddomain_id);
-		criteria1.andActionResultEqualTo(1);
-		List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.selectByExample(examples);
-
-		//查询所有的工作记录
-		List<TWorkflowstep> tWorkfow =tWorkflowstepMapper.queryNotReviewProject(relateddomain_id);
-		TWorkflowstep t = null;
-		if(!CollectionUtils.isEmpty(tWorkfow)){
-			t=tWorkfow.get(tWorkfow.size()-1);
-		}*/
 		//三个条件进入审核
 		TWorkflowstepExample examples = new TWorkflowstepExample();
 		TWorkflowstepExample.Criteria criteria1 = examples.createCriteria();
@@ -620,5 +606,149 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			return new ResponseMessage(Code.CODE_ERROR, "不存在此种状态");
 		}
 		return null;
+	}
+
+	@Override
+	public ResponseMessage insertProjectProcedureRegistration(String requestBody) throws Exception {
+		JSONObject jsonObj=JSONObject.parseObject(requestBody);
+		String relateddomain="项目立项";//业务模块
+		String relateddomain_id=jsonObj.getString("relateddomainId");//业务id
+		String sender_id=jsonObj.getString("senderId");//当前人的id
+		String currentstep_id=jsonObj.getString("currentstepId");//当前处理步骤
+		String todo_id=jsonObj.getString("todoId");//当前todo表中id
+		String workflowstep_id=jsonObj.getString("workflowstepId");//当前workflowstep表中的id
+		String actionComment=jsonObj.getString("actionComment");//审核意见
+		String actionResult=jsonObj.getString("actionResult");//0 同意 1 不同意or退回
+		String backup3 = jsonObj.getString("sort");//第几个步骤
+		String reviewIds = jsonObj.getString("nextReviewerId");//下一个审核人的信息
+		String userName = jsonObj.getString("userName");//用户姓名
+		String projectName = jsonObj.getString("projectName");//项目名字
+
+		//必要参数空值判断
+		if(StringUtils.isEmpty(reviewIds)){
+			return new ResponseMessage(Code.CODE_ERROR, "nextReviewerId"+PARAM_MESSAGE_1);
+		}
+		JSONArray nextReviewerId=JSONArray.parseArray(reviewIds);
+
+		if(StringUtils.isEmpty(relateddomain_id)){
+			return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(sender_id)){
+			return new ResponseMessage(Code.CODE_ERROR, "senderId"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(currentstep_id)){
+			return new ResponseMessage(Code.CODE_ERROR, "currentstepId"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(todo_id)){
+			return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(workflowstep_id)){
+			return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(actionResult)){
+			return new ResponseMessage(Code.CODE_ERROR, "actionResult"+PARAM_MESSAGE_1);
+		}
+		if(StringUtils.isEmpty(backup3)){
+			return new ResponseMessage(Code.CODE_ERROR, "sort"+PARAM_MESSAGE_1);
+		}
+
+		/*
+		 * 修改掉当前todo表对应的id的信息
+		 */
+		TTodo tTodo=new TTodo();
+		tTodo.setId(todo_id);
+		tTodo.setActiontime(new Date());
+		tTodo.setStatus("1");
+		int k=tTodoMapper.updateByPrimaryKeySelective(tTodo);
+		if(k<=0) {
+			return new ResponseMessage(Code.CODE_ERROR, "审核失败");
+		}
+
+		/*
+		 * 修改当前workflowstep表中对应id的信息
+		 */
+		TWorkflowstep tWorkflowstep=new TWorkflowstep();
+		tWorkflowstep.setId(workflowstep_id);
+		tWorkflowstep.setActionTime(new Date());
+		tWorkflowstep.setActionComment(actionComment);
+		tWorkflowstep.setStatus("1");
+		if(actionResult.equals("0")) {
+			tWorkflowstep.setActionResult(0);
+		}else if(actionResult.equals("1")) {
+			tWorkflowstep.setActionResult(1);
+		}
+		int j=tWorkflowstepMapper.updateByPrimaryKeySelective(tWorkflowstep);
+		if(j<=0) {
+			return new ResponseMessage(Code.CODE_ERROR, "审核失败");
+		}
+
+		//步骤描述
+		String stepDesc="";
+		String ss="1";
+		if(backup3.equals("2")){
+			ss=backup3;
+			stepDesc="分管领导审核";
+			backup3=new String("3");
+		}else if(backup3.equals("3")){
+			ss="5";
+			stepDesc="规划部归档";
+			backup3=new String("4");
+		}
+
+		//查询待办类型
+		TXietongDictionaryExample example = new TXietongDictionaryExample();
+		TXietongDictionaryExample.Criteria criteria = example.createCriteria();
+		criteria.andTypeIdEqualTo("8");
+		criteria.andTypeCodeEqualTo("38");
+		criteria.andMidValueEqualTo("1");
+		List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
+
+		/*
+		 * 选择下一个审核人进行的操作
+		 * 对todo表中进行添加操作
+		 * 对Workflowstep表中进行添加操作
+		 */
+		boolean flag= false;//最后一人审核标识
+		for(int c=0;c<nextReviewerId.size();c++) {
+			TWorkflowstep workflowstep=new TWorkflowstep();
+			workflowstep.setId(String.valueOf(UUID.randomUUID()));
+			workflowstep.setRelateddomain(relateddomain);
+			workflowstep.setRelateddomainId(relateddomain_id);
+			workflowstep.setPrestepId(workflowstep_id);
+			workflowstep.setActionuserId(nextReviewerId.getString(c));
+			workflowstep.setStatus("0");
+			workflowstep.setBackup3(backup3);
+			workflowstep.setStepDesc(stepDesc);
+			int m=tWorkflowstepMapper.insertSelective(workflowstep);
+			if(m<=0) {
+				return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+			}
+			TTodo internalToDo=new TTodo();
+			internalToDo.setId(String.valueOf(UUID.randomUUID()));
+			internalToDo.setCurrentstepId(workflowstep.getId());
+			internalToDo.setRelateddomain(relateddomain);
+			internalToDo.setRelateddomainId(relateddomain_id);
+			internalToDo.setSenderId(sender_id);
+			internalToDo.setReceiverId(nextReviewerId.getString(c));
+			internalToDo.setSenderTime(new Date());
+			internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+			internalToDo.setStepDesc(projectName+"的立项批复流程等待您的处理");
+			internalToDo.setStatus("0");
+			internalToDo.setBackUp7(userName);//发起人
+			int n=tTodoMapper.insertSelective(internalToDo);
+			if(n<=0) {
+				return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+			}
+		}
+		//更新projectApplication
+		ProjectApplication projectApplication = new ProjectApplication();
+		projectApplication.setId(relateddomain_id);
+		projectApplication.setStatus(ss);
+
+		int num =projectApplicationMapper.updateByPrimaryKeySelective(projectApplication);
+		if(num<=0){
+			return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");
+		}
+		return new ResponseMessage(Code.CODE_OK, "审核完成");
 	}
 }
