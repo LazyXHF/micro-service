@@ -19,6 +19,7 @@ public class TUser implements UserDetails {
 
     private String loginAccount;
 
+    @JsonIgnore
     private String loginPassword;
 
     private String loginName;
@@ -32,15 +33,15 @@ public class TUser implements UserDetails {
     private Integer sort;
 
     private Integer status;
-
+    @JsonIgnore
     private Date lastLoginTime;
-
+    @JsonIgnore
     private Date lastUpdPasswdTime;
-
+    @JsonIgnore
     private Integer passwordModifyCycle;
-
+    @JsonIgnore
     private String historyPassword;
-
+    @JsonIgnore
     private Integer passwdWrongCount;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -382,6 +383,7 @@ public class TUser implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return loginPassword;
     }
