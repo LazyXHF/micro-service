@@ -116,6 +116,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         purchaseReview.setCreater(ownerId);
         purchaseReview.setCreateTime(currentTime);
         purchaseReview.setIsDelete("0");
+        purchaseReview.setUpdateTime(currentTime);
         InternalAttachment internalAttachment = new InternalAttachment();
         internalAttachment.setUploadTime(currentTime);
         internalAttachment.setUploader(ownerId);
@@ -138,14 +139,14 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     internalAttachment.setId(UUID.randomUUID().toString());
                     String fileType = jo.getString("fileType");
                     internalAttachment.setFileType(fileType);
-                    String filepath = jo.getString("filePath");
-                    String fileName = jsonObject.getString("fileName");
+                    String filepath = jo.getString("fileUrl");
+                    String fileName = jo.getString("fileName");
                     internalAttachment.setFileUrl(filepath);
                     internalAttachment.setFileName(fileName);
                     //业务单Id
                     String relateddomainId = id2;
                     internalAttachment.setRelateddomainId(relateddomainId);
-                    int ff = internalAttachmentMapper.insertSelective(internalAttachment);
+                    int ff = internalAttachmentMapper.insert(internalAttachment);
                     if (ff != 1) {
                         return new ResponseMessage(Code.CODE_ERROR, "添加附件信息失败");
                     }
@@ -165,8 +166,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     String fileid=jo.getString("id");
                     String fileType = jo.getString("fileType");
                     internalAttachment.setFileType(fileType);
-                    String filepath = jo.getString("filepath");
-                    String fileName = jsonObject.getString("fileName");
+                    String filepath = jo.getString("fileUrl");
+                    String fileName = jo.getString("fileName");
                     internalAttachment.setId(fileid);
                     internalAttachment.setFileUrl(filepath);
                     internalAttachment.setFileName(fileName);
@@ -195,14 +196,14 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     internalAttachment.setId(UUID.randomUUID().toString());
                     String fileType = jo.getString("fileType");
                     internalAttachment.setFileType(fileType);
-                    String filepath = jo.getString("filepath");
-                    String fileName = jsonObject.getString("fileName");
+                    String filepath = jo.getString("fileUrl");
+                    String fileName = jo.getString("fileName");
                     internalAttachment.setFileUrl(filepath);
                     internalAttachment.setFileName(fileName);
                     //业务单Id
                     String relateddomainId = id2;
                     internalAttachment.setRelateddomainId(relateddomainId);
-                    int ff = internalAttachmentMapper.insertSelective(internalAttachment);
+                    int ff = internalAttachmentMapper.insert(internalAttachment);
                     if (ff != 1) {
                         return new ResponseMessage(Code.CODE_ERROR, "添加附件信息失败");
                     }
@@ -219,6 +220,10 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 tWorkflowstep.setActionResult(0);
                 tWorkflowstep.setStatus("1");
                 //排序字段  1:提交   暂存是没有流程记录的智力用0作为他自己的开始起点
+                 /*     流程状态 status
+                        0:暂存  1:采购办审核  2：采购办主任审核 3：采购管理员委员会审核 4：执行董事审核 5：已完成  6：退回
+                        backup3
+                        0:提交人自己的记录     1：采购办审核    2：采购办主任审核 3：采购管理员委员会审核 4：执行董事审核 5：已完成  6：退回*/
                 tWorkflowstep.setBackup3("0");
                 tWorkflowstep.setBackUp7(ownerName);
                 int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
@@ -240,7 +245,6 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setBackUp7(approveUserName);
                     tWorkflowstep2.setActionuserId(approveUserId);
                     tWorkflowstep2.setStatus("0");
-                    //
                     tWorkflowstep2.setBackup3("1");
                     tWorkflowstep2.setBackUp7(approveUserName);
                     int f2 = workflowstepMapper.insertSelective(tWorkflowstep2);
@@ -252,7 +256,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     todo.setCurrentstepId(tWorkflowstep2.getId());
                     todo.setStepDesc("采购办人员审核");
                     todo.setRelateddomain("采购评审");
-                    todo.setRelateddomainId(id);
+                    todo.setRelateddomainId(id2);
                     todo.setSenderId(ownerId);
                     todo.setSenderTime(currentTime);
                     todo.setReceiverId(approveUserId);
@@ -286,7 +290,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     String fileType = jo.getString("fileType");
                     internalAttachment.setFileType(fileType);
                     String filepath = jo.getString("filepath");
-                    String fileName = jsonObject.getString("fileName");
+                    String fileName = jo.getString("fileName");
                     internalAttachment.setId(fileid);
                     internalAttachment.setFileUrl(filepath);
                     internalAttachment.setFileName(fileName);
@@ -308,8 +312,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                 tWorkflowstep.setActionTime(new Date());
                 tWorkflowstep.setActionResult(0);
                 tWorkflowstep.setStatus("1");
-                //排序字段  生成给自身为1
-                tWorkflowstep.setBackup3("1");
+                //排序字段  生成给自身为0
+                tWorkflowstep.setBackup3("0");
                 tWorkflowstep.setBackUp7(ownerName);
                 int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
                 if (i4 != 1) {
@@ -330,8 +334,8 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
                     tWorkflowstep2.setBackUp7(approveUserName);
                     tWorkflowstep2.setActionuserId(approveUserId);
                     tWorkflowstep2.setStatus("0");
-                    //提交给部门负责人为2
-                    tWorkflowstep2.setBackup3("2");
+                    //提交给部门负责人为1
+                    tWorkflowstep2.setBackup3("1");
                     tWorkflowstep2.setBackUp7(approveUserName);
                     int f2 = workflowstepMapper.insertSelective(tWorkflowstep2);
                     if (f2 != 1) {
@@ -408,7 +412,7 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         map.put("pucharseReviewRecords",pucharseReviewRecords);
         return  new ResponseMessage(Code.CODE_OK,"页面详细信息",map);
     }
-    //   审批接口
+    // 审批接口
     @Override
     @Transactional
     public ResponseMessage handlePucharseReview(String requestBody) throws Exception {
@@ -433,15 +437,15 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
        /* String prestep_id=workflowstepMapper.queryprestepId(id,);*/
         String StepDesc=null;
         if (nowBackUp3 == 2) {
-             StepDesc="提交采购申请";
-        }else if(nowBackUp3==3){
-             StepDesc="采购办人员审核";
-        }else if(nowBackUp3==4){
              StepDesc="采购办主任审核";
-        }else if(nowBackUp3==5){
+        }else if(nowBackUp3==3){
              StepDesc="采购管理委员会审核";
-        }else if (nowBackUp3==6){
+        }else if(nowBackUp3==4){
              StepDesc="执行董事审核";
+        }else if(nowBackUp3==5){
+             StepDesc="已完成";
+        }else if (nowBackUp3==6){
+             StepDesc="退回";
         }
         //获取所有审批人的id
         JSONArray jsonArray1 = jsonObject.getJSONArray("approvers");
@@ -501,7 +505,12 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         if(f2!=1){
             return  new ResponseMessage(Code.CODE_ERROR,"更新待办失败");
         }
-        int f3=purchaseReviewMapper.updateProjectReviewStatus(id,nowBackUp3+"");
+        Date date=new Date();
+        PurchaseReview  p=new PurchaseReview();
+        p.setId(id);
+        p.setStatus(nowBackUp3+"");
+        p.setUpdateTime(new Date());
+        int f3=purchaseReviewMapper.updateProjectReviewStatus2(p);
         if(f3!=1){
             throw  new Exception();
             /*return new ResponseMessage(Code.CODE_ERROR,"更新主表状态失败");*/
@@ -516,7 +525,13 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
         String id = jsonObject.getString("id");
         String ownerId = jsonObject.getString("ownerId");
         String actionComment = jsonObject.getString("actionComment");
-        int f3=purchaseReviewMapper.updateProjectReviewStatus(id,"6");
+        Date date=new Date();
+        PurchaseReview  p=new PurchaseReview();
+        p.setId(id);
+        String status="6";
+        p.setStatus(status);
+        p.setUpdateTime(new Date());
+        int f3=purchaseReviewMapper.updateProjectReviewStatus2(p);
         if(f3!=1){
             return new ResponseMessage(Code.CODE_ERROR,"更新主表状态失败");
         }
@@ -565,6 +580,25 @@ public class PucharseReviewServiceImpl implements PucharseReviewService {
             return new ResponseMessage(Code.CODE_ERROR, "提交失败");
         }
         return new ResponseMessage(Code.CODE_OK, "退回成功");
+    }
+
+    @Override
+    public ResponseMessage deleteProjectReview(JSONObject requestJson) {
+        String id=requestJson.getString("id");
+        String ownerId=requestJson.getString("ownerId");
+        int count=todoMapper.queryTodoRecord(id,ownerId);
+        if(count>0){
+            int f=todoMapper.deleteTodoRecord(id,ownerId);
+            if(f!=1){
+                return  new ResponseMessage(Code.CODE_ERROR,"删除失败");
+            }
+        }
+        int f=purchaseReviewMapper.deleteProjectReview(id);
+        if(f!=1){
+            return  new ResponseMessage(Code.CODE_ERROR,"删除失败");
+        }
+
+        return  new ResponseMessage(Code.CODE_OK,"删除成功");
     }
 
 

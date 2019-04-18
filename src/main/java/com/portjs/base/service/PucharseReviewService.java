@@ -1,5 +1,6 @@
 package com.portjs.base.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.util.ResponseMessage;
 
 /**
@@ -18,4 +19,6 @@ public interface PucharseReviewService {
     ResponseMessage handlePucharseReview (String requestBody) throws Exception;
 
     ResponseMessage returnRecord(String requestBody);
+
+    ResponseMessage deleteProjectReview(JSONObject requestJson);
 }
