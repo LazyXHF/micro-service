@@ -3,7 +3,7 @@
 <mapper namespace="com.portjs.base.dao.TenderApplicationMapper" >
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.TenderApplication" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
-    <result column="request_id" property="requestId" jdbcType="INTEGER" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
     <result column="tender_num" property="tenderNum" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
     <result column="method" property="method" jdbcType="VARCHAR" />
@@ -131,7 +131,7 @@
       delete_time, review, back_up1, 
       back_up2, back_up3, back_up4, 
       back_up5)
-    values (#{id,jdbcType=VARCHAR}, #{requestId,jdbcType=INTEGER}, #{tenderNum,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{requestId,jdbcType=VARCHAR}, #{tenderNum,jdbcType=VARCHAR},
       #{projectId,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, 
       #{dept,jdbcType=VARCHAR}, #{openDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{tenderUrl,jdbcType=VARCHAR}, #{supplier,jdbcType=VARCHAR}, 
@@ -225,7 +225,7 @@
         #{id,jdbcType=VARCHAR},
       </if>
       <if test="requestId != null" >
-        #{requestId,jdbcType=INTEGER},
+        #{requestId,jdbcType=VARCHAR},
       </if>
       <if test="tenderNum != null" >
         #{tenderNum,jdbcType=VARCHAR},
@@ -311,7 +311,7 @@
         Id = #{record.id,jdbcType=VARCHAR},
       </if>
       <if test="record.requestId != null" >
-        request_id = #{record.requestId,jdbcType=INTEGER},
+        request_id = #{record.requestId,jdbcType=VARCHAR},
       </if>
       <if test="record.tenderNum != null" >
         tender_num = #{record.tenderNum,jdbcType=VARCHAR},
@@ -390,7 +390,7 @@
   <update id="updateByExample" parameterType="map" >
     update tender_application
     set Id = #{record.id,jdbcType=VARCHAR},
-      request_id = #{record.requestId,jdbcType=INTEGER},
+      request_id = #{record.requestId,jdbcType=VARCHAR},
       tender_num = #{record.tenderNum,jdbcType=VARCHAR},
       project_id = #{record.projectId,jdbcType=VARCHAR},
       method = #{record.method,jdbcType=VARCHAR},
@@ -422,7 +422,7 @@
     update tender_application
     <set >
       <if test="requestId != null" >
-        request_id = #{requestId,jdbcType=INTEGER},
+        request_id = #{requestId,jdbcType=VARCHAR},
       </if>
       <if test="tenderNum != null" >
         tender_num = #{tenderNum,jdbcType=VARCHAR},
@@ -498,7 +498,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TenderApplication" >
     update tender_application
-    set request_id = #{requestId,jdbcType=INTEGER},
+    set request_id = #{requestId,jdbcType=VARCHAR},
       tender_num = #{tenderNum,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
       method = #{method,jdbcType=VARCHAR},
