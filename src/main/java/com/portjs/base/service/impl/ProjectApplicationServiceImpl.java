@@ -47,7 +47,14 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     TTodoMapper todoMapper;
     @Autowired
     TUserMapper tUserMapper;
+    @Autowired
+    private ProjectDeclarationMapper declarationMapper;
+    @Autowired
+    private BusinessConfigurationMapper configurationMapper;
+    @Autowired
+    private ProjectBudgetMapper budgetMapper;
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ResponseMessage updateProject(JSONObject requestJson) {
         try {
             String id = requestJson.getString("id");
@@ -106,61 +113,12 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         //承建负责人
         String projectManager=requestJson.getString("projectManager");
 
-        /*//建设方式
-        String  constructionMode=requestJson.getString("constructionMode");
-        //投资主体
-        String investor=requestJson.getString("investor");*/
         String owneId=requestJson.getString("ownerId");
         String pageNum=requestJson.getString("pageNum");
         String pageCount=requestJson.getString("pageCount");
-      /*  Page page=new Page();
-//
-        page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-        List<ProjectApplication> list=applicationMapper.queryProject(projectCode,projectName,projectType,organization,constructionMode,investor,owneId,page.getRowNum(),page.getPageCount());
-       // List<ProjectApplication> list2=applicationMapper.queryProjectCaoGao(projectCode,projectName,projectType,organization,constructionMode,investor,page.getRowNum(),page.getPageCount());
-        if(list.isEmpty()){
-            return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
-        }else{
-            for(ProjectApplication application:list){
-                TTodoExample todoExample = new TTodoExample();
-                TTodoExample.Criteria todoCriteria = todoExample.createCriteria();
-                todoCriteria.andStatusEqualTo("0");
-                todoCriteria.andRelateddomainIdEqualTo(application.getId());
-                todoCriteria.andReceiverIdEqualTo(owneId);
-                List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
-                //isApprove(当前任是否是审批人 0：不是 1：是)
-                if(CollectionUtils.isEmpty(tTodos)){
-                    application.setIsApprover("0");
-                }else {
-                    application.setIsApprover("1");
-                }
-                page.setList(list);
-              *//*String id=application.getId();
-                //查询当前登录人是否是审批人
-                Integer  count=tWorkflowstepMapper.isApproveingId(id,owneId);
-                //isApprove(当前任是否是审批人 0：不是 1：是)
-               if(count==0){
-                  application.setIsApprover("0");
-              }else {
-                  application.setIsApprover("1");
-              }*//*
-              }
-           *//* Collections.sort(list, new Comparator<ProjectApplication>() {
-                @Override
-                public int compare(ProjectApplication o1, ProjectApplication o2) {
-                    if (Integer.parseInt(o1.getIsApprover())>Integer.parseInt(o2.getIsApprover())) {
-                        return -1;
-                    }
-                    if (Integer.parseInt(o1.getIsApprover())>Integer.parseInt(o2.getIsApprover())) {
-                        return 0;
-                    }
-                    return -1;
-                }
-            });*//*
-        }*/
+
         int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
-//            PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageCount));
-           List<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
+        List<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
         if(alllist.isEmpty()){
             return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
         }else {
@@ -190,14 +148,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 }
             }
 
-
-         /*   Collections.sort(alllist, new Comparator<ProjectApplication>() {
-                @Override
-                public int compare(ProjectApplication o1, ProjectApplication o2) {
-                    return -(Integer.parseInt(o2.getIsApprover()) - Integer.parseInt(o2.getIsApprover()));
-                }
-            });*/
-
             Set<ProjectApplication> treeSet = new TreeSet<>(new Comparator<ProjectApplication>() {
                 @Override
                 public int compare(ProjectApplication o1, ProjectApplication o2) {
@@ -210,19 +160,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             });
             treeSet.addAll(alllist);
 
-//            Collections.sort(alllist, new Comparator<ProjectApplication>() {
-//
-//                public int compare(ProjectApplication o1, ProjectApplication o2) {
-//                    // 按照学生的年龄进行降序排列
-//                    if (Integer.parseInt(o1.getIsApprover()) > Integer.parseInt(o2.getIsApprover())) {
-//                        return -1;
-//                    }
-//                    else if (Integer.parseInt(o1.getIsApprover()) < Integer.parseInt(o2.getIsApprover())) {
-//                        return 1;
-//                    }
-//                    return 1;
-//                }
-//            });
             Page page=new Page();
             ArrayList arrayList = new ArrayList(treeSet);
             page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
@@ -232,23 +169,79 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             }else {
                 page.setList(arrayList.subList(page.getRowNum(), page.getPageCount() * page.getPageNum()));
             }
-//            PageInfo pageInfo = new PageInfo(alllist);
             return new ResponseMessage(Code.CODE_OK, "项目分页信息", page);
         }
-         }
+    }
 
 
 
     @Override
-    public ResponseMessage queryProjectBase(JSONObject requestJson){
-        String id=requestJson.getString("id");
+    public ResponseMessage queryProjectBase(JSONObject requestJson) throws Exception{
+
+        String id=requestJson.getString("id");//application(基本信息表id)
+        String projectId=requestJson.getString("projectId");//项目id
+        String pageNum=requestJson.getString("pageNum");//当前页数（人员分页信息）
+        String pageCount=requestJson.getString("pageCount");//每页显示记录数（人员分页信息）
+        String ownerId=requestJson.getString("ownerId");//当前登录人id
+
+
+        LinkedHashMap<String, Object> map = new LinkedHashMap();
+        //查询基本信息
         ProjectApplication projectApplication=applicationMapper.queryProjectBase(id);
-        if(StringUtils.isNull(projectApplication)){
-        return  new ResponseMessage(Code.CODE_OK,"项目信息查询失败");
-        }else {
-            return  new ResponseMessage(Code.CODE_OK,"项目基本信息",projectApplication);
+        if(projectApplication==null){
+            /*return  new ResponseMessage(Code.CODE_OK,"项目信息查询失败");*/
+            throw new Exception("项目基本信息查询失败");
+
         }
 
+        //查询申报信息
+        ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
+        ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
+        declarationCriteria.andApplicationIdEqualTo(id);
+        List<ProjectDeclaration> projectDeclarations = declarationMapper.selectByExample(declarationExample);
+        if(CollectionUtils.isEmpty(projectDeclarations)){
+            /*return  new ResponseMessage(Code.CODE_OK,"申报信息查询失败");*/
+            throw new Exception("申报信息查询失败");
+        }
+        //查询里程碑
+        BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
+        BusinessConfigurationExample.Criteria configurationCriteria = configurationExample.createCriteria();
+        configurationCriteria.andProjectIdEqualTo(projectId);
+        List<BusinessConfiguration> businessConfigurations = configurationMapper.selectByExample(configurationExample);
+        Page page=new Page();
+        //查询人员信息
+        int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
+        page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+
+        List<ProjectMembers> members=projectMembersMapper.queryProjectPersons(id,page.getRowNum(),page.getPageCount());
+        page.setList(members);
+        //查询项目预算
+        ProjectBudgetExample budgetExample = new ProjectBudgetExample();
+        ProjectBudgetExample.Criteria budgetCriteria = budgetExample.createCriteria();
+        budgetCriteria.andApplicationIdEqualTo(id);
+        List<ProjectBudget> projectBudgets = budgetMapper.selectByExample(budgetExample);
+        //查询项目文件
+        List<InternalAttachment> internalAttachments=internalAttachmentMapper.queryProjectFiles(id);
+        //审核信息查询
+        List<TWorkflowstep> tWorkflowsteps=tWorkflowstepMapper.queryProjectRecords(id);
+        if(!CollectionUtils.isEmpty(tWorkflowsteps)){
+            for(TWorkflowstep tWorkflowstep:tWorkflowsteps){
+                String actionUserId=tWorkflowstep.getActionuserId();
+                String userName=tUserMapper.queryUserNameByUserId(actionUserId);
+                tWorkflowstep.setUserName(userName);
+            }
+        }
+        //待办信息查询
+        List<TTodo> tTodo=todoMapper.toApprove(id,ownerId);
+        map.put("Application",projectApplication);
+        map.put("Declaration",projectDeclarations);
+        map.put("Configuration",businessConfigurations);
+        map.put("Persons",page);
+        map.put("Budget",projectBudgets);
+        map.put("Files",internalAttachments);
+        map.put("Records",tWorkflowsteps);
+        map.put("Todo",tTodo);
+        return  new ResponseMessage(Code.CODE_OK,"项目信息",map);
     }
 
     @Override
@@ -259,7 +252,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         Page page=new Page();
         int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
         page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-        List<ProjectApplication> projectApplicationList=projectMembersMapper.queryProjectPersons(id);
+        List<ProjectMembers> projectApplicationList=projectMembersMapper.queryProjectPersons(id,page.getRowNum(),page.getPageCount());
         if(projectApplicationList.isEmpty()){
             return  new ResponseMessage(Code.CODE_OK,"项目人员信息查询失败");
         }else {
@@ -351,7 +344,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     public ResponseMessage toApprove(JSONObject requestJson) {
         String id=requestJson.getString("id");
         String ownerId=requestJson.getString("ownerId");
-        TTodo tTodo=todoMapper.toApprove(id,ownerId);
+        List<TTodo> tTodo=todoMapper.toApprove(id,ownerId);
         if(StringUtils.isNull(tTodo)){
             return  new ResponseMessage(Code.CODE_OK,"待审核人为空为空");
         }else {
