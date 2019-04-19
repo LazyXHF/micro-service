@@ -18,7 +18,7 @@ public interface ProjectApplicationService {
 
     ResponseMessage queryProject(JSONObject requestJson);
 
-    ResponseMessage queryProjectBase(JSONObject requestJson);
+    ResponseMessage queryProjectBase(JSONObject requestJson) throws Exception;
 
     ResponseMessage queryProjectPersons(JSONObject requestJson);
 

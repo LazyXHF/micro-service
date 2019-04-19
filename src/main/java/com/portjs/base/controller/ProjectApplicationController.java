@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectApplicationService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ProjectAddorUpdateUtil;
 import com.portjs.base.util.ResponseMessage;
 import org.slf4j.Logger;
@@ -46,8 +47,13 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage queryProjectBase(@RequestBody String responseBody) {
         logger.debug(TAG + "queryProjectBase() begin");
-        JSONObject requestJson=JSONObject.parseObject(responseBody);
-        return  applicationService.queryProjectBase(requestJson);
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            return  applicationService.queryProjectBase(requestJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
     }
     @LogInfo(methodName = "项目人员",modelName = "立项管理")
     @RequestMapping("queryProjectPersons")
