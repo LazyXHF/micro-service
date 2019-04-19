@@ -363,7 +363,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		String creator=jsonObj.getString("creator");
 		String organization=jsonObj.getString("organization");
 		String projectMoney=jsonObj.getString("projectMoney");
-		String projectStatus="Ab1";
+		String projectStatus="Aa1";
 		String investor=jsonObj.getString("investor");
 
 		updateUtil.projectMethod(projectId,projectCode,projectName,projectType,schedule,creator,organization,projectMoney,projectStatus,investor);

@@ -212,7 +212,9 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         //查询人员信息
         int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
         page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-        List<ProjectMembers> members=projectMembersMapper.queryProjectPersons(id);
+
+        List<ProjectMembers> members=projectMembersMapper.queryProjectPersons(id,page.getRowNum(),page.getPageCount());
+        page.setList(members);
         //查询项目预算
         ProjectBudgetExample budgetExample = new ProjectBudgetExample();
         ProjectBudgetExample.Criteria budgetCriteria = budgetExample.createCriteria();
@@ -234,7 +236,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         map.put("Application",projectApplication);
         map.put("Declaration",projectDeclarations);
         map.put("Configuration",businessConfigurations);
-        map.put("Persons",members);
+        map.put("Persons",page);
         map.put("Budget",projectBudgets);
         map.put("Files",internalAttachments);
         map.put("Records",tWorkflowsteps);
@@ -250,7 +252,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         Page page=new Page();
         int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
         page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-        List<ProjectMembers> projectApplicationList=projectMembersMapper.queryProjectPersons(id);
+        List<ProjectMembers> projectApplicationList=projectMembersMapper.queryProjectPersons(id,page.getRowNum(),page.getPageCount());
         if(projectApplicationList.isEmpty()){
             return  new ResponseMessage(Code.CODE_OK,"项目人员信息查询失败");
         }else {
