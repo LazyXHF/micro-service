@@ -39,7 +39,7 @@ public class ProjectPreservationController  extends BaseController {
             return projectPreservationService.insertStorage(responseBody);
         } catch (Exception e) {
             logger.error(TAG + "insert-designs()error.....", e);
-            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+            throw new RuntimeException();
         }
     }
 

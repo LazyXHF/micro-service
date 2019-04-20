@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class PurchaseRequest implements Serializable {
 
-    private String Id;//采购申请单id
+    private String id;//采购申请单id
 
     private String requestNum;//采购申请单单号
 
@@ -41,35 +41,6 @@ public class PurchaseRequest implements Serializable {
     private Date deleteTime;//删除时间（软删除标记）
     private String projectName;//项目id
     private String projectCode;//项目id
-    private String isApprover;
-
-    private String actionuserId;//处理人id
-
-    private String backUp7;//处理人姓名
-
-    public String getActionuserId() {
-        return actionuserId;
-    }
-
-    public void setActionuserId(String actionuserId) {
-        this.actionuserId = actionuserId;
-    }
-
-    public String getBackUp7() {
-        return backUp7;
-    }
-
-    public void setBackUp7(String backUp7) {
-        this.backUp7 = backUp7;
-    }
-
-    public String getIsApprover() {
-        return isApprover;
-    }
-
-    public void setIsApprover(String isApprover) {
-        this.isApprover = isApprover;
-    }
 
     public String getProjectName() {
         return projectName;
@@ -90,11 +61,11 @@ public class PurchaseRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id == null ? null : id.trim();
     }
 
     public String getRequestNum() {

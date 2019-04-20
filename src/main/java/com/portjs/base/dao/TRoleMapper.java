@@ -33,7 +33,7 @@ public interface TRoleMapper {
 
 
     //根据角色名查找角色分页
-    List<TRole> selectRoleByRoleName(@Param("roleName") String roleName,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+    List<TRole> selectRoleByRoleName(@Param("roleName") String roleName, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
     int selectRoleByRoleNameCount(@Param("roleName") String roleName);
 
 

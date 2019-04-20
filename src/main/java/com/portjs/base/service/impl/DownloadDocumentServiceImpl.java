@@ -4,10 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.portjs.base.entity.TUser;
-import com.portjs.base.util.Page;
-import com.portjs.base.vo.PageVo;
-import com.portjs.base.vo.UserRoleDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +29,12 @@ public class DownloadDocumentServiceImpl implements DownloadDocumentService{
 	
 	//展示所有未删除模板文件
 	@Override
-	public ResponseMessage selectAllDocument(PageVo pageVo) {
-
-		Page<TXietongDocModel> page = new Page<>();
-		int total = tXietongDocModelMapper.selectCounts();
-		page.init(total,pageVo.getPageNo(),pageVo.getPageSize());
-		List<TXietongDocModel> list = tXietongDocModelMapper.queryDocModelByPage(page.getRowNum(),page.getPageCount());
-		page.setList(list);
-
-		return  new ResponseMessage(Code.CODE_OK,"查询成功！",page);
+	public List<TXietongDocModel> selectAllDocument() {
+		
+		TXietongDocModelExample example = new TXietongDocModelExample();
+		Criteria createCriteria = example.createCriteria();
+		createCriteria.andIsdeleteEqualTo(1);
+		return  tXietongDocModelMapper.selectByExample(example );
 	}
 	
 	//新增文档模板

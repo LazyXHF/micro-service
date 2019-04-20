@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectApplicationService;
-import com.portjs.base.util.Code;
 import com.portjs.base.util.ProjectAddorUpdateUtil;
 import com.portjs.base.util.ResponseMessage;
 import org.slf4j.Logger;
@@ -47,13 +46,8 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage queryProjectBase(@RequestBody String responseBody) {
         logger.debug(TAG + "queryProjectBase() begin");
-        try {
-            JSONObject requestJson=JSONObject.parseObject(responseBody);
-            return  applicationService.queryProjectBase(requestJson);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
-        }
+        JSONObject requestJson=JSONObject.parseObject(responseBody);
+        return  applicationService.queryProjectBase(requestJson);
     }
     @LogInfo(methodName = "项目人员",modelName = "立项管理")
     @RequestMapping("queryProjectPersons")
@@ -85,28 +79,8 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage queryProjectRecords(@RequestBody String responseBody) {
         logger.debug(TAG + "queryProjectRecords() begin");
-        try {
-            JSONObject requestJson=JSONObject.parseObject(responseBody);
-            return  applicationService.queryProjectRecords(requestJson);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
-        }
-    }
-
-    @LogInfo(methodName = "废除立项申请",modelName = "立项管理")
-    @RequestMapping("abolition-project")
-    @ResponseBody
-    public ResponseMessage abolitionProject(@RequestBody String responseBody){
-        logger.debug(TAG+"abolition-project() begin");
-        try {
-            JSONObject requestJson=JSONObject.parseObject(responseBody);
-            String id = requestJson.getString("id");
-            return  applicationService.abolitionProject(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
-        }
+        JSONObject requestJson=JSONObject.parseObject(responseBody);
+        return  applicationService.queryProjectRecords(requestJson);
     }
 
 //假删除  更改字段
@@ -115,14 +89,8 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage deleteProject(@RequestBody String responseBody){
         logger.debug(TAG+"deleteProject() begin");
-        try {
-            JSONObject requestJson=JSONObject.parseObject(responseBody);
-            String id=requestJson.getString("id");
-            return  applicationService.deleteProject(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
-        }
+        JSONObject requestJson=JSONObject.parseObject(responseBody);
+        return  applicationService.deleteProject(requestJson);
     }
 
    /* 项目基本信息
@@ -132,12 +100,7 @@ public class ProjectApplicationController extends BaseController {
    @ResponseBody
    public ResponseMessage queryProjectPlan(){
        logger.debug(TAG+"queryProjectPlan() begin");
-       try {
-           return  applicationService.queryProjectPlan();
-       } catch (Exception e) {
-           e.printStackTrace();
-           return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
-       }
+       return  applicationService.queryProjectPlan();
    }
     @LogInfo(methodName = "投资计划对应项目信息",modelName = "立项管理")
     @RequestMapping("queryProjectPlanInfo")

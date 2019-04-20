@@ -37,14 +37,14 @@ public interface AnnexService {
      * @param annex
      * @return
      */
-    ResponseMessage selectByPrimaryKey( Annex annex);
+    ResponseMessage selectByPrimaryKey(Annex annex);
 
     /**
      * 条件更新
      * @param requestJson
      * @return
      */
-    ResponseMessage updateByPrimaryKeySelective(JSONArray requestJson );
+    ResponseMessage updateByPrimaryKeySelective(JSONArray requestJson);
 
     /**
      * 更新所有

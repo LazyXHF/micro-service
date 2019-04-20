@@ -120,7 +120,6 @@ public class BusinessConfiguration {
     }
 
     public void setProjectId(String projectId) {
-            System.out.println(projectId);
         this.projectId = projectId == null ? null : projectId.trim();
     }
 

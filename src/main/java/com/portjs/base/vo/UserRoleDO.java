@@ -1,7 +1,9 @@
 package com.portjs.base.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.portjs.base.entity.TDepartment;
 import com.portjs.base.entity.TRole;
+import com.portjs.base.entity.TUser;
 
 import java.util.Date;
 import java.util.List;
@@ -87,11 +89,21 @@ public class UserRoleDO  {
     private String isLeader;
     private List<TRole> roles;
 
+    private List<TDepartment> departments;
+
     //部门负责人名字
     private String leaderId;
 //    //部门负责人id
 //    private String leaderName;
 
+
+    public List<TDepartment> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<TDepartment> departments) {
+        this.departments = departments;
+    }
 
     public String getNameCn() {
         return nameCn;

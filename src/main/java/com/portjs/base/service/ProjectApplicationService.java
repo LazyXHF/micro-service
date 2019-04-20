@@ -18,7 +18,7 @@ public interface ProjectApplicationService {
 
     ResponseMessage queryProject(JSONObject requestJson);
 
-    ResponseMessage queryProjectBase(JSONObject requestJson) throws Exception;
+    ResponseMessage queryProjectBase(JSONObject requestJson);
 
     ResponseMessage queryProjectPersons(JSONObject requestJson);
 
@@ -26,9 +26,7 @@ public interface ProjectApplicationService {
 
     ResponseMessage queryProjectRecords(JSONObject requestJson);
 
-    ResponseMessage abolitionProject(String id) throws Exception;
-
-    ResponseMessage deleteProject(String id)throws Exception;
+    ResponseMessage deleteProject(JSONObject requestJson);
 
     ResponseMessage queryProjectPlan();
 
@@ -37,6 +35,4 @@ public interface ProjectApplicationService {
     ResponseMessage toApprove(JSONObject requestJson);
 
     ResponseMessage abolishProject(JSONObject requestJson);
-
-
 }

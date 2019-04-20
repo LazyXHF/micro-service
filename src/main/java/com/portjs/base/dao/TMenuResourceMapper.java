@@ -51,7 +51,7 @@ public interface TMenuResourceMapper {
 
 
     //根据菜单获得资源
-    List<TMenuResource> selectMenusResourcesByMenuId(@Param("menuId") String menuId,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+    List<TMenuResource> selectMenusResourcesByMenuId(@Param("menuId") String menuId, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 
     int selectMenusResourcesByMenuIdCount(@Param("menuId") String menuId);
 
@@ -60,7 +60,7 @@ public interface TMenuResourceMapper {
 
 
 
-    int updateSort(@Param("sort")int sort,@Param("id")String id);
+    int updateSort(@Param("sort") int sort, @Param("id") String id);
 
     List<TMenuResource> selectMenuAndResource();
 
@@ -68,6 +68,9 @@ public interface TMenuResourceMapper {
     //查询所有菜单根据角色id
     List<TMenuResource> selectHomePageMenuByRids(@Param("rids") List<String> rids);
 
+
+
+    List<TMenuResource>  selectMenuButtonTChildByRidsAndParentId(@Param("rids") List<String> rids, @Param("parentId") String parentId);
 
 //    //查询所有一级菜单
 //

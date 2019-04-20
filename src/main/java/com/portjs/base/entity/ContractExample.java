@@ -13,26 +13,6 @@ public class ContractExample {
 
     protected List<Criteria> oredCriteria;
 
-    protected int offset;
-
-    protected int limit;
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
     public ContractExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
@@ -290,6 +270,76 @@ public class ContractExample {
 
         public Criteria andContractNumNotBetween(String value1, String value2) {
             addCriterion("contract_num not between", value1, value2, "contractNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleIsNull() {
+            addCriterion("contract_title is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleIsNotNull() {
+            addCriterion("contract_title is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleEqualTo(String value) {
+            addCriterion("contract_title =", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleNotEqualTo(String value) {
+            addCriterion("contract_title <>", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleGreaterThan(String value) {
+            addCriterion("contract_title >", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleGreaterThanOrEqualTo(String value) {
+            addCriterion("contract_title >=", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleLessThan(String value) {
+            addCriterion("contract_title <", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleLessThanOrEqualTo(String value) {
+            addCriterion("contract_title <=", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleLike(String value) {
+            addCriterion("contract_title like", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleNotLike(String value) {
+            addCriterion("contract_title not like", value, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleIn(List<String> values) {
+            addCriterion("contract_title in", values, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleNotIn(List<String> values) {
+            addCriterion("contract_title not in", values, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleBetween(String value1, String value2) {
+            addCriterion("contract_title between", value1, value2, "contractTitle");
+            return (Criteria) this;
+        }
+
+        public Criteria andContractTitleNotBetween(String value1, String value2) {
+            addCriterion("contract_title not between", value1, value2, "contractTitle");
             return (Criteria) this;
         }
 
@@ -710,6 +760,146 @@ public class ContractExample {
 
         public Criteria andSupplierNotBetween(String value1, String value2) {
             addCriterion("supplier not between", value1, value2, "supplier");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeIsNull() {
+            addCriterion("in_charge is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeIsNotNull() {
+            addCriterion("in_charge is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeEqualTo(String value) {
+            addCriterion("in_charge =", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeNotEqualTo(String value) {
+            addCriterion("in_charge <>", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeGreaterThan(String value) {
+            addCriterion("in_charge >", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeGreaterThanOrEqualTo(String value) {
+            addCriterion("in_charge >=", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeLessThan(String value) {
+            addCriterion("in_charge <", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeLessThanOrEqualTo(String value) {
+            addCriterion("in_charge <=", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeLike(String value) {
+            addCriterion("in_charge like", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeNotLike(String value) {
+            addCriterion("in_charge not like", value, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeIn(List<String> values) {
+            addCriterion("in_charge in", values, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeNotIn(List<String> values) {
+            addCriterion("in_charge not in", values, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeBetween(String value1, String value2) {
+            addCriterion("in_charge between", value1, value2, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andInChargeNotBetween(String value1, String value2) {
+            addCriterion("in_charge not between", value1, value2, "inCharge");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumIsNull() {
+            addCriterion("phonenum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumIsNotNull() {
+            addCriterion("phonenum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumEqualTo(String value) {
+            addCriterion("phonenum =", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumNotEqualTo(String value) {
+            addCriterion("phonenum <>", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumGreaterThan(String value) {
+            addCriterion("phonenum >", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumGreaterThanOrEqualTo(String value) {
+            addCriterion("phonenum >=", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumLessThan(String value) {
+            addCriterion("phonenum <", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumLessThanOrEqualTo(String value) {
+            addCriterion("phonenum <=", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumLike(String value) {
+            addCriterion("phonenum like", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumNotLike(String value) {
+            addCriterion("phonenum not like", value, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumIn(List<String> values) {
+            addCriterion("phonenum in", values, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumNotIn(List<String> values) {
+            addCriterion("phonenum not in", values, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumBetween(String value1, String value2) {
+            addCriterion("phonenum between", value1, value2, "phonenum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhonenumNotBetween(String value1, String value2) {
+            addCriterion("phonenum not between", value1, value2, "phonenum");
             return (Criteria) this;
         }
 

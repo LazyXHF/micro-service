@@ -213,52 +213,52 @@ public class TenderApplicationExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdEqualTo(String value) {
+        public Criteria andRequestIdEqualTo(Integer value) {
             addCriterion("request_id =", value, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdNotEqualTo(String value) {
+        public Criteria andRequestIdNotEqualTo(Integer value) {
             addCriterion("request_id <>", value, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdGreaterThan(String value) {
+        public Criteria andRequestIdGreaterThan(Integer value) {
             addCriterion("request_id >", value, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdGreaterThanOrEqualTo(String value) {
+        public Criteria andRequestIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("request_id >=", value, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdLessThan(String value) {
+        public Criteria andRequestIdLessThan(Integer value) {
             addCriterion("request_id <", value, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdLessThanOrEqualTo(String value) {
+        public Criteria andRequestIdLessThanOrEqualTo(Integer value) {
             addCriterion("request_id <=", value, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdIn(List<String> values) {
+        public Criteria andRequestIdIn(List<Integer> values) {
             addCriterion("request_id in", values, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdNotIn(List<String> values) {
+        public Criteria andRequestIdNotIn(List<Integer> values) {
             addCriterion("request_id not in", values, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdBetween(String value1, String value2) {
+        public Criteria andRequestIdBetween(Integer value1, Integer value2) {
             addCriterion("request_id between", value1, value2, "requestId");
             return (Criteria) this;
         }
 
-        public Criteria andRequestIdNotBetween(String value1, String value2) {
+        public Criteria andRequestIdNotBetween(Integer value1, Integer value2) {
             addCriterion("request_id not between", value1, value2, "requestId");
             return (Criteria) this;
         }

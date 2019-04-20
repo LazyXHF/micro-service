@@ -41,7 +41,7 @@ public interface PurchaseReviewMapper {
      * @param projectName
      * @return
      */
-    int selectByMethodCount(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName")  String projectName);
+    int selectByMethodCount(@Param("method") String method, @Param("projectCode") String projectCode, @Param("projectName") String projectName);
 
     /**
      * 查询每页数据
@@ -56,11 +56,11 @@ public interface PurchaseReviewMapper {
     @Select(" select max(review_num)  from purchase_review")
     String findMaxOdd();
 
-    List<PurchaseReview> queryPucharseReview(@Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("method") String method,@Param("supplier") String supplier,@Param("submitTime") String submitTime,@Param("status") String status);
+    List<PurchaseReview> queryPucharseReview(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("method") String method, @Param("supplier") String supplier, @Param("submitTime") String submitTime, @Param("status") String status);
 
     PurchaseReview queryPucharseReviewBase(@Param("id") String id);
 
-    int updateProjectReviewStatus(@Param("id") String id, @Param("nowBackUp3")String nowBackUp3);
+    int updateProjectReviewStatus(@Param("id") String id, @Param("nowBackUp3") String nowBackUp3);
 
     int deleteProjectReview(@Param("id") String id);
 

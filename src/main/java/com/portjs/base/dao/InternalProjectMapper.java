@@ -90,7 +90,7 @@ public interface InternalProjectMapper{
      * @param
      * @return
      */
-    List<InternalProject> selectListsByBackup1(@Param("createTime")String createTime,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+    List<InternalProject> selectListsByBackup1(@Param("createTime") String createTime, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 
     /**
      * 查询所有在建项目并分页
@@ -98,7 +98,7 @@ public interface InternalProjectMapper{
      * @param pageSize
      * @return
      */
-    List<InternalProject> queryConstructionProjects(@Param("id")List<String> id,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+    List<InternalProject> queryConstructionProjects(@Param("id") List<String> id, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 
     /**
      * 分页查询支持对象全查询
@@ -117,7 +117,7 @@ public interface InternalProjectMapper{
     List<Project> selectProjectAll();
 
     //查询在建项目的存在哪些年份
-    String selectCreateTime(@Param("projectId")List<String>list);
+    String selectCreateTime(@Param("projectId") List<String> list);
     //查询对应年份的项目总数
-    int selectAbuildingProject(@Param("niandu")String niandu,@Param("projectId")List<String>list);
+    int selectAbuildingProject(@Param("niandu") String niandu, @Param("projectId") List<String> list);
 }

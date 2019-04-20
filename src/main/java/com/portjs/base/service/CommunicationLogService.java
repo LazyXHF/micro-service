@@ -35,7 +35,7 @@ public interface CommunicationLogService {
      * @param communicationId
      * @return
      */
-    ResponseMessage queryCommunicationLog(@Param("communicationId")String communicationId);
+    ResponseMessage queryCommunicationLog(@Param("communicationId") String communicationId);
 
     ResponseMessage updateByPrimaryKeySelective(CommunicationLog record);
 

@@ -46,7 +46,7 @@ public class BugDetailsRecord {
 
     private String backup9;
 
-    private String backup10;//修复版本
+    private String backup10;
 
 
 

@@ -55,7 +55,7 @@ public interface TenderApplicationMapper {
      * @param projectName
      * @return
      */
-    int selectByMethodCount(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName")  String projectName);
+    int selectByMethodCount(@Param("method") String method, @Param("projectCode") String projectCode, @Param("projectName") String projectName);
 
     /**
      * 查询每页数据
@@ -66,7 +66,7 @@ public interface TenderApplicationMapper {
      * @param pageCount
      * @return
      */
-    List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode,@Param("projectName") String projectName,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
+    List<ContractVo> selectByPage(@Param("method") String method, @Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("rowNum") Integer rowNum, @Param("pageCount") Integer pageCount);
 
     /**
      * 统计总数
@@ -79,11 +79,11 @@ public interface TenderApplicationMapper {
      * @param userId
      * @return
      */
-    int selectCount(@Param("projectCode")String projectCode,@Param("projectName") String projectName,@Param("method") String method,
-                    @Param("supplier")String supplier,@Param("bidDate") String bidDate,@Param("status") String status,
-                    @Param("userId")String userId);
+    int selectCount(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("method") String method,
+                    @Param("supplier") String supplier, @Param("bidDate") String bidDate, @Param("status") String status,
+                    @Param("userId") String userId);
 
-    List<TenderApplication> selectPage(@Param("projectCode")String projectCode,@Param("projectName") String projectName,@Param("method") String method,
-                         @Param("supplier")String supplier,@Param("bidDate") String bidDate,@Param("status") String status,
-                         @Param("userId")String userId,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
+    List<Map<String,Object>> selectPage(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("method") String method,
+                                        @Param("supplier") String supplier, @Param("bidDate") String bidDate, @Param("status") String status,
+                                        @Param("userId") String userId, @Param("rowNum") Integer rowNum, @Param("pageCount") Integer pageCount);
 }

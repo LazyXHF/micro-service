@@ -108,16 +108,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
         //项目基本信息
         ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
-        ProjectApplicationExample applicationExample = new ProjectApplicationExample();
-        List<ProjectApplication> applications = applicationMapper.selectByExample(applicationExample);
-        for (ProjectApplication projectApplication : applications) {
-            if(projectApplication.getProjectName().equals(application.getProjectName())){
-                throw new Exception("项目名称不可重复");
-            }
-        }
-        
         application.setCreater(userId);
-        application.setType(type);
+
         application.setStatus(status);
         application.setUpdateTime(new Date());
         String message1="";
@@ -181,7 +173,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             //生成一条project记录
             updateUtil.projectMethod(id,null,application.getProjectName(),
                     application.getProjectType(),"A",userId,application.getOrganization()
-                    ,application.getApplicationAmount().toString(),"Aa2",application.getInvestor());
+                    ,application.getApplicationAmount().toString(),"Ab2",application.getInvestor());
 
             application.setId(String.valueOf(IDUtils.genItemId()));
             application.setCreater(userId);
@@ -289,7 +281,6 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 BusinessConfiguration configuration = JSONObject.toJavaObject(object,BusinessConfiguration.class);
                 configuration.setId(String.valueOf(IDUtils.genItemId()));
                 configuration.setCreator(userId);
-                configuration.setProjectId(application.getProjectId());
                 configuration.setCreateTime(new Date());
                 int num = configurationMapper.insertSelective(configuration);
                 if(num<=0){
@@ -305,13 +296,13 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         workflowstepCriteria.andActionResultEqualTo(1);
         List<TWorkflowstep> list = workflowstepMapper.selectByExample(workflowstepExample);
         //进入审核
-
         for(int i=0;i<nextViewJSON.size();i++){
             TWorkflowstep workflowstep = new TWorkflowstep();
             if(CollectionUtils.isEmpty(list)){
                 //然后新增一条当前登录人的流程记录
                 workflowstep.setId(String.valueOf(IDUtils.genItemId()));
                 workflowstep.setRelateddomain("项目立项");
+                //第一步流程默认为0
                 workflowstep.setPrestepId("0");
                 workflowstep.setRelateddomainId(application.getId());
                 workflowstep.setStepDesc("项目负责人提交");

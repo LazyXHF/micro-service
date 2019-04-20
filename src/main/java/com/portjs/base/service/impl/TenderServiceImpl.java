@@ -86,13 +86,12 @@ public class TenderServiceImpl implements TenderService {
             String tNum =tenderApplications.get(0).getTenderNum();
             //截取最后流水号
             String num = tNum.substring(10,tNum.length());
-            int count = Integer.parseInt(num)+1;
+            int count = Integer.parseInt(num);
             tenderNum ="ZB"+date+String.format("%02d", count);
-
         }else{
             tenderNum="ZB"+date+"01";
         }
-        return new ResponseMessage(Code.CODE_OK, MessageUtils.SUCCESS,tenderNum);
+        return new ResponseMessage(Code.CODE_OK, MessageUtils.NOT_PASSED,tenderNum);
     }
 
     /**
@@ -295,35 +294,28 @@ public class TenderServiceImpl implements TenderService {
         int count = tenderApplicationMapper.selectCount(projectCode,projectName,method,supplier,bidDate,status,userId);
         Page page = new Page();
         page.init(count,pageNum,pageCount);
-        List<TenderApplication> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
+        List<Map<String,Object>> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
 
         //处理操作状态
-        List<TenderApplication> datalist = new ArrayList<TenderApplication>();
+        List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
         list.forEach(map->{
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
-            String  tenderId = map.getId();
+            String  tenderId = map.get("tenderId").toString();
             TTodoExample todoExample = new TTodoExample();
             TTodoExample.Criteria criteria = todoExample.createCriteria();
             criteria.andRelateddomainIdEqualTo(tenderId);
             criteria.andReceiverIdEqualTo(userId);
             criteria.andStatusEqualTo("0");
             List<TTodo> todos = todoMapper.selectByExample(todoExample);
-            Map<String,Object> ma = new HashMap<String,Object>();
             if(CollectionUtils.isEmpty(todos)){
-                ma.put("operatingStatus",0);
+                map.put("operatingStatus",0);
             }else{
-                ma.put("operatingStatus",1);
+                map.put("operatingStatus",1);
             }
-            if(userId.equals(map.getCreater())){
-                ma.put("longiner",1);
-            }else{
-                ma.put("longiner",0);
-            }
-            map.setParams(ma);
             datalist.add(map);
         });
         page.setList(datalist);
-        return new ResponseMessage(Code.CODE_OK,"查询成功",page);
+        return new ResponseMessage(Code.CODE_ERROR,"查询成功",page);
     }
 
     @Override

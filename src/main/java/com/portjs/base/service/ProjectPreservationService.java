@@ -49,13 +49,13 @@ public interface ProjectPreservationService {
      * @param file
      * @return
      */
-    ResponseMessage insertExcel(MultipartFile file,String loginId)  throws Exception;
+    ResponseMessage insertExcel(MultipartFile file, String loginId)  throws Exception;
     /**
      *Excel导入（EasyPoi）
      * @param list
      * @return
      */
-    ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list,String loginId) throws Exception;
+    ResponseMessage insertExcelByEasyPoi(List<InvestmentPlan> list, String loginId) throws Exception;
 
     /**
      * 查询所有项目

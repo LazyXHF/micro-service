@@ -30,9 +30,9 @@ public interface ProjectApplicationMapper {
 
     int updateByPrimaryKey(ProjectApplication record);
 
-    int queryProjectCount(@Param("projectCode") String projectCode,@Param("projectName")String projectName, @Param("projectType") String projectType,@Param("organization")String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
+    int queryProjectCount(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
 
-    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode,@Param("projectName")String projectName, @Param("projectType") String projectType,@Param("organization")String organization, @Param("leval") String leval, @Param("projectManager") String projectManager,@Param("ownerId")String ownerId);
+    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
 
     int updateProject(ProjectApplication projectApplication);
 
@@ -45,7 +45,7 @@ public interface ProjectApplicationMapper {
     int deleteProject(@Param("id") String id);
 
     //查询对应年份的所有数据
-    List<ProjectApplication> selectapplicationByYear(@Param("niandu")String niandu);
+    List<ProjectApplication> selectapplicationByYear(@Param("niandu") String niandu);
 
     int abolishProject(@Param("id") String id);
 }

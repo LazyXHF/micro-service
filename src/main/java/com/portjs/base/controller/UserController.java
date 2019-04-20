@@ -1,5 +1,6 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.dao.InternalTodo;
@@ -9,6 +10,7 @@ import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.TUserService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.SelectAuditors;
 import com.portjs.base.vo.ArrayVO;
 import com.portjs.base.vo.PageVo;
 import com.portjs.base.vo.SortVo;
@@ -34,6 +36,8 @@ public class UserController extends BaseController  {
     @Autowired
     TUserService tUserService;
 
+    @Autowired
+    private SelectAuditors selectAuditors;
     /**
      * 添加用户
      */
@@ -151,6 +155,69 @@ public class UserController extends BaseController  {
             return map;
         }
     }
+
+
+
+    /**
+     * 查询用户信息（一人多部门）
+     * @param pageVo
+     * @return
+     */
+    @LogInfo(methodName = "一人多部门",modelName = "用户模块")
+    @RequestMapping("select-user-departments")
+    @ResponseBody
+    public ResponseMessage selectUserDepartments(@RequestBody PageVo pageVo){
+        logger.debug(tag+pageVo);
+        UnifiedExceptionHandler.method= tag+"selectUserDepartments=============================="+pageVo;
+        responseMessage = tUserService.selectUserDepartments(pageVo);
+        return responseMessage;
+    }
+
+    /**
+     * 添加用户
+     */
+    @LogInfo(methodName = "添加角色",modelName = "角色模块")
+    @RequestMapping("insert-users")
+    @ResponseBody
+    public ResponseMessage insertUsers(@RequestBody UserRoleVO user){
+        logger.debug(tag+user);
+        UnifiedExceptionHandler.method= tag+"insertUsers=============================="+user;
+        responseMessage = tUserService.insertUserDepartments(user);
+        return responseMessage;
+    }
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    @LogInfo(methodName = "修改用户",modelName = "用户模块")
+    @RequestMapping("update-users")
+    @ResponseBody
+    public ResponseMessage updateUsers(@RequestBody UserRoleVO user){
+        logger.debug(tag+user);
+        UnifiedExceptionHandler.method= tag+"updateUsers=============================="+user;
+        responseMessage = tUserService.updateUserDepartments(user);
+        return responseMessage;
+    }
+
+
+//    @LogInfo(methodName = "修改用户",modelName = "用户模块")
+//    @RequestMapping("update-users")
+//    @ResponseBody
+//    public ResponseMessage SelectAuditors(@RequestBody String user){
+//        logger.debug(tag+user);
+//        UnifiedExceptionHandler.method= tag+"updateUsers=============================="+user;
+//        JSONObject jsonObject = JSONObject.parseObject(user);
+//        String did = jsonObject.getString("did");//项目等级id
+//        String rid = jsonObject.getString("rid");
+//        List <TUser> users = selectAuditors.SelectAuditorsByUidAndRid(did,rid);
+//        responseMessage = new ResponseMessage()
+//        return responseMessage;
+//    }
+
+
+
 
 
 

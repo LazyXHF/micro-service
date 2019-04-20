@@ -11,7 +11,7 @@ import java.util.Date;
 public class TenderApplication extends BaseEntity{
     private String id;
 
-    private String requestId;//采购申请单id
+    private Integer requestId;//采购申请单id
 
     private String tenderNum;//招标申请单号（ZB+YYMMDD+2位流水码）
 
@@ -27,13 +27,13 @@ public class TenderApplication extends BaseEntity{
 
     private String remark;//备注说明
 
-    private String status;//流程状态
+    private String status;//流程状态 0:暂存 1:提交采购申请2:招标办人员审核3:招标办主任审核4:招标委员会审核5;执行董事审核
 
     private String tenderUrl;//招标文件
 
     private String supplier;//中标厂商
 
-    private Date bidDate;//中标日期
+    private Date bidDate;//定标日期
 
     private BigDecimal amount;//中标金额
 
@@ -51,7 +51,7 @@ public class TenderApplication extends BaseEntity{
 
     private String backUp1;//项目编码
 
-    private String backUp2;//项目名称
+    private String backUp2;//备用字段2
 
     private String backUp3;//备用字段3
 
@@ -67,11 +67,11 @@ public class TenderApplication extends BaseEntity{
         this.id = id == null ? null : id.trim();
     }
 
-    public String getRequestId() {
+    public Integer getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(String requestId) {
+    public void setRequestId(Integer requestId) {
         this.requestId = requestId;
     }
 

@@ -20,7 +20,7 @@ public interface ApprovalMapper {
      * @param id
      * @return
      */
-    int updateApprovals(@Param("id")List<String> id);
+    int updateApprovals(@Param("id") List<String> id);
     /**
      *  插入
      * @param record

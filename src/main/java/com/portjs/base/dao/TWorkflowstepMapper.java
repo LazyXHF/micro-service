@@ -37,7 +37,7 @@ public interface TWorkflowstepMapper {
 
     int updateByPrimaryKey(TWorkflowstep record);
 
-    Integer isApproveingId(@Param("id") String id,@Param("ownerId") String ownerId);
+    Integer isApproveingId(@Param("id") String id, @Param("ownerId") String ownerId);
 
     List<TWorkflowstep> queryProjectRecords(@Param("id") String id);
 
@@ -52,13 +52,7 @@ public interface TWorkflowstepMapper {
 
     int updatetWorkflowstepRecord(TWorkflowstep tWorkflowstep);
 
-    int updateTWorkflowstepRecords(TWorkflowstep tWorkflowstep);
+    TWorkflowstep queryCurrentstepId(@Param("id") String id, @Param("ownerId") String ownerId, @Param("nowBackUp3") String nowBackUp3);
 
-    TWorkflowstep queryCurrentstepId(@Param("id") String id,@Param("ownerId") String ownerId, @Param("nowBackUp3") String nowBackUp3);
-
-    List<TWorkflowstep> queryByRelateddomainId(@Param("relateddomainId") String relateddomainId);
-
-    int isApprover(@Param("id") String id,@Param("ownerId")String ownerId);
-
-    TWorkflowstep selectByPDS(TWorkflowstep tWorkflowstep);
+    int isApprover(@Param("id") String id, @Param("ownerId") String ownerId);
 }

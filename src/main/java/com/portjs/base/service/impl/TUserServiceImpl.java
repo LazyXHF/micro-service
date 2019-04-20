@@ -1,9 +1,7 @@
 package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.portjs.base.dao.TUserMapper;
-import com.portjs.base.dao.TUserRoleMapper;
-import com.portjs.base.dao.TXietongDictionaryMapper;
+import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.TErrcodeInfoService;
 import com.portjs.base.service.TUserService;
@@ -43,6 +41,12 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
 
     @Autowired
     private TXietongDictionaryMapper dictionaryMapper;
+
+    @Autowired
+private TUserDepartmentMapper userDepartmentMapper;
+
+    @Autowired
+    private TDepartmentMapper departmentMapper;
 
 
 
@@ -192,7 +196,8 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         for (int i=0;i<uids.size();i++){
             //删除关联表数据
           userRoleMapper.deleteUserRoleByUid(uids.get(i));
-
+          //删除部门用户关联表
+          deleteUserDepartment(uids.get(i));
           //删除用户
             userMapper.deleteByPrimaryKey(uids.get(i));
         }
@@ -217,7 +222,6 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
 
         List<UserRoleDO> userList = new ArrayList<>();
         for (int i=0;i<users.size();i++){
-
             if (!StringUtils.isEmpty(users.get(i).getId())){
                 UserRoleDO userRoleDOS = userMapper.selectUserAndRoleAndDepartmentByUid(users.get(i).getId());
                 if (userRoleDOS!=null){
@@ -243,6 +247,9 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
 
         return responseMessage;
     }
+
+
+
 
     /**
      * 用户排序
@@ -317,7 +324,202 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         }
         return responseMessage;
     }
+/**
+ * -----------------------------------------------------------------------------------------------------------------------------------------
+ */
+    /**
+     * 一人多门添加用户
+     * @param userRoleVO
+     * @return
+     */
+    @Override
+    public ResponseMessage insertUserDepartments(UserRoleVO userRoleVO) {
+        TUser user = userRoleVO.getUser();
+        List<String> rids = userRoleVO.getRids();
+        List<String> dids = userRoleVO.getDids();
+        if (StringUtils.isEmpty(user.getLoginAccount())||StringUtils.isEmpty(user.getNameCn())){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"必填项为空");
+            return responseMessage;
+        }
+        if (!CollectionUtils.isEmpty(selectUserByAcccount(user.getLoginAccount()))){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"登录名已存在");
+            return responseMessage;
+        }
+        //添加用户表
+        int sort = userMapper.selectMaxSort();
+        user.setId(UUID.randomUUID().toString());
+        user.setCreatetime(new Date());
+        user.setSort(sort);
+//        user.setNameCn(user.getLoginName());
+        user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getNameCn()));
+        user.setLastUpdPasswdTime(new Date());
+        user.setPasswdWrongCount(0);
+        //重置密码周期
+        user.setPasswordModifyCycle(90);
+        //删除所有角色信息
+        deleteUserRole(user.getId());
+        for (int i=0;i<rids.size();i++){
+            TUserRole userRole = new TUserRole();
+            userRole.setId(UUID.randomUUID().toString());
+            userRole.setUserId(user.getId());
+            userRole.setRoleId(rids.get(i));
+            userRoleMapper.insert(userRole);
+        }
 
+
+        //添加部门表
+        for (int i=0;i<dids.size();i++){
+            TUserDepartment userDepartment = new TUserDepartment();
+            userDepartment.setuId(user.getId());
+            userDepartment.setdId(dids.get(i));
+            userDepartmentMapper.insert(userDepartment);
+        }
+
+        int i =  userMapper.insert(user);
+        if (i<0){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR, "添加失败");
+        }else {
+            responseMessage = new ResponseMessage(Code.CODE_OK,"添加成功");
+        }
+        return responseMessage;
+    }
+
+    /**
+     * 一人多门修改用户
+     * @param userRoleVO
+     * @return
+     */
+    @Override
+    public ResponseMessage updateUserDepartments(UserRoleVO userRoleVO) {
+        TUser user = userRoleVO.getUser();
+        List<String> rids = userRoleVO.getRids();
+        List<String> dids = userRoleVO.getDids();
+        Date lastPasswordTime = userMapper.selectByPrimaryKey(userRoleVO.getUser().getId()).getLastUpdPasswdTime();
+        String historyPassword = userMapper.selectByPrimaryKey(userRoleVO.getUser().getId()).getHistoryPassword();
+        if (StringUtils.isEmpty(user.getLoginAccount())||StringUtils.isEmpty(user.getNameCn())){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR,"必填项为空");
+            return responseMessage;
+        }
+        if (!CollectionUtils.isEmpty(selectUserByAcccount(user.getLoginAccount()))){
+            //除掉当前用户
+            if (!selectUserByAcccount(user.getLoginAccount()).get(0).getId().equals(user.getId())){
+                responseMessage = new ResponseMessage(Code.CODE_ERROR,"登录名已存在");
+                return responseMessage;
+            }
+        }
+
+        //删除所有角色信息
+        deleteUserRole(user.getId());
+        //添加角色
+        for (int i=0;i<rids.size();i++){
+            TUserRole userRole = new TUserRole();
+            userRole.setId(UUID.randomUUID().toString());
+            userRole.setUserId(user.getId());
+            userRole.setRoleId(rids.get(i));
+            userRoleMapper.insert(userRole);
+        }
+
+        //删除所有部门信息
+        deleteUserDepartment(user.getId());
+        //添加部门表
+        for (int i=0;i<dids.size();i++){
+            TUserDepartment userDepartment = new TUserDepartment();
+            userDepartment.setuId(user.getId());
+            userDepartment.setdId(dids.get(i));
+            userDepartmentMapper.insert(userDepartment);
+        }
+
+
+
+        if (!StringUtils.isEmpty(user.getLoginPassword())){
+            StringBuilder sb = new StringBuilder();
+            user.setLastUpdPasswdTime(new Date());
+            //计算周期
+//            int days = (int) ((new Date().getTime() - lastPasswordTime.getTime() ) / (1000*3600*24));
+
+            //重置密码周期
+            user.setPasswordModifyCycle(90);
+
+            sb.append(user.getLoginPassword()+","+historyPassword);
+            user.setHistoryPassword(sb.toString());
+        }
+        //更新用户信息
+//        user.setNameCn(user.getLoginName());
+        user.setPingyin(Pinyin4jUtil.converterToFirstSpell(user.getNameCn()));
+        if (!StringUtils.isEmpty(user.getNameCn())){
+            dictionaryMapper.updateMAINByMID(user.getId(),user.getNameCn());
+
+        }
+        int i =   userMapper.updateByPrimaryKeySelective(user);
+
+
+
+        if (i<0){
+            responseMessage = new ResponseMessage(Code.CODE_ERROR, "修改失败");
+        }else {
+            responseMessage = new ResponseMessage(Code.CODE_OK,"修改成功");
+        }
+
+        return responseMessage;
+    }
+
+    /**
+     * 一人多部门查找
+      * @param pageVo
+     * @return
+     */
+    @Override
+    public ResponseMessage selectUserDepartments(PageVo pageVo) {
+        Page<UserRoleDO> page = new Page<>();
+        System.out.println(pageVo.toString());
+        int total = userMapper.selectUserCountByLoginNameAndDepartmentIds(pageVo.getObject(),pageVo.getDepartmentId());
+        page.init(total,pageVo.getPageNo(),pageVo.getPageSize());
+        List<TUser> users = userMapper.selectUserByLoginNameAndDepartmentIds(pageVo.getObject(),pageVo.getDepartmentId(),page.getRowNum(),page.getPageCount());
+        List<UserRoleDO> userList = new ArrayList<>();
+
+        for (int i=0;i<users.size();i++){
+            if (!StringUtils.isEmpty(users.get(i).getId())){
+                UserRoleDO userRoleDOS = userMapper.selectUserAndRoleAndDepartmentByUids(users.get(i).getId());
+                if (userRoleDOS!=null){
+                    userList.add(userRoleDOS);
+                }
+            }
+
+        }
+
+        //判断部门id是否为空
+        if (StringUtils.isEmpty(pageVo.getDepartmentId())){
+            for (int i=0;i<userList.size();i++){
+                List<TDepartment> departments = departmentMapper.selectDepartmentByUid(userList.get(i).getId());
+                userList.get(i).setDepartments(departments);
+            }
+        }else {
+            for (int i = 0; i < userList.size(); i++) {
+                List<TDepartment> departments = new ArrayList<>();
+                TDepartment department = departmentMapper.selectByPrimaryKey(pageVo.getDepartmentId());
+                departments.add(department);
+                userList.get(i).setDepartments(departments);
+            }
+
+
+        }
+//
+//        //判断是否是部门负责人
+//        for (int i=0;i<userList.size();i++){
+//            if (userList.get(i).getLeaderId().equals(userList.get(i).getId())){
+//                userList.get(i).setIsLeader("true");
+//            }else {
+//                userList.get(i).setIsLeader("false");
+//            }
+//        }
+
+        page.setList(userList);
+
+
+        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",page);
+
+        return responseMessage;
+    }
 
 
     //根据用户名查找用户
@@ -338,6 +540,12 @@ public class TUserServiceImpl implements UserDetailsService, TUserService {
         userRoleMapper.deleteByExample(example);
     }
 
-
+    //批量删除部门
+    public void deleteUserDepartment(String uid){
+        TUserDepartmentExample example = new TUserDepartmentExample();
+        TUserDepartmentExample.Criteria criteria = example.createCriteria();
+        criteria.andUIdEqualTo(uid);
+        userDepartmentMapper.deleteByExample(example);
+    }
 
 }

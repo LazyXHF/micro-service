@@ -46,7 +46,7 @@ public interface BugDetailsMapper {
      * @return
      */
     @Select("select * from t_mgt_bug_record where owner_id = #{ownerId}")
-    List<BugDetailsRecord> queryBugDetailsRecordByOwnerId(@Param("ownerId")String ownerId);
+    List<BugDetailsRecord> queryBugDetailsRecordByOwnerId(@Param("ownerId") String ownerId);
 
 
 
@@ -58,29 +58,29 @@ public interface BugDetailsMapper {
      * @param result    处理结果
      * @return
      */
-    List<BugDetails> queryAllBugInfo(@Param("projectId")String projectId,@Param("result")int result,@Param("modules")String modules,@Param("projectedName")String projectedName,
-                                                  @Param("designatedPersion")String designatedPersion,
-                                                  @Param("pageNo")int pageNo,@Param("pageSize")int pageSize);
+    List<BugDetails> queryAllBugInfo(@Param("projectId") String projectId, @Param("result") int result, @Param("modules") String modules, @Param("projectedName") String projectedName,
+                                     @Param("designatedPersion") String designatedPersion,
+                                     @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
     /**
      * bug分页列表（待办页面）
      * @return
      */
-    List<BugDetails> queryAllBugInfoFlow(@Param("id")String id,
-                                     @Param("pageNo")int pageNo,@Param("pageSize")int pageSize);
+    List<BugDetails> queryAllBugInfoFlow(@Param("id") String id,
+                                         @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
     /**
      * 统计bug条数（添加页面）
      * @param projectId
      * @return
      */
-    int bugCounts(@Param("projectId")String projectId,@Param("result")int result,@Param("modules")String modules,@Param("projectedName")String projectedName,
-                  @Param("designatedPersion")String designatedPersion);
+    int bugCounts(@Param("projectId") String projectId, @Param("result") int result, @Param("modules") String modules, @Param("projectedName") String projectedName,
+                  @Param("designatedPersion") String designatedPersion);
 
     /**
      * 统计bug条数（待办页面）
 //     * @param projectId
      * @return
      */
-    int bugFlowCounts(@Param("id")String id);
+    int bugFlowCounts(@Param("id") String id);
 
 
     /**
@@ -98,29 +98,29 @@ public interface BugDetailsMapper {
      * 查询待办
      * @return
      */
-    List<BugDetails>  selectBugSearchDealtWith(@Param("ownerId")String ownerId, @Param("pageNo")Integer pageNo, @Param("pageSize")Integer pageSize);
+    List<BugDetails>  selectBugSearchDealtWith(@Param("ownerId") String ownerId, @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
 
-    int countBugSearchDealtWith(@Param("ownerId")String ownerId);
+    int countBugSearchDealtWith(@Param("ownerId") String ownerId);
 
     /**
      * 查询在办
      */
-    List<BugDetails> selectBugSearchDealtDoing(@Param("ownerId")String ownerId, @Param("pageNo")Integer pageNo, @Param("pageSize")Integer pageSize);
-    int countBugSearchDealtDoing(@Param("ownerId")String ownerId);
+    List<BugDetails> selectBugSearchDealtDoing(@Param("ownerId") String ownerId, @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+    int countBugSearchDealtDoing(@Param("ownerId") String ownerId);
 
     /**
      * 查询是否有待办bug
      * @param ownerId
      * @return
      */
-    List<BugDetails>  selectIsBugSearchDealtWith(@Param("ownerId")String ownerId);
+    List<BugDetails>  selectIsBugSearchDealtWith(@Param("ownerId") String ownerId);
 
 
     /**
      * 查询已办
      */
-    List<BugDetails> selectBugSearchDealtEnd(@Param("ownerId")String ownerId, @Param("pageNo")Integer pageNo, @Param("pageSize")Integer pageSize);
-    int countBugSearchDealtEnd(@Param("ownerId")String ownerId);
+    List<BugDetails> selectBugSearchDealtEnd(@Param("ownerId") String ownerId, @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+    int countBugSearchDealtEnd(@Param("ownerId") String ownerId);
 
     List<BugDetails> queryAllBugAndRecordInfo(@Param("id") String id);
 
@@ -132,13 +132,13 @@ public interface BugDetailsMapper {
      * @param pageSize
      * @return
      */
-    List<BugDetails> selectBugSearchDealtTemporary(@Param("ownerId")String ownerId, @Param("pageNo")Integer pageNo, @Param("pageSize")Integer pageSize);
-    int countBugSearchDealtTemporary(@Param("ownerId")String ownerId);
+    List<BugDetails> selectBugSearchDealtTemporary(@Param("ownerId") String ownerId, @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
+    int countBugSearchDealtTemporary(@Param("ownerId") String ownerId);
 
 
 
 
     //修改主表状态
     @Update("UPDATE t_mgt_bug SET result=#{result},end_time = #{endTime} WHERE id = #{id}")
-    int updateStatusById(@Param("result") String result,@Param("id")String id,@Param("endTime")Date endTime);
+    int updateStatusById(@Param("result") String result, @Param("id") String id, @Param("endTime") Date endTime);
 }

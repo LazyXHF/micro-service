@@ -122,7 +122,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     @Override
     public ResponseMessage insertProjectInfo(InternalProject record) {
         record.setId(UUID.randomUUID().toString());
-        Date date=new java.util.Date();
+        Date date=new Date();
         java.sql.Date  data1=new java.sql.Date(date.getTime());
         record.setCreateTime(data1);
         record.setCreater(UserUtils.getCurrentUser().getUsername());
@@ -147,7 +147,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     @Override
     public ResponseMessage insertProjectInfoOverview(InternalProject internalProject) {
         internalProject.setId(UUID.randomUUID().toString());
-        Date date=new java.util.Date();
+        Date date=new Date();
         java.sql.Date  data1=new java.sql.Date(date.getTime());
         internalProject.setModifyTime(data1);
         internalProject.setModifer(UserUtils.getCurrentUser().getUsername());
@@ -172,7 +172,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
                 return new ResponseMessage(code , "更新项目模块,id未传");
             }
             //如果创建时间已经存在，之后每次修改都是修改时间
-            Date date=new java.util.Date();
+            Date date=new Date();
             java.sql.Date  data1=new java.sql.Date(date.getTime());
             record.setModifyTime(data1);
 
@@ -200,7 +200,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
                 return new ResponseMessage(code , "更新项目概览模块,id未传");
             }
             //如果创建时间已经存在，之后每次修改都是修改时间
-            Date date=new java.util.Date();
+            Date date=new Date();
             java.sql.Date  data1=new java.sql.Date(date.getTime());
             record.setModifyTime(data1);
             record.setModifer(UserUtils.getCurrentUser().getId());
@@ -288,7 +288,7 @@ public class InternalProjectServiceImpl implements InternalProjectService {
                 return new ResponseMessage(Code.CODE_ERROR , "更新项目模块,id未传");
             }
             //如果创建时间已经存在，之后每次修改都是修改时间
-            Date date=new java.util.Date();
+            Date date=new Date();
             java.sql.Date  data1=new java.sql.Date(date.getTime());
             internalProject.setModifyTime(data1);
             internalProject.setModifer(UserUtils.getCurrentUser().getId());
@@ -448,20 +448,21 @@ public class InternalProjectServiceImpl implements InternalProjectService {
                 continue;
             }
             List<ProjectApplication> projectApplications = applicationMapper.selectapplicationByYear(list.get(i).toString());
-            if (CollectionUtils.isEmpty(projectApplications)){
-                return map;
-            }
+
             /*map.put(list.get(i)+"年", projectApplications.size());*/
 
             int count = projectMapper.selectapplicationByYear(list.get(i).toString());
-            if (count==0){
-                return map;
-            }
             /*map.put(list.get(i)+"年",projectApplications.size()+"~"+count);*/
-            list1.add(projectApplications.size());
+            if (CollectionUtils.isEmpty(projectApplications)){
+                list1.add(0);
+            }else {
+                list1.add(projectApplications.size());
+            }
+
             list2.add(count);
 
         }
+
         map.put("ok",list1);
         map.put("error",list2);
         return map;

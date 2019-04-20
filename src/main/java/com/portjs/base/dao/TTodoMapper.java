@@ -31,7 +31,7 @@ public interface TTodoMapper {
 
     int updateByPrimaryKey(TTodo record);
 
-    List<TTodo> toApprove(@Param("id") String id,@Param("ownerId") String ownerId);
+    TTodo toApprove(@Param("id") String id, @Param("ownerId") String ownerId);
 
     List<TTodo> selectBySomething(TTodo record);
 
@@ -49,14 +49,12 @@ public interface TTodoMapper {
      * 根据todo_type="事务处理" 和 receiver_id = #｛receiver_id｝还有问题单id relateddomain_id,
      * @return receiver_id 接收人id
      */
-    int updateStatusByCommunicationLog(@Param("receiverId") String receiverId,@Param("relateddomainId") String relateddomainId);
+    int updateStatusByCommunicationLog(@Param("receiverId") String receiverId, @Param("relateddomainId") String relateddomainId);
 
 
-    int deleteTodoRecord(@Param("id") String id,@Param("ownerId") String ownerId);
+    int deleteTodoRecord(@Param("id") String id, @Param("ownerId") String ownerId);
 
     int queryTodoRecord(@Param("id") String id, @Param("ownerId") String ownerId);
 
     int updateTodoRecord(TTodo tTodo);
-
-    List<TTodo> queryTodoIdByOthers(@Param("relateddomainId") String relateddomainId,@Param("receiverId") String receiverId);
 }

@@ -5,12 +5,11 @@ import java.util.List;
 
 import com.portjs.base.entity.TXietongDocModel;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.vo.PageVo;
 
 
 public interface DownloadDocumentService {
 
-	ResponseMessage selectAllDocument(PageVo pageVo);
+	List<TXietongDocModel> selectAllDocument();
 
 	ResponseMessage insertDocument(String filePath, String docName, String docDescription);
 

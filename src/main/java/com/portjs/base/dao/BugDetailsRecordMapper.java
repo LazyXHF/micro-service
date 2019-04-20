@@ -57,7 +57,7 @@ public interface BugDetailsRecordMapper {
      * @param owner_id
      * @return
      */
-    List<BugDetailsRecord> selectByOwnerId(@Param("owner_id") String owner_id,@Param("pageNo") int pageNo,@Param("pageSize") int pageSize);
+    List<BugDetailsRecord> selectByOwnerId(@Param("owner_id") String owner_id, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
     /**
      * 根据登录人id查询代办事项总数
      * @param owner_id
@@ -66,7 +66,7 @@ public interface BugDetailsRecordMapper {
     int selectByOwnerIdCount(String owner_id);
 
     @Update("UPDATE t_mgt_bug_record SET STATUS = #{status} WHERE  id = #{id}")
-    int updateStatusByOwnerIDAndBugId(@Param("status") String status,@Param("id")String id);
+    int updateStatusByOwnerIDAndBugId(@Param("status") String status, @Param("id") String id);
 
 
 
@@ -93,7 +93,7 @@ public interface BugDetailsRecordMapper {
      * @return
      */
    // @Select("Select * from t_mgt_bug_record where status = #{status} and owner_id = #{ownerId}")
-    BugDetailsRecord queryBugIdByStatusAndOwnerId(@Param("status")int status,@Param("ownerId")String ownerId);
+    BugDetailsRecord queryBugIdByStatusAndOwnerId(@Param("status") int status, @Param("ownerId") String ownerId);
 
 
 
@@ -105,7 +105,7 @@ public interface BugDetailsRecordMapper {
 
 
    @Update("UPDATE  t_mgt_bug_record   SET `status` = #{status}  where owner_id = #{ownerId} and bug_id=#{bugId}")
-   int updateRecordStatus(@Param("status")String status,@Param("ownerId")String ownerId, @Param("bugId")String bugId);
+   int updateRecordStatus(@Param("status") String status, @Param("ownerId") String ownerId, @Param("bugId") String bugId);
 
     int deleteByBugId(@Param("id") String id);
 
@@ -114,7 +114,7 @@ public interface BugDetailsRecordMapper {
     int updateByBugId(@Param("bugId") String bugId);
 
   @Select("select * from t_mgt_bug_record m  where m.status = '3'  and m.bug_id = #{id} ")
-  List<BugDetailsRecord> selectBugByBugIdAndStatus(@Param("id")String id);
+  List<BugDetailsRecord> selectBugByBugIdAndStatus(@Param("id") String id);
 
     int updateById(@Param("id") String id);
 }

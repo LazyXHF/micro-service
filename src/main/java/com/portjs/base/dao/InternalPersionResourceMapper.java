@@ -30,14 +30,14 @@ public interface InternalPersionResourceMapper {
      * 根据项目id获取人员信息
      * @return id
      */
-    List<InternalPersionResource> queryAllPersionInfo(@Param("id")String projectId,@Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+    List<InternalPersionResource> queryAllPersionInfo(@Param("id") String projectId, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
 
     /**
      * 统计项目相关人员数目
      * @param projectId
      * @return
      */
-    int persionCounts(@Param("id")String projectId);
+    int persionCounts(@Param("id") String projectId);
 
     int insertSelective(InternalPersionResource record);
 

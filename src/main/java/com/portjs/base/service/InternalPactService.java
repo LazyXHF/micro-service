@@ -16,7 +16,7 @@ public interface InternalPactService {
      * @param pageSize
      * @return （String name,String signState,String involvedUnit,String tradeNames）
      */
-   ResponseMessage queryAllPacts(String id, int pageNo,int pageSize);
+   ResponseMessage queryAllPacts(String id, int pageNo, int pageSize);
 
     /**
      * 批量添加合同信息
@@ -37,7 +37,7 @@ public interface InternalPactService {
      * @param id
      * @return
      */
-    ResponseMessage deleteByPrimaryKey( List<String> id);
+    ResponseMessage deleteByPrimaryKey(List<String> id);
 
     /**
      * 根据id查询合同信息

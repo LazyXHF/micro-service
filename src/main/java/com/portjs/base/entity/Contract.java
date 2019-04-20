@@ -8,6 +8,8 @@ public class Contract {
 
     private String contractNum;
 
+    private String contractTitle;
+
     private String source;
 
     private String sourceId;
@@ -19,6 +21,10 @@ public class Contract {
     private String purchaseDept;
 
     private String supplier;
+
+    private String inCharge;
+
+    private String phonenum;
 
     private BigDecimal amount;
 
@@ -40,26 +46,6 @@ public class Contract {
 
     private Date deleteTime;
 
-    private int pageNum;
-
-    private int pageCount;
-
-    public int getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(int pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public int getPageCount() {
-        return pageCount;
-    }
-
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
-    }
-
     public String getId() {
         return id;
     }
@@ -74,6 +60,14 @@ public class Contract {
 
     public void setContractNum(String contractNum) {
         this.contractNum = contractNum == null ? null : contractNum.trim();
+    }
+
+    public String getContractTitle() {
+        return contractTitle;
+    }
+
+    public void setContractTitle(String contractTitle) {
+        this.contractTitle = contractTitle == null ? null : contractTitle.trim();
     }
 
     public String getSource() {
@@ -122,6 +116,22 @@ public class Contract {
 
     public void setSupplier(String supplier) {
         this.supplier = supplier == null ? null : supplier.trim();
+    }
+
+    public String getInCharge() {
+        return inCharge;
+    }
+
+    public void setInCharge(String inCharge) {
+        this.inCharge = inCharge == null ? null : inCharge.trim();
+    }
+
+    public String getPhonenum() {
+        return phonenum;
+    }
+
+    public void setPhonenum(String phonenum) {
+        this.phonenum = phonenum == null ? null : phonenum.trim();
     }
 
     public BigDecimal getAmount() {

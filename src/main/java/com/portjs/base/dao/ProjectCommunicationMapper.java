@@ -33,8 +33,8 @@ public interface ProjectCommunicationMapper {
      * @param phase
      * @return
      */
-    int projectCommunicationCounts(@Param("projectId")String projectId,@Param("classification")String classification ,@Param("priority")String priority,
-                                   @Param("sponsor") String sponsor,@Param("phase") String phase);
+    int projectCommunicationCounts(@Param("projectId") String projectId, @Param("classification") String classification, @Param("priority") String priority,
+                                   @Param("sponsor") String sponsor, @Param("phase") String phase);
     /**
      * 对项目问题的分页并模糊查询
      * @param projectId
@@ -46,8 +46,8 @@ public interface ProjectCommunicationMapper {
      * @param pageSize
      * @return
      */
-    List<ProjectCommunication> queryProjectCommunicationInfo(@Param("projectId")String projectId,@Param("classification")String classification ,@Param("priority")String priority,
-                                                             @Param("sponsor") String sponsor,@Param("phase") String phase,@Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
+    List<ProjectCommunication> queryProjectCommunicationInfo(@Param("projectId") String projectId, @Param("classification") String classification, @Param("priority") String priority,
+                                                             @Param("sponsor") String sponsor, @Param("phase") String phase, @Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
 
 
     /**
@@ -55,7 +55,7 @@ public interface ProjectCommunicationMapper {
      * @param ids
      * @return
      */
-    int updateDeleteTime(@Param("id")List<String> ids);
+    int updateDeleteTime(@Param("id") List<String> ids);
 
     /**
      * 添加

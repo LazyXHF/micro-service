@@ -31,7 +31,7 @@ public interface TDepartmentService {
      * @param id
      * @return
      */
-    ResponseMessage deleteDepartmentByDids(String  id);
+    ResponseMessage deleteDepartmentByDids(String id);
 
     /**
      * 查询所有部门  （不是树）

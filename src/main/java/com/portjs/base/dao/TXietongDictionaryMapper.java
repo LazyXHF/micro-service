@@ -184,5 +184,5 @@ public interface TXietongDictionaryMapper {
 
 
     @Update("UPDATE t_xietong_dictionary SET MAIN_VALUE=#{name} WHERE MID_VALUE = #{id}")
-    int updateMAINByMID(@Param("name")String name,@Param("id")String id);
+    int updateMAINByMID(@Param("name") String name, @Param("id") String id);
 }

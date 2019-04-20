@@ -13,7 +13,7 @@ public interface InternalProjectService {
      * 查询所有项目和关联人员信息
      * @return
      */
-    Page<InternalProject> selectAllProjectInfo(String id ,int pageNo, int pageSize);
+    Page<InternalProject> selectAllProjectInfo(String id, int pageNo, int pageSize);
 
     /**
      * 查询所有项目数据信息
@@ -75,7 +75,7 @@ public interface InternalProjectService {
      * @param pageSize
      * @return
      */
-    ResponseMessage queryConstructionProjects(List<String> id ,int pageNo,  int pageSize);
+    ResponseMessage queryConstructionProjects(List<String> id, int pageNo, int pageSize);
     ResponseMessage  queryAllProjects();
     /**
      * 项目概览保存

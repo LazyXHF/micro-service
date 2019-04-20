@@ -41,7 +41,7 @@ public interface InternalPersionResourceService {
      * 根据项目id获取人员信息
      * @return
      */
-    ResponseMessage queryAllPersionInfo(String projectId ,int pageNo,int pageSize);
+    ResponseMessage queryAllPersionInfo(String projectId, int pageNo, int pageSize);
 
     /**
      * 根据id删除人员信息

@@ -29,14 +29,14 @@ public interface CommunicationLogMapper {
      * @param communicationId
      * @return
      */
-    List<CommunicationLog> queryCommunicationLog(@Param("communicationId")String communicationId);
+    List<CommunicationLog> queryCommunicationLog(@Param("communicationId") String communicationId);
 
     /**
      * 批量删除记录信息
      * @param ids
      * @return
      */
-    int deleteCommunicationLogs(@Param("id")List<String> ids);
+    int deleteCommunicationLogs(@Param("id") List<String> ids);
 
     int insertCommunicationLogSelective(CommunicationLog record);
 
