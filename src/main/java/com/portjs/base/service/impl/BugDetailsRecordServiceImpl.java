@@ -248,6 +248,7 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
         String bugId = jsonObject.getString("id");//前端传来的主表id
         String remark = jsonObject.getString("remark");//从表的备注信息，前端传过来
         String isAgree = jsonObject.getString("isAgree");//从表的同意意见
+        String backup10 = jsonObject.getString("backup10");//修复版本
 
         String backup1 = jsonObject.getString("backup1");//解决方案
         String backup2 = jsonObject.getString("backup2");//解决结果
@@ -279,6 +280,7 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord1.setFileUrl(fileUrl);
             bugDetailsRecord1.setBackup1(backup1);//解决结果
             bugDetailsRecord1.setBackup2(backup2);//解决方法
+            bugDetailsRecord1.setBackup10(backup10);//修复版本
             if(!StringUtils.isEmpty(isAgree)){
                 bugDetailsRecord1.setIsAgree(Integer.valueOf(isAgree));
             }
@@ -375,6 +377,7 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord2.setFileUrl(fileUrl);
             bugDetailsRecord2.setBackup1(backup1);//解决结果
             bugDetailsRecord2.setBackup2(backup2);//解决方法
+            bugDetailsRecord2.setBackup10(backup10);//版本修复
             if (!StringUtils.isEmpty(isAgree)) {
                 bugDetailsRecord2.setIsAgree(Integer.valueOf(isAgree));
             }

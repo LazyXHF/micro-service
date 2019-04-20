@@ -16,15 +16,15 @@ public interface PuchaseRequestService {
 
     //ResponseMessage updateByPrimaryKey(PurchaseRequest record);
 
-    ResponseMessage updateByPrimaryKeySelective(PurchaseRequest record);
+    ResponseMessage updateByPrimaryKeySelective(String responseBody);
 
     ResponseMessage insertPurchaseRequestSelective(String responseBody);
     /**
      * 对列表的分页并模糊查询
-     * @param requestBody
+     * @param responseBody
      * @return
      */
-    ResponseMessage queryPurchaseRequestInfo(String requestBody);
+    ResponseMessage queryPurchaseRequestInfo(String responseBody);
     /**
      * 批量软删除
      * @param ids
@@ -34,11 +34,30 @@ public interface PuchaseRequestService {
 
     /**
      * 根据id查询申请信息
-     * @param ids
+     * @param id
      * @return
      */
-    ResponseMessage queryPurchaseRequestById(String ids);
+    ResponseMessage queryPurchaseRequestById(String id);
 
+    /**
+     * 审核采购流程
+     * @return
+     */
+    ResponseMessage approvePurchaseRequest(String responseBody);
+
+    /**
+     * 查询所有可用部门
+     * @return
+     */
+    ResponseMessage findAllDepartment();
+
+    /**
+     * 查询所有的审核流程
+     * @return relateddomainId 业务单id
+     */
+    ResponseMessage queryAllWorkFlowStep(String requestBody);
+
+    ResponseMessage returnRecord(String requestBody);
 
 
 }

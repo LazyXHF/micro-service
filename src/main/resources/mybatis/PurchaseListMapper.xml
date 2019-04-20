@@ -100,6 +100,37 @@
     from purchase_list
     where Id = #{id,jdbcType=VARCHAR}
   </select>
+
+
+
+  <select id="queryPurchaseList" resultMap="BaseResultMap" >
+    select
+    *
+    from purchase_list
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryPurchaseListInfo" resultMap="BaseResultMap" >
+    select
+    *
+    from purchase_list
+    where request_id = #{requestId,jdbcType=VARCHAR} order by create_time DESC   LIMIT  #{pageNo},#{pageSize}
+  </select>
+  <select id="purchaseListCounts" resultType="Integer">
+    select
+    count(*)
+    from purchase_list
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="queryByPurchaseRequestId" resultMap="BaseResultMap" >
+    select
+    *
+    from purchase_list
+    where request_id = #{requestId,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from purchase_list
     where Id = #{id,jdbcType=VARCHAR}
@@ -110,6 +141,107 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+
+
+  <insert id="insertPurchaseListSelective" parameterType="com.portjs.base.entity.PurchaseList" >
+    insert into purchase_list
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="requestId != null" >
+        request_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="model != null" >
+        model,
+      </if>
+      <if test="spec != null" >
+        spec,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="demander != null" >
+        demander,
+      </if>
+      <if test="creater != null" >
+        creater,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="requestId != null" >
+        #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="demander != null" >
+        #{demander,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
   <insert id="insert" parameterType="com.portjs.base.entity.PurchaseList" >
     insert into purchase_list (Id, request_id, project_id,
       name, brand, model,
@@ -349,6 +481,167 @@
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <update id="updateByRequestId" parameterType="com.portjs.base.entity.PurchaseList" >
+    update purchase_list
+    <set >
+      <!--<if test="id != null" >
+        Id = #{id,jdbcType=VARCHAR},
+      </if>-->
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        spec = #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="demander != null" >
+        demander = #{demander,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateDeleteTimeByIds" parameterType="com.portjs.base.entity.PurchaseList" >
+    update purchase_list
+    <set >
+      <if test="requestId != null" >
+        request_id = #{requestId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="spec != null" >
+        spec = #{spec,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="demander != null" >
+        demander = #{demander,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = SYSDATE(),
+      </if>
+    </set>
+    where Id IN
+    <foreach collection="id" index="index" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+  <update id="updateDeleteTime" parameterType="com.portjs.base.entity.PurchaseList" >
+    update purchase_list
+    set delete_time = SYSDATE()
+    where Id = #{id}
+  </update>
+
+  <update id="updatePurchaseListBatch" parameterType="java.util.List" >
+    <foreach collection="list" item="noticeInfo" index="index" open="" close="" separator=";">
+      update purchase_list
+      <set >
+        <if test="requestId != null" >
+          request_id = #{requestId,jdbcType=VARCHAR},
+        </if>
+        <if test="projectId != null" >
+          project_id = #{projectId,jdbcType=VARCHAR},
+        </if>
+        <if test="name != null" >
+          name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="brand != null" >
+          brand = #{brand,jdbcType=VARCHAR},
+        </if>
+        <if test="model != null" >
+          model = #{model,jdbcType=VARCHAR},
+        </if>
+        <if test="spec != null" >
+          spec = #{spec,jdbcType=VARCHAR},
+        </if>
+        <if test="quantity != null" >
+          quantity = #{quantity,jdbcType=DECIMAL},
+        </if>
+        <if test="unit != null" >
+          unit = #{unit,jdbcType=VARCHAR},
+        </if>
+        <if test="content != null" >
+          content = #{content,jdbcType=VARCHAR},
+        </if>
+        <if test="demander != null" >
+          demander = #{demander,jdbcType=VARCHAR},
+        </if>
+        <if test="creater != null" >
+          creater = #{creater,jdbcType=VARCHAR},
+        </if>
+        <if test="createTime != null" >
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateTime != null" >
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="deleteTime != null" >
+          delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+        </if>
+      </set>
+      where Id = #{id,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.PurchaseList" >
     update purchase_list
     set request_id = #{requestId,jdbcType=VARCHAR},

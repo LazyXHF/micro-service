@@ -28,22 +28,27 @@ public interface PurchaseListMapper {
     int updateByPrimaryKey(PurchaseList record);
     /**
      * 采购清单列表统计
-     * @param projectId
      * @param requestId
      * @return
      */
-    int purchaseListCounts(@Param("projectId") String projectId,@Param("requestId") String requestId);
+    int purchaseListCounts(@Param("requestId") String requestId);
 
     /**
      * 采购清单列表的分页
-     * @param projectId
      * @param requestId
      * @param pageNo
      * @param pageSize
      * @return
      */
-    List<PurchaseList> queryPurchaseListInfo(@Param("projectId") String projectId,@Param("requestId") String requestId,
+    List<PurchaseList> queryPurchaseListInfo(@Param("requestId") String requestId,
                                              @Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
+
+    /**
+     * 通过业务单id查询
+     * @param requestId
+     * @return
+     */
+    List<PurchaseList> queryPurchaseList(@Param("requestId") String requestId);
     /**
      * 批量软删除
      * @param ids
@@ -53,6 +58,18 @@ public interface PurchaseListMapper {
 
     PurchaseList queryPurchaseListById(@Param("id") String ids);
 
+    /**
+     * 软删除
+     * @param id
+     * @return
+     */
+    int updateDeleteTime(@Param("id")String id);
+
+    /**
+     * 暂存/提交
+     * @param record
+     * @return
+     */
     int insertPurchaseListSelective(PurchaseList record);
 
     List<PurchaseList> selectByExample(PurchaseListExample example);
@@ -62,6 +79,18 @@ public interface PurchaseListMapper {
     int updateByExampleSelective(@Param("record") PurchaseList record, @Param("example") PurchaseListExample example);
 
     int updateByExample(@Param("record") PurchaseList record, @Param("example") PurchaseListExample example);
+
+    List<PurchaseList> queryByPurchaseRequestId(@Param("requestId") String requestId);
+
+    /**
+     * 批量修改
+     * @param purchaseList
+     * @return
+     */
+    int updatePurchaseListBatch(List<PurchaseList> purchaseList);
+
+    int updateByRequestId(PurchaseList purchaseList);
+
 
     /*int updateByPrimaryKeySelective(PurchaseList record);
 

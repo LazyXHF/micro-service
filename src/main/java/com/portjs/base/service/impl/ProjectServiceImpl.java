@@ -55,10 +55,8 @@ public class ProjectServiceImpl implements ProjectService {
             List<Project> projectList = projectMapper.queryProjectAllInfo(projectCode, projectName, projectTime, projectType, invertor, organization, schedule, page.getRowNum(), page.getPageCount());
             for (Project project : projectList) {
                 String creatorId = project.getCreator();
-                String year=project.getCreateTime().toString();
                 String creatorName2 = userMapper.queryUserNameByUserId(creatorId);
                 project.setCreatorName(creatorName2);
-                project.setYear(year.substring(year.length()-4));
             }
             page.setList(projectList);
         }else if(type.equals("exception")){

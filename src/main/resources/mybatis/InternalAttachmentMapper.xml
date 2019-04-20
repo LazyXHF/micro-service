@@ -524,13 +524,8 @@
     back_up8 = #{backUp8,jdbcType=VARCHAR},
     back_up9 = #{backUp9,jdbcType=VARCHAR},
     back_up10 = #{backUp10,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
+    where relateddomain_id = #{relateddomainId,jdbcType=VARCHAR}
   </update>
 
-  <select id="queryPucharseReviewFiles" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from internal_attachment
-    where relateddomain_id = #{id,jdbcType=VARCHAR}
-  </select>
+
 </mapper>

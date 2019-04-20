@@ -13,29 +13,21 @@ public class PurchaseList extends BaseEntity {
 
     private String projectId;//项目id
 
-    @Excel(name = "品名", orderNum = "1")
     private String name;//品名
 
-    @Excel(name = "品牌", orderNum = "2")
     private String brand;//品牌
 
-    @Excel(name = "型号", orderNum = "3")
     private String model;//型号
 
-    @Excel(name = "规格", orderNum = "4")
     private String spec;//规格
 
-    @Excel(name = "数量", orderNum = "5")
     private BigDecimal quantity;//数量
 
-    @Excel(name = "单位", orderNum = "6")
     private  String unit;//单位
 
-    @Excel(name = "需求说明", orderNum = "8")
     private String content;//需求说明
 
-    @Excel(name = "需求人", orderNum = "7")
-    private String demander;//需求人
+    private String demander;//需求人id
 
     private String creater;//创建人
 

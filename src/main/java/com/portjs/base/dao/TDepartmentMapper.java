@@ -3,8 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.TDepartment;
 import com.portjs.base.entity.TDepartmentExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 @Repository
@@ -44,4 +46,5 @@ public interface TDepartmentMapper {
 
     //查找所有部门 可用的部门
     List<TDepartment> findAllDepartment();
+
 }

@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.portjs.base.entity.TXietongDocModel;
+import com.portjs.base.util.Page;
+import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +31,15 @@ public class DownloadSoftwareServiceImpl implements DownloadSoftwareService{
 	
 	//页面展示下载软件
 	@Override
-	public List<TXietongSoftware> selectAllSoftware() {
-		TXietongSoftwareExample example = new TXietongSoftwareExample();
-		Criteria createCriteria = example.createCriteria();
-		createCriteria.andIsdeleteEqualTo(1);
-		 return tXietongSoftwareMapper.selectByExample(example );
+	public ResponseMessage selectAllSoftware(PageVo pageVo) {
+
+		Page<TXietongSoftware> page = new Page<>();
+		int total = tXietongSoftwareMapper.selectSoftwareCounts();
+		page.init(total,pageVo.getPageNo(),pageVo.getPageSize());
+		List<TXietongSoftware> list = tXietongSoftwareMapper.querySoftwareByPage(page.getRowNum(),page.getPageCount());
+		page.setList(list);
+
+		return new ResponseMessage(Code.CODE_OK,"查询成功！",page);
 	}
 	
 	//新增软件

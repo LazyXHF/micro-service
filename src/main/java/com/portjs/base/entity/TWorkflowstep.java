@@ -5,31 +5,31 @@ import java.util.Date;
 public class TWorkflowstep {
     private String id;
 
-    private String relateddomain;
+    private String relateddomain;//业务
 
-    private String relateddomainId;
+    private String relateddomainId;//业务单id
 
-    private String prestepId;
+    private String prestepId;//上一步流程
 
-    private String stepDesc;
+    private String stepDesc;//流程描述
 
-    private String actionuserId;
+    private String actionuserId;//处理人id
 
-    private Date actionTime;
+    private Date actionTime;//处理时间
 
-    private Integer actionResult;
+    private Integer actionResult;//处理结果
 
-    private String fileUrl;
+    private String fileUrl;//文件路径
 
-    private String actionComment;
+    private String actionComment;//处理意见
 
     private String enable;
 
-    private String status;
+    private String status;//状态 0 ： 未完成   1：已完成
 
-    private String backup3;
+    private String backup3;//
 
-    private String backUp7;
+    private String backUp7;//处理人名字
 
     private String backUp8;
 

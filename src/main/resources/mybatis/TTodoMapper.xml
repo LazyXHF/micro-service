@@ -478,6 +478,12 @@
     from t_todo
     where relateddomain_id=#{id} and receiver_id=#{ownerId} and status='0'
   </select>
+  <select id="queryTodoIdByOthers" parameterType="com.portjs.base.entity.TTodo" resultMap="BaseResultMap">
+    select id, currentstep_id, step_desc, relateddomain, relateddomain_id, sender_id, sender_time,
+    receiver_id, todo_type, actiontime, enable, status, sort
+    from t_todo
+    where relateddomain_id=#{relateddomainId} and receiver_id=#{receiverId} and status='0'
+  </select>
 
   <delete id="deleteTodoRecord" parameterType="java.lang.String" >
     delete from t_todo

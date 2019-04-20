@@ -85,6 +85,23 @@
       order by ${orderByClause}
     </if>
   </select>
+
+
+  <select id="queryDocModelByPage" resultMap="BaseResultMap" >
+    select
+    *
+    from t_xietong_doc_model
+    order by createtime desc LIMIT  #{pageNo},#{pageSize}
+  </select>
+
+  <select id="selectCounts" resultType="Integer">
+    select
+    count(*)
+    from t_xietong_doc_model
+    order by createtime desc
+  </select>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

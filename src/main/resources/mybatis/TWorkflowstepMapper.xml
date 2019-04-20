@@ -118,6 +118,14 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <select id="queryByRelateddomainId" resultMap="BaseResultMap" >
+    select
+    *
+    from t_workflowstep
+    where relateddomain = "采购申请" and relateddomain_id=#{relateddomainId} order by backup_3,action_time asc
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -510,15 +518,8 @@
     on a.relateddomain_id=b.id
     where relateddomain_id = #{id,jdbcType=VARCHAR} and actionuser_id=#{ownerId} and  a.status='0'
   </select>
-  <select id="queryPucharseReviewRecords" resultMap="BaseResultMap3" parameterType="java.lang.String" >
-    select a.id, a.relateddomain, a.relateddomain_id as relateddomainId, a.prestep_id as prestepId, a.step_desc as stepDesc, a.actionuser_id as actionuserId , a.action_time as action_time,
-    a.action_result as actionResult , a.file_url as fileUrl, a.action_comment as actionComment, a.enable, a.status as status,a.backup_3,a.back_up7,a.back_up8,a.back_up9,a.status as bstatus
-    from t_workflowstep a
-    where relateddomain_id = #{id,jdbcType=VARCHAR}
-    order by case when action_time is null then 1 else 0 end asc,  action_time asc
-  </select>
 
-  <select id="queryBackUp3" resultType="int" parameterType="java.lang.String" >
+  <select id="queryBackUp3" resultType="Integer" parameterType="java.lang.String" >
     select max(backup_3)
     from t_workflowstep a
     where relateddomain_id = #{id,jdbcType=VARCHAR}
@@ -562,6 +563,59 @@
     back_up9 = #{backUp9,jdbcType=VARCHAR}
     where relateddomain_id = #{relateddomainId,jdbcType=VARCHAR} and actionuser_id=#{actionuserId} and status='0'
   </update>
+
+
+  <update id="updateTWorkflowstepRecords" parameterType="com.portjs.base.entity.TWorkflowstep" >
+    update t_workflowstep
+    <set >
+      <if test="prestepId != null" >
+        prestep_id = #{prestepId,jdbcType=VARCHAR},
+      </if>
+      <if test="stepDesc != null" >
+        step_desc = #{stepDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="actionTime != null" >
+        action_time = #{actionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionResult != null" >
+        action_result = #{actionResult,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null" >
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="actionComment != null" >
+        action_comment = #{actionComment,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=VARCHAR},
+      </if>
+      <if test="backup3 != null" >
+        backup_3 = #{backup3,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp7 != null" >
+        back_up7 = #{backUp7,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp8 != null" >
+        back_up8 = #{backUp8,jdbcType=VARCHAR},
+      </if>
+      <if test="backUp9 != null" >
+        back_up9 = #{backUp9,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDescription != null" >
+        file_description = #{fileDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id =#{id}
+
+  </update>
+
+  <select id="selectByPDS" resultMap="BaseResultMap" >
+    select * from t_workflowstep
+    where relateddomain_id = #{relateddomainId} and actionuser_id=#{actionuserId} and relateddomain="采购申请" and status='0'
+  </select>
 
   <select id="queryCurrentstepId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select * from t_workflowstep

@@ -47,7 +47,7 @@
     select count(id)
     from project_communication
     <where>
-      1=1
+      delete_time is null
       <if test="projectId != null">
         AND project_id= #{projectId,jdbcType=VARCHAR}
       </if>
@@ -61,7 +61,7 @@
     <include refid="Base_Column_List" />
     from project_communication
     <where>
-      1=1
+      delete_time is null
       <if test="projectId != null">
         AND project_id= #{projectId,jdbcType=VARCHAR}
       </if>
@@ -76,7 +76,7 @@
   <select id="queryProjectCommunicationInfo" resultMap="BaseResultMap">
     select * from project_communication
     where
-    1=1
+    delete_time is null
     <if test="projectId != null and projectId!=''">
       and project_id  like concat('%',#{projectId},'%')
     </if>
@@ -101,7 +101,7 @@
       and project_id  like concat('%',#{projectId},'%')
     </if>-->
     where
-    1=1
+    delete_time is null
     <if test="projectId != null and projectId!=''">
       and project_id  like concat('%',#{projectId},'%')
     </if>

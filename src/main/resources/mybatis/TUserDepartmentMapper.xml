@@ -1,176 +1,74 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.portjs.base.dao.TUserDepartmentMapper" >
-  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TUserDepartment" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="u_id" property="uId" jdbcType="VARCHAR" />
-    <result column="d_id" property="dId" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portjs.base.dao.TUserDepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.TUserDepartment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="u_id" jdbcType="VARCHAR" property="uId" />
+    <result column="d_id" jdbcType="VARCHAR" property="dId" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, u_id, d_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TUserDepartmentExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from t_user_department
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_user_department
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+  <select id="findTUserDepartmentMapper" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    *
+    from t_user_department
+    where u_id = #{uId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_user_department
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.portjs.base.entity.TUserDepartmentExample" >
-    delete from t_user_department
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.portjs.base.entity.TUserDepartment" >
-    insert into t_user_department (id, u_id, d_id)
-    values (#{id,jdbcType=INTEGER}, #{uId,jdbcType=VARCHAR}, #{dId,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.portjs.base.entity.TUserDepartment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_user_department (u_id, d_id)
+    values (#{uId,jdbcType=VARCHAR}, #{dId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.portjs.base.entity.TUserDepartment" >
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.TUserDepartment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into t_user_department
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="uId != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
         u_id,
       </if>
-      <if test="dId != null" >
+      <if test="dId != null">
         d_id,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="uId != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
         #{uId,jdbcType=VARCHAR},
       </if>
-      <if test="dId != null" >
+      <if test="dId != null">
         #{dId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.portjs.base.entity.TUserDepartmentExample" resultType="java.lang.Integer" >
-    select count(*) from t_user_department
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TUserDepartment">
     update t_user_department
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.uId != null" >
-        u_id = #{record.uId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.dId != null" >
-        d_id = #{record.dId,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update t_user_department
-    set id = #{record.id,jdbcType=INTEGER},
-      u_id = #{record.uId,jdbcType=VARCHAR},
-      d_id = #{record.dId,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.TUserDepartment" >
-    update t_user_department
-    <set >
-      <if test="uId != null" >
+    <set>
+      <if test="uId != null">
         u_id = #{uId,jdbcType=VARCHAR},
       </if>
-      <if test="dId != null" >
+      <if test="dId != null">
         d_id = #{dId,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TUserDepartment" >
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TUserDepartment">
     update t_user_department
     set u_id = #{uId,jdbcType=VARCHAR},
       d_id = #{dId,jdbcType=VARCHAR}
