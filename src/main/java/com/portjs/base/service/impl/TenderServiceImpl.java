@@ -86,8 +86,9 @@ public class TenderServiceImpl implements TenderService {
             String tNum =tenderApplications.get(0).getTenderNum();
             //截取最后流水号
             String num = tNum.substring(10,tNum.length());
-            int count = Integer.parseInt(num);
+            int count = Integer.parseInt(num)+1;
             tenderNum ="ZB"+date+String.format("%02d", count);
+
         }else{
             tenderNum="ZB"+date+"01";
         }
@@ -312,6 +313,11 @@ public class TenderServiceImpl implements TenderService {
                 ma.put("operatingStatus",0);
             }else{
                 ma.put("operatingStatus",1);
+            }
+            if(userId.equals(map.getCreater())){
+                ma.put("longiner",1);
+            }else{
+                ma.put("longiner",0);
             }
             map.setParams(ma);
             datalist.add(map);

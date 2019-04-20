@@ -49,9 +49,9 @@ public class TenderApplication extends BaseEntity{
 
     private String review;//1审核0:退回
 
-    private String backUp1;//备用字段1
+    private String backUp1;//项目编码
 
-    private String backUp2;//备用字段2
+    private String backUp2;//项目名称
 
     private String backUp3;//备用字段3
 
