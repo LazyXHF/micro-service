@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.ProjectApplication" >
     <id column="Id" property="id" jdbcType="VARCHAR" />
     <result column="investment_id" property="investmentId" jdbcType="VARCHAR" />
-    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
     <result column="project_type" property="projectType" jdbcType="VARCHAR" />
     <result column="investor" property="investor" jdbcType="VARCHAR" />
@@ -13,10 +13,18 @@
     <result column="construction_mode" property="constructionMode" jdbcType="VARCHAR" />
     <result column="leval" property="leval" jdbcType="VARCHAR" />
     <result column="investment_amount" property="investmentAmount" jdbcType="DECIMAL" />
+    <result column="declare_type" property="declareType" jdbcType="VARCHAR" />
     <result column="range1" property="range1" jdbcType="VARCHAR" />
     <result column="application_amount" property="applicationAmount" jdbcType="DECIMAL" />
+    <result column="operating_dept" property="operatingDept" jdbcType="VARCHAR" />
+    <result column="business_owner" property="businessOwner" jdbcType="VARCHAR" />
+    <result column="business_phone" property="businessPhone" jdbcType="VARCHAR" />
+    <result column="contractor" property="contractor" jdbcType="VARCHAR" />
+    <result column="project_manager" property="projectManager" jdbcType="VARCHAR" />
+    <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR" />
     <result column="project_desc" property="projectDesc" jdbcType="VARCHAR" />
-    <result column="kickoff_date" property="kickoffDate" jdbcType="TIMESTAMP" />
+    <result column="kickoff_date" property="kickoffDate" jdbcType="DATE" />
+    <result column="completion_date" property="completionDate" jdbcType="DATE" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="creater" property="creater" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -86,9 +94,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,
-    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete,construction_mode
+    Id, investment_id, project_id, project_code, project_name, project_type, investor,
+    organization, construction_mode, leval, investment_amount, declare_type, range1,
+    application_amount, operating_dept, business_owner, business_phone, contractor, project_manager,
+    manager_phone, project_desc, kickoff_date, completion_date, remark, creater, create_time,
+    update_time, enable, file_url, status, is_delete
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectApplicationExample" >
     select
@@ -105,7 +115,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from project_application
     where Id = #{id,jdbcType=VARCHAR}
@@ -121,22 +131,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.ProjectApplication" >
-    insert into project_application (Id, investment_id, project_code,project_id,
-      project_name, project_type, investor,
-      organization, leval, investment_amount,
-      range1, application_amount, project_desc,
-      kickoff_date, remark, creater,
-      create_time, update_time, enable,
-      file_url, status, is_delete,construction_mode
-      )
-    values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},
-      #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{investor,jdbcType=VARCHAR},
-      #{organization,jdbcType=VARCHAR}, #{leval,jdbcType=VARCHAR}, #{investmentAmount,jdbcType=DECIMAL},
-      #{range1,jdbcType=VARCHAR}, #{applicationAmount,jdbcType=DECIMAL}, #{projectDesc,jdbcType=VARCHAR},
-      #{kickoffDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{enable,jdbcType=VARCHAR},
-      #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR},#{constructionMode,jdbcType=VARCHAR}
-      )
+    insert into project_application (Id, investment_id, project_id,
+      project_code, project_name, project_type,
+      investor, organization, construction_mode,
+      leval, investment_amount, declare_type,
+      range1, application_amount, operating_dept,
+      business_owner, business_phone, contractor,
+      project_manager, manager_phone, project_desc,
+      kickoff_date, completion_date, remark,
+      creater, create_time, update_time,
+      enable, file_url, status,
+      is_delete)
+    values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR},
+      #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR},
+      #{investor,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{constructionMode,jdbcType=VARCHAR},
+      #{leval,jdbcType=VARCHAR}, #{investmentAmount,jdbcType=DECIMAL}, #{declareType,jdbcType=VARCHAR},
+      #{range1,jdbcType=VARCHAR}, #{applicationAmount,jdbcType=DECIMAL}, #{operatingDept,jdbcType=VARCHAR},
+      #{businessOwner,jdbcType=VARCHAR}, #{businessPhone,jdbcType=VARCHAR}, #{contractor,jdbcType=VARCHAR},
+      #{projectManager,jdbcType=VARCHAR}, #{managerPhone,jdbcType=VARCHAR}, #{projectDesc,jdbcType=VARCHAR},
+      #{kickoffDate,jdbcType=DATE}, #{completionDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR},
+      #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{enable,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+      #{isDelete,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectApplication" >
     insert into project_application
@@ -147,11 +163,11 @@
       <if test="investmentId != null" >
         investment_id,
       </if>
-      <if test="projectCode != null" >
-        project_code,
-      </if>
       <if test="projectId != null" >
         project_id,
+      </if>
+      <if test="projectCode != null" >
+        project_code,
       </if>
       <if test="projectName != null" >
         project_name,
@@ -165,11 +181,17 @@
       <if test="organization != null" >
         organization,
       </if>
+      <if test="constructionMode != null" >
+        construction_mode,
+      </if>
       <if test="leval != null" >
         leval,
       </if>
       <if test="investmentAmount != null" >
         investment_amount,
+      </if>
+      <if test="declareType != null" >
+        declare_type,
       </if>
       <if test="range1 != null" >
         range1,
@@ -177,11 +199,32 @@
       <if test="applicationAmount != null" >
         application_amount,
       </if>
+      <if test="operatingDept != null" >
+        operating_dept,
+      </if>
+      <if test="businessOwner != null" >
+        business_owner,
+      </if>
+      <if test="businessPhone != null" >
+        business_phone,
+      </if>
+      <if test="contractor != null" >
+        contractor,
+      </if>
+      <if test="projectManager != null" >
+        project_manager,
+      </if>
+      <if test="managerPhone != null" >
+        manager_phone,
+      </if>
       <if test="projectDesc != null" >
         project_desc,
       </if>
       <if test="kickoffDate != null" >
         kickoff_date,
+      </if>
+      <if test="completionDate != null" >
+        completion_date,
       </if>
       <if test="remark != null" >
         remark,
@@ -207,9 +250,6 @@
       <if test="isDelete != null" >
         is_delete,
       </if>
-      <if test="constructionMode != null">
-        construction_mode
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -218,11 +258,11 @@
       <if test="investmentId != null" >
         #{investmentId,jdbcType=VARCHAR},
       </if>
-      <if test="projectCode != null" >
-        #{projectCode,jdbcType=VARCHAR},
-      </if>
       <if test="projectId != null" >
         #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCode != null" >
+        #{projectCode,jdbcType=VARCHAR},
       </if>
       <if test="projectName != null" >
         #{projectName,jdbcType=VARCHAR},
@@ -236,11 +276,17 @@
       <if test="organization != null" >
         #{organization,jdbcType=VARCHAR},
       </if>
+      <if test="constructionMode != null" >
+        #{constructionMode,jdbcType=VARCHAR},
+      </if>
       <if test="leval != null" >
         #{leval,jdbcType=VARCHAR},
       </if>
       <if test="investmentAmount != null" >
         #{investmentAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="declareType != null" >
+        #{declareType,jdbcType=VARCHAR},
       </if>
       <if test="range1 != null" >
         #{range1,jdbcType=VARCHAR},
@@ -248,11 +294,32 @@
       <if test="applicationAmount != null" >
         #{applicationAmount,jdbcType=DECIMAL},
       </if>
+      <if test="operatingDept != null" >
+        #{operatingDept,jdbcType=VARCHAR},
+      </if>
+      <if test="businessOwner != null" >
+        #{businessOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPhone != null" >
+        #{businessPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="contractor != null" >
+        #{contractor,jdbcType=VARCHAR},
+      </if>
+      <if test="projectManager != null" >
+        #{projectManager,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPhone != null" >
+        #{managerPhone,jdbcType=VARCHAR},
+      </if>
       <if test="projectDesc != null" >
         #{projectDesc,jdbcType=VARCHAR},
       </if>
       <if test="kickoffDate != null" >
-        #{kickoffDate,jdbcType=TIMESTAMP},
+        #{kickoffDate,jdbcType=DATE},
+      </if>
+      <if test="completionDate != null" >
+        #{completionDate,jdbcType=DATE},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
@@ -278,9 +345,6 @@
       <if test="isDelete != null" >
         #{isDelete,jdbcType=VARCHAR},
       </if>
-      <if test="constructionMode != null">
-        constructionMode,
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.portjs.base.entity.ProjectApplicationExample" resultType="java.lang.Integer" >
@@ -298,11 +362,11 @@
       <if test="record.investmentId != null" >
         investment_id = #{record.investmentId,jdbcType=VARCHAR},
       </if>
-      <if test="record.projectCode != null" >
-        project_code = #{record.projectCode,jdbcType=VARCHAR},
-      </if>
       <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCode != null" >
+        project_code = #{record.projectCode,jdbcType=VARCHAR},
       </if>
       <if test="record.projectName != null" >
         project_name = #{record.projectName,jdbcType=VARCHAR},
@@ -316,11 +380,17 @@
       <if test="record.organization != null" >
         organization = #{record.organization,jdbcType=VARCHAR},
       </if>
+      <if test="record.constructionMode != null" >
+        construction_mode = #{record.constructionMode,jdbcType=VARCHAR},
+      </if>
       <if test="record.leval != null" >
         leval = #{record.leval,jdbcType=VARCHAR},
       </if>
       <if test="record.investmentAmount != null" >
         investment_amount = #{record.investmentAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.declareType != null" >
+        declare_type = #{record.declareType,jdbcType=VARCHAR},
       </if>
       <if test="record.range1 != null" >
         range1 = #{record.range1,jdbcType=VARCHAR},
@@ -328,11 +398,32 @@
       <if test="record.applicationAmount != null" >
         application_amount = #{record.applicationAmount,jdbcType=DECIMAL},
       </if>
+      <if test="record.operatingDept != null" >
+        operating_dept = #{record.operatingDept,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessOwner != null" >
+        business_owner = #{record.businessOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessPhone != null" >
+        business_phone = #{record.businessPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractor != null" >
+        contractor = #{record.contractor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectManager != null" >
+        project_manager = #{record.projectManager,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerPhone != null" >
+        manager_phone = #{record.managerPhone,jdbcType=VARCHAR},
+      </if>
       <if test="record.projectDesc != null" >
         project_desc = #{record.projectDesc,jdbcType=VARCHAR},
       </if>
       <if test="record.kickoffDate != null" >
-        kickoff_date = #{record.kickoffDate,jdbcType=TIMESTAMP},
+        kickoff_date = #{record.kickoffDate,jdbcType=DATE},
+      </if>
+      <if test="record.completionDate != null" >
+        completion_date = #{record.completionDate,jdbcType=DATE},
       </if>
       <if test="record.remark != null" >
         remark = #{record.remark,jdbcType=VARCHAR},
@@ -358,9 +449,6 @@
       <if test="record.isDelete != null" >
         is_delete = #{record.isDelete,jdbcType=VARCHAR},
       </if>
-      <if test="record.constructionMode != null">
-        constructionMode = #{record.constructionMode,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -369,28 +457,36 @@
   <update id="updateByExample" parameterType="map" >
     update project_application
     set Id = #{record.id,jdbcType=VARCHAR},
-      investment_id = #{record.investmentId,jdbcType=VARCHAR},
-      project_code = #{record.projectCode,jdbcType=VARCHAR},
-      project_id = #{record.projectId,jdbcType=VARCHAR},
-      project_name = #{record.projectName,jdbcType=VARCHAR},
-      project_type = #{record.projectType,jdbcType=VARCHAR},
-      investor = #{record.investor,jdbcType=VARCHAR},
-      organization = #{record.organization,jdbcType=VARCHAR},
-      leval = #{record.leval,jdbcType=VARCHAR},
-      investment_amount = #{record.investmentAmount,jdbcType=DECIMAL},
-      range1 = #{record.range1,jdbcType=VARCHAR},
-      application_amount = #{record.applicationAmount,jdbcType=DECIMAL},
-      project_desc = #{record.projectDesc,jdbcType=VARCHAR},
-      kickoff_date = #{record.kickoffDate,jdbcType=TIMESTAMP},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      creater = #{record.creater,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      enable = #{record.enable,jdbcType=VARCHAR},
-      file_url = #{record.fileUrl,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
-      is_delete = #{record.isDelete,jdbcType=VARCHAR},
-    construction_mode=#{record.constructionMode,jdbcType=VARCHAR}
+    investment_id = #{record.investmentId,jdbcType=VARCHAR},
+    project_id = #{record.projectId,jdbcType=VARCHAR},
+    project_code = #{record.projectCode,jdbcType=VARCHAR},
+    project_name = #{record.projectName,jdbcType=VARCHAR},
+    project_type = #{record.projectType,jdbcType=VARCHAR},
+    investor = #{record.investor,jdbcType=VARCHAR},
+    organization = #{record.organization,jdbcType=VARCHAR},
+    construction_mode = #{record.constructionMode,jdbcType=VARCHAR},
+    leval = #{record.leval,jdbcType=VARCHAR},
+    investment_amount = #{record.investmentAmount,jdbcType=DECIMAL},
+    declare_type = #{record.declareType,jdbcType=VARCHAR},
+    range1 = #{record.range1,jdbcType=VARCHAR},
+    application_amount = #{record.applicationAmount,jdbcType=DECIMAL},
+    operating_dept = #{record.operatingDept,jdbcType=VARCHAR},
+    business_owner = #{record.businessOwner,jdbcType=VARCHAR},
+    business_phone = #{record.businessPhone,jdbcType=VARCHAR},
+    contractor = #{record.contractor,jdbcType=VARCHAR},
+    project_manager = #{record.projectManager,jdbcType=VARCHAR},
+    manager_phone = #{record.managerPhone,jdbcType=VARCHAR},
+    project_desc = #{record.projectDesc,jdbcType=VARCHAR},
+    kickoff_date = #{record.kickoffDate,jdbcType=DATE},
+    completion_date = #{record.completionDate,jdbcType=DATE},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    creater = #{record.creater,jdbcType=VARCHAR},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    enable = #{record.enable,jdbcType=VARCHAR},
+    file_url = #{record.fileUrl,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=VARCHAR},
+    is_delete = #{record.isDelete,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -419,11 +515,17 @@
       <if test="organization != null" >
         organization = #{organization,jdbcType=VARCHAR},
       </if>
+      <if test="constructionMode != null" >
+        construction_mode = #{constructionMode,jdbcType=VARCHAR},
+      </if>
       <if test="leval != null" >
         leval = #{leval,jdbcType=VARCHAR},
       </if>
       <if test="investmentAmount != null" >
         investment_amount = #{investmentAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="declareType != null" >
+        declare_type = #{declareType,jdbcType=VARCHAR},
       </if>
       <if test="range1 != null" >
         range1 = #{range1,jdbcType=VARCHAR},
@@ -431,11 +533,32 @@
       <if test="applicationAmount != null" >
         application_amount = #{applicationAmount,jdbcType=DECIMAL},
       </if>
+      <if test="operatingDept != null" >
+        operating_dept = #{operatingDept,jdbcType=VARCHAR},
+      </if>
+      <if test="businessOwner != null" >
+        business_owner = #{businessOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPhone != null" >
+        business_phone = #{businessPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="contractor != null" >
+        contractor = #{contractor,jdbcType=VARCHAR},
+      </if>
+      <if test="projectManager != null" >
+        project_manager = #{projectManager,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPhone != null" >
+        manager_phone = #{managerPhone,jdbcType=VARCHAR},
+      </if>
       <if test="projectDesc != null" >
         project_desc = #{projectDesc,jdbcType=VARCHAR},
       </if>
       <if test="kickoffDate != null" >
-        kickoff_date = #{kickoffDate,jdbcType=TIMESTAMP},
+        kickoff_date = #{kickoffDate,jdbcType=DATE},
+      </if>
+      <if test="completionDate != null" >
+        completion_date = #{completionDate,jdbcType=DATE},
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
@@ -461,27 +584,33 @@
       <if test="isDelete != null" >
         is_delete = #{isDelete,jdbcType=VARCHAR},
       </if>
-      <if test="constructionMode != null" >
-        construction_mode = #{constructionMode,jdbcType=VARCHAR},
-      </if>
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.ProjectApplication" >
     update project_application
     set investment_id = #{investmentId,jdbcType=VARCHAR},
-      project_code = #{projectCode,jdbcType=VARCHAR},
       project_id = #{projectId,jdbcType=VARCHAR},
+      project_code = #{projectCode,jdbcType=VARCHAR},
       project_name = #{projectName,jdbcType=VARCHAR},
       project_type = #{projectType,jdbcType=VARCHAR},
       investor = #{investor,jdbcType=VARCHAR},
       organization = #{organization,jdbcType=VARCHAR},
+      construction_mode = #{constructionMode,jdbcType=VARCHAR},
       leval = #{leval,jdbcType=VARCHAR},
       investment_amount = #{investmentAmount,jdbcType=DECIMAL},
+      declare_type = #{declareType,jdbcType=VARCHAR},
       range1 = #{range1,jdbcType=VARCHAR},
       application_amount = #{applicationAmount,jdbcType=DECIMAL},
+      operating_dept = #{operatingDept,jdbcType=VARCHAR},
+      business_owner = #{businessOwner,jdbcType=VARCHAR},
+      business_phone = #{businessPhone,jdbcType=VARCHAR},
+      contractor = #{contractor,jdbcType=VARCHAR},
+      project_manager = #{projectManager,jdbcType=VARCHAR},
+      manager_phone = #{managerPhone,jdbcType=VARCHAR},
       project_desc = #{projectDesc,jdbcType=VARCHAR},
-      kickoff_date = #{kickoffDate,jdbcType=TIMESTAMP},
+      kickoff_date = #{kickoffDate,jdbcType=DATE},
+      completion_date = #{completionDate,jdbcType=DATE},
       remark = #{remark,jdbcType=VARCHAR},
       creater = #{creater,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -490,7 +619,6 @@
       file_url = #{fileUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       is_delete = #{isDelete,jdbcType=VARCHAR}
-      construction_mode= #{constructionMode,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <!--编辑项目信息-->
@@ -588,11 +716,11 @@
       <if test="organization !=null and organization!=''">
         and  organization like "%" #{organization} "%"
       </if>
-      <if test="constructionMode !=null and constructionMode!=''">
-        and  construction_mode like "%" #{constructionMode} "%"
+      <if test="leval !=null and leval!=''">
+        and  leval like "%" #{leval} "%"
       </if>
-      <if test="investor !=null and investor!=''">
-        and  investor like "%" #{investor} "%"
+      <if test="projectManager !=null and projectManager!=''">
+        and  project_manager like "%" #{projectManager} "%"
       </if>
     UNION ALL
     select count(t2.id) as tmpcount
@@ -611,11 +739,11 @@
     <if test="organization !=null and organization!=''">
       and  organization like "%" #{organization} "%"
     </if>
-    <if test="constructionMode !=null and constructionMode!=''">
-      and  construction_mode like "%" #{constructionMode} "%"
+    <if test="leval !=null and leval!=''">
+      and  leval like "%" #{leval} "%"
     </if>
-    <if test="investor !=null and investor!=''">
-      and  investor like "%" #{investor} "%"
+    <if test="projectManager !=null and projectManager!=''">
+      and  project_manager like "%" #{projectManager} "%"
     </if> ) A
   </select>
 
@@ -640,9 +768,7 @@
   </resultMap>
   <!--查询项目信息-->
   <select id="queryProject" resultMap="BaseResultMap">
-    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,construction_mode,
-    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete
+    select  *
     from project_application
      where
       is_delete='0' and status!='0'
@@ -658,16 +784,14 @@
       <if test="organization !=null and organization!=''">
         and  organization = #{organization}
       </if>
-      <if test="constructionMode !=null and constructionMode!=''">
-        and  construction_mode like "%" #{constructionMode} "%"
+      <if test="leval !=null and leval!=''">
+        and  leval like "%" #{leval} "%"
       </if>
-      <if test="investor !=null and investor!=''">
-        and  investor = #{investor}
+      <if test="projectManager !=null and projectManager!=''">
+        and  project_manager = #{projectManager}
       </if>
     UNION ALL
-    select  Id, investment_id, project_code,project_id, project_name, project_type, investor, organization,construction_mode,
-    leval, investment_amount, range1, application_amount, project_desc, kickoff_date,
-    remark, creater, create_time, update_time, enable, file_url, status, is_delete
+    select  *
     from project_application
      where
       is_delete='0' and status='0' and creater=#{ownerId}
@@ -683,11 +807,11 @@
       <if test="organization !=null and organization!=''">
         and  organization like "%" #{organization} "%"
       </if>
-      <if test="constructionMode !=null and constructionMode!=''">
-        and  construction_mode like "%" #{constructionMode} "%"
+      <if test="leval !=null and leval!=''">
+        and  leval like "%" #{leval} "%"
       </if>
-      <if test="investor !=null and investor!=''">
-        and  investor like "%" #{investor} "%"
+      <if test="projectManager !=null and projectManager!=''">
+        and  project_manager like "%" #{projectManager} "%"
       </if>
     order by   create_time desc
 
@@ -698,9 +822,7 @@
   limit #{rowNum},#{pageCount}
   status="0" DESC ,status="8" DESC ,status,-->
   <select id="queryProjectBase" resultMap="BaseResultMap">
-  select   a.Id, a.investment_id, a.project_code,a.project_id,  a.project_name, a.project_type, a.investor, a.organization,a.construction_mode,
-    a.leval, a.investment_amount, a.range1, a.application_amount, a.project_desc, a.kickoff_date,
-    a.remark, a.creater, a.create_time, a.update_time, a.enable, a.file_url, a.status, a.is_delete,b.plan_num
+  select   a.*,b.plan_num
   from project_application  a  left JOIN   investment_plan b on  a.investment_id=b.id
     where a.id=#{id}
   </select>

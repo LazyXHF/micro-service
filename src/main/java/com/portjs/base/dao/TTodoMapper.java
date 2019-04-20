@@ -31,7 +31,7 @@ public interface TTodoMapper {
 
     int updateByPrimaryKey(TTodo record);
 
-    TTodo toApprove(@Param("id") String id,@Param("ownerId") String ownerId);
+    List<TTodo> toApprove(@Param("id") String id,@Param("ownerId") String ownerId);
 
     List<TTodo> selectBySomething(TTodo record);
 

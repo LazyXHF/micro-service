@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.portjs.base.dao.ProjectBudgetMapper" >
+  <resultMap id="BaseResultMap" type="com.portjs.base.entity.ProjectBudget" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="labor_cost" property="laborCost" jdbcType="DECIMAL" />
+    <result column="remark1" property="remark1" jdbcType="VARCHAR" />
+    <result column="direct_input" property="directInput" jdbcType="DECIMAL" />
+    <result column="remark2" property="remark2" jdbcType="VARCHAR" />
+    <result column="depreciation_cost" property="depreciationCost" jdbcType="DECIMAL" />
+    <result column="remark3" property="remark3" jdbcType="VARCHAR" />
+    <result column="amortization_charge" property="amortizationCharge" jdbcType="DECIMAL" />
+    <result column="remark4" property="remark4" jdbcType="VARCHAR" />
+    <result column="design_fee" property="designFee" jdbcType="DECIMAL" />
+    <result column="remark5" property="remark5" jdbcType="VARCHAR" />
+    <result column="debug_fee" property="debugFee" jdbcType="DECIMAL" />
+    <result column="remark6" property="remark6" jdbcType="VARCHAR" />
+    <result column="outsourcing_cost" property="outsourcingCost" jdbcType="DECIMAL" />
+    <result column="remark7" property="remark7" jdbcType="VARCHAR" />
+    <result column="other_fee" property="otherFee" jdbcType="DECIMAL" />
+    <result column="remark8" property="remark8" jdbcType="VARCHAR" />
+    <result column="total" property="total" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, application_id, project_id, labor_cost, remark1, direct_input, remark2, depreciation_cost, 
+    remark3, amortization_charge, remark4, design_fee, remark5, debug_fee, remark6, outsourcing_cost, 
+    remark7, other_fee, remark8, total, create_time, creator, Modifier, update_time, 
+    delete_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectBudgetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from project_budget
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from project_budget
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from project_budget
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.portjs.base.entity.ProjectBudgetExample" >
+    delete from project_budget
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.portjs.base.entity.ProjectBudget" >
+    insert into project_budget (id, application_id, project_id, 
+      labor_cost, remark1, direct_input, 
+      remark2, depreciation_cost, remark3, 
+      amortization_charge, remark4, design_fee, 
+      remark5, debug_fee, remark6, 
+      outsourcing_cost, remark7, other_fee, 
+      remark8, total, create_time, 
+      creator, Modifier, update_time, 
+      delete_time)
+    values (#{id,jdbcType=VARCHAR}, #{applicationId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
+      #{laborCost,jdbcType=DECIMAL}, #{remark1,jdbcType=VARCHAR}, #{directInput,jdbcType=DECIMAL}, 
+      #{remark2,jdbcType=VARCHAR}, #{depreciationCost,jdbcType=DECIMAL}, #{remark3,jdbcType=VARCHAR}, 
+      #{amortizationCharge,jdbcType=DECIMAL}, #{remark4,jdbcType=VARCHAR}, #{designFee,jdbcType=DECIMAL}, 
+      #{remark5,jdbcType=VARCHAR}, #{debugFee,jdbcType=DECIMAL}, #{remark6,jdbcType=VARCHAR}, 
+      #{outsourcingCost,jdbcType=DECIMAL}, #{remark7,jdbcType=VARCHAR}, #{otherFee,jdbcType=DECIMAL}, 
+      #{remark8,jdbcType=VARCHAR}, #{total,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{deleteTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectBudget" >
+    insert into project_budget
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applicationId != null" >
+        application_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="laborCost != null" >
+        labor_cost,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+      <if test="directInput != null" >
+        direct_input,
+      </if>
+      <if test="remark2 != null" >
+        remark2,
+      </if>
+      <if test="depreciationCost != null" >
+        depreciation_cost,
+      </if>
+      <if test="remark3 != null" >
+        remark3,
+      </if>
+      <if test="amortizationCharge != null" >
+        amortization_charge,
+      </if>
+      <if test="remark4 != null" >
+        remark4,
+      </if>
+      <if test="designFee != null" >
+        design_fee,
+      </if>
+      <if test="remark5 != null" >
+        remark5,
+      </if>
+      <if test="debugFee != null" >
+        debug_fee,
+      </if>
+      <if test="remark6 != null" >
+        remark6,
+      </if>
+      <if test="outsourcingCost != null" >
+        outsourcing_cost,
+      </if>
+      <if test="remark7 != null" >
+        remark7,
+      </if>
+      <if test="otherFee != null" >
+        other_fee,
+      </if>
+      <if test="remark8 != null" >
+        remark8,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="modifier != null" >
+        Modifier,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationId != null" >
+        #{applicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="laborCost != null" >
+        #{laborCost,jdbcType=DECIMAL},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="directInput != null" >
+        #{directInput,jdbcType=DECIMAL},
+      </if>
+      <if test="remark2 != null" >
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="depreciationCost != null" >
+        #{depreciationCost,jdbcType=DECIMAL},
+      </if>
+      <if test="remark3 != null" >
+        #{remark3,jdbcType=VARCHAR},
+      </if>
+      <if test="amortizationCharge != null" >
+        #{amortizationCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="remark4 != null" >
+        #{remark4,jdbcType=VARCHAR},
+      </if>
+      <if test="designFee != null" >
+        #{designFee,jdbcType=DECIMAL},
+      </if>
+      <if test="remark5 != null" >
+        #{remark5,jdbcType=VARCHAR},
+      </if>
+      <if test="debugFee != null" >
+        #{debugFee,jdbcType=DECIMAL},
+      </if>
+      <if test="remark6 != null" >
+        #{remark6,jdbcType=VARCHAR},
+      </if>
+      <if test="outsourcingCost != null" >
+        #{outsourcingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="remark7 != null" >
+        #{remark7,jdbcType=VARCHAR},
+      </if>
+      <if test="otherFee != null" >
+        #{otherFee,jdbcType=DECIMAL},
+      </if>
+      <if test="remark8 != null" >
+        #{remark8,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.portjs.base.entity.ProjectBudgetExample" resultType="java.lang.Integer" >
+    select count(*) from project_budget
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update project_budget
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationId != null" >
+        application_id = #{record.applicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.laborCost != null" >
+        labor_cost = #{record.laborCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark1 != null" >
+        remark1 = #{record.remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.directInput != null" >
+        direct_input = #{record.directInput,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark2 != null" >
+        remark2 = #{record.remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.depreciationCost != null" >
+        depreciation_cost = #{record.depreciationCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark3 != null" >
+        remark3 = #{record.remark3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amortizationCharge != null" >
+        amortization_charge = #{record.amortizationCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark4 != null" >
+        remark4 = #{record.remark4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.designFee != null" >
+        design_fee = #{record.designFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark5 != null" >
+        remark5 = #{record.remark5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.debugFee != null" >
+        debug_fee = #{record.debugFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark6 != null" >
+        remark6 = #{record.remark6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outsourcingCost != null" >
+        outsourcing_cost = #{record.outsourcingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark7 != null" >
+        remark7 = #{record.remark7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otherFee != null" >
+        other_fee = #{record.otherFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark8 != null" >
+        remark8 = #{record.remark8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.total != null" >
+        total = #{record.total,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifier != null" >
+        Modifier = #{record.modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleteTime != null" >
+        delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update project_budget
+    set id = #{record.id,jdbcType=VARCHAR},
+      application_id = #{record.applicationId,jdbcType=VARCHAR},
+      project_id = #{record.projectId,jdbcType=VARCHAR},
+      labor_cost = #{record.laborCost,jdbcType=DECIMAL},
+      remark1 = #{record.remark1,jdbcType=VARCHAR},
+      direct_input = #{record.directInput,jdbcType=DECIMAL},
+      remark2 = #{record.remark2,jdbcType=VARCHAR},
+      depreciation_cost = #{record.depreciationCost,jdbcType=DECIMAL},
+      remark3 = #{record.remark3,jdbcType=VARCHAR},
+      amortization_charge = #{record.amortizationCharge,jdbcType=DECIMAL},
+      remark4 = #{record.remark4,jdbcType=VARCHAR},
+      design_fee = #{record.designFee,jdbcType=DECIMAL},
+      remark5 = #{record.remark5,jdbcType=VARCHAR},
+      debug_fee = #{record.debugFee,jdbcType=DECIMAL},
+      remark6 = #{record.remark6,jdbcType=VARCHAR},
+      outsourcing_cost = #{record.outsourcingCost,jdbcType=DECIMAL},
+      remark7 = #{record.remark7,jdbcType=VARCHAR},
+      other_fee = #{record.otherFee,jdbcType=DECIMAL},
+      remark8 = #{record.remark8,jdbcType=VARCHAR},
+      total = #{record.total,jdbcType=DECIMAL},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      Modifier = #{record.modifier,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{record.deleteTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.ProjectBudget" >
+    update project_budget
+    <set >
+      <if test="applicationId != null" >
+        application_id = #{applicationId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="laborCost != null" >
+        labor_cost = #{laborCost,jdbcType=DECIMAL},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="directInput != null" >
+        direct_input = #{directInput,jdbcType=DECIMAL},
+      </if>
+      <if test="remark2 != null" >
+        remark2 = #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="depreciationCost != null" >
+        depreciation_cost = #{depreciationCost,jdbcType=DECIMAL},
+      </if>
+      <if test="remark3 != null" >
+        remark3 = #{remark3,jdbcType=VARCHAR},
+      </if>
+      <if test="amortizationCharge != null" >
+        amortization_charge = #{amortizationCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="remark4 != null" >
+        remark4 = #{remark4,jdbcType=VARCHAR},
+      </if>
+      <if test="designFee != null" >
+        design_fee = #{designFee,jdbcType=DECIMAL},
+      </if>
+      <if test="remark5 != null" >
+        remark5 = #{remark5,jdbcType=VARCHAR},
+      </if>
+      <if test="debugFee != null" >
+        debug_fee = #{debugFee,jdbcType=DECIMAL},
+      </if>
+      <if test="remark6 != null" >
+        remark6 = #{remark6,jdbcType=VARCHAR},
+      </if>
+      <if test="outsourcingCost != null" >
+        outsourcing_cost = #{outsourcingCost,jdbcType=DECIMAL},
+      </if>
+      <if test="remark7 != null" >
+        remark7 = #{remark7,jdbcType=VARCHAR},
+      </if>
+      <if test="otherFee != null" >
+        other_fee = #{otherFee,jdbcType=DECIMAL},
+      </if>
+      <if test="remark8 != null" >
+        remark8 = #{remark8,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        Modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.ProjectBudget" >
+    update project_budget
+    set application_id = #{applicationId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      labor_cost = #{laborCost,jdbcType=DECIMAL},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      direct_input = #{directInput,jdbcType=DECIMAL},
+      remark2 = #{remark2,jdbcType=VARCHAR},
+      depreciation_cost = #{depreciationCost,jdbcType=DECIMAL},
+      remark3 = #{remark3,jdbcType=VARCHAR},
+      amortization_charge = #{amortizationCharge,jdbcType=DECIMAL},
+      remark4 = #{remark4,jdbcType=VARCHAR},
+      design_fee = #{designFee,jdbcType=DECIMAL},
+      remark5 = #{remark5,jdbcType=VARCHAR},
+      debug_fee = #{debugFee,jdbcType=DECIMAL},
+      remark6 = #{remark6,jdbcType=VARCHAR},
+      outsourcing_cost = #{outsourcingCost,jdbcType=DECIMAL},
+      remark7 = #{remark7,jdbcType=VARCHAR},
+      other_fee = #{otherFee,jdbcType=DECIMAL},
+      remark8 = #{remark8,jdbcType=VARCHAR},
+      total = #{total,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      Modifier = #{modifier,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

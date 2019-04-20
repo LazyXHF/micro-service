@@ -8,9 +8,9 @@ public class ProjectApplication {
 
     private String investmentId;
 
-    private String projectCode;
-
     private String projectId;
+
+    private String projectCode;
 
     private String projectName;
 
@@ -20,17 +20,35 @@ public class ProjectApplication {
 
     private String organization;
 
+    private String constructionMode;
+
     private String leval;
 
     private BigDecimal investmentAmount;
+
+    private String declareType;
 
     private String range1;
 
     private BigDecimal applicationAmount;
 
+    private String operatingDept;
+
+    private String businessOwner;
+
+    private String businessPhone;
+
+    private String contractor;
+
+    private String projectManager;
+
+    private String managerPhone;
+
     private String projectDesc;
 
     private Date kickoffDate;
+
+    private Date completionDate;
 
     private String remark;
 
@@ -50,30 +68,7 @@ public class ProjectApplication {
 
     private String isApprover;
 
-
-    private String isRight;
-
-    public String getIsRight() {
-        return isRight;
-    }
-
-    public void setIsRight(String isRight) {
-        this.isRight = isRight;
-    }
-
-    //投资计划编号   连表字段
-    private String planNum;
-
-
-    private String   constructionMode;
-
-    public String getConstructionMode() {
-        return constructionMode;
-    }
-
-    public void setConstructionMode(String constructionMode) {
-        this.constructionMode = constructionMode;
-    }
+    private String planNum;//计划编码
 
     public String getPlanNum() {
         return planNum;
@@ -83,23 +78,7 @@ public class ProjectApplication {
         this.planNum = planNum;
     }
 
-    private TWorkflowstep workflowstep;
-
-    public TWorkflowstep getWorkflowstep() {
-        return workflowstep;
-    }
-
-    public void setWorkflowstep(TWorkflowstep workflowstep) {
-        this.workflowstep = workflowstep;
-    }
-
-    public String getIsApprover() {
-        return isApprover;
-    }
-
-    public void setIsApprover(String isApprover) {
-        this.isApprover = isApprover;
-    }
+    private String isRight;
 
     public String getId() {
         return id;
@@ -117,20 +96,19 @@ public class ProjectApplication {
         this.investmentId = investmentId == null ? null : investmentId.trim();
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
     public String getProjectId() {
         return projectId;
     }
 
     public void setProjectId(String projectId) {
-        this.projectId = projectId;
+        this.projectId = projectId == null ? null : projectId.trim();
+    }
+
+    public String getProjectCode() {
+        return projectCode;
     }
 
     public void setProjectCode(String projectCode) {
-
         this.projectCode = projectCode == null ? null : projectCode.trim();
     }
 
@@ -166,6 +144,14 @@ public class ProjectApplication {
         this.organization = organization == null ? null : organization.trim();
     }
 
+    public String getConstructionMode() {
+        return constructionMode;
+    }
+
+    public void setConstructionMode(String constructionMode) {
+        this.constructionMode = constructionMode == null ? null : constructionMode.trim();
+    }
+
     public String getLeval() {
         return leval;
     }
@@ -182,6 +168,14 @@ public class ProjectApplication {
         this.investmentAmount = investmentAmount;
     }
 
+    public String getDeclareType() {
+        return declareType;
+    }
+
+    public void setDeclareType(String declareType) {
+        this.declareType = declareType == null ? null : declareType.trim();
+    }
+
     public String getRange1() {
         return range1;
     }
@@ -195,7 +189,61 @@ public class ProjectApplication {
     }
 
     public void setApplicationAmount(BigDecimal applicationAmount) {
-        this.applicationAmount = applicationAmount;
+        if(applicationAmount==null){
+            BigDecimal decimal = new BigDecimal(0);
+            decimal=decimal.setScale(3, BigDecimal.ROUND_HALF_UP);
+            this.applicationAmount = decimal;
+        }else {
+            this.applicationAmount = applicationAmount;
+        }
+    }
+
+    public String getOperatingDept() {
+        return operatingDept;
+    }
+
+    public void setOperatingDept(String operatingDept) {
+        this.operatingDept = operatingDept == null ? null : operatingDept.trim();
+    }
+
+    public String getBusinessOwner() {
+        return businessOwner;
+    }
+
+    public void setBusinessOwner(String businessOwner) {
+        this.businessOwner = businessOwner == null ? null : businessOwner.trim();
+    }
+
+    public String getBusinessPhone() {
+        return businessPhone;
+    }
+
+    public void setBusinessPhone(String businessPhone) {
+        this.businessPhone = businessPhone == null ? null : businessPhone.trim();
+    }
+
+    public String getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(String contractor) {
+        this.contractor = contractor == null ? null : contractor.trim();
+    }
+
+    public String getProjectManager() {
+        return projectManager;
+    }
+
+    public void setProjectManager(String projectManager) {
+        this.projectManager = projectManager == null ? null : projectManager.trim();
+    }
+
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone == null ? null : managerPhone.trim();
     }
 
     public String getProjectDesc() {
@@ -212,6 +260,14 @@ public class ProjectApplication {
 
     public void setKickoffDate(Date kickoffDate) {
         this.kickoffDate = kickoffDate;
+    }
+
+    public Date getCompletionDate() {
+        return completionDate;
+    }
+
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
     }
 
     public String getRemark() {
@@ -276,5 +332,21 @@ public class ProjectApplication {
 
     public void setIsDelete(String isDelete) {
         this.isDelete = isDelete == null ? null : isDelete.trim();
+    }
+
+    public String getIsApprover() {
+        return isApprover;
+    }
+
+    public void setIsApprover(String isApprover) {
+        this.isApprover = isApprover;
+    }
+
+    public String getIsRight() {
+        return isRight;
+    }
+
+    public void setIsRight(String isRight) {
+        this.isRight = isRight;
     }
 }

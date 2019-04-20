@@ -6,6 +6,7 @@ import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.TenderService;
 import com.portjs.base.util.*;
+import com.portjs.base.util.Message.MessageUtils;
 import com.portjs.base.util.StringUtils.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,6 @@ import java.util.function.Consumer;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class TenderServiceImpl implements TenderService {
-    //返参信息
-    public final static String PARAM_MESSAGE_1 = "未传";
 
     @Autowired
     private TenderApplicationMapper tenderApplicationMapper;
@@ -47,10 +46,10 @@ public class TenderServiceImpl implements TenderService {
             return  new ResponseMessage(Code.CODE_ERROR, "参数格式传值错误");
         }
         if(null==map.get("pageSize")){
-            return  new ResponseMessage(Code.CODE_ERROR, "pageSize"+PARAM_MESSAGE_1);
+            return  new ResponseMessage(Code.CODE_ERROR, "pageSize"+MessageUtils.NOT_PASSED);
         }
         if(null==map.get("pageNo")){
-            return  new ResponseMessage(Code.CODE_ERROR, "pageNo"+PARAM_MESSAGE_1);
+            return  new ResponseMessage(Code.CODE_ERROR, "pageNo"+MessageUtils.NOT_PASSED);
         }
         //分页条件查询
         Page page=new Page();
@@ -88,11 +87,11 @@ public class TenderServiceImpl implements TenderService {
             //截取最后流水号
             String num = tNum.substring(10,tNum.length());
             int count = Integer.parseInt(num);
-            tenderNum = count<9?"ZB"+date+"0"+(count+1):"ZB"+date+(count+1);
+            tenderNum ="ZB"+date+String.format("%02d", count);
         }else{
-            tenderNum="ZB"+ date +"01";
+            tenderNum="ZB"+date+"01";
         }
-        return new ResponseMessage(Code.CODE_OK,"生成成功",tenderNum);
+        return new ResponseMessage(Code.CODE_OK, MessageUtils.NOT_PASSED,tenderNum);
     }
 
     /**
@@ -111,16 +110,16 @@ public class TenderServiceImpl implements TenderService {
         String projectName = jsonObject.getString("projectName");//项目名字
 
         if(StringUtils.isEmpty(userId)){
-            return new ResponseMessage(Code.CODE_ERROR,"UserId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"UserId"+MessageUtils.NOT_PASSED);
         }
         if(StringUtils.isEmpty(application1JSON)){
-            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication"+MessageUtils.NOT_PASSED);
         }
         //招标信息
         TenderApplication application = JSONObject.toJavaObject(application1JSON,TenderApplication.class);
 
         if(StringUtils.isEmpty(application.getStatus())){
-            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication中的status"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication中的status"+MessageUtils.NOT_PASSED);
         }
 
         String status = application.getStatus();
@@ -281,13 +280,13 @@ public class TenderServiceImpl implements TenderService {
         String pageCountS  = jsonObject.getString("pageSize");
 
         if(StringUtils.isEmpty(userId)){
-            return new ResponseMessage(Code.CODE_ERROR,"userId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"userId"+MessageUtils.NOT_PASSED);
         }
         if(StringUtils.isEmpty(pageNumS)){
-            return new ResponseMessage(Code.CODE_ERROR,"pageNo"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"pageNo"+MessageUtils.NOT_PASSED);
         }
         if(StringUtils.isEmpty(pageCountS)){
-            return new ResponseMessage(Code.CODE_ERROR,"pageSize"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"pageSize"+MessageUtils.NOT_PASSED);
         }
 
         int pageNum = Integer.parseInt(pageNumS);
@@ -299,7 +298,7 @@ public class TenderServiceImpl implements TenderService {
 
         //处理操作状态
         List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
-        datalist.forEach(map->{
+        list.forEach(map->{
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
             String  tenderId = map.get("tenderId").toString();
             TTodoExample todoExample = new TTodoExample();
@@ -329,10 +328,10 @@ public class TenderServiceImpl implements TenderService {
         TenderApplication application = JSONObject.toJavaObject(application1JSON,TenderApplication.class);
         //1.查询招标信息
         if(StringUtils.isEmpty(application.getId())){
-            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication中的id"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"TenderApplication中的id"+MessageUtils.NOT_PASSED);
         }
         if(StringUtils.isEmpty(userId)){
-            return new ResponseMessage(Code.CODE_ERROR,"UserId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"UserId"+MessageUtils.NOT_PASSED);
         }
         TenderApplicationExample example = new TenderApplicationExample();
         TenderApplicationExample.Criteria criteria = example.createCriteria();
@@ -391,7 +390,7 @@ public class TenderServiceImpl implements TenderService {
         application.setStatus("8");
         application.setUpdateTime(new Date());
         if(StringUtils.isEmpty(application.getId())){
-            return new ResponseMessage(Code.CODE_ERROR,"id"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"id"+MessageUtils.NOT_PASSED);
         }
         int count = tenderApplicationMapper.updateByPrimaryKeySelective(application);
         if(count!=1){
@@ -423,7 +422,7 @@ public class TenderServiceImpl implements TenderService {
         //更新招标信息
         TenderApplication application = JSONObject.toJavaObject(jsonObject,TenderApplication.class);
         if(StringUtils.isEmpty(application.getId())){
-            return new ResponseMessage(Code.CODE_ERROR,"id"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR,"id"+MessageUtils.NOT_PASSED);
         }
         application.setDeleteTime(new Date());
         int count = tenderApplicationMapper.updateByPrimaryKeySelective(application);
@@ -456,30 +455,30 @@ public class TenderServiceImpl implements TenderService {
 
         //必要参数空值判断
         if(org.springframework.util.StringUtils.isEmpty(reviewIds)){
-            return new ResponseMessage(Code.CODE_ERROR, "nextReviewerId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "nextReviewerId"+MessageUtils.NOT_PASSED);
         }
         JSONArray nextReviewerId=JSONArray.parseArray(reviewIds);
 
         if(org.springframework.util.StringUtils.isEmpty(relateddomain_id)){
-            return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(sender_id)){
-            return new ResponseMessage(Code.CODE_ERROR, "userId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "userId"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(currentstep_id)){
-            return new ResponseMessage(Code.CODE_ERROR, "currentstepId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "currentstepId"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(todo_id)){
-            return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "todoId"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(workflowstep_id)){
-            return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(actionResult)){
-            return new ResponseMessage(Code.CODE_ERROR, "actionResult"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "actionResult"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(backup3)){
-            return new ResponseMessage(Code.CODE_ERROR, "sort"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "sort"+MessageUtils.NOT_PASSED);
         }
 
 		/*
@@ -741,13 +740,13 @@ public class TenderServiceImpl implements TenderService {
         String userId = jsonObj.getString("userId");
 
         if(org.springframework.util.StringUtils.isEmpty(todoId)){
-            return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "todoId"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(workflowstepId)){
-            return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+MessageUtils.NOT_PASSED);
         }
         if(org.springframework.util.StringUtils.isEmpty(relateddomainId)){
-            return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+PARAM_MESSAGE_1);
+            return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+MessageUtils.NOT_PASSED);
         }
 
         //修改掉当前todo表对应的id的信息

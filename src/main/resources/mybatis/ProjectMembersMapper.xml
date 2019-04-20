@@ -436,11 +436,13 @@
     from project_members
     where application_id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="queryProjectPersons" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="queryProjectPersons" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
     from project_members
     where application_id = #{id,jdbcType=VARCHAR}
+    order by create_time
+    limit #{rowNum},#{pageCount}
   </select>
   <select id="selectByPage" resultMap="BaseResultMap">
     select

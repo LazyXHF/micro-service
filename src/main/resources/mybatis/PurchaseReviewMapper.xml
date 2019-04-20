@@ -511,6 +511,15 @@
   update purchase_review set status=#{nowBackUp3}
   where id=#{id}
   </update>
+  <update id="updateProjectReviewStatus2" parameterType="PurchaseReview">
+    update purchase_review set status=#{status}, update_time=#{updateTime}
+    where id=#{id}
+  </update>
 
 
+  <!--假删除-->
+  <update id="deleteProjectReview" parameterType="String">
+    update purchase_review set is_delete='1'
+    where id=#{id}
+  </update>
 </mapper>

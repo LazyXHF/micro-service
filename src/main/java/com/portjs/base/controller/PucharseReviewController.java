@@ -1,5 +1,6 @@
 package com.portjs.base.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.service.PucharseReviewService;
 import com.portjs.base.util.Code;
@@ -71,6 +72,15 @@ public class PucharseReviewController {
     public ResponseMessage returnRecord(@RequestBody String requestBody) {
         logger.debug("returnRecord" + requestBody);
         return pucharseReviewService.returnRecord(requestBody);
+    }
+    //假删除  更改字段
+    @LogInfo(methodName = "删除采购评审",modelName = "采购评审")
+    @RequestMapping("deleteProjectReview")
+    @ResponseBody
+    public ResponseMessage deleteProjectReview(@RequestBody String responseBody){
+        logger.debug(TAG+"deleteProjectReview() begin");
+        JSONObject requestJson=JSONObject.parseObject(responseBody);
+        return  pucharseReviewService.deleteProjectReview(requestJson);
     }
 
 

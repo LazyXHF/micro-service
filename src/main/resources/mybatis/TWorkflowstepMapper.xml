@@ -543,6 +543,25 @@
     back_up9 = #{backUp9,jdbcType=VARCHAR}
     where relateddomain_id = #{relateddomainId,jdbcType=VARCHAR} and actionuser_id=#{actionuserId} and status='0'
   </update>
+  <update id="updatetWorkflowstepRecord2" parameterType="com.portjs.base.entity.TWorkflowstep" >
+    update t_workflowstep
+    set relateddomain = #{relateddomain,jdbcType=VARCHAR},
+    relateddomain_id = #{relateddomainId,jdbcType=VARCHAR},
+    prestep_id = #{prestepId,jdbcType=VARCHAR},
+    step_desc = #{stepDesc,jdbcType=VARCHAR},
+    actionuser_id = #{actionuserId,jdbcType=VARCHAR},
+    action_time = #{actionTime,jdbcType=TIMESTAMP},
+    action_result = #{actionResult,jdbcType=INTEGER},
+    file_url = #{fileUrl,jdbcType=VARCHAR},
+    action_comment = #{actionComment,jdbcType=VARCHAR},
+    enable = #{enable,jdbcType=VARCHAR},
+    status = #{status,jdbcType=VARCHAR},
+    backup_3 = #{backup3,jdbcType=VARCHAR},
+    back_up7 = #{backUp7,jdbcType=VARCHAR},
+    back_up8 = #{backUp8,jdbcType=VARCHAR},
+    back_up9 = #{backUp9,jdbcType=VARCHAR}
+    where relateddomain_id = #{relateddomainId,jdbcType=VARCHAR} and actionuser_id=#{actionuserId} and status='0'
+  </update>
 
   <select id="queryCurrentstepId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select * from t_workflowstep

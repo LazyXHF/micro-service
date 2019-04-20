@@ -32,6 +32,17 @@ public class ProjectApprovalController extends BaseController{
             throw new RuntimeException();
         }
     }
+    @RequestMapping("/circulation-project-registration")
+    //项目注册过程中的审核流转
+    public ResponseMessage insertProjectProcedureRegistration(@RequestBody String requestBody) {
+        logger.debug("circulation-project-registration()......"+requestBody);
+        try {
+            return projectApprovalService.insertProjectProcedureRegistration(requestBody);
+        } catch (Exception e) {
+            logger.error("circulation-project-registrationt()error.....",e);
+            throw new RuntimeException();
+        }
+    }
     @RequestMapping("/archive-project")
     //立项阶段的归档操作
     public ResponseMessage projectProceduresArchive(@RequestBody String requestBody) {

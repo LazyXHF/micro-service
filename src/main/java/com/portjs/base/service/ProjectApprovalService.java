@@ -41,4 +41,12 @@ public interface ProjectApprovalService {
 	 * @throws Exception
 	 */
 	ResponseMessage queryProjectDetials(String requestBody)throws Exception;
+
+	/**
+	 *项目注册审核
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
+	ResponseMessage insertProjectProcedureRegistration(String requestBody)throws  Exception;
 }

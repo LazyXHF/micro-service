@@ -1,9 +1,8 @@
 package com.portjs.base.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class BusinessConfiguration implements Serializable {
+public class BusinessConfiguration {
     private String id;
 
     private String projectType;
@@ -22,13 +21,19 @@ public class BusinessConfiguration implements Serializable {
 
     private Date deleteTime;
 
-    private String backUp1;
+    private String projectSchedule;
 
-    private String backUp2;
+    private String projectId;
 
-    private String backUp3;
+    private String projectNode;
 
-    private static final long serialVersionUID = 1L;
+    private Date predictStarttime;
+
+    private Date pridectEndtime;
+
+    private Date actualStarttime;
+
+    private Date actualEndtime;
 
     public String getId() {
         return id;
@@ -102,27 +107,60 @@ public class BusinessConfiguration implements Serializable {
         this.deleteTime = deleteTime;
     }
 
-    public String getBackUp1() {
-        return backUp1;
+    public String getProjectSchedule() {
+        return projectSchedule;
     }
 
-    public void setBackUp1(String backUp1) {
-        this.backUp1 = backUp1 == null ? null : backUp1.trim();
+    public void setProjectSchedule(String projectSchedule) {
+        this.projectSchedule = projectSchedule == null ? null : projectSchedule.trim();
     }
 
-    public String getBackUp2() {
-        return backUp2;
+    public String getProjectId() {
+        return projectId;
     }
 
-    public void setBackUp2(String backUp2) {
-        this.backUp2 = backUp2 == null ? null : backUp2.trim();
+    public void setProjectId(String projectId) {
+            System.out.println(projectId);
+        this.projectId = projectId == null ? null : projectId.trim();
     }
 
-    public String getBackUp3() {
-        return backUp3;
+    public String getProjectNode() {
+        return projectNode;
     }
 
-    public void setBackUp3(String backUp3) {
-        this.backUp3 = backUp3 == null ? null : backUp3.trim();
+    public void setProjectNode(String projectNode) {
+        this.projectNode = projectNode == null ? null : projectNode.trim();
+    }
+
+    public Date getPredictStarttime() {
+        return predictStarttime;
+    }
+
+    public void setPredictStarttime(Date predictStarttime) {
+        this.predictStarttime = predictStarttime;
+    }
+
+    public Date getPridectEndtime() {
+        return pridectEndtime;
+    }
+
+    public void setPridectEndtime(Date pridectEndtime) {
+        this.pridectEndtime = pridectEndtime;
+    }
+
+    public Date getActualStarttime() {
+        return actualStarttime;
+    }
+
+    public void setActualStarttime(Date actualStarttime) {
+        this.actualStarttime = actualStarttime;
+    }
+
+    public Date getActualEndtime() {
+        return actualEndtime;
+    }
+
+    public void setActualEndtime(Date actualEndtime) {
+        this.actualEndtime = actualEndtime;
     }
 }
