@@ -91,7 +91,7 @@ public class TenderServiceImpl implements TenderService {
         }else{
             tenderNum="ZB"+date+"01";
         }
-        return new ResponseMessage(Code.CODE_OK, MessageUtils.NOT_PASSED,tenderNum);
+        return new ResponseMessage(Code.CODE_OK, MessageUtils.SUCCESS,tenderNum);
     }
 
     /**
@@ -294,28 +294,30 @@ public class TenderServiceImpl implements TenderService {
         int count = tenderApplicationMapper.selectCount(projectCode,projectName,method,supplier,bidDate,status,userId);
         Page page = new Page();
         page.init(count,pageNum,pageCount);
-        List<Map<String,Object>> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
+        List<TenderApplication> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
 
         //处理操作状态
-        List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
+        List<TenderApplication> datalist = new ArrayList<TenderApplication>();
         list.forEach(map->{
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
-            String  tenderId = map.get("tenderId").toString();
+            String  tenderId = map.getId();
             TTodoExample todoExample = new TTodoExample();
             TTodoExample.Criteria criteria = todoExample.createCriteria();
             criteria.andRelateddomainIdEqualTo(tenderId);
             criteria.andReceiverIdEqualTo(userId);
             criteria.andStatusEqualTo("0");
             List<TTodo> todos = todoMapper.selectByExample(todoExample);
+            Map<String,Object> ma = new HashMap<String,Object>();
             if(CollectionUtils.isEmpty(todos)){
-                map.put("operatingStatus",0);
+                ma.put("operatingStatus",0);
             }else{
-                map.put("operatingStatus",1);
+                ma.put("operatingStatus",1);
             }
+            map.setParams(ma);
             datalist.add(map);
         });
         page.setList(datalist);
-        return new ResponseMessage(Code.CODE_ERROR,"查询成功",page);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",page);
     }
 
     @Override

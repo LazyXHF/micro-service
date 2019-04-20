@@ -83,7 +83,7 @@ public interface TenderApplicationMapper {
                     @Param("supplier")String supplier,@Param("bidDate") String bidDate,@Param("status") String status,
                     @Param("userId")String userId);
 
-    List<Map<String,Object>> selectPage(@Param("projectCode")String projectCode,@Param("projectName") String projectName,@Param("method") String method,
+    List<TenderApplication> selectPage(@Param("projectCode")String projectCode,@Param("projectName") String projectName,@Param("method") String method,
                          @Param("supplier")String supplier,@Param("bidDate") String bidDate,@Param("status") String status,
                          @Param("userId")String userId,@Param("rowNum") Integer rowNum,@Param("pageCount") Integer pageCount);
 }

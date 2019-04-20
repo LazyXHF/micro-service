@@ -704,6 +704,7 @@
     select count(t1.id)   AS tmpcount
     from project_application  t1
     where    is_delete='0'  and status!='0'
+    AND Id IN (SELECT DISTINCT relateddomain_id FROM t_workflowstep WHERE 1=1 AND actionuser_id= #{ownerId,jdbcType=VARCHAR})
       <if test="projectCode !=null and projectCode!=''">
         and  project_code like "%" #{projectCode} "%"
       </if>
@@ -772,6 +773,7 @@
     from project_application
      where
       is_delete='0' and status!='0'
+    AND Id IN (SELECT DISTINCT relateddomain_id FROM t_workflowstep WHERE 1=1 AND actionuser_id= #{ownerId,jdbcType=VARCHAR})
       <if test="projectCode !=null and projectCode!=''">
        and  project_code like "%" #{projectCode} "%"
       </if>
