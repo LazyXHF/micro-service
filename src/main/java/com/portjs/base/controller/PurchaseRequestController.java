@@ -3,6 +3,7 @@ package com.portjs.base.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.PurchaseRequest;
+import com.portjs.base.entity.TWorkflowstep;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.PuchaseRequestService;
 import com.portjs.base.util.ResponseMessage;
@@ -22,6 +23,7 @@ public class PurchaseRequestController extends BaseController {
 
     @Autowired
     PuchaseRequestService puchaseRequestService;
+
 
     /**
      * 暂存/提交购清单信息
@@ -110,7 +112,7 @@ public class PurchaseRequestController extends BaseController {
 
     /**
      * 根据id查询购物清单信息
-     * @param id
+     * @param
      * @return
      */
    /* @RequestMapping("query-purchase-request-info-by-id")
@@ -124,4 +126,19 @@ public class PurchaseRequestController extends BaseController {
         return responseMessage;
     }
 */
+    @LogInfo(methodName = "退回",modelName = "采购评审")
+    @RequestMapping("return-record")
+    @ResponseBody
+    public ResponseMessage returnRecord(@RequestBody String requestBody) {
+        logger.debug("returnRecord" + requestBody);
+        return puchaseRequestService.returnRecord(requestBody);
+    }
+
+    @LogInfo(methodName = "采购评审审核",modelName = "采购评审")
+    @RequestMapping("approve-purchase-request")
+    @ResponseBody
+    public ResponseMessage approvePurchaseRequest(@RequestBody String requestBody) {
+        logger.debug("approvePurchaseRequest" + requestBody);
+        return puchaseRequestService.approvePurchaseRequest(requestBody);
+    }
 }

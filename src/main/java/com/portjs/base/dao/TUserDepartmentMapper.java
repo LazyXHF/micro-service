@@ -4,6 +4,8 @@ import com.portjs.base.entity.TUserDepartment;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TUserDepartmentMapper {
     int deleteByPrimaryKey(Integer id);

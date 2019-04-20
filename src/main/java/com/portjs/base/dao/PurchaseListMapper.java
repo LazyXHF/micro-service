@@ -42,6 +42,13 @@ public interface PurchaseListMapper {
      */
     List<PurchaseList> queryPurchaseListInfo(@Param("requestId") String requestId,
                                              @Param("pageNo") Integer pageNo,@Param("pageSize") Integer pageSize);
+
+    /**
+     * 通过业务单id查询
+     * @param requestId
+     * @return
+     */
+    List<PurchaseList> queryPurchaseList(@Param("requestId") String requestId);
     /**
      * 批量软删除
      * @param ids
@@ -50,6 +57,13 @@ public interface PurchaseListMapper {
     int updateDeleteTimeByIds(@Param("id") List<String> ids);
 
     PurchaseList queryPurchaseListById(@Param("id") String ids);
+
+    /**
+     * 软删除
+     * @param id
+     * @return
+     */
+    int updateDeleteTime(@Param("id")String id);
 
     /**
      * 暂存/提交
@@ -74,6 +88,8 @@ public interface PurchaseListMapper {
      * @return
      */
     int updatePurchaseListBatch(List<PurchaseList> purchaseList);
+
+    int updateByRequestId(PurchaseList purchaseList);
 
 
     /*int updateByPrimaryKeySelective(PurchaseList record);

@@ -55,6 +55,9 @@ public interface PuchaseRequestService {
      * 查询所有的审核流程
      * @return relateddomainId 业务单id
      */
-    ResponseMessage queryAllWorkFlowStep(String relateddomainId);
+    ResponseMessage queryAllWorkFlowStep(String requestBody);
+
+    ResponseMessage returnRecord(String requestBody);
+
 
 }

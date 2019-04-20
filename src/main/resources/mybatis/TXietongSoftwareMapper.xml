@@ -85,12 +85,30 @@
       order by ${orderByClause}
     </if>
   </select>
+
+
+  <select id="querySoftwareByPage" resultMap="BaseResultMap" >
+    select
+    *
+    from t_xietong_software
+    order by createtime desc LIMIT  #{pageNo},#{pageSize}
+  </select>
+  <select id="selectSoftwareCounts" resultType="Integer">
+    select
+    count(*)
+    from t_xietong_software
+    order by createtime desc
+  </select>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_xietong_software
     where ID = #{id,jdbcType=VARCHAR}
   </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_xietong_software
     where ID = #{id,jdbcType=VARCHAR}

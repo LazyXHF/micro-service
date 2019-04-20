@@ -1,6 +1,6 @@
 package com.portjs.base.dao;
 
-import com.portjs.base.entity.PurchaseRequest;
+import com.portjs.base.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -21,6 +21,8 @@ public interface PurchaseRequestMapper {
     int updateByPrimaryKey(PurchaseRequest record);
 
     int updateByPrimaryKeySelective(PurchaseRequest record);
+
+    int insertPurchaseRequest(PurchaseRequest purchaseRequest);
 
     /**
      * 采购清单列表统计
@@ -56,6 +58,7 @@ public interface PurchaseRequestMapper {
 
     int insertPurchaseRequestSelective(PurchaseRequest record);
 
+
     /**
      * 查询最大流水单号
      * @return
@@ -64,4 +67,8 @@ public interface PurchaseRequestMapper {
     String findMaxOdd();
 
     List queryPucharseList(String method, String projectCode, String projectName);
+
+    int updatePurchaseRequestStatus(@Param("id") String id, @Param("nowBackUp3")String nowBackUp3);
+
+    List<PurchaseRequest> selectByExample(PurchaseRequestExample example);
 }
