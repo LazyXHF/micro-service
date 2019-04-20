@@ -33,6 +33,7 @@
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -98,7 +99,7 @@
     organization, construction_mode, leval, investment_amount, declare_type, range1,
     application_amount, operating_dept, business_owner, business_phone, contractor, project_manager,
     manager_phone, project_desc, kickoff_date, completion_date, remark, creater, create_time,
-    update_time, enable, file_url, status, is_delete
+    update_time, enable, file_url, status, is_delete, type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectApplicationExample" >
     select
@@ -141,7 +142,7 @@
       kickoff_date, completion_date, remark,
       creater, create_time, update_time,
       enable, file_url, status,
-      is_delete)
+      is_delete, type)
     values (#{id,jdbcType=VARCHAR}, #{investmentId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR},
       #{projectCode,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR},
       #{investor,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{constructionMode,jdbcType=VARCHAR},
@@ -152,7 +153,7 @@
       #{kickoffDate,jdbcType=DATE}, #{completionDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR},
       #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{enable,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
-      #{isDelete,jdbcType=VARCHAR})
+      #{isDelete,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectApplication" >
     insert into project_application
@@ -250,6 +251,9 @@
       <if test="isDelete != null" >
         is_delete,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -344,6 +348,9 @@
       </if>
       <if test="isDelete != null" >
         #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -449,6 +456,9 @@
       <if test="record.isDelete != null" >
         is_delete = #{record.isDelete,jdbcType=VARCHAR},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -486,7 +496,8 @@
     enable = #{record.enable,jdbcType=VARCHAR},
     file_url = #{record.fileUrl,jdbcType=VARCHAR},
     status = #{record.status,jdbcType=VARCHAR},
-    is_delete = #{record.isDelete,jdbcType=VARCHAR}
+    is_delete = #{record.isDelete,jdbcType=VARCHAR},
+    type = #{record.type,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -584,6 +595,9 @@
       <if test="isDelete != null" >
         is_delete = #{isDelete,jdbcType=VARCHAR},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
@@ -618,7 +632,8 @@
       enable = #{enable,jdbcType=VARCHAR},
       file_url = #{fileUrl,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=VARCHAR}
+      is_delete = #{isDelete,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=VARCHAR}
   </update>
   <!--编辑项目信息-->

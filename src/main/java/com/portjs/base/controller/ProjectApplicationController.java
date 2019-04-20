@@ -85,8 +85,28 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage queryProjectRecords(@RequestBody String responseBody) {
         logger.debug(TAG + "queryProjectRecords() begin");
-        JSONObject requestJson=JSONObject.parseObject(responseBody);
-        return  applicationService.queryProjectRecords(requestJson);
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            return  applicationService.queryProjectRecords(requestJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
+    }
+
+    @LogInfo(methodName = "废除立项申请",modelName = "立项管理")
+    @RequestMapping("abolition-project")
+    @ResponseBody
+    public ResponseMessage abolitionProject(@RequestBody String responseBody){
+        logger.debug(TAG+"abolition-project() begin");
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            String id = requestJson.getString("id");
+            return  applicationService.abolitionProject(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
     }
 
 //假删除  更改字段
@@ -95,8 +115,14 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage deleteProject(@RequestBody String responseBody){
         logger.debug(TAG+"deleteProject() begin");
-        JSONObject requestJson=JSONObject.parseObject(responseBody);
-        return  applicationService.deleteProject(requestJson);
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            String id=requestJson.getString("id");
+            return  applicationService.deleteProject(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
     }
 
    /* 项目基本信息
@@ -106,7 +132,12 @@ public class ProjectApplicationController extends BaseController {
    @ResponseBody
    public ResponseMessage queryProjectPlan(){
        logger.debug(TAG+"queryProjectPlan() begin");
-       return  applicationService.queryProjectPlan();
+       try {
+           return  applicationService.queryProjectPlan();
+       } catch (Exception e) {
+           e.printStackTrace();
+           return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+       }
    }
     @LogInfo(methodName = "投资计划对应项目信息",modelName = "立项管理")
     @RequestMapping("queryProjectPlanInfo")

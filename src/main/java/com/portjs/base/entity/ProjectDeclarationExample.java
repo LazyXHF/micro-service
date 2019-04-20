@@ -365,12 +365,12 @@ public class ProjectDeclarationExample {
             return (Criteria) this;
         }
 
-        public Criteria andDocNumBetween(Long value1, Integer value2) {
+        public Criteria andDocNumBetween(Long value1, Long value2) {
             addCriterion("doc_num between", value1, value2, "docNum");
             return (Criteria) this;
         }
 
-        public Criteria andDocNumNotBetween(Long value1, Integer value2) {
+        public Criteria andDocNumNotBetween(Long value1, Long value2) {
             addCriterion("doc_num not between", value1, value2, "docNum");
             return (Criteria) this;
         }

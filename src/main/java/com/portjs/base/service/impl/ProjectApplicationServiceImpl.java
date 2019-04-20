@@ -1,25 +1,16 @@
 package com.portjs.base.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
-import com.portjs.base.service.AcceptanceService;
 import com.portjs.base.service.ProjectApplicationService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.StringUtils;
-import com.portjs.base.util.UserUtils;
-import org.apache.juli.logging.LogFactory;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
-import org.omg.CORBA.CODESET_INCOMPATIBLE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -120,7 +111,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
         List<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
         if(alllist.isEmpty()){
-            return  new ResponseMessage(Code.CODE_OK,"查询项目信息为空");
+            return  new ResponseMessage(Code.CODE_ERROR,"查询项目信息为空");
         }else {
             for (ProjectApplication application : alllist) {
                 TTodoExample todoExample = new TTodoExample();
@@ -289,10 +280,37 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         }
     }
 
+    /**
+     * 立项废除
+     * @param id
+     * @return
+     */
     @Override
-    public ResponseMessage deleteProject(JSONObject requestJson) {
-        String id=requestJson.getString("id");
-        String ownerId=requestJson.getString("ownerId");
+    public ResponseMessage abolitionProject(String id)throws Exception {
+        ProjectApplication application = new ProjectApplication();
+        application.setId(id);
+        application.setStatus("9");
+        int i = applicationMapper.updateByPrimaryKeySelective(application);
+        if(i!=1){
+           throw new Exception("废除失败");
+        }
+        TTodoExample example = new TTodoExample();
+        TTodoExample.Criteria criteria = example.createCriteria();
+        criteria.andRelateddomainIdEqualTo(id);
+        TTodo tTodo = new TTodo();
+        tTodo.setStatus("1");
+        int i1 = todoMapper.updateByExampleSelective(tTodo, example);
+        if(i1<=0){
+            throw new Exception("废除失败");
+        }
+        return new ResponseMessage(Code.CODE_OK,"废除成功");
+    }
+
+
+    @Override
+    public ResponseMessage deleteProject(String id)throws Exception{
+
+        /*String ownerId=requestJson.getString("ownerId");
         int count=todoMapper.queryTodoRecord(id,ownerId);
         if(count>0){
          int f=todoMapper.deleteTodoRecord(id,ownerId);
@@ -303,8 +321,14 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         int f=applicationMapper.deleteProject(id);
         if(f!=1){
             return  new ResponseMessage(Code.CODE_ERROR,"删除失败");
+        }*/
+        ProjectApplication application = new ProjectApplication();
+        application.setId(id);
+        application.setIsDelete("1");
+        int i = applicationMapper.updateByPrimaryKeySelective(application);
+        if(i!=1){
+            throw new Exception("删除失败");
         }
-
         return  new ResponseMessage(Code.CODE_OK,"删除成功");
     }
 

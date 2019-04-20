@@ -108,8 +108,16 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
         //项目基本信息
         ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
+        ProjectApplicationExample applicationExample = new ProjectApplicationExample();
+        List<ProjectApplication> applications = applicationMapper.selectByExample(applicationExample);
+        for (ProjectApplication projectApplication : applications) {
+            if(projectApplication.getProjectName().equals(application.getProjectName())){
+                throw new Exception("项目名称不可重复");
+            }
+        }
+        
         application.setCreater(userId);
-
+        application.setType(type);
         application.setStatus(status);
         application.setUpdateTime(new Date());
         String message1="";

@@ -404,9 +404,7 @@
   </select>
 
   <select id="queryProjectPlan" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from investment_plan
+     select p.* from investment_plan p where id not in(select investment_id from project_application)
   </select>
 
   <select id="queryProjectPlanInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
