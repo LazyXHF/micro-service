@@ -742,7 +742,7 @@
     select count(t2.id) as tmpcount
     from project_application  t2
     where
-    is_delete='0' and status='0' and creater=#{ownerId}
+    is_delete='0' and( status='0' or status='9') and creater=#{ownerId}
     <if test="projectCode !=null and projectCode!=''">
       and  project_code like "%" #{projectCode} "%"
     </if>
@@ -811,7 +811,7 @@
     select  *
     from project_application
      where
-      is_delete='0' and status='0' and creater=#{ownerId}
+      is_delete='0' and ( status='0' or status='9') and creater=#{ownerId}
     <if test="projectCode !=null and projectCode!=''">
         and  project_code like "%" #{projectCode} "%"
       </if>
