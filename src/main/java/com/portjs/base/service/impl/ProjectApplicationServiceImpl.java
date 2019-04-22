@@ -163,7 +163,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             Page page=new Page();
             ArrayList arrayList = new ArrayList(treeSet);
             page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
-            System.out.println(page);
             if(page.getRowNum()+page.getPageCount()>arrayList.size()){
                 page.setList(arrayList.subList(page.getRowNum(),arrayList.size()));
             }else {

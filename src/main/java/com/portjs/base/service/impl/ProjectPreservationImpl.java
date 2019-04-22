@@ -169,15 +169,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         application.setStatus(status);*/
         //插入还是更新
         if(StringUtils.isEmpty(application.getId())){
-            String id = String.valueOf(IDUtils.genItemId());
+            /*String id = String.valueOf(IDUtils.genItemId());*/
             //生成一条project记录
-            updateUtil.projectMethod(id,null,application.getProjectName(),
+            updateUtil.projectMethod(application.getProjectId(),null,application.getProjectName(),
                     application.getProjectType(),"A",userId,application.getOrganization()
                     ,application.getApplicationAmount().toString(),"Ab2",application.getInvestor());
 
             application.setId(String.valueOf(IDUtils.genItemId()));
             application.setCreater(userId);
-            application.setProjectId(id);
+            /*application.setProjectId(id);*/
             application.setCreateTime(new Date());
 
             int i = applicationMapper.insertSelective(application);
@@ -281,6 +281,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 BusinessConfiguration configuration = JSONObject.toJavaObject(object,BusinessConfiguration.class);
                 configuration.setId(String.valueOf(IDUtils.genItemId()));
                 configuration.setCreator(userId);
+                configuration.setProjectId(application.getProjectId());
                 configuration.setCreateTime(new Date());
                 int num = configurationMapper.insertSelective(configuration);
                 if(num<=0){
