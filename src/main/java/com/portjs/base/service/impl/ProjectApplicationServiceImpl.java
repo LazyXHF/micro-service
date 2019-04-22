@@ -183,7 +183,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String pageNum=requestJson.getString("pageNum");//当前页数（人员分页信息）
         String pageCount=requestJson.getString("pageCount");//每页显示记录数（人员分页信息）
         String ownerId=requestJson.getString("ownerId");//当前登录人id
-
+        /*String type = requestJson.getString("type");//类型*/
 
         LinkedHashMap<String, Object> map = new LinkedHashMap();
         //查询基本信息
@@ -203,25 +203,32 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             /*return  new ResponseMessage(Code.CODE_OK,"申报信息查询失败");*/
             throw new Exception("申报信息查询失败");
         }
-        //查询里程碑
-        BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
-        BusinessConfigurationExample.Criteria configurationCriteria = configurationExample.createCriteria();
-        configurationCriteria.andProjectIdEqualTo(projectId);
-        List<BusinessConfiguration> businessConfigurations = configurationMapper.selectByExample(configurationExample);
-        Page page=new Page();
-        //查询人员信息
-        int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
-        page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+        if(projectApplication.getType().equals("1")){
+            //查询里程碑
+            BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
+            BusinessConfigurationExample.Criteria configurationCriteria = configurationExample.createCriteria();
+            configurationCriteria.andProjectIdEqualTo(projectId);
+            List<BusinessConfiguration> businessConfigurations = configurationMapper.selectByExample(configurationExample);
+            Page page=new Page();
+            //查询人员信息
+            int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
+            page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
 
-        List<ProjectMembers> members=projectMembersMapper.queryProjectPersons(id,page.getRowNum(),page.getPageCount());
-        page.setList(members);
-        //查询项目预算
-        ProjectBudgetExample budgetExample = new ProjectBudgetExample();
-        ProjectBudgetExample.Criteria budgetCriteria = budgetExample.createCriteria();
-        budgetCriteria.andApplicationIdEqualTo(id);
-        List<ProjectBudget> projectBudgets = budgetMapper.selectByExample(budgetExample);
-        //查询项目文件
-        List<InternalAttachment> internalAttachments=internalAttachmentMapper.queryProjectFiles(id);
+            List<ProjectMembers> members=projectMembersMapper.queryProjectPersons(id,page.getRowNum(),page.getPageCount());
+            page.setList(members);
+            //查询项目预算
+            ProjectBudgetExample budgetExample = new ProjectBudgetExample();
+            ProjectBudgetExample.Criteria budgetCriteria = budgetExample.createCriteria();
+            budgetCriteria.andApplicationIdEqualTo(id);
+            List<ProjectBudget> projectBudgets = budgetMapper.selectByExample(budgetExample);
+            //查询项目文件
+            List<InternalAttachment> internalAttachments=internalAttachmentMapper.queryProjectFiles(id);
+            map.put("Configuration",businessConfigurations);
+            map.put("Persons",page);
+            map.put("Budget",projectBudgets);
+            map.put("Files",internalAttachments);
+
+        }
         //审核信息查询
         List<TWorkflowstep> tWorkflowsteps=tWorkflowstepMapper.queryProjectRecords(id);
         if(!CollectionUtils.isEmpty(tWorkflowsteps)){
@@ -235,10 +242,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         List<TTodo> tTodo=todoMapper.toApprove(id,ownerId);
         map.put("Application",projectApplication);
         map.put("Declaration",projectDeclarations);
-        map.put("Configuration",businessConfigurations);
-        map.put("Persons",page);
-        map.put("Budget",projectBudgets);
-        map.put("Files",internalAttachments);
+
         map.put("Records",tWorkflowsteps);
         map.put("Todo",tTodo);
         return  new ResponseMessage(Code.CODE_OK,"项目信息",map);

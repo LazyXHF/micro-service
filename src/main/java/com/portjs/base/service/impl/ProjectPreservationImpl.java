@@ -109,7 +109,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         //项目基本信息
         ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);
         application.setCreater(userId);
-
+        application.setType(type);
         application.setStatus(status);
         application.setUpdateTime(new Date());
         String message1="";
