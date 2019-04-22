@@ -6,8 +6,10 @@ import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.ProjectApprovalService;
 import com.portjs.base.util.*;
+import com.portjs.base.util.Message.MessageUtils;
 import com.portjs.base.util.StringUtils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -27,8 +29,6 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	@Autowired
 	private TXietongDictionaryMapper dictionaryMapper;
 	@Autowired
-	private InvestmentPlanMapper planMapper;
-	@Autowired
 	private ProjectMembersMapper projectMembersMapper;
 	@Autowired
 	private InternalAttachmentMapper internalAttachmentMapper;
@@ -36,6 +36,12 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private  ProjectCommunicationMapper projectCommunicationMapper;
 	@Autowired
 	private ProjectAddorUpdateUtil updateUtil;
+	@Autowired
+	private ProjectDeclarationMapper declarationMapper;
+	@Autowired
+	private BusinessConfigurationMapper configurationMapper;
+	@Autowired
+	private ProjectBudgetMapper budgetMapper;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -512,69 +518,82 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		String pageNo =jsonObj.getString("pageNo");
 		//空值判断
 		if(StringUtils.isEmpty(projectId)){
-			return new ResponseMessage(Code.CODE_ERROR, "projectId"+PARAM_MESSAGE_1);
+			return new ResponseMessage(Code.CODE_ERROR, "projectId"+MessageUtils.NOT_PASSED);
 		}
 		if(StringUtils.isEmpty(stage)){
-			return new ResponseMessage(Code.CODE_ERROR, "stage"+PARAM_MESSAGE_1);
-		}
-		if(StringUtils.isEmpty(node)){
-			return new ResponseMessage(Code.CODE_ERROR, "node"+PARAM_MESSAGE_1);
+			return new ResponseMessage(Code.CODE_ERROR, "stage"+MessageUtils.NOT_PASSED);
 		}
 		if(StringUtils.isEmpty(pageSize)){
-			return new ResponseMessage(Code.CODE_ERROR, "pageSize"+PARAM_MESSAGE_1);
+			return new ResponseMessage(Code.CODE_ERROR, "pageSize"+MessageUtils.NOT_PASSED);
 		}
 		if(StringUtils.isEmpty(pageNo)){
-			return new ResponseMessage(Code.CODE_ERROR, "pageNo"+PARAM_MESSAGE_1);
+			return new ResponseMessage(Code.CODE_ERROR, "pageNo"+MessageUtils.NOT_PASSED);
 		}
-		//A:立项阶段 B:工程准备阶段 C:设计阶段 D:建设阶段 E:验收阶段 F:收尾阶段 G:沟通记录
+		//A:项目立项 B:合同签订 C:项目启动 D:需求设计 E:开发测试 F:项目验收 G:项目收尾 FKJL:风控记录 XMZB:项目周报 XMYB:项目月报
 		if(stage.equals("A")){
-			//a：投资计划 b:立项批复 c:项目交底
+			//a：立项批复
 			if("a".equals(node)){
-				InvestmentPlanExample planExample = new InvestmentPlanExample();
-				InvestmentPlanExample.Criteria criteria = planExample.createCriteria();
+				//通过projectId查询项目立项id
+				ProjectApplicationExample example = new ProjectApplicationExample();
+				ProjectApplicationExample.Criteria criteria = example.createCriteria();
 				criteria.andProjectIdEqualTo(projectId);
-				List <InvestmentPlan> data = planMapper.selectByExample(planExample);
-				if(!CollectionUtils.isEmpty(data)){
-					return  new ResponseMessage(Code.CODE_OK, "查询成功",data.get(0));
+				List<ProjectApplication> projectApplications = projectApplicationMapper.selectByExample(example);
+				if(CollectionUtils.isEmpty(projectApplications)|| projectApplications.size()>1){
+					return new ResponseMessage(Code.CODE_ERROR, "数据库数据存在异常");
 				}
-				return  new ResponseMessage(Code.CODE_OK, "查询成功",data);
-			}else if("b".equals(node)){
-				ProjectApplicationExample projectApplicationExample = new ProjectApplicationExample();
-				ProjectApplicationExample.Criteria criteria = projectApplicationExample.createCriteria();
-				criteria.andProjectIdEqualTo(projectId);
-				List <ProjectApplication> data = projectApplicationMapper.selectByExample(projectApplicationExample);
+				String id=projectApplications.get(0).getId();//application(基本信息表id)
+				if(StringUtils.isEmpty(pageNo)){
+					return new ResponseMessage(Code.CODE_ERROR, "pageNum"+ MessageUtils.NOT_PASSED);
+				}
+				if(StringUtils.isEmpty(pageSize)){
+					return new ResponseMessage(Code.CODE_ERROR, "pageCount"+MessageUtils.NOT_PASSED);
+				}
 
-				Map<String,Object> mapData = null;
-				if(!CollectionUtils.isEmpty(data)){
-					mapData = new HashMap<String,Object>();
-					ProjectApplication projectApplication = data.get(0);
-					//立项id
-					String id = projectApplication.getId();
-					//根据获取到的计划id查询对应的计划编码
-					String planId=projectApplication.getInvestmentId();
-					InvestmentPlanExample planExamples = new InvestmentPlanExample();
-					InvestmentPlanExample.Criteria criterias = planExamples.createCriteria();
-					criterias.andIdEqualTo(planId);
-					List <InvestmentPlan> planData = planMapper.selectByExample(planExamples);
-					projectApplication.setPlanNum(planData.get(0).getPlanNum());
-					mapData.put("Application",projectApplication);
-					//人员
+				LinkedHashMap<String, Object> map = new LinkedHashMap();
+				//查询基本信息
+				ProjectApplication projectApplication=projectApplicationMapper.queryProjectBase(id);
+				if(projectApplication==null){
+					return new ResponseMessage(Code.CODE_ERROR, "项目基本信息查询失败");
+				}
+
+				//查询申报信息
+				ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
+				ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
+				declarationCriteria.andApplicationIdEqualTo(id);
+				List<ProjectDeclaration> projectDeclarations = declarationMapper.selectByExample(declarationExample);
+				if(CollectionUtils.isEmpty(projectDeclarations)){
+					return new ResponseMessage(Code.CODE_ERROR, "申报信息查询失败");
+				}
+				if(projectApplication.getType().equals("1")){
+					//查询里程碑
+					BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
+					BusinessConfigurationExample.Criteria configurationCriteria = configurationExample.createCriteria();
+					configurationCriteria.andProjectIdEqualTo(projectId);
+					List<BusinessConfiguration> businessConfigurations = configurationMapper.selectByExample(configurationExample);
 					Page page=new Page();
+					//查询人员信息
 					int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
 					page.init(totalCount,Integer.valueOf(pageNo),Integer.valueOf(pageSize));
-					List<ProjectMembers> list = projectMembersMapper.selectByPage(page.getRowNum(), page.getPageCount(),id);
-					page.setList(list);
-					mapData.put("Persons",page);
-					//附件
-					InternalAttachmentExample example = new InternalAttachmentExample();
-					InternalAttachmentExample.Criteria criteria2 = example.createCriteria();
-					criteria2.andRelateddomainIdEqualTo(id);
-					List<InternalAttachment> files = internalAttachmentMapper.selectByExample(example);
-					mapData.put("Files",files);
+
+					List<ProjectMembers> members=projectMembersMapper.queryProjectPersons(id,page.getRowNum(),page.getPageCount());
+					page.setList(members);
+					//查询项目预算
+					ProjectBudgetExample budgetExample = new ProjectBudgetExample();
+					ProjectBudgetExample.Criteria budgetCriteria = budgetExample.createCriteria();
+					budgetCriteria.andApplicationIdEqualTo(id);
+					List<ProjectBudget> projectBudgets = budgetMapper.selectByExample(budgetExample);
+					//查询项目文件
+					List<InternalAttachment> internalAttachments=internalAttachmentMapper.queryProjectFiles(id);
+					map.put("Configuration",businessConfigurations);
+					map.put("Persons",page);
+					map.put("Budget",projectBudgets);
+					map.put("Files",internalAttachments);
 				}
-				return  new ResponseMessage(Code.CODE_OK, "查询成功",mapData);
+				map.put("Application",projectApplication);
+				map.put("Declaration",projectDeclarations);
+				return  new ResponseMessage(Code.CODE_OK, MessageUtils.SUCCESS,map);
 			}else{
-				return new ResponseMessage(Code.CODE_ERROR, "不存在此种状态");
+				return new ResponseMessage(Code.CODE_ERROR, MessageUtils.NOT_EXIST);
 			}
 		}else if(stage.equals("B")){
 			return null;
@@ -587,29 +606,35 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		}else if(stage.equals("F")){
 			return null;
 		}else if(stage.equals("G")){
-			//沟通记录
-			if("a".equals(node)){
-				String schedule =jsonObj.getString("schedule");
-				ProjectCommunication projectCommunication = new ProjectCommunication();
-				projectCommunication.setProjectId(projectId);
-				projectCommunication.setPhase(schedule);
+			return null;
+		}else if("FKJL".equals(stage)){
+			//风控记录
+			String schedule =jsonObj.getString("schedule");
+			ProjectCommunication projectCommunication = new ProjectCommunication();
+			projectCommunication.setProjectId(projectId);
+			projectCommunication.setPhase(schedule);
 
-				Page page=new Page();
-				int totalCount = projectCommunicationMapper.queryProjectCommunicatisCount(projectCommunication);
-				page.init(totalCount,Integer.valueOf(pageNo),Integer.valueOf(pageSize));
-				Map<String,Object> map = new HashMap<String, Object>();
-				map.put("pageNo",page.getRowNum());
-				map.put("pageSize",page.getPageCount());
-				projectCommunication.setParams(map);
+			Page page=new Page();
+			int totalCount = projectCommunicationMapper.queryProjectCommunicatisCount(projectCommunication);
+			page.init(totalCount,Integer.valueOf(pageNo),Integer.valueOf(pageSize));
+			Map<String,Object> map = new HashMap<String, Object>();
+			map.put("pageNo",page.getRowNum());
+			map.put("pageSize",page.getPageCount());
+			projectCommunication.setParams(map);
 
-				List<ProjectCommunication> dataList = projectCommunicationMapper.queryProjectCommunicatisByPage(projectCommunication);
-				page.setList(dataList);
-				return  new ResponseMessage(Code.CODE_OK, "查询成功",page);
-			}
+			List<ProjectCommunication> dataList = projectCommunicationMapper.queryProjectCommunicatisByPage(projectCommunication);
+			page.setList(dataList);
+			return  new ResponseMessage(Code.CODE_OK, "查询成功",page);
+		}else if("XMZB".equals(stage)){
+			//项目周报
+			return null;
+		}else if("XMYB".equals(stage)){
+			//项目月报
+			return null;
 		}else{
 			return new ResponseMessage(Code.CODE_ERROR, "不存在此种状态");
 		}
-		return null;
+
 	}
 
 	/**
