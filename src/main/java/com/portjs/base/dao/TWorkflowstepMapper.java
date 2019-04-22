@@ -41,7 +41,7 @@ public interface TWorkflowstepMapper {
 
     List<TWorkflowstep> queryProjectRecords(@Param("id") String id);
 
-    List<TWorkflowstep> queryPurchaseRecords(@Param("id") String id);
+    List<TWorkflowstep> queryPurchaseRecords(@Param("id") String id,@Param("actionuserId")String actionuserId);
 
 
     List<TWorkflowstep> queryNotReviewProject(@Param("id") String id);

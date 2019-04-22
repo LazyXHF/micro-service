@@ -1002,8 +1002,9 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             return new ResponseMessage(Code.CODE_ERROR, "提交失败");
         }
         return new ResponseMessage(Code.CODE_OK, "退回成功");
+
         /*JSONObject jsonObject = JSONObject.parseObject(requestBody);
-        String application_id = jsonObject.getString("application_id");//采购记录id
+        String application_id = jsonObject.getString("applicationId");//采购记录id
         String workflowstep_id = jsonObject.getString("workflowstep_id");//采购流程id
         String stepDesc = jsonObject.getString("stepDesc");//当前流程步骤
         String stepDesc1 =  stepDesc.substring(0,stepDesc.length()-2);
@@ -1149,9 +1150,9 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         String ids = jsonObject.getString("id");
         String ownerId = jsonObject.getString("ownerId");//当前登录人id
         PurchaseRequest purchaseRequest = purchaseRequestMapper.queryPurchaseRequestById(ids);
-        //List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.queryByRelateddomainId(ids);
+        List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.queryByRelateddomainId(ids);
         //审核信息查询
-        List<TWorkflowstep> tWorkflowsteps2=tWorkflowstepMapper.queryPurchaseRecords(ids);
+        List<TWorkflowstep> tWorkflowsteps2=tWorkflowstepMapper.queryPurchaseRecords(ids,ownerId);
         if(!CollectionUtils.isEmpty(tWorkflowsteps2)){
             for(TWorkflowstep tWorkflowstep:tWorkflowsteps2){
                 String actionUserId=tWorkflowstep.getActionuserId();
@@ -1163,7 +1164,8 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         List<TTodo> tTodo=todoMapper.toApprove(ids,ownerId);
         Map map = new HashMap();
         map.put("purchaseRequest",purchaseRequest);
-        map.put("tWorkflowsteps",tWorkflowsteps2);
+        map.put("tWorkflowsteps",tWorkflowsteps);
+        map.put("tWorkflowsteps2",tWorkflowsteps2);
         map.put("Todo",tTodo);
         if(purchaseRequest==null){
             return new ResponseMessage(Code.CODE_ERROR,"信息查询失败！");
