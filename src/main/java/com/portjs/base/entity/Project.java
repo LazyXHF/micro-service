@@ -2,6 +2,7 @@ package com.portjs.base.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Project {
     private String id;
@@ -80,6 +81,16 @@ public class Project {
     private List<String> stageList;
 
     private String year;
+
+    private Map<String, String> statusMap;
+
+    public Map<String, String> getStatusMap() {
+        return statusMap;
+    }
+
+    public void setStatusMap(Map<String, String> statusMap) {
+        this.statusMap = statusMap;
+    }
 
     public String getId() {
         return id;

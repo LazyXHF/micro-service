@@ -35,6 +35,36 @@ public class BusinessConfiguration {
 
     private Date actualEndtime;
 
+    private String proNode;
+
+    private String projectNodeName;
+
+    private String projectStatus;
+
+    public String getProNode() {
+        return proNode;
+    }
+
+    public void setProNode(String proNode) {
+        this.proNode = proNode;
+    }
+
+    public String getProjectNodeName() {
+        return projectNodeName;
+    }
+
+    public void setProjectNodeName(String projectNodeName) {
+        this.projectNodeName = projectNodeName;
+    }
+
+    public String getProjectStatus() {
+        return projectStatus;
+    }
+
+    public void setProjectStatus(String projectStatus) {
+        this.projectStatus = projectStatus;
+    }
+
     public String getId() {
         return id;
     }
