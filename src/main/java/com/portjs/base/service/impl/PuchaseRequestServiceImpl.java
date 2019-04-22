@@ -33,6 +33,8 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
     ProjectMapper projectMapper;
     @Autowired
     TTodoMapper todoMapper;
+    @Autowired
+    TUserMapper tUserMapper;
 
     @Autowired
     InternalAttachmentMapper internalAttachmentMapper;
@@ -277,7 +279,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                     todo.setCurrentstepId(tWorkflowstep2.getId());
                     todo.setStepDesc("采购办人员审核");
                     todo.setRelateddomain("采购申请");
-                    todo.setRelateddomainId(id);
+                    todo.setRelateddomainId(id2);
                     todo.setSenderId(ownerId);
                     todo.setSenderTime(currentTime);
                     todo.setReceiverId(approveUserId);
@@ -290,6 +292,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                     todo.setTodoType(dictionaryList.get(0).getMainValue());
                     todo.setStatus("0");
                     todo.setBackUp7(ownerName);
+
                     int i5 = todoMapper.insertSelective(todo);
                     if (i5 != 1) {
                         return new ResponseMessage(Code.CODE_ERROR, "提交失败");
@@ -579,6 +582,334 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         }
         return  new ResponseMessage(Code.CODE_OK ,"处理成功");
 
+
+
+//        JSONObject jsonObj=JSONObject.parseObject(responseBody);
+//        String relateddomain="采购申请";//业务模块
+//        String relateddomain_id=jsonObj.getString("relateddomainId");//业务id
+//        String sender_id=jsonObj.getString("senderId");//当前人的id
+//        String currentstep_id=jsonObj.getString("currentstepId");//当前处理步骤
+//
+//        String todo_id=jsonObj.getString("todoId");//当前todo表中id
+//        String workflowstep_id=jsonObj.getString("workflowstepId");//当前workflowstep表中的id
+//
+//        String actionComment=jsonObj.getString("actionComment");//审核意见
+//        Integer actionResult=jsonObj.getInteger("actionResult");//0 同意 1 不同意or退回
+//        String backup3 = jsonObj.getString("sort");//第几个步骤
+//        String reviewIds = jsonObj.getString("nextReviewerId");//下一个审核人的信息
+//        String userName = jsonObj.getString("userName");//用户姓名
+//        String projectName = jsonObj.getString("projectName");//项目名字
+//
+//        //必要参数空值判断
+//        if(StringUtils.isEmpty(reviewIds)){
+//            return new ResponseMessage(Code.CODE_ERROR, "nextReviewerId"+PARAM_MESSAGE_1);
+//        }
+//        JSONArray nextReviewerId=JSONArray.parseArray(reviewIds);
+//
+//        if(StringUtils.isEmpty(relateddomain_id)){
+//            return new ResponseMessage(Code.CODE_ERROR, "relateddomainId"+PARAM_MESSAGE_1);
+//        }
+//        if(StringUtils.isEmpty(sender_id)){
+//            return new ResponseMessage(Code.CODE_ERROR, "senderId"+PARAM_MESSAGE_1);
+//        }
+//        if(StringUtils.isEmpty(currentstep_id)){
+//            return new ResponseMessage(Code.CODE_ERROR, "currentstepId"+PARAM_MESSAGE_1);
+//        }
+//        if(StringUtils.isEmpty(todo_id)){
+//            return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);
+//        }
+//        if(StringUtils.isEmpty(workflowstep_id)){
+//            return new ResponseMessage(Code.CODE_ERROR, "workflowstepId"+PARAM_MESSAGE_1);
+//        }
+//        if(StringUtils.isEmpty(backup3)){
+//            return new ResponseMessage(Code.CODE_ERROR, "sort"+PARAM_MESSAGE_1);
+//        }
+//
+//        /*
+//         * 修改掉当前todo表对应的id的信息
+//         */
+//        TTodo tTodo=new TTodo();
+//        tTodo.setId(todo_id);
+//        tTodo.setActiontime(new Date());
+//        tTodo.setStatus("1");
+//        int k=todoMapper.updateByPrimaryKeySelective(tTodo);
+//        if(k<=0) {
+//            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
+//        }
+//
+//        /*
+//         * 修改当前workflowstep表中对应id的信息
+//         */
+//        TWorkflowstep tWorkflowstep=new TWorkflowstep();
+//        tWorkflowstep.setId(workflowstep_id);
+//        tWorkflowstep.setActionTime(new Date());
+//        tWorkflowstep.setActionComment(actionComment);
+//        tWorkflowstep.setStatus("1");
+//        if(actionResult.equals("0")) {
+//            tWorkflowstep.setActionResult(0);
+//        }else if(actionResult.equals("1")) {
+//            tWorkflowstep.setActionResult(1);
+//        }
+//        int j=tWorkflowstepMapper.updateByPrimaryKeySelective(tWorkflowstep);
+//        if(j<=0) {
+//            return new ResponseMessage(Code.CODE_ERROR, "审核失败");
+//        }
+//
+//        //步骤描述
+//        String stepDesc="";
+//        String stepTodo="";
+//        String ss="1";
+//
+//        /*
+//        if (backup3.equals("2")) {
+//                ss = backup3;
+//                stepTodo = "采购办人员审核";
+//                stepDesc="提交采购申请";
+//                backup3 = new String("3");
+//         */
+//        if (backup3.equals("2")) {
+//            ss = backup3;
+//            stepTodo = "采购办主任审核";
+//            stepDesc="采购办人员审核";
+//            backup3 = new String("3");
+//        }else if(backup3.equals("3")){
+//            ss=backup3;
+//            stepTodo="采购管理委员会审核";
+//            stepDesc="采购办主任审核";
+//            backup3 = new String("4");
+//        }else if(backup3.equals("4")){
+//            ss=backup3;
+//            stepTodo="执行董事审核";
+//            stepDesc="采购管理委员会审核";
+//            backup3 = new String("5");
+//        }else if(backup3.equals("5")){
+//            ss=backup3;
+//            stepTodo="执行董事审核";
+//            stepDesc="采购管理委员会审核";
+//            backup3 = new String("6");
+//        }
+//
+//        /*if(backup3.equals("2")){
+//            ss=backup3;
+//            stepTodo="部门负责人审核";
+//            stepDesc="分管领导审核";
+//            backup3=new String("3");
+//        }else if(backup3.equals("3")){
+//            ss=backup3;
+//            stepTodo="分管领导审核";
+//            stepDesc="技术委员会审核";
+//            backup3=new String("4");
+//        }else if(backup3.equals("4")){
+//            ss=backup3;
+//            stepTodo="技术委员会审核";
+//            stepDesc="总经办审核";
+//            backup3=new String("5");
+//        }else if(backup3.equals("5")){
+//            ss=backup3;
+//            stepTodo="总经办审核";
+//            stepDesc="规划部归档";
+//            backup3=new String("6");
+//        }*/
+//
+//        //三个条件进入审核
+//        TWorkflowstepExample examples = new TWorkflowstepExample();
+//        TWorkflowstepExample.Criteria criteria1 = examples.createCriteria();
+//        criteria1.andRelateddomainIdEqualTo(relateddomain_id);
+//        criteria1.andActionResultEqualTo(1);
+//        criteria1.andBackup3EqualTo("4");
+//        List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.selectByExample(examples);
+//        //查询是否是最后一人审核
+//        TWorkflowstepExample exampless = new TWorkflowstepExample();
+//        TWorkflowstepExample.Criteria criteria1s = exampless.createCriteria();
+//        criteria1s.andRelateddomainIdEqualTo(relateddomain_id);
+//        criteria1s.andBackup3EqualTo("4");
+//        criteria1s.andStatusEqualTo("0");
+//        List<TWorkflowstep> tWorkflowstepss = tWorkflowstepMapper.selectByExample(exampless);
+//
+//        //查询所有的工作记录
+//        List<TWorkflowstep> tWorkfow =tWorkflowstepMapper.queryNotReviewProject(relateddomain_id);
+//        TWorkflowstep t = null;
+//        if(!CollectionUtils.isEmpty(tWorkfow)){
+//            t=tWorkfow.get(tWorkfow.size()-1);
+//        }
+//        PurchaseRequestExample purchaseRequestExample = new PurchaseRequestExample();
+//        PurchaseRequestExample.Criteria criteri = purchaseRequestExample.createCriteria();
+//        criteri.andIdEqualTo(relateddomain_id);
+//        List<PurchaseRequest>  purchaseRequests = purchaseRequestMapper.selectByExample(purchaseRequestExample);
+//
+//        if(!CollectionUtils.isEmpty(tWorkflowsteps)&&CollectionUtils.isEmpty(tWorkflowstepss)&&t!=null&&t.getBackup3().equals("4")&&!CollectionUtils.isEmpty(purchaseRequests)){
+//
+//            //判断现在是哪一步退回如果是技术委员退回则判断是否是最后一个人退回
+//            TWorkflowstepExample example = new TWorkflowstepExample();
+//            TWorkflowstepExample.Criteria criteria = example.createCriteria();
+//            criteria.andRelateddomainIdEqualTo(relateddomain_id);
+//            criteria.andStatusEqualTo("0");
+//            List<TWorkflowstep> tWorkflowste = tWorkflowstepMapper.selectByExample(example);
+//            if(tWorkflowste.size()==0){
+//                //如果当前审核人员只有一个的话则生成待办
+//                TTodo todo = new TTodo();
+//                todo.setId(String.valueOf(IDUtils.genItemId()));
+//                todo.setCurrentstepId(workflowstep_id);
+//                todo.setStepDesc(projectName+"的采购申请流程等待您的处理");
+//                todo.setRelateddomain("采购申请");
+//                todo.setRelateddomainId(relateddomain_id);
+//                todo.setSenderId(sender_id);
+//                todo.setSenderTime(new Date());
+//
+//                todo.setBackUp7(userName);//发起人
+//                //取项目流程中第一个项目负责人id
+//                TWorkflowstepExample exampl = new TWorkflowstepExample();
+//                exampl.setOrderByClause("prestep_id");
+//                TWorkflowstepExample.Criteria criteria3 = exampl.createCriteria();
+//                criteria3.andRelateddomainIdEqualTo(relateddomain_id);
+//
+//                List<TWorkflowstep> tWorkflow = tWorkflowstepMapper.selectByExample(exampl);
+//                todo.setReceiverId(tWorkflow.get(0).getActionuserId());
+//
+//                //查询代办类型
+//                TXietongDictionaryExample example1 = new TXietongDictionaryExample();
+//                TXietongDictionaryExample.Criteria criteria2 = example1.createCriteria();
+//                criteria2.andTypeIdEqualTo("8");
+//                criteria2.andTypeCodeEqualTo("38");
+//                criteria2.andMidValueEqualTo("1");
+//                List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example1);
+//                todo.setTodoType(dictionaryList.get(0).getMainValue());
+//                todo.setStatus("0");
+//                //加入待办的立项分类
+//                todo.setBackUp8("1");
+//                int i1 = todoMapper.insertSelective(todo);
+//                if(i1!=1){
+//                    return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+//                }
+//            }
+//            //改变当前采购表状态为退回
+//            PurchaseRequest purchaseRequest = new PurchaseRequest();
+//            purchaseRequest.setId(relateddomain_id);
+//            purchaseRequest.setStatus("8");
+//            int i1 = purchaseRequestMapper.updateByPrimaryKeySelective(purchaseRequest);
+//            if(i1==0){
+//                return new ResponseMessage(Code.CODE_ERROR,"退回失败");
+//            }
+//        }else{
+//            //查询待办类型
+//            TXietongDictionaryExample example = new TXietongDictionaryExample();
+//            TXietongDictionaryExample.Criteria criteria = example.createCriteria();
+//            criteria.andTypeIdEqualTo("8");
+//            criteria.andTypeCodeEqualTo("38");
+//            criteria.andMidValueEqualTo("1");
+//            List<TXietongDictionary> dictionaryList = dictionaryMapper.selectByExample(example);
+//
+//            /*
+//             * 选择下一个审核人进行的操作
+//             * 对todo表中进行添加操作
+//             * 对Workflowstep表中进行添加操作
+//             */
+//            boolean flag= false;//最后一人审核标识
+//            for(int c=0;c<nextReviewerId.size();c++) {
+//                //进入到多个人审核阶段，修改待办
+//                if(backup3.equals("5")){
+//                    TWorkflowstepExample example1=new TWorkflowstepExample();
+//                    TWorkflowstepExample.Criteria criteria2 = example1.createCriteria();
+//                    criteria2.andStatusEqualTo("0");
+//                    criteria2.andRelateddomainIdEqualTo(relateddomain_id);
+//                    criteria2.andBackup3EqualTo("4");
+//                    List<TWorkflowstep> list = tWorkflowstepMapper.selectByExample(example1);
+//                    //最后一人审核
+//                    if(CollectionUtils.isEmpty(list)){
+//                        TWorkflowstep workflowstep=new TWorkflowstep();
+//                        workflowstep.setId(String.valueOf(UUID.randomUUID()));
+//                        workflowstep.setRelateddomain(relateddomain);
+//                        workflowstep.setRelateddomainId(relateddomain_id);
+//                        workflowstep.setPrestepId(workflowstep_id);
+//                        workflowstep.setActionuserId(nextReviewerId.getString(c));
+//                        workflowstep.setStatus("0");
+//                        workflowstep.setActionComment(actionComment);
+//                        workflowstep.setActionTime(new Date());
+//                        workflowstep.setActionResult(actionResult);
+//                        workflowstep.setBackup3(backup3);
+//                        workflowstep.setStepDesc(stepDesc);
+//                        int m=tWorkflowstepMapper.insertSelective(workflowstep);
+//                        if(m<=0) {
+//                            return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+//                        }
+//                        TTodo internalToDo=new TTodo();
+//                        internalToDo.setId(String.valueOf(UUID.randomUUID()));
+//                        internalToDo.setCurrentstepId(workflowstep.getId());
+//                        internalToDo.setRelateddomain(relateddomain);
+//                        internalToDo.setRelateddomainId(relateddomain_id);
+//                        internalToDo.setSenderId(sender_id);
+//                        internalToDo.setReceiverId(nextReviewerId.getString(c));
+//                        internalToDo.setSenderTime(new Date());
+//                        internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+//                        internalToDo.setStepDesc(projectName+"的采购申请流程等待您的处理");
+//                        internalToDo.setStatus("0");
+//                        internalToDo.setBackUp7(userName);//发起人
+//                        //加入待办的立项分类
+//                        internalToDo.setBackUp8("1");
+//                        int n=todoMapper.insertSelective(internalToDo);
+//                        if(n<=0) {
+//                            return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+//                        }
+//                        flag=true;
+//                    }
+//                }else{
+//                    TWorkflowstep workflowstep=new TWorkflowstep();
+//                    workflowstep.setId(String.valueOf(UUID.randomUUID()));
+//                    workflowstep.setRelateddomain(relateddomain);
+//                    workflowstep.setRelateddomainId(relateddomain_id);
+//                    workflowstep.setPrestepId(workflowstep_id);
+//                    workflowstep.setActionuserId(nextReviewerId.getString(c));
+//                    workflowstep.setStatus("0");
+//                    workflowstep.setBackup3(backup3);
+//                    workflowstep.setStepDesc(stepDesc);
+//                    int m=tWorkflowstepMapper.insertSelective(workflowstep);
+//                    if(m<=0) {
+//                        return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+//                    }
+//                    TTodo internalToDo=new TTodo();
+//                    internalToDo.setId(String.valueOf(UUID.randomUUID()));
+//                    internalToDo.setCurrentstepId(workflowstep.getId());
+//                    internalToDo.setRelateddomain(relateddomain);
+//                    internalToDo.setRelateddomainId(relateddomain_id);
+//                    internalToDo.setSenderId(sender_id);
+//                    internalToDo.setReceiverId(nextReviewerId.getString(c));
+//                    internalToDo.setSenderTime(new Date());
+//                    internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+//                    internalToDo.setStepDesc(projectName+"的采购申请流程等待您的处理");
+//                    internalToDo.setStatus("0");
+//                    internalToDo.setBackUp7(userName);//发起人
+//                    //加入待办的立项分类
+//                    internalToDo.setBackUp8("1");
+//
+//                    int n=todoMapper.insertSelective(internalToDo);
+//                    if(n<=0) {
+//                        return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+//                    }
+//                }
+//            }
+//            //更新projectApplication
+//            PurchaseRequest purchaseRequest = new PurchaseRequest();
+//            purchaseRequest.setId(relateddomain_id);
+//            //多人审核阶段
+//            if(backup3.equals("5")){
+//                //审核结束
+//                if(flag){
+//                    purchaseRequest.setStatus("4");
+//                }else{
+//                    //审核开始
+//                    purchaseRequest.setStatus("3");
+//                }
+//            }else{
+//                purchaseRequest.setStatus(ss);
+//            }
+//
+//            int num =purchaseRequestMapper.updateByPrimaryKeySelective(purchaseRequest);
+//            if(num<=0){
+//                return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");
+//            }
+//        }
+//        return new ResponseMessage(Code.CODE_OK, "审核完成");
+
     }
 
     /**
@@ -816,13 +1147,24 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
     public ResponseMessage queryPurchaseRequestById(String id) {
         JSONObject jsonObject = (JSONObject) JSONObject.parse(id);
         String ids = jsonObject.getString("id");
+        String ownerId = jsonObject.getString("ownerId");//当前登录人id
         PurchaseRequest purchaseRequest = purchaseRequestMapper.queryPurchaseRequestById(ids);
-        List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.queryByRelateddomainId(ids);
-
+        //List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.queryByRelateddomainId(ids);
+        //审核信息查询
+        List<TWorkflowstep> tWorkflowsteps2=tWorkflowstepMapper.queryPurchaseRecords(ids);
+        if(!CollectionUtils.isEmpty(tWorkflowsteps2)){
+            for(TWorkflowstep tWorkflowstep:tWorkflowsteps2){
+                String actionUserId=tWorkflowstep.getActionuserId();
+                String userName=tUserMapper.queryUserNameByUserId(actionUserId);
+                tWorkflowstep.setUserName(userName);
+            }
+        }
+        //待办信息查询
+        List<TTodo> tTodo=todoMapper.toApprove(ids,ownerId);
         Map map = new HashMap();
-        map.put("AA",purchaseRequest);
-        map.put("BB",tWorkflowsteps);
-
+        map.put("purchaseRequest",purchaseRequest);
+        map.put("tWorkflowsteps",tWorkflowsteps2);
+        map.put("Todo",tTodo);
         if(purchaseRequest==null){
             return new ResponseMessage(Code.CODE_ERROR,"信息查询失败！");
         }

@@ -2,7 +2,9 @@ package com.portjs.base.dao;
 
 import com.portjs.base.entity.BusinessConfiguration;
 import com.portjs.base.entity.BusinessConfigurationExample;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -33,4 +35,8 @@ public interface BusinessConfigurationMapper {
     BusinessConfiguration querybusinessConfiguration(@Param("type") String type);
 
     List<String> queryTypeList();
+
+    List<BusinessConfiguration> selectByProjectSchedule(@Param("projectId") String projectId, @Param("projectSchedule") String projectSchedule);
+
+    List<BusinessConfiguration> selectAll(@Param("projectId") String projectId);
 }

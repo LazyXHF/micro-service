@@ -28,7 +28,6 @@ public interface PurchaseListMapper {
     int updateByPrimaryKey(PurchaseList record);
     /**
      * 采购清单列表统计
-     * @param projectId
      * @param requestId
      * @return
      */
@@ -84,7 +83,7 @@ public interface PurchaseListMapper {
     /*int updateByPrimaryKeySelective(PurchaseList record);
 
     int updateByPrimaryKey(PurchaseList record);*/
-
+    List<PurchaseList> queryByPurchaseRequestId(@Param("requestId") String requestId);
     /**
      * 批量修改
      * @param purchaseList

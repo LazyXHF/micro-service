@@ -75,6 +75,19 @@ public class PurchaseListController extends BaseController {
         responseMessage = purchaseListService.updateDeleteTimeByIds(arrayVO.getList());
         return responseMessage;
     }
+    /**
+     * 根据request_id查询采购清单列表信息
+     * @param
+     * @return
+     */
+    @RequestMapping("query-purchase-list-by-request-id")
+    @LogInfo(methodName = "根据id批量软删除采购清单列表信息")
+    public ResponseMessage queryPurchaseListByRequestId(@RequestBody String requestId) {
+        logger.debug(TAG+requestId);
+        UnifiedExceptionHandler.method = TAG + "queryPurchaseListByRequestId============================" +requestId;
+        responseMessage = purchaseListService.queryPurchaseListByRequestId(requestId);
+        return responseMessage;
+    }
 
     /**
      * 修改购清单列表信息

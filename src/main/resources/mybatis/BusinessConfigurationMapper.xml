@@ -1,118 +1,124 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.portjs.base.dao.BusinessConfigurationMapper" >
-  <resultMap id="BaseResultMap" type="com.portjs.base.entity.BusinessConfiguration" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="project_type" property="projectType" jdbcType="VARCHAR" />
-    <result column="schedule" property="schedule" jdbcType="VARCHAR" />
-    <result column="node" property="node" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
-    <result column="project_schedule" property="projectSchedule" jdbcType="VARCHAR" />
-    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
-    <result column="project_node" property="projectNode" jdbcType="VARCHAR" />
-    <result column="predict_startTime" property="predictStarttime" jdbcType="TIMESTAMP" />
-    <result column="pridect_endTime" property="pridectEndtime" jdbcType="TIMESTAMP" />
-    <result column="actual_startTime" property="actualStarttime" jdbcType="TIMESTAMP" />
-    <result column="actual_endTime" property="actualEndtime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+<mapper namespace="com.portjs.base.dao.BusinessConfigurationMapper">
+    <resultMap id="BaseResultMap" type="com.portjs.base.entity.BusinessConfiguration">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="project_type" property="projectType" jdbcType="VARCHAR"/>
+        <result column="schedule" property="schedule" jdbcType="VARCHAR"/>
+        <result column="node" property="node" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="Modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP"/>
+        <result column="project_schedule" property="projectSchedule" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="VARCHAR"/>
+        <result column="project_node" property="projectNode" jdbcType="VARCHAR"/>
+        <result column="predict_startTime" property="predictStarttime" jdbcType="TIMESTAMP"/>
+        <result column="pridect_endTime" property="pridectEndtime" jdbcType="TIMESTAMP"/>
+        <result column="actual_startTime" property="actualStarttime" jdbcType="TIMESTAMP"/>
+        <result column="actual_endTime" property="actualEndtime" jdbcType="TIMESTAMP"/>
+        <result column="pro_node" property="proNode" jdbcType="VARCHAR"/>
+        <result column="project_node_name" property="projectNodeName" jdbcType="VARCHAR"/>
+        <result column="project_status" property="projectStatus" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
     id, project_type, schedule, node, create_time, creator, Modifier, update_time, delete_time,
     project_schedule, project_id, project_node, predict_startTime, pridect_endTime, actual_startTime,
     actual_endTime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.BusinessConfigurationExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from business_configuration
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
-    <include refid="Base_Column_List" />
-    from business_configuration
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.portjs.base.entity.BusinessConfigurationExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from business_configuration
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from business_configuration
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from business_configuration
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.portjs.base.entity.BusinessConfigurationExample" >
-    delete from business_configuration
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.portjs.base.entity.BusinessConfiguration" >
+    <delete id="deleteByExample" parameterType="com.portjs.base.entity.BusinessConfigurationExample">
+        delete from business_configuration
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.portjs.base.entity.BusinessConfiguration">
     insert into business_configuration (id, project_type, schedule,
       node, create_time, creator,
       Modifier, update_time, delete_time,
@@ -126,245 +132,246 @@
       #{predictStarttime,jdbcType=TIMESTAMP}, #{pridectEndtime,jdbcType=TIMESTAMP}, #{actualStarttime,jdbcType=TIMESTAMP},
       #{actualEndtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.portjs.base.entity.BusinessConfiguration" >
-    insert into business_configuration
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="projectType != null" >
-        project_type,
-      </if>
-      <if test="schedule != null" >
-        schedule,
-      </if>
-      <if test="node != null" >
-        node,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="modifier != null" >
-        Modifier,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="deleteTime != null" >
-        delete_time,
-      </if>
-      <if test="projectSchedule != null" >
-        project_schedule,
-      </if>
-      <if test="projectId != null" >
-        project_id,
-      </if>
-      <if test="projectNode != null" >
-        project_node,
-      </if>
-      <if test="predictStarttime != null" >
-        predict_startTime,
-      </if>
-      <if test="pridectEndtime != null" >
-        pridect_endTime,
-      </if>
-      <if test="actualStarttime != null" >
-        actual_startTime,
-      </if>
-      <if test="actualEndtime != null" >
-        actual_endTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="projectType != null" >
-        #{projectType,jdbcType=VARCHAR},
-      </if>
-      <if test="schedule != null" >
-        #{schedule,jdbcType=VARCHAR},
-      </if>
-      <if test="node != null" >
-        #{node,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="modifier != null" >
-        #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleteTime != null" >
-        #{deleteTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="projectSchedule != null" >
-        #{projectSchedule,jdbcType=VARCHAR},
-      </if>
-      <if test="projectId != null" >
-        #{projectId,jdbcType=VARCHAR},
-      </if>
-      <if test="projectNode != null" >
-        #{projectNode,jdbcType=VARCHAR},
-      </if>
-      <if test="predictStarttime != null" >
-        #{predictStarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pridectEndtime != null" >
-        #{pridectEndtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="actualStarttime != null" >
-        #{actualStarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="actualEndtime != null" >
-        #{actualEndtime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.portjs.base.entity.BusinessConfigurationExample" resultType="java.lang.Integer" >
-    select count(*) from business_configuration
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update business_configuration
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=VARCHAR},
-      </if>
-      <if test="record.projectType != null" >
+    <insert id="insertSelective" parameterType="com.portjs.base.entity.BusinessConfiguration">
+        insert into business_configuration
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="projectType != null">
+                project_type,
+            </if>
+            <if test="schedule != null">
+                schedule,
+            </if>
+            <if test="node != null">
+                node,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                Modifier,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+            <if test="projectSchedule != null">
+                project_schedule,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="projectNode != null">
+                project_node,
+            </if>
+            <if test="predictStarttime != null">
+                predict_startTime,
+            </if>
+            <if test="pridectEndtime != null">
+                pridect_endTime,
+            </if>
+            <if test="actualStarttime != null">
+                actual_startTime,
+            </if>
+            <if test="actualEndtime != null">
+                actual_endTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="projectType != null">
+                #{projectType,jdbcType=VARCHAR},
+            </if>
+            <if test="schedule != null">
+                #{schedule,jdbcType=VARCHAR},
+            </if>
+            <if test="node != null">
+                #{node,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="projectSchedule != null">
+                #{projectSchedule,jdbcType=VARCHAR},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=VARCHAR},
+            </if>
+            <if test="projectNode != null">
+                #{projectNode,jdbcType=VARCHAR},
+            </if>
+            <if test="predictStarttime != null">
+                #{predictStarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pridectEndtime != null">
+                #{pridectEndtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualStarttime != null">
+                #{actualStarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualEndtime != null">
+                #{actualEndtime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.portjs.base.entity.BusinessConfigurationExample"
+            resultType="java.lang.Integer">
+        select count(*) from business_configuration
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update business_configuration
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.projectType != null">
+                project_type = #{record.projectType,jdbcType=VARCHAR},
+            </if>
+            <if test="record.schedule != null">
+                schedule = #{record.schedule,jdbcType=VARCHAR},
+            </if>
+            <if test="record.node != null">
+                node = #{record.node,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.creator != null">
+                creator = #{record.creator,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modifier != null">
+                Modifier = #{record.modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.deleteTime != null">
+                delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.projectSchedule != null">
+                project_schedule = #{record.projectSchedule,jdbcType=VARCHAR},
+            </if>
+            <if test="record.projectId != null">
+                project_id = #{record.projectId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.projectNode != null">
+                project_node = #{record.projectNode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.predictStarttime != null">
+                predict_startTime = #{record.predictStarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.pridectEndtime != null">
+                pridect_endTime = #{record.pridectEndtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.actualStarttime != null">
+                actual_startTime = #{record.actualStarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.actualEndtime != null">
+                actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update business_configuration
+        set id = #{record.id,jdbcType=VARCHAR},
         project_type = #{record.projectType,jdbcType=VARCHAR},
-      </if>
-      <if test="record.schedule != null" >
         schedule = #{record.schedule,jdbcType=VARCHAR},
-      </if>
-      <if test="record.node != null" >
         node = #{record.node,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null" >
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.creator != null" >
         creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.modifier != null" >
         Modifier = #{record.modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="record.updateTime != null" >
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.deleteTime != null" >
         delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.projectSchedule != null" >
         project_schedule = #{record.projectSchedule,jdbcType=VARCHAR},
-      </if>
-      <if test="record.projectId != null" >
         project_id = #{record.projectId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.projectNode != null" >
         project_node = #{record.projectNode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.predictStarttime != null" >
         predict_startTime = #{record.predictStarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.pridectEndtime != null" >
         pridect_endTime = #{record.pridectEndtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.actualStarttime != null" >
         actual_startTime = #{record.actualStarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.actualEndtime != null" >
-        actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update business_configuration
-    set id = #{record.id,jdbcType=VARCHAR},
-    project_type = #{record.projectType,jdbcType=VARCHAR},
-    schedule = #{record.schedule,jdbcType=VARCHAR},
-    node = #{record.node,jdbcType=VARCHAR},
-    create_time = #{record.createTime,jdbcType=TIMESTAMP},
-    creator = #{record.creator,jdbcType=VARCHAR},
-    Modifier = #{record.modifier,jdbcType=VARCHAR},
-    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-    delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
-    project_schedule = #{record.projectSchedule,jdbcType=VARCHAR},
-    project_id = #{record.projectId,jdbcType=VARCHAR},
-    project_node = #{record.projectNode,jdbcType=VARCHAR},
-    predict_startTime = #{record.predictStarttime,jdbcType=TIMESTAMP},
-    pridect_endTime = #{record.pridectEndtime,jdbcType=TIMESTAMP},
-    actual_startTime = #{record.actualStarttime,jdbcType=TIMESTAMP},
-    actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.BusinessConfiguration" >
-    update business_configuration
-    <set >
-      <if test="projectType != null" >
-        project_type = #{projectType,jdbcType=VARCHAR},
-      </if>
-      <if test="schedule != null" >
-        schedule = #{schedule,jdbcType=VARCHAR},
-      </if>
-      <if test="node != null" >
-        node = #{node,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="modifier != null" >
-        Modifier = #{modifier,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleteTime != null" >
-        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="projectSchedule != null" >
-        project_schedule = #{projectSchedule,jdbcType=VARCHAR},
-      </if>
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=VARCHAR},
-      </if>
-      <if test="projectNode != null" >
-        project_node = #{projectNode,jdbcType=VARCHAR},
-      </if>
-      <if test="predictStarttime != null" >
-        predict_startTime = #{predictStarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pridectEndtime != null" >
-        pridect_endTime = #{pridectEndtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="actualStarttime != null" >
-        actual_startTime = #{actualStarttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="actualEndtime != null" >
-        actual_endTime = #{actualEndtime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.BusinessConfiguration" >
+        actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.BusinessConfiguration">
+        update business_configuration
+        <set>
+            <if test="projectType != null">
+                project_type = #{projectType,jdbcType=VARCHAR},
+            </if>
+            <if test="schedule != null">
+                schedule = #{schedule,jdbcType=VARCHAR},
+            </if>
+            <if test="node != null">
+                node = #{node,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null">
+                Modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="projectSchedule != null">
+                project_schedule = #{projectSchedule,jdbcType=VARCHAR},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=VARCHAR},
+            </if>
+            <if test="projectNode != null">
+                project_node = #{projectNode,jdbcType=VARCHAR},
+            </if>
+            <if test="predictStarttime != null">
+                predict_startTime = #{predictStarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pridectEndtime != null">
+                pridect_endTime = #{pridectEndtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualStarttime != null">
+                actual_startTime = #{actualStarttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualEndtime != null">
+                actual_endTime = #{actualEndtime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.BusinessConfiguration">
     update business_configuration
     set project_type = #{projectType,jdbcType=VARCHAR},
       schedule = #{schedule,jdbcType=VARCHAR},
@@ -384,29 +391,45 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <select id="queryTypeList"  resultType="String">
+    <select id="queryTypeList" resultType="String">
     select project_type
     from business_configuration
   </select>
-  <resultMap id="BaseResultMap1" type="com.portjs.base.entity.BusinessConfiguration">
-    <id column="id" jdbcType="VARCHAR" property="id" />
-    <result column="project_type" jdbcType="VARCHAR" property="projectType" />
-    <result column="schedule" jdbcType="VARCHAR" property="schedule" />
-    <result column="node" jdbcType="VARCHAR" property="node" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="creator" jdbcType="VARCHAR" property="creator" />
-    <result column="Modifier" jdbcType="VARCHAR" property="modifier" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
-    <result column="back_up1" jdbcType="VARCHAR" property="backUp1" />
-    <result column="back_up2" jdbcType="VARCHAR" property="backUp2" />
-    <result column="back_up3" jdbcType="VARCHAR" property="backUp3" />
-  </resultMap>
-  <select id="querybusinessConfiguration" parameterType="java.lang.String" resultType="BusinessConfiguration">
+    <resultMap id="BaseResultMap1" type="com.portjs.base.entity.BusinessConfiguration">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="project_type" jdbcType="VARCHAR" property="projectType"/>
+        <result column="schedule" jdbcType="VARCHAR" property="schedule"/>
+        <result column="node" jdbcType="VARCHAR" property="node"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="Modifier" jdbcType="VARCHAR" property="modifier"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime"/>
+        <result column="back_up1" jdbcType="VARCHAR" property="backUp1"/>
+        <result column="back_up2" jdbcType="VARCHAR" property="backUp2"/>
+        <result column="back_up3" jdbcType="VARCHAR" property="backUp3"/>
+    </resultMap>
+    <select id="querybusinessConfiguration" parameterType="java.lang.String" resultType="BusinessConfiguration">
     select
     id, project_type as projectType, schedule, node, create_time, creator, Modifier, update_time, delete_time,
     back_up1, back_up2, back_up3
     from business_configuration
     where project_type = #{type}
+  </select>
+    <select id="selectByProjectSchedule" resultMap="BaseResultMap">
+        SELECT a.* FROM `business_configuration` a
+        WHERE 1=1
+        and project_id=#{projectId}
+        <if test="projectSchedule!=null and projectSchedule!=''">
+            and #{projectSchedule} LIKE CONCAT('%',a.project_schedule,'%')
+        </if>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+    select a.*,pro.project_status from(select b.*, d.project_node as pro_node,d.project_node_name from (
+    select * from business_configuration
+    where project_id = #{projectId}) b , business_dictionary d
+    where b.project_schedule = d.project_schedule) a left join project pro on (pro.project_status
+    like concat('%',a.pro_node,'%') and pro.id = a.project_id) order by project_schedule
   </select>
 </mapper>
