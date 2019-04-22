@@ -628,7 +628,7 @@
     select count(t2.id) as tmpcount
     from tender_application  t2
     where
-    delete_time IS  NULL  and status='0' and creater=#{userId}
+    delete_time IS  NULL  and (status='0'or status='8') and creater=#{userId}
     <if test="projectName !=null">
       and back_up2 like CONCAT("%",#{projectName},"%")
     </if>
@@ -649,7 +649,7 @@
     </if> ) A
   </select>
 
-  <select id="selectPage"  resultType="com.portjs.base.entity.TenderApplication">
+  <select id="selectPage"  resultType="hashmap">
     select  *
     from tender_application
     where
@@ -677,7 +677,7 @@
     select  *
     from tender_application
     where
-    delete_time IS  NULL  and status='0' and creater=#{userId}
+    delete_time IS  NULL  and (status='0'or status='8') and creater=#{userId}
     <if test="projectName !=null">
       and back_up2 like CONCAT("%",#{projectName},"%")
     </if>

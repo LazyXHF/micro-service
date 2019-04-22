@@ -86,7 +86,7 @@ public class TenderServiceImpl implements TenderService {
             String tNum =tenderApplications.get(0).getTenderNum();
             //截取最后流水号
             String num = tNum.substring(10,tNum.length());
-            int count = Integer.parseInt(num);
+            int count = Integer.parseInt(num) + 1;
             tenderNum ="ZB"+date+String.format("%02d", count);
         }else{
             tenderNum="ZB"+date+"01";
@@ -325,7 +325,7 @@ public class TenderServiceImpl implements TenderService {
 //                }
 //            }
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
-            String  tenderId = map.get("tenderId").toString();
+            String  tenderId = map.get("Id").toString();
             TTodoExample todoExample = new TTodoExample();
             TTodoExample.Criteria criteria = todoExample.createCriteria();
             criteria.andRelateddomainIdEqualTo(tenderId);
@@ -352,7 +352,7 @@ public class TenderServiceImpl implements TenderService {
             datalist.add(map);
         });
         page.setList(datalist);
-        return new ResponseMessage(Code.CODE_ERROR,"查询成功",page);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",page);
     }
 
     @Override
@@ -489,6 +489,7 @@ public class TenderServiceImpl implements TenderService {
         String reviewIds = jsonObj.getString("nextReviewerId");//下一个审核人的信息
         String userName = jsonObj.getString("userName");//用户姓名
         String projectName = jsonObj.getString("projectName");//项目名字
+        String fistId =  jsonObj.getString("fistId");//项目负责人id
 
         //必要参数空值判断
         if(org.springframework.util.StringUtils.isEmpty(reviewIds)){
@@ -565,6 +566,10 @@ public class TenderServiceImpl implements TenderService {
             ss=backup3;
             stepDesc="招标委员会审核";
             backup3=new String("5");
+        }else if(backup3.equals("5")){
+            ss=backup3;
+            stepDesc="执行董事审核";
+            backup3=new String("7");
         }
 
         //三个条件进入审核
@@ -712,22 +717,42 @@ public class TenderServiceImpl implements TenderService {
                     if(m<=0) {
                         return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
                     }
-                    TTodo internalToDo=new TTodo();
-                    internalToDo.setId(String.valueOf(UUID.randomUUID()));
-                    internalToDo.setCurrentstepId(workflowstep.getId());
-                    internalToDo.setRelateddomain(relateddomain);
-                    internalToDo.setRelateddomainId(relateddomain_id);
-                    internalToDo.setSenderId(sender_id);
-                    internalToDo.setReceiverId(nextReviewerId.getString(c));
-                    internalToDo.setSenderTime(new Date());
-                    internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
-                    internalToDo.setStepDesc(projectName+"的招投标批复流程等待您的处理");
-                    internalToDo.setStatus("0");
-                    internalToDo.setBackUp7(userName);//发起人
-                    int n=todoMapper.insertSelective(internalToDo);
-                    if(n<=0) {
-                        return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+                    if(ss.equals("5")){
+                        TTodo internalToDo=new TTodo();
+                        internalToDo.setId(String.valueOf(UUID.randomUUID()));
+                        internalToDo.setCurrentstepId(workflowstep.getId());
+                        internalToDo.setRelateddomain(relateddomain);
+                        internalToDo.setRelateddomainId(relateddomain_id);
+                        internalToDo.setSenderId(sender_id);
+                        internalToDo.setReceiverId(fistId);
+                        internalToDo.setSenderTime(new Date());
+                        internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+                        internalToDo.setStepDesc(projectName+"的招投标定标流程等待您的处理");
+                        internalToDo.setStatus("0");
+                        internalToDo.setBackUp7(userName);//发起人
+                        int n=todoMapper.insertSelective(internalToDo);
+                        if(n<=0) {
+                            return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+                        }
+                    }else{
+                        TTodo internalToDo=new TTodo();
+                        internalToDo.setId(String.valueOf(UUID.randomUUID()));
+                        internalToDo.setCurrentstepId(workflowstep.getId());
+                        internalToDo.setRelateddomain(relateddomain);
+                        internalToDo.setRelateddomainId(relateddomain_id);
+                        internalToDo.setSenderId(sender_id);
+                        internalToDo.setReceiverId(nextReviewerId.getString(c));
+                        internalToDo.setSenderTime(new Date());
+                        internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
+                        internalToDo.setStepDesc(projectName+"的招投标批复流程等待您的处理");
+                        internalToDo.setStatus("0");
+                        internalToDo.setBackUp7(userName);//发起人
+                        int n=todoMapper.insertSelective(internalToDo);
+                        if(n<=0) {
+                            return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
+                        }
                     }
+
                 }
             }
             //更新TenderApplication

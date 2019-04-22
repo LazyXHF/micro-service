@@ -1,6 +1,5 @@
 package com.portjs.base.dao;
 
-import com.portjs.base.entity.PurchaseRequest;
 import com.portjs.base.entity.TenderApplication;
 import com.portjs.base.entity.TenderApplicationExample;
 import com.portjs.base.entity.TenderApplicationVo;
