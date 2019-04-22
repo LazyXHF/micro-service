@@ -70,6 +70,8 @@ public class ProjectApplication {
 
     private String planNum;//计划编码
 
+    private String type;
+
     public String getPlanNum() {
         return planNum;
     }
@@ -348,5 +350,13 @@ public class ProjectApplication {
 
     public void setIsRight(String isRight) {
         this.isRight = isRight;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectApplicationService;
+import com.portjs.base.util.Code;
 import com.portjs.base.util.ProjectAddorUpdateUtil;
 import com.portjs.base.util.ResponseMessage;
 import org.slf4j.Logger;
@@ -46,8 +47,12 @@ public class ProjectApplicationController extends BaseController {
     @ResponseBody
     public ResponseMessage queryProjectBase(@RequestBody String responseBody) {
         logger.debug(TAG + "queryProjectBase() begin");
-        JSONObject requestJson=JSONObject.parseObject(responseBody);
-        return  applicationService.queryProjectBase(requestJson);
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            return  applicationService.queryProjectBase(requestJson);
+        } catch (Exception e) {
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
     }
     @LogInfo(methodName = "项目人员",modelName = "立项管理")
     @RequestMapping("queryProjectPersons")
@@ -83,14 +88,36 @@ public class ProjectApplicationController extends BaseController {
         return  applicationService.queryProjectRecords(requestJson);
     }
 
+    //假删除  更改字段
+    @LogInfo(methodName = "废除立项申请",modelName = "立项管理")
+    @RequestMapping("abolition-project")
+    @ResponseBody
+    public ResponseMessage abolitionProject(@RequestBody String responseBody){
+        logger.debug(TAG+"abolitionProject() begin");
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            String id = requestJson.getString("id");
+            return  applicationService.abolitionProject(id);
+        } catch (Exception e) {
+
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
+    }
+
 //假删除  更改字段
     @LogInfo(methodName = "删除立项申请",modelName = "立项管理")
     @RequestMapping("deleteProject")
     @ResponseBody
     public ResponseMessage deleteProject(@RequestBody String responseBody){
         logger.debug(TAG+"deleteProject() begin");
-        JSONObject requestJson=JSONObject.parseObject(responseBody);
-        return  applicationService.deleteProject(requestJson);
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            String id = requestJson.getString("id");
+            return  applicationService.deleteProject(id);
+        } catch (Exception e) {
+
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
     }
 
    /* 项目基本信息
