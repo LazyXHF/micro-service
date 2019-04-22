@@ -52,7 +52,13 @@ public interface TWorkflowstepMapper {
 
     int updatetWorkflowstepRecord(TWorkflowstep tWorkflowstep);
 
-    TWorkflowstep queryCurrentstepId(@Param("id") String id, @Param("ownerId") String ownerId, @Param("nowBackUp3") String nowBackUp3);
+    int updateTWorkflowstepRecords(TWorkflowstep tWorkflowstep);
 
-    int isApprover(@Param("id") String id, @Param("ownerId") String ownerId);
+    TWorkflowstep queryCurrentstepId(@Param("id") String id,@Param("ownerId") String ownerId, @Param("nowBackUp3") String nowBackUp3);
+
+    List<TWorkflowstep> queryByRelateddomainId(@Param("relateddomainId") String relateddomainId);
+
+    int isApprover(@Param("id") String id,@Param("ownerId")String ownerId);
+
+    TWorkflowstep selectByPDS(TWorkflowstep tWorkflowstep);
 }

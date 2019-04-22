@@ -41,6 +41,16 @@ public class PurchaseRequest implements Serializable {
     private Date deleteTime;//删除时间（软删除标记）
     private String projectName;//项目id
     private String projectCode;//项目id
+    private String isApprover;
+
+
+    public String getIsApprover() {
+        return isApprover;
+    }
+
+    public void setIsApprover(String isApprover) {
+        this.isApprover = isApprover;
+    }
 
     public String getProjectName() {
         return projectName;

@@ -56,5 +56,7 @@ public interface TTodoMapper {
 
     int queryTodoRecord(@Param("id") String id, @Param("ownerId") String ownerId);
 
+    List<TTodo> queryTodoIdByOthers(@Param("relateddomainId") String relateddomainId,@Param("receiverId") String receiverId);
+
     int updateTodoRecord(TTodo tTodo);
 }

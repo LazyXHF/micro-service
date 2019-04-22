@@ -118,17 +118,17 @@ public class PurchaseListServiceImpl implements PurchaseListService {
         int pageNo = jsonObject.getInteger("pageNo");
         int pageSize = jsonObject.getInteger("pageSize");
 
-        if(StringUtils.isEmpty(projectId)){
+       /* if(StringUtils.isEmpty(projectId)){
             return new ResponseMessage(Code.CODE_ERROR,"查询采购列表时projectId未传!",projectId);
-        }
+        }*/
         if(StringUtils.isEmpty(requestId)){
-            return new ResponseMessage(Code.CODE_ERROR,"查询采购列表时采购申请d未传!",requestId);
+            return new ResponseMessage(Code.CODE_ERROR,"查询采购列表时采购申请id未传!",requestId);
         }
 
         Page<PurchaseList> page = new Page<>();
-        int totalCount = purchaseListMapper.purchaseListCounts(projectId,requestId);
+        int totalCount = purchaseListMapper.purchaseListCounts(requestId);
         page.init(totalCount,pageNo,pageSize);
-        List<PurchaseList> list = purchaseListMapper.queryPurchaseListInfo(projectId,requestId,page.getRowNum(), page.getPageCount());
+        List<PurchaseList> list = purchaseListMapper.queryPurchaseListInfo(requestId,page.getRowNum(), page.getPageCount());
         page.setList(list);
 
         responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功！",page);

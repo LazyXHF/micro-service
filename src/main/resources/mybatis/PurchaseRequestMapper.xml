@@ -121,8 +121,7 @@
     select
     *
     from purchase_request pr left join project p
-    on pr.project_id = p.id left join  t_workflowstep tw
-    on pr.id = tw.relateddomain_id
+    on pr.project_id = p.id
     where
     pr.delete_time is null
     <if test="projectId != null and projectId!=''">

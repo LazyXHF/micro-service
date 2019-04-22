@@ -16,7 +16,7 @@ public interface PuchaseRequestService {
 
     //ResponseMessage updateByPrimaryKey(PurchaseRequest record);
 
-    ResponseMessage updateByPrimaryKeySelective(PurchaseRequest record);
+    ResponseMessage updateByPrimaryKeySelective(String responseBody);
 
     ResponseMessage insertPurchaseRequestSelective(String responseBody);
     /**
@@ -39,6 +39,24 @@ public interface PuchaseRequestService {
      */
     ResponseMessage queryPurchaseRequestById(String ids);
 
+    /**
+     * 审核采购流程
+     * @return
+     */
+    ResponseMessage approvePurchaseRequest(String responseBody);
 
+    /**
+     * 查询所有可用部门
+     * @return
+     */
+    ResponseMessage findAllDepartment();
+
+    /**
+     * 查询所有的审核流程
+     * @return relateddomainId 业务单id
+     */
+    ResponseMessage queryAllWorkFlowStep(String requestBody);
+
+    ResponseMessage returnRecord(String requestBody);
 
 }
