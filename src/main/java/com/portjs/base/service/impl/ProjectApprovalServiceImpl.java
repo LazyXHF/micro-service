@@ -607,7 +607,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			return null;
 		}else if(stage.equals("G")){
 			return null;
-		}else if("FKJL".equals(stage)){
+		}else if("record".equals(stage)){
 			//风控记录
 			String schedule =jsonObj.getString("schedule");
 			ProjectCommunication projectCommunication = new ProjectCommunication();
