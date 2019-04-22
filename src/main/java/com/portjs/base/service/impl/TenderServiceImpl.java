@@ -299,6 +299,31 @@ public class TenderServiceImpl implements TenderService {
         //处理操作状态
         List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
         list.forEach(map->{
+//            for (ProjectApplication application : alllist) {
+//                TTodoExample todoExample = new TTodoExample();
+//                TTodoExample.Criteria todoCriteria = todoExample.createCriteria();
+//                todoCriteria.andStatusEqualTo("0");
+//                todoCriteria.andRelateddomainIdEqualTo(application.getId());
+//                todoCriteria.andReceiverIdEqualTo(owneId);
+//                List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
+//                List<TWorkflowstep> tworkList= tWorkflowstepMapper.queryProjectRecords(application.getId());
+//                if(tworkList!=null&&tworkList.size()>0) {
+//                    String ownerId2 = tworkList.get(0).getActionuserId();
+//                    if (ownerId2.equals(owneId)) {
+//                        application.setIsRight("1");
+//                    } else {
+//                        application.setIsRight("0");
+//                    }
+//                }else {
+//                    application.setIsRight("0");
+//                }
+//                //isApprove(当前任是否是审批人 0：不是 1：是)
+//                if (CollectionUtils.isEmpty(tTodos)) {
+//                    application.setIsApprover("0");
+//                } else {
+//                    application.setIsApprover("1");
+//                }
+//            }
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
             String  tenderId = map.get("tenderId").toString();
             TTodoExample todoExample = new TTodoExample();
@@ -307,9 +332,21 @@ public class TenderServiceImpl implements TenderService {
             criteria.andReceiverIdEqualTo(userId);
             criteria.andStatusEqualTo("0");
             List<TTodo> todos = todoMapper.selectByExample(todoExample);
-            if(CollectionUtils.isEmpty(todos)){
+            List<TWorkflowstep> tworkList= workflowstepMapper.queryProjectRecords(tenderId);
+            if(tworkList!=null&&tworkList.size()>0) {
+                String ownerId2 = tworkList.get(0).getActionuserId();
+                if (ownerId2.equals(userId)) {
+                    map.put("IsRight",1);
+                } else {
+                    map.put("IsRight",0);
+                }
+            }else {
+                map.put("IsRight",1);
+            }
+            //isApprove(当前任是否是审批人 0：不是 1：是)
+            if (CollectionUtils.isEmpty(todos)) {
                 map.put("operatingStatus",0);
-            }else{
+            } else {
                 map.put("operatingStatus",1);
             }
             datalist.add(map);
