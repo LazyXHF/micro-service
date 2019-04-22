@@ -99,14 +99,14 @@ public class ProjectAddorUpdateUtil {
                 }
             }
             //如果状态的长度没有发生变化了   说明替换了  用buffer
-            if (status.length() == buffer.toString().length()) {
-                projectMapper.updateProjectById(projectId, projectCode, ApplicationEndTime, creator, schedule, buffer.toString());
-            }
-            //如果变了，说明追加了用新的
-            else {
-                String newStatus = buffer2.toString();
-                projectMapper.updateProjectById(projectId, projectCode, ApplicationEndTime, creator, schedule, newStatus);
-            }
+//            if (status.length() == buffer.toString().length()) {
+//                projectMapper.updateProjectById(projectId, projectCode, ApplicationEndTime, creator, schedule, buffer.toString());
+//            }
+//            //如果变了，说明追加了用新的
+//            else {
+//                String newStatus = buffer2.toString();
+//                projectMapper.updateProjectById(projectId, projectCode, ApplicationEndTime, creator, schedule, newStatus);
+//            }
         }
         Project project1 = projectMapper.selectByPrimaryKey(projectId);
 

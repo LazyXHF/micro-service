@@ -188,16 +188,6 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project();
         project.setId(String.valueOf(IDUtils.genItemId()));
         project.setInvestmentId(requestJson.getString("investmentId"));//投资计划id
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH) + 1;
-        int day = cal.get(Calendar.DATE);//获取日
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        int minute = cal.get(Calendar.MINUTE);
-        int second = cal.get(Calendar.SECOND);
-        i = i++;
-        String projectCode = "PR" + year + "" + month + day + hour + minute + second + i;
-        project.setProjectCode(projectCode);
         project.setProjectName(requestJson.getString("projectName"));//项目名称
         project.setProjectType(requestJson.getString("projectType"));//项目类型
         project.setStatus("0");
