@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -243,8 +244,24 @@ public class PurchaseListServiceImpl implements PurchaseListService {
     }
 
     /**
+     * 根据采购申请表id （request_id）来查询信息
+     * @param requestId
+     * @return
+     */
+    @Override
+    public ResponseMessage queryPurchaseListByRequestId(String requestId) {
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(requestId);
+        String requestId1 = jsonObject.getString("requestId");
+        List<PurchaseList> purchaseLists = purchaseListMapper.queryByPurchaseRequestId(requestId1);
+        if(CollectionUtils.isEmpty(purchaseLists)){
+            return  new ResponseMessage(Code.CODE_ERROR,"查询失败！！！");
+        }
+        return  new ResponseMessage(Code.CODE_OK,"查询成功！！！",purchaseLists);
+    }
+
+    /**
      *TODO------- Excel导入（EasyPoi）
-     * @param list
+     * @param
      * @return
      */
    /* @Override

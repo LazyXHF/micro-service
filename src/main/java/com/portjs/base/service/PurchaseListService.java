@@ -54,5 +54,10 @@ public interface PurchaseListService {
      */
     //ResponseMessage insertExcelByEasyPoi(List<PurchaseList> list,String loginId) throws Exception;
 
-
+    /**
+     * 根据request_id查询信息
+     * @param requestId
+     * @return
+     */
+    ResponseMessage queryPurchaseListByRequestId(String requestId);
 }
