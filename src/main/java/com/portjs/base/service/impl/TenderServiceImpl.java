@@ -294,38 +294,13 @@ public class TenderServiceImpl implements TenderService {
         int count = tenderApplicationMapper.selectCount(projectCode,projectName,method,supplier,bidDate,status,userId);
         Page page = new Page();
         page.init(count,pageNum,pageCount);
-        List<Map<String,Object>> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
+        List<TenderApplication> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
 
         //处理操作状态
-        List<Map<String,Object>> datalist = new ArrayList<Map<String, Object>>();
+        List<TenderApplication> datalist = new ArrayList<TenderApplication>();
         list.forEach(map->{
-//            for (ProjectApplication application : alllist) {
-//                TTodoExample todoExample = new TTodoExample();
-//                TTodoExample.Criteria todoCriteria = todoExample.createCriteria();
-//                todoCriteria.andStatusEqualTo("0");
-//                todoCriteria.andRelateddomainIdEqualTo(application.getId());
-//                todoCriteria.andReceiverIdEqualTo(owneId);
-//                List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
-//                List<TWorkflowstep> tworkList= tWorkflowstepMapper.queryProjectRecords(application.getId());
-//                if(tworkList!=null&&tworkList.size()>0) {
-//                    String ownerId2 = tworkList.get(0).getActionuserId();
-//                    if (ownerId2.equals(owneId)) {
-//                        application.setIsRight("1");
-//                    } else {
-//                        application.setIsRight("0");
-//                    }
-//                }else {
-//                    application.setIsRight("0");
-//                }
-//                //isApprove(当前任是否是审批人 0：不是 1：是)
-//                if (CollectionUtils.isEmpty(tTodos)) {
-//                    application.setIsApprover("0");
-//                } else {
-//                    application.setIsApprover("1");
-//                }
-//            }
             //查询对应的todo  operatingStatus操作状态 0：详情 1：审核
-            String  tenderId = map.get("Id").toString();
+            String  tenderId = map.getId();
             TTodoExample todoExample = new TTodoExample();
             TTodoExample.Criteria criteria = todoExample.createCriteria();
             criteria.andRelateddomainIdEqualTo(tenderId);
@@ -333,22 +308,25 @@ public class TenderServiceImpl implements TenderService {
             criteria.andStatusEqualTo("0");
             List<TTodo> todos = todoMapper.selectByExample(todoExample);
             List<TWorkflowstep> tworkList= workflowstepMapper.queryProjectRecords(tenderId);
+
+            Map<String,Object>paramMap = new HashMap<String,Object>();
             if(tworkList!=null&&tworkList.size()>0) {
                 String ownerId2 = tworkList.get(0).getActionuserId();
                 if (ownerId2.equals(userId)) {
-                    map.put("IsRight",1);
+                    paramMap.put("IsRight",1);
                 } else {
-                    map.put("IsRight",0);
+                    paramMap.put("IsRight",0);
                 }
             }else {
-                map.put("IsRight",1);
+                paramMap.put("IsRight",1);
             }
             //isApprove(当前任是否是审批人 0：不是 1：是)
             if (CollectionUtils.isEmpty(todos)) {
-                map.put("operatingStatus",0);
+                paramMap.put("operatingStatus",0);
             } else {
-                map.put("operatingStatus",1);
+                paramMap.put("operatingStatus",1);
             }
+            map.setParams(paramMap);
             datalist.add(map);
         });
         page.setList(datalist);

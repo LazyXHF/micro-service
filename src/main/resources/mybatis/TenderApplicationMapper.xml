@@ -606,23 +606,22 @@
     from tender_application  t1
     where   delete_time IS  NULL   and status!='0'
     AND Id IN (SELECT DISTINCT relateddomain_id FROM t_workflowstep WHERE 1=1 AND actionuser_id= #{userId,jdbcType=VARCHAR})
-    <if test="projectName !=null">
+    <if test="projectName !=null and projectName !=''">
       and back_up2 like CONCAT("%",#{projectName},"%")
     </if>
-    <if test="projectCode !=null">
-
+    <if test="projectCode !=null and projectCode !=''">
       and back_up1 like CONCAT("%",#{projectCode},"%")
     </if>
-    <if test="method !=null">
+    <if test="method !=null and method !=''">
       and method = #{method,jdbcType=VARCHAR}
     </if>
-    <if test="supplier !=null">
+    <if test="supplier !=null and supplier !=''">
       and supplier like  CONCAT("%",#{supplier},"%")
     </if>
-    <if test="bidDate !=null">
+    <if test="bidDate !=null and bidDate !=''">
       and DATE_FORMAT(bid_date,"%Y-%m-%d") >#{bidDate}
     </if>
-    <if test="status !=null">
+    <if test="status !=null and status!=''">
       and status = #{status}
     </if>
     UNION ALL
@@ -630,48 +629,48 @@
     from tender_application  t2
     where
     delete_time IS  NULL  and (status='0'or status='8') and creater=#{userId}
-    <if test="projectName !=null">
+    <if test="projectName !=null and projectName !=''">
       and back_up2 like CONCAT("%",#{projectName},"%")
     </if>
-    <if test="projectCode !=null">
+    <if test="projectCode !=null and projectCode !=''">
       and back_up1 like CONCAT("%",#{projectCode},"%")
     </if>
-    <if test="method !=null">
+    <if test="method !=null and method !=''">
       and method = #{method,jdbcType=VARCHAR}
     </if>
-    <if test="supplier !=null">
+    <if test="supplier !=null and supplier !=''">
       and supplier like  CONCAT("%",#{supplier},"%")
     </if>
-    <if test="bidDate !=null">
+    <if test="bidDate !=null and bidDate !=''">
       and DATE_FORMAT(bid_date,"%Y-%m-%d") >#{bidDate}
     </if>
-    <if test="status !=null">
+    <if test="status !=null and status !=''">
       and status = #{status}
     </if> ) A
   </select>
 
-  <select id="selectPage"  resultType="hashmap">
+  <select id="selectPage"  resultType="com.portjs.base.entity.TenderApplication">
     select  *
     from tender_application
     where
     delete_time IS  NULL   and status!='0'
     AND Id IN (SELECT DISTINCT relateddomain_id FROM t_workflowstep WHERE 1=1 AND actionuser_id= #{userId,jdbcType=VARCHAR})
-    <if test="projectName !=null">
+    <if test="projectName !=null and projectName !=''">
       and back_up2 like CONCAT("%",#{projectName},"%")
     </if>
-    <if test="projectCode !=null">
+    <if test="projectCode !=null and projectCode !=''">
       and back_up1 like CONCAT("%",#{projectCode},"%")
     </if>
-    <if test="method !=null">
+    <if test="method !=null and method !=''">
       and method = #{method,jdbcType=VARCHAR}
     </if>
-    <if test="supplier !=null">
+    <if test="supplier !=null and supplier !=''">
       and supplier like  CONCAT("%",#{supplier},"%")
     </if>
-    <if test="bidDate !=null">
+    <if test="bidDate !=null and bidDate !=''">
       and DATE_FORMAT(bid_date,"%Y-%m-%d") =#{bidDate}
     </if>
-    <if test="status !=null">
+    <if test="status !=null and status !=''">
       and status = #{status}
     </if>
     UNION ALL
@@ -679,22 +678,22 @@
     from tender_application
     where
     delete_time IS  NULL  and (status='0'or status='8') and creater=#{userId}
-    <if test="projectName !=null">
+    <if test="projectName !=null and projectName !=''">
       and back_up2 like CONCAT("%",#{projectName},"%")
     </if>
-    <if test="projectCode !=null">
+    <if test="projectCode !=null and projectCode !=''">
       and back_up1 like CONCAT("%",#{projectCode},"%")
     </if>
-    <if test="method !=null">
+    <if test="method !=null and method !=''">
       and method = #{method,jdbcType=VARCHAR}
     </if>
-    <if test="supplier !=null">
+    <if test="supplier !=null and supplier !=''">
       and supplier like  CONCAT("%",#{supplier},"%")
     </if>
-    <if test="bidDate !=null">
+    <if test="bidDate !=null and bidDate !=''">
       and DATE_FORMAT(bid_date,"%Y-%m-%d") =#{bidDate}
     </if>
-    <if test="status !=null">
+    <if test="status !=null and status !=''">
       and status = #{status}
     </if>
     ORDER BY update_time DESC limit #{rowNum},#{pageCount}
