@@ -627,6 +627,7 @@ public class TenderServiceImpl implements TenderService {
                 todo.setSenderId(sender_id);
                 todo.setSenderTime(new Date());
 
+
                 todo.setBackUp7(userName);//发起人
                 //取项目流程中第一个项目负责人id
                 TWorkflowstepExample exampl = new TWorkflowstepExample();
