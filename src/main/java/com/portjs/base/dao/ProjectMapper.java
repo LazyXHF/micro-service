@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+
 @Repository
 public interface ProjectMapper {
     int countByExample(ProjectExample example);
@@ -50,6 +51,7 @@ public interface ProjectMapper {
 
     /**
      * 问题沟通所需下拉框接口
+     *
      * @return
      */
     @Select("select id,project_name,project_type,schedule from project")
@@ -66,4 +68,6 @@ public interface ProjectMapper {
     int selectapplicationByYear(String toString);
 
     List<String> queryYears();
+
+    List<Project> queryNotInproject();
 }

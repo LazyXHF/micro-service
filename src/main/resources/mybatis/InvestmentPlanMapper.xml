@@ -407,6 +407,10 @@
      select p.* from investment_plan p where id not in(select investment_id from project_application)
   </select>
 
+  <select id="queryProjectPlanByProject" resultMap="BaseResultMap" parameterType="java.lang.String" >
+     select p.* from investment_plan p where id not in(select investment_id from project where investment_id is not null)
+  </select>
+
   <select id="queryProjectPlanInfo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
    Id, plan_num, project_id, project_name, project_type, project_desc, organization,

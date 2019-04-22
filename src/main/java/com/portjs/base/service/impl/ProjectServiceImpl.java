@@ -4,10 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.*;
 import com.portjs.base.entity.BusinessConfiguration;
 import com.portjs.base.entity.BusinessDictionary;
-import com.portjs.base.entity.BusinessDictionaryExample;
+import com.portjs.base.entity.InvestmentPlan;
 import com.portjs.base.entity.Project;
 import com.portjs.base.service.ProjectService;
 import com.portjs.base.util.Code;
+import com.portjs.base.util.IDUtils;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.StringUtils.StringUtils;
@@ -34,6 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
     InvestmentPlanMapper investmentPlanMapper;
     @Autowired
     private BusinessDictionaryMapper businessDictionaryMapper;
+    int i = 001;
 
     @Override
     public ResponseMessage queryProjectAllInfo(JSONObject requestJson) {
@@ -180,5 +182,59 @@ public class ProjectServiceImpl implements ProjectService {
         List<String> planList = investmentPlanMapper.queryPlans();
         return new ResponseMessage(Code.CODE_OK, "投资计划下拉", planList);
     }
+
+    @Override
+    public ResponseMessage insertProject(JSONObject requestJson) {
+        Project project = new Project();
+        project.setId(String.valueOf(IDUtils.genItemId()));
+        project.setInvestmentId(requestJson.getString("investmentId"));//投资计划id
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DATE);//获取日
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+        int second = cal.get(Calendar.SECOND);
+        i = i++;
+        String projectCode = "PR" + year + "" + month + day + hour + minute + second + i;
+        project.setProjectCode(projectCode);
+        project.setProjectName(requestJson.getString("projectName"));//项目名称
+        project.setProjectType(requestJson.getString("projectType"));//项目类型
+        project.setStatus("0");
+        project.setLeval(requestJson.getString("leval"));//项目等级
+        project.setOrganization(requestJson.getString("organization"));//业务单位
+        project.setSchedule("A");
+        project.setContractor(requestJson.getString("contractor"));//承建单位
+        project.setProjectManager(requestJson.getString("projectManager"));//项目经理
+        project.setManagerPhone(requestJson.getString("managerPhone"));//项目经理电话
+        project.setCreateTime(new Date());
+        project.setCreator(requestJson.getString("creator"));//创建人id
+        project.setCreatorName(requestJson.getString("creatorName"));//创建人姓名
+        int flag = projectMapper.insert(project);
+        if (flag == 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "添加失败");
+        }
+        return new ResponseMessage(Code.CODE_OK, "添加成功");
+    }
+
+    @Override
+    public ResponseMessage queryProjectPlanByProject() {
+        //筛选未选用的的投资计划方式
+        List<InvestmentPlan> list = investmentPlanMapper.queryProjectPlanByProject();
+        if (list.size() == 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
+        }
+        return new ResponseMessage(Code.CODE_OK, "投资列表信息", list);
+    }
+
+    @Override
+    public ResponseMessage queryNotInproject() {
+        List<Project> list = projectMapper.queryNotInproject();
+        if (list.size() == 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
+        }
+        return new ResponseMessage(Code.CODE_OK, "项目名称下拉", list);
+    }
+
 }
 

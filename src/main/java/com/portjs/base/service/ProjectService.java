@@ -15,4 +15,10 @@ public interface ProjectService {
     ResponseMessage queryYears();
 
     ResponseMessage queryPlans();
+
+    ResponseMessage insertProject(JSONObject requestJson);
+
+    ResponseMessage queryProjectPlanByProject();
+
+    ResponseMessage queryNotInproject();
 }

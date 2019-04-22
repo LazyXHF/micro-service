@@ -41,4 +41,6 @@ public interface InvestmentPlanMapper {
 
     List<String> queryPlans();
 
+    List<InvestmentPlan> queryProjectPlanByProject();
+
 }

@@ -66,7 +66,6 @@ public class ProjectAddorUpdateUtil {
         project.setProjectMoney(projectMoney);
         project.setProjectStage(schedule);
         project.setProjectStatus(projectStatus);
-        project.setInvestor(investor);
         int f = projectMapper.isHaveProject(projectId);
         //如果为0  说明记录不存在  进行添加
         if (f == 0) {
@@ -109,6 +108,7 @@ public class ProjectAddorUpdateUtil {
                 projectMapper.updateProjectById(projectId, projectCode, ApplicationEndTime, creator, schedule, newStatus);
             }
         }
+        Project project1 = projectMapper.selectByPrimaryKey(projectId);
 
     }
 }

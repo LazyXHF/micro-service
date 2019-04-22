@@ -37,4 +37,5 @@ public interface ProjectApplicationService {
     ResponseMessage toApprove(JSONObject requestJson);
 
     ResponseMessage abolishProject(JSONObject requestJson);
+
 }

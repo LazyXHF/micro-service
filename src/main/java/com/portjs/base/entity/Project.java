@@ -33,7 +33,6 @@ public class Project {
 
     private String projectStatus;
 
-    private String investor;
 
     private String creatorName;
 
@@ -83,6 +82,66 @@ public class Project {
     private String year;
 
     private Map<String, String> statusMap;
+
+    private String status;
+
+    private String leval;
+
+    private String investmentId;
+
+    private String contractor;
+
+    private String projectManager;
+
+    private String managerPhone;
+
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
+    }
+
+    public String getProjectManager() {
+        return projectManager;
+    }
+
+    public void setProjectManager(String projectManager) {
+        this.projectManager = projectManager;
+    }
+
+    public String getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(String contractor) {
+        this.contractor = contractor;
+    }
+
+    public String getInvestmentId() {
+        return investmentId;
+    }
+
+    public void setInvestmentId(String investmentId) {
+        this.investmentId = investmentId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getLeval() {
+        return leval;
+    }
+
+    public void setLeval(String leval) {
+        this.leval = leval;
+    }
 
     public Map<String, String> getStatusMap() {
         return statusMap;
@@ -202,14 +261,6 @@ public class Project {
 
     public void setProjectStatus(String projectStatus) {
         this.projectStatus = projectStatus == null ? null : projectStatus.trim();
-    }
-
-    public String getInvestor() {
-        return investor;
-    }
-
-    public void setInvestor(String investor) {
-        this.investor = investor == null ? null : investor.trim();
     }
 
     public String getCreatorName() {
