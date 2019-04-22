@@ -2,10 +2,7 @@ package com.portjs.base.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.dao.*;
-import com.portjs.base.entity.BusinessConfiguration;
-import com.portjs.base.entity.BusinessDictionary;
-import com.portjs.base.entity.InvestmentPlan;
-import com.portjs.base.entity.Project;
+import com.portjs.base.entity.*;
 import com.portjs.base.service.ProjectService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.IDUtils;
@@ -188,6 +185,13 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project();
         project.setId(String.valueOf(IDUtils.genItemId()));
         project.setInvestmentId(requestJson.getString("investmentId"));//投资计划id
+        ProjectExample example = new ProjectExample();
+        List<Project> projects = projectMapper.selectByExample(example);
+        for (Project project1 : projects) {
+            if (requestJson.getString("projectName").equals(project.getProjectName())) {
+                return new ResponseMessage(Code.CODE_ERROR, "项目名已存在");
+            }
+        }
         project.setProjectName(requestJson.getString("projectName"));//项目名称
         project.setProjectType(requestJson.getString("projectType"));//项目类型
         project.setStatus("0");
