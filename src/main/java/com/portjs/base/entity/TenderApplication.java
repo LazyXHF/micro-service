@@ -123,12 +123,14 @@ public class TenderApplication extends BaseEntity{
         this.openDate = openDate;
     }
 
+    @Override
     public String getRemark() {
         return remark;
     }
 
+    @Override
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public String getStatus() {

@@ -91,7 +91,7 @@ public class TenderServiceImpl implements TenderService {
         }else{
             tenderNum="ZB"+date+"01";
         }
-        return new ResponseMessage(Code.CODE_OK, MessageUtils.NOT_PASSED,tenderNum);
+        return new ResponseMessage(Code.CODE_OK, MessageUtils.SUCCESS,tenderNum);
     }
 
     /**

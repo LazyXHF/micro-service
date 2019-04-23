@@ -69,8 +69,6 @@ public class TenderController extends BaseController {
     @ResponseBody
     public ResponseMessage queryTender(@RequestBody String requestBody){
         try {
-
-
             logger.error(TAG+"query-tender()begin....."+requestBody);
             return tenderService.queryTender(requestBody);
         } catch (Exception e) {

@@ -649,7 +649,7 @@
     </if> ) A
   </select>
 
-  <select id="selectPage"  resultType="com.portjs.base.entity.TenderApplication">
+  <select id="selectPage"  resultMap="BaseResultMap">
     select  *
     from tender_application
     where
