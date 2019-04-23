@@ -41,11 +41,19 @@ public interface ProjectMapper {
 
     Project queryProjectById(@Param("projectId") String projectId);
 
-    void updateProjectById(@Param("projectCode") String projectCode, @Param("schedule") String schedule, @Param("status") String status, @Param("projectId") String projectId);
+    void updateProjectById(@Param("projectCode") String projectCode, @Param("schedule") String schedule, @Param("status")
+            String status, @Param("projectId") String projectId);
 
-    List<Project> queryProjectAllInfo(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectTime") String projectTime, @Param("projectType") String projectType, @Param("invertor") String invertor, @Param("organization") String organization, @Param("schedule") String schedule, @Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
+    List<Project> queryProjectAllInfo(@Param("projectCode") String projectCode, @Param("projectName") String projectName,
+                                      @Param("createTime") String createTime, @Param("projectType") String projectType,
+                                      @Param("projectManager") String projectManager,
+                                      @Param("leval") String leval, @Param("status") String status,
+                                      @Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
 
-    int queryProjectAllInfoCount(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectTime") String projectTime, @Param("projectType") String projectType, @Param("invertor") String invertor, @Param("organization") String organization, @Param("schedule") String schedule);
+    int queryProjectAllInfoCount(@Param("projectCode") String projectCode, @Param("projectName") String projectName,
+                                 @Param("createTime") String createTime, @Param("projectType") String projectType,
+                                 @Param("projectManager") String projectManager,
+                                 @Param("leval") String leval, @Param("status") String status);
 
     Project queryProjectDetails(@Param("id") String id, @Param("projectType") String projectType);
 
@@ -59,9 +67,22 @@ public interface ProjectMapper {
 
     Project queryProjectDetails2(@Param("id") String id, @Param("projectType") String projectType);
 
-    List<Project> queryProjectAllExceptionInfo(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectTime") String projectTime, @Param("projectType") String projectType, @Param("invertor") String invertor, @Param("organization") String organization, @Param("schedule") String schedule, @Param("rownum") Integer rowNum, @Param("pagecount") Integer pageCount);
+    List<Project> queryProjectAllExceptionInfo(@Param("projectCode") String projectCode,
+                                               @Param("projectName") String projectName,
+                                               @Param("projectTime") String projectTime,
+                                               @Param("projectType") String projectType,
+                                               @Param("invertor") String invertor,
+                                               @Param("organization") String organization,
+                                               @Param("schedule") String schedule,
+                                               @Param("rownum") Integer rowNum,
+                                               @Param("pagecount") Integer pageCount);
 
-    int queryProjectAllInfoExceptionCount(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectTime") String projectTime, @Param("projectType") String projectType, @Param("invertor") String invertor, @Param("organization") String organization, @Param("schedule") String schedule);
+    int queryProjectAllInfoExceptionCount(@Param("projectCode") String projectCode,
+                                          @Param("projectName") String projectName,
+                                          @Param("projectTime") String projectTime,
+                                          @Param("projectType") String projectType,
+                                          @Param("invertor") String invertor, @Param("organization") String organization,
+                                          @Param("schedule") String schedule);
 
     String selectByStatus();
 
