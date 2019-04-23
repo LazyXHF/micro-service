@@ -339,11 +339,11 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             tWorkflowstep.setRelateddomain("项目立项");
             tWorkflowstep.setRelateddomainId(application.getId());
             tWorkflowstep.setPrestepId(workflowstep.getId());
-            tWorkflowstep.setStepDesc("部门负责人审核");
+            tWorkflowstep.setStepDesc("分管领导审核");
             tWorkflowstep.setActionuserId(nextViewJSON.getString(i));
             // tWorkflowstep.setActionTime(new Date());
             tWorkflowstep.setStatus("0");
-            tWorkflowstep.setBackup3("2");
+            tWorkflowstep.setBackup3("3");
 
             int i4 = workflowstepMapper.insertSelective(tWorkflowstep);
             if(i4!=1){

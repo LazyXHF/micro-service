@@ -108,7 +108,6 @@ public class TenderController extends BaseController {
     @RequestMapping("/delete-tender")
     @ResponseBody
     public ResponseMessage deleteTender(@RequestBody String requestBody){
-
         try {
             logger.error(TAG+"delete-tender()begin....."+requestBody);
             return tenderService.deleteTender(requestBody);
