@@ -1,10 +1,16 @@
 package com.portjs.base.util;
 
+import com.portjs.base.dao.BusinessConfigurationMapper;
 import com.portjs.base.dao.ProjectMapper;
+import com.portjs.base.entity.BusinessConfiguration;
+import com.portjs.base.entity.BusinessConfigurationExample;
 import com.portjs.base.entity.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author: daiyueyuan
@@ -17,9 +23,28 @@ public class ProjectUtils {
     @Autowired
     private ProjectMapper projectMapper;
 
+    @Autowired
+    private BusinessConfigurationMapper businessConfigurationMapper;
+
     public void projectMethod(String projectId, String projectCode, String schedule, String projectStatus) {
 
+        if ("1".equals(projectStatus.substring(2, 3))) {
+            BusinessConfigurationExample example = new BusinessConfigurationExample();
+            BusinessConfigurationExample.Criteria criteria = example.createCriteria();
+            criteria.andProjectIdEqualTo(projectId);
+            criteria.andProjectScheduleEqualTo(projectStatus.substring(0, 1));
+            List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectByExample(example);
+            for (BusinessConfiguration businessConfiguration : businessConfigurations) {
+                businessConfiguration.setActualEndtime(new Date());
+                if (businessConfiguration.getPridectEndtime().before(businessConfiguration.getActualEndtime())) {
+                    StringBuilder stringBuilder = new StringBuilder(projectStatus);
+                    stringBuilder.setCharAt(2, '3');
+                    projectStatus = stringBuilder.toString();
+                }
+            }
+        }
         Project project = projectMapper.selectByPrimaryKey(projectId);
+
         if (project.getProjectStatus() == null) {
             project.setProjectStatus(projectStatus);
         }
@@ -46,6 +71,7 @@ public class ProjectUtils {
                 }
             }
         }
+
         for (String prostatus : statusArray) {
             if ("3".equals(prostatus.substring(2, 3))) {
                 project.setStatus("3");
