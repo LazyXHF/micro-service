@@ -42,6 +42,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private BusinessConfigurationMapper configurationMapper;
 	@Autowired
 	private ProjectBudgetMapper budgetMapper;
+	@Autowired
+	private TenderApplicationMapper tenderApplicationMapper;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -469,6 +471,24 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					}else{
 						map.put("returnStatus","1");
 					}
+					map.put("projectId",list1.get(0).getProjectId());
+					tTodo.setParams(map);
+				}
+			}else if("项目招投标".equals(tTodo.getRelateddomain())){
+				Map<String,Object> map = new HashMap<String,Object>();
+				TenderApplicationExample projectApplicationExample = new TenderApplicationExample();
+				TenderApplicationExample.Criteria criteria2 = projectApplicationExample.createCriteria();
+				criteria2.andIdEqualTo(list.get(i).getRelateddomainId());
+				//查询此条数据的状态
+				List<TenderApplication> list1 = tenderApplicationMapper.selectByExample(projectApplicationExample);
+				if(!CollectionUtils.isEmpty(list1)){
+					//status 8和0(暂存编辑状态):退回状态,其余审核中
+					if("6".equals(list1.get(0).getStatus())||"0".equals(list1.get(0).getStatus())){
+						map.put("returnStatus","0");
+					}else{
+						map.put("returnStatus","1");
+					}
+					map.put("projectId",list1.get(0).getProjectId());
 					tTodo.setParams(map);
 				}
 			}

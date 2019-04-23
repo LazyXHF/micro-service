@@ -445,7 +445,7 @@ public class TenderServiceImpl implements TenderService {
         if(count!=1){
             return new ResponseMessage(Code.CODE_ERROR,"删除失败");
         }
-        return new ResponseMessage(Code.CODE_ERROR,"删除成功");
+        return new ResponseMessage(Code.CODE_OK,"删除成功");
     }
 
     /**
