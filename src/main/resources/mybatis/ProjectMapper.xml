@@ -727,48 +727,52 @@
     <select id="queryProjectAllInfoCount" resultType="Integer" parameterType="String">
         select count(*) from project a
         <where>
-            project_status not like "%3%"
             <if test="projectCode !=null and projectCode!=''">
                 and a.project_code like "%" #{projectCode} "%"
             </if>
             <if test="projectName !=null and projectName!=''">
                 and a.project_name like "%" #{projectName} "%"
             </if>
-            <if test="projectTime !=null and projectTime!=''">
-                and a.application_end_time like "%" #{projectTime} "%"
+            <if test="createTime !=null and createTime!=''">
+                and a.create_time like "%" #{createTime} "%"
             </if>
             <if test="projectType !=null and projectType!=''">
                 and a.project_type like "%" #{projectType} "%"
             </if>
-            <if test="organization !=null and organization!=''">
-                and a.organization like "%" #{organization} "%"
+            <if test="projectManager !=null and projectManager!=''">
+                and a.project_manager like "%" #{projectManager} "%"
             </if>
-            <if test="schedule !=null and schedule!=''">
-                and a.schedule like "%" #{schedule} "%"
+            <if test="leval !=null and leval!=''">
+                and a.leval like "%" #{leval} "%"
+            </if>
+            <if test="status !=null and status!=''">
+                and a.status =#{status}
             </if>
         </where>
     </select>
-    <select id="queryProjectAllInfo" resultMap="BaseResultMap2" parameterType="String">
+    <select id="queryProjectAllInfo" resultMap="BaseResultMap" parameterType="String">
         select a.* from project a
         <where>
-            project_status not like "%3%"
             <if test="projectCode !=null and projectCode!=''">
                 and a.project_code like "%" #{projectCode} "%"
             </if>
             <if test="projectName !=null and projectName!=''">
                 and a.project_name like "%" #{projectName} "%"
             </if>
-            <if test="projectTime !=null and projectTime!=''">
-                and a.application_end_time like "%" #{projectTime} "%"
+            <if test="createTime !=null and createTime!=''">
+                and a.create_time like "%" #{createTime} "%"
             </if>
             <if test="projectType !=null and projectType!=''">
                 and a.project_type like "%" #{projectType} "%"
             </if>
-            <if test="organization !=null and organization!=''">
-                and a.organization like "%" #{organization} "%"
+            <if test="projectManager !=null and projectManager!=''">
+                and a.project_manager like "%" #{projectManager} "%"
             </if>
-            <if test="schedule !=null and schedule!=''">
-                and a.schedule like "%" #{schedule} "%"
+            <if test="leval !=null and leval!=''">
+                and a.leval like "%" #{leval} "%"
+            </if>
+            <if test="status !=null and status!=''">
+                and a.status =#{status}
             </if>
         </where>
         limit #{rownum},#{pagecount}

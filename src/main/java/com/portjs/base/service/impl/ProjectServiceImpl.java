@@ -38,71 +38,49 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseMessage queryProjectAllInfo(JSONObject requestJson) {
         String projectCode = requestJson.getString("projectCode");
         String projectName = requestJson.getString("projectName");
-        String organization = requestJson.getString("organization");
+        String createTime = requestJson.getString("createTime");
         String projectType = requestJson.getString("projectType");
-        String schedule = requestJson.getString("schedule");
+        String projectManager = requestJson.getString("projectManager");
+        String leval = requestJson.getString("leval");
+        String status = requestJson.getString("status");
+        if ("0".equals(status)) {
+            status = "";
+        }
         String pageNum = requestJson.getString("pageNum");
         String pageCount = requestJson.getString("pageCount");
         //新加字段
-        String projectTime = requestJson.getString("projectTime");
-        String invertor = requestJson.getString("investor");
-        //如果type为nomal  为正常，如果type为exception 为异常
-        String type = requestJson.getString("type");
         Page<Project> page = new Page<>();
-        if (type.equals("nomal")) {
-            int totalcount = projectMapper.queryProjectAllInfoCount(projectCode, projectName, projectTime, projectType, invertor, organization, schedule);
-            page.init(totalcount, Integer.valueOf(pageNum), Integer.valueOf(pageCount));
-            List<Project> projectList = projectMapper.queryProjectAllInfo(projectCode, projectName, projectTime, projectType, invertor, organization, schedule, page.getRowNum(), page.getPageCount());
-            for (Project project : projectList) {
-                String creatorId = project.getCreator();
-                String year = project.getCreateTime().toString();
-                String creatorName2 = userMapper.queryUserNameByUserId(creatorId);
-                project.setCreatorName(creatorName2);
-                project.setYear(year.substring(year.length() - 4));
-                List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectAll(project.getId());
-                Map<String, String> map = new LinkedHashMap<>();
-                List<BusinessDictionary> businessDictionaries = businessDictionaryMapper.selectAllProjectSchedule();
-                for (BusinessDictionary businessDictionary : businessDictionaries) {
-                    map.put(businessDictionary.getProjectSchedule(), null);
-                }
-                for (BusinessConfiguration businessConfiguration : businessConfigurations) {
-                    if (!StringUtils.isEmpty(businessConfiguration.getProjectStatus())) {
-                        String[] statuss = businessConfiguration.getProjectStatus().split(",");
-                        for (String status : statuss) {
-                            if (businessConfiguration.getProjectSchedule().contains(status.substring(0, 1))) {
-                                map.put(businessConfiguration.getProjectSchedule(), status.substring(2, 3));
-                            }
-                        }
-                    }
-                }
-                project.setStatusMap(map);
+        int totalcount = projectMapper.queryProjectAllInfoCount(projectCode, projectName, createTime, projectType,
+                projectManager, leval, status);
+        page.init(totalcount, Integer.valueOf(pageNum), Integer.valueOf(pageCount));
+        List<Project> projectList = projectMapper.queryProjectAllInfo(projectCode, projectName, createTime, projectType,
+                projectManager, leval, status, page.getRowNum(), page.getPageCount());
+        for (Project project : projectList) {
+            Map<String, String> map = new LinkedHashMap<>();
+            List<BusinessDictionary> businessDictionaries = businessDictionaryMapper.selectAllProjectSchedule();
+            for (BusinessDictionary businessDictionary : businessDictionaries) {
+                map.put(businessDictionary.getProjectSchedule(), "0");
             }
-            page.setList(projectList);
-        } else if (type.equals("exception")) {
-            int totalcount = projectMapper.queryProjectAllInfoExceptionCount(projectCode, projectName, projectTime, projectType, invertor, organization, schedule);
-            page.init(totalcount, Integer.valueOf(pageNum), Integer.valueOf(pageCount));
-            List<Project> projectExceptionList = projectMapper.queryProjectAllExceptionInfo(projectCode, projectName, projectTime, projectType, invertor, organization, schedule, page.getRowNum(), page.getPageCount());
-            for (Project project : projectExceptionList) {
-                List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectAll(project.getId());
-                Map<String, String> map = new LinkedHashMap<>();
-                List<BusinessDictionary> businessDictionaries = businessDictionaryMapper.selectAllProjectSchedule();
-                for (BusinessDictionary businessDictionary : businessDictionaries) {
-                    map.put(businessDictionary.getProjectSchedule(), null);
+            if (project.getProjectStatus() != null) {
+                String[] statuss = project.getProjectStatus().split(",");
+                for (String prostatus : statuss) {
+                    map.put(prostatus.substring(0, 1), prostatus.substring(2, 3));
                 }
-                for (BusinessConfiguration businessConfiguration : businessConfigurations) {
-                    if (!StringUtils.isEmpty(businessConfiguration.getProjectStatus())) {
-                        String[] statuss = businessConfiguration.getProjectStatus().split(",");
-                        for (String status : statuss) {
-                            if (businessConfiguration.getProjectSchedule().contains(status.substring(0, 1))) {
-                                map.put(businessConfiguration.getProjectSchedule(), status.substring(2, 3));
-                            }
-                        }
-                    }
-                }
-                project.setStatusMap(map);
             }
-            page.setList(projectExceptionList);
+//            List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectAll(project.getId());
+//            for (BusinessConfiguration businessConfiguration : businessConfigurations) {
+//                if (!StringUtils.isEmpty(businessConfiguration.getProjectStatus())) {
+//                    String[] statuss = businessConfiguration.getProjectStatus().split(",");
+//                    for (String prostatus : statuss) {
+//                        if (businessConfiguration.getProjectSchedule().contains(prostatus.substring(0, 1))) {
+//                            map.put(businessConfiguration.getProjectSchedule(), prostatus.substring(2, 3));
+//                        }
+//                    }
+//                }
+//            }
+            project.setStatusMap(map);
         }
+        page.setList(projectList);
         return new ResponseMessage(Code.CODE_OK, "查询成功", page);
     }
 
@@ -188,7 +166,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectExample example = new ProjectExample();
         List<Project> projects = projectMapper.selectByExample(example);
         for (Project project1 : projects) {
-            if (requestJson.getString("projectName").equals(project.getProjectName())) {
+            if (requestJson.getString("projectName").equals(project1.getProjectName())) {
                 return new ResponseMessage(Code.CODE_ERROR, "项目名已存在");
             }
         }

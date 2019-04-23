@@ -117,7 +117,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_user
     where ID = #{id,jdbcType=VARCHAR}
@@ -459,36 +459,36 @@
   <update id="updateByExample" parameterType="map" >
     update t_user
     set ID = #{record.id,jdbcType=VARCHAR},
-      login_account = #{record.loginAccount,jdbcType=VARCHAR},
-      login_PASSWORD = #{record.loginPassword,jdbcType=VARCHAR},
-      login_name = #{record.loginName,jdbcType=VARCHAR},
-      DEPARTMENT_ID = #{record.departmentId,jdbcType=VARCHAR},
-      CREATETIME = #{record.createtime,jdbcType=TIMESTAMP},
-      SORT = #{record.sort,jdbcType=INTEGER},
-      STATUS = #{record.status,jdbcType=INTEGER},
-      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
-      last_upd_passwd_time = #{record.lastUpdPasswdTime,jdbcType=TIMESTAMP},
-      password_modify_cycle = #{record.passwordModifyCycle,jdbcType=INTEGER},
-      history_password = #{record.historyPassword,jdbcType=VARCHAR},
-      passwd_wrong_count = #{record.passwdWrongCount,jdbcType=INTEGER},
-      birth_date = #{record.birthDate,jdbcType=TIMESTAMP},
-      sex = #{record.sex,jdbcType=INTEGER},
-      duty = #{record.duty,jdbcType=VARCHAR},
-      duty_lev = #{record.dutyLev,jdbcType=VARCHAR},
-      phonenum = #{record.phonenum,jdbcType=VARCHAR},
-      telephone = #{record.telephone,jdbcType=VARCHAR},
-      pingyin = #{record.pingyin,jdbcType=VARCHAR},
-      reserved1 = #{record.reserved1,jdbcType=VARCHAR},
-      reserved2 = #{record.reserved2,jdbcType=VARCHAR},
-      reserved3 = #{record.reserved3,jdbcType=VARCHAR},
-      reserved4 = #{record.reserved4,jdbcType=VARCHAR},
-      reserved5 = #{record.reserved5,jdbcType=VARCHAR},
-      reserved6 = #{record.reserved6,jdbcType=VARCHAR},
-      reserved7 = #{record.reserved7,jdbcType=VARCHAR},
-      reserved8 = #{record.reserved8,jdbcType=VARCHAR},
-      reserved9 = #{record.reserved9,jdbcType=VARCHAR},
-      reserved10 = #{record.reserved10,jdbcType=VARCHAR},
-      name_cn = #{record.nameCn,jdbcType=VARCHAR}
+    login_account = #{record.loginAccount,jdbcType=VARCHAR},
+    login_PASSWORD = #{record.loginPassword,jdbcType=VARCHAR},
+    login_name = #{record.loginName,jdbcType=VARCHAR},
+    DEPARTMENT_ID = #{record.departmentId,jdbcType=VARCHAR},
+    CREATETIME = #{record.createtime,jdbcType=TIMESTAMP},
+    SORT = #{record.sort,jdbcType=INTEGER},
+    STATUS = #{record.status,jdbcType=INTEGER},
+    last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+    last_upd_passwd_time = #{record.lastUpdPasswdTime,jdbcType=TIMESTAMP},
+    password_modify_cycle = #{record.passwordModifyCycle,jdbcType=INTEGER},
+    history_password = #{record.historyPassword,jdbcType=VARCHAR},
+    passwd_wrong_count = #{record.passwdWrongCount,jdbcType=INTEGER},
+    birth_date = #{record.birthDate,jdbcType=TIMESTAMP},
+    sex = #{record.sex,jdbcType=INTEGER},
+    duty = #{record.duty,jdbcType=VARCHAR},
+    duty_lev = #{record.dutyLev,jdbcType=VARCHAR},
+    phonenum = #{record.phonenum,jdbcType=VARCHAR},
+    telephone = #{record.telephone,jdbcType=VARCHAR},
+    pingyin = #{record.pingyin,jdbcType=VARCHAR},
+    reserved1 = #{record.reserved1,jdbcType=VARCHAR},
+    reserved2 = #{record.reserved2,jdbcType=VARCHAR},
+    reserved3 = #{record.reserved3,jdbcType=VARCHAR},
+    reserved4 = #{record.reserved4,jdbcType=VARCHAR},
+    reserved5 = #{record.reserved5,jdbcType=VARCHAR},
+    reserved6 = #{record.reserved6,jdbcType=VARCHAR},
+    reserved7 = #{record.reserved7,jdbcType=VARCHAR},
+    reserved8 = #{record.reserved8,jdbcType=VARCHAR},
+    reserved9 = #{record.reserved9,jdbcType=VARCHAR},
+    reserved10 = #{record.reserved10,jdbcType=VARCHAR},
+    name_cn = #{record.nameCn,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -656,21 +656,45 @@
 
   <select id="selectUserByLoginNameOrDepartmentId" resultMap="BaseResultMap">
     SELECT * FROM  t_user u WHERE
-    (u.`login_name` LIKE CONCAT('%',#{loginName},'%') OR u.`pingyin` LIKE CONCAT('%',#{loginName},'%'))
+    (u.`name_cn` LIKE CONCAT('%',#{loginName},'%') OR u.`pingyin` LIKE CONCAT('%',#{loginName},'%'))
     <if test="departmentId != null and departmentId !=''">
       AND u.`DEPARTMENT_ID` = #{departmentId}
     </if>
-     ORDER BY u.`SORT` LIMIT #{pageNo},#{pageSize}
+    ORDER BY u.`SORT` LIMIT #{pageNo},#{pageSize}
   </select>
-
 
   <select id="selectUserCountByLoginNameOrDepartmentId" resultType="int">
     SELECT count(u.id) FROM  t_user u WHERE
-    (u.`login_name` LIKE CONCAT('%',#{loginName},'%') OR u.`pingyin` LIKE CONCAT('%',#{loginName},'%'))
+    (u.`name_cn` LIKE CONCAT('%',#{loginName},'%') OR u.`pingyin` LIKE CONCAT('%',#{loginName},'%'))
     <if test="departmentId != null and departmentId !=''">
       AND u.`DEPARTMENT_ID` = #{departmentId}
     </if>
   </select>
+
+
+
+  <!--一人多部门                                                                         -->
+  <select id="selectUserByLoginNameAndDepartmentIds"  resultMap="BaseResultMap">
+    SELECT DISTINCT u.id,u.*
+    FROM  t_user u INNER JOIN  t_user_department ud ON u.`ID` = ud.`u_id`
+    INNER JOIN t_department d ON ud.`d_id` = d.`ID` WHERE
+    (u.`name_cn` LIKE CONCAT('%',#{loginName},'%') OR u.`pingyin` LIKE CONCAT('%',#{loginName},'%'))
+    <if test="departmentId != null and departmentId !=''">
+      AND d.id = #{departmentId}
+    </if>
+    ORDER BY u.`SORT` LIMIT #{pageNo},#{pageSize}
+  </select>
+
+  <select id="selectUserCountByLoginNameAndDepartmentIds"  resultType="int">
+    SELECT  count(DISTINCT u.id)
+    FROM  t_user u INNER JOIN  t_user_department ud ON u.`ID` = ud.`u_id`
+    INNER JOIN t_department d ON ud.`d_id` = d.`ID` WHERE
+    (u.`name_cn` LIKE CONCAT('%',#{loginName},'%') OR u.`pingyin` LIKE CONCAT('%',#{loginName},'%'))
+    <if test="departmentId != null and departmentId !=''">
+      AND d.id = #{departmentId}
+    </if>
+  </select>
+
 
   <resultMap id="UserRoleDO" type="com.portjs.base.vo.UserRoleDO">
     <id column="ID" property="id" jdbcType="VARCHAR" />
@@ -713,13 +737,23 @@
   </resultMap>
 
 
-  <select id="selectUserAndRoleAndDepartmentByUid" resultMap="UserRoleDO">
-    SELECT u.*,d.`leader_id` AS leaderId ,d.`ID` AS DEPARTMENT_ID ,d.`NAME` AS departmentName,r.`id` AS rid , r.`role_name` AS roleName
+  <select id="selectUserAndRoleAndDepartmentByUids" resultMap="UserRoleDO">
+   SELECT u.*,d.`leader_id` AS leaderId ,d.`ID` AS DEPARTMENT_ID ,d.`NAME` AS departmentName,r.`id` AS rid , r.`role_name` AS roleName
     FROM  t_user u LEFT JOIN t_user_role ur ON u.`ID` = ur.`user_id`
+   INNER JOIN t_user_department ud ON u.`ID` = ud.`u_id`
    LEFT JOIN t_role r ON r.`id` = ur.`role_id`
-   LEFT JOIN t_department d ON u.`DEPARTMENT_ID` = d.`ID`
+   LEFT JOIN t_department d ON d.`ID` = ud.`d_id`
    WHERE u.`ID` = #{uid}
   </select>
+
+
+  <select id="selectUserAndRoleAndDepartmentByUid" resultMap="UserRoleDO">
+  SELECT u.*,d.`leader_id` AS leaderId ,d.`ID` AS DEPARTMENT_ID ,d.`NAME` AS departmentName,r.`id` AS rid , r.`role_name` AS roleName
+  FROM  t_user u LEFT JOIN t_user_role ur ON u.`ID` = ur.`user_id`
+ LEFT JOIN t_role r ON r.`id` = ur.`role_id`
+ LEFT JOIN t_department d ON u.`DEPARTMENT_ID` = d.`ID`
+ WHERE u.`ID` = #{uid}
+</select>
 
   <update id="updateSortByUid" >
     UPDATE t_user u SET u.`SORT` = #{sort} WHERE u.`ID` = #{uid}
