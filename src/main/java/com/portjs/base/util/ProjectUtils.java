@@ -116,5 +116,9 @@ public class ProjectUtils {
             }
             projectMapper.updateByPrimaryKeySelective(project);
         }
+
+        BusinessConfiguration businessConfiguration = businessConfigurationMapper.selectByprostatus(projectStatus.substring(0, 1),
+                projectId, projectStatus.substring(0, 2));
+        businessConfiguration.setNode(projectStatus);
     }
 }

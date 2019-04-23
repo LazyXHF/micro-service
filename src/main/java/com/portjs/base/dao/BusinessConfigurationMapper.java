@@ -39,4 +39,8 @@ public interface BusinessConfigurationMapper {
     List<BusinessConfiguration> selectByProjectSchedule(@Param("projectId") String projectId, @Param("projectSchedule") String projectSchedule);
 
     List<BusinessConfiguration> selectAll(@Param("projectId") String projectId);
+
+    BusinessConfiguration selectByprostatus(@Param("projectSchedule") String projectSchedule,
+                                            @Param("projectId") String projectId,
+                                            @Param("projectNode") String projectNode);
 }
