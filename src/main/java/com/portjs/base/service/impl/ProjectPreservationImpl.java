@@ -65,6 +65,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     private ProjectDeclarationMapper declarationMapper;
     @Autowired
     private BusinessConfigurationMapper configurationMapper;
+    @Autowired
+    private BusinessDictionaryMapper businessDictionaryMapper;
 
     //返参信息
     public final static String PARAM_MESSAGE_1 = "未传";
@@ -281,14 +283,21 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             for(int i=0;i<configurationJSON.size();i++){
                 JSONObject object = configurationJSON.getJSONObject(i);
                 BusinessConfiguration configuration = JSONObject.toJavaObject(object,BusinessConfiguration.class);
-                configuration.setId(String.valueOf(IDUtils.genItemId()));
-                configuration.setCreator(userId);
-                configuration.setProjectId(application.getProjectId());
-                configuration.setCreateTime(new Date());
-                int num = configurationMapper.insertSelective(configuration);
-                if(num<=0){
-                    /*return new ResponseMessage(Code.CODE_ERROR,"未知异常");*/
-                    throw  new Exception("操作失败");
+                BusinessDictionaryExample example = new BusinessDictionaryExample();
+                BusinessDictionaryExample.Criteria criteria = example.createCriteria();
+                criteria.andProjectScheduleEqualTo(configuration.getProjectSchedule());
+                List<BusinessDictionary> businessDictionaries = businessDictionaryMapper.selectByExample(example);
+                for (BusinessDictionary businessDictionary : businessDictionaries) {
+                    configuration.setId(String.valueOf(IDUtils.genItemId()));
+                    configuration.setCreator(userId);
+                    configuration.setProjectId(application.getProjectId());
+                    configuration.setProjectNode(businessDictionary.getProjectNode());
+                    configuration.setCreateTime(new Date());
+                    int num = configurationMapper.insertSelective(configuration);
+                    if(num<=0){
+                        /*return new ResponseMessage(Code.CODE_ERROR,"未知异常");*/
+                        throw  new Exception("操作失败");
+                    }
                 }
             }
 

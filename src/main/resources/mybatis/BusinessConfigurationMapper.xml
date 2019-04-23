@@ -432,4 +432,11 @@
     where b.project_schedule = d.project_schedule) a left join project pro on (pro.project_status
     like concat('%',a.pro_node,'%') and pro.id = a.project_id) order by project_schedule
   </select>
+
+    <select id="selectByprostatus" resultMap="BaseResultMap">
+        select * from business_configuration
+        where project_schedule= #{projectSchedule,jdbcType=VARCHAR}
+        and project_id=#{projectId,jdbcType=VARCHAR}
+        and project_node=#{projectNode,jdbcType=VARCHAR}
+    </select>
 </mapper>
