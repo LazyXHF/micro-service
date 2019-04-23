@@ -36,7 +36,8 @@ public class ProjectUtils {
             List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectByExample(example);
             for (BusinessConfiguration businessConfiguration : businessConfigurations) {
                 businessConfiguration.setActualEndtime(new Date());
-                if (businessConfiguration.getPridectEndtime().before(businessConfiguration.getActualEndtime())) {
+                businessConfigurationMapper.updateByPrimaryKeySelective(businessConfiguration);
+                if (businessConfiguration.getPridectEndtime().after(businessConfiguration.getActualEndtime())) {
                     StringBuilder stringBuilder = new StringBuilder(projectStatus);
                     stringBuilder.setCharAt(2, '3');
                     projectStatus = stringBuilder.toString();
