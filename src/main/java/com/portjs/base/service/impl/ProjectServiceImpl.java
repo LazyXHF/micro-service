@@ -61,23 +61,12 @@ public class ProjectServiceImpl implements ProjectService {
             for (BusinessDictionary businessDictionary : businessDictionaries) {
                 map.put(businessDictionary.getProjectSchedule(), "0");
             }
-            if (project.getProjectStatus() != null) {
+            if (project.getProjectStatus() != null && !"".equals(project.getProjectStatus())) {
                 String[] statuss = project.getProjectStatus().split(",");
                 for (String prostatus : statuss) {
                     map.put(prostatus.substring(0, 1), prostatus.substring(2, 3));
                 }
             }
-//            List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectAll(project.getId());
-//            for (BusinessConfiguration businessConfiguration : businessConfigurations) {
-//                if (!StringUtils.isEmpty(businessConfiguration.getProjectStatus())) {
-//                    String[] statuss = businessConfiguration.getProjectStatus().split(",");
-//                    for (String prostatus : statuss) {
-//                        if (businessConfiguration.getProjectSchedule().contains(prostatus.substring(0, 1))) {
-//                            map.put(businessConfiguration.getProjectSchedule(), prostatus.substring(2, 3));
-//                        }
-//                    }
-//                }
-//            }
             project.setStatusMap(map);
         }
         page.setList(projectList);
