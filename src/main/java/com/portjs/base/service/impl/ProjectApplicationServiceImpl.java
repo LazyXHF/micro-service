@@ -8,17 +8,16 @@ import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.AcceptanceService;
 import com.portjs.base.service.ProjectApplicationService;
-import com.portjs.base.util.Code;
-import com.portjs.base.util.Page;
-import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.*;
 import com.portjs.base.util.StringUtils.StringUtils;
-import com.portjs.base.util.UserUtils;
 import org.apache.juli.logging.LogFactory;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.omg.CORBA.CODESET_INCOMPATIBLE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +30,7 @@ import java.util.*;
  **/
 @Service
 @Transactional(rollbackFor = Exception.class)
+/*@ConfigurationProperties("workflower.properties")*/
 public class ProjectApplicationServiceImpl implements ProjectApplicationService {
     Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
@@ -51,8 +51,19 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     private ProjectDeclarationMapper declarationMapper;
     @Autowired
     private BusinessConfigurationMapper configurationMapper;
+
+    @Value("${lxfgRoleId}")
+    public String lxFgRoleId;
     @Autowired
     private ProjectBudgetMapper budgetMapper;
+    @Autowired
+    private TUserMapper userMapper;
+    @Autowired
+    private TDepartmentMapper departmentMapper;
+    @Autowired
+    private TRoleMapper roleMapper;
+    @Autowired
+    private WorkflowConfig config;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResponseMessage updateProject(JSONObject requestJson) {
@@ -118,7 +129,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String pageCount=requestJson.getString("pageCount");
 
         int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
-        List<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
+        LinkedList<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
         if(alllist.isEmpty()){
             return  new ResponseMessage(Code.CODE_ERROR,"查询项目信息为空");
         }else {
@@ -128,9 +139,9 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 todoCriteria.andStatusEqualTo("0");
                 todoCriteria.andRelateddomainIdEqualTo(application.getId());
                 todoCriteria.andReceiverIdEqualTo(owneId);
-                List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
+
                 List<TWorkflowstep> tworkList= tWorkflowstepMapper.queryProjectRecords(application.getId());
-                if(tworkList!=null&&tworkList.size()>0) {
+                if(!CollectionUtils.isEmpty(tworkList)) {
                     String ownerId2 = tworkList.get(0).getActionuserId();
                     if (ownerId2.equals(owneId)) {
                         application.setIsRight("1");
@@ -140,6 +151,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                 }else {
                     application.setIsRight("0");
                 }
+                List<TTodo> tTodos = todoMapper.selectByExample(todoExample);
                 //isApprove(当前任是否是审批人 0：不是 1：是)
                 if (CollectionUtils.isEmpty(tTodos)) {
                     application.setIsApprover("0");
@@ -192,6 +204,36 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             throw new Exception("项目基本信息查询失败");
 
         }
+        TUser tUser = userMapper.selectByPrimaryKey(ownerId);
+        TDepartment tDepartment = departmentMapper.selectByPrimaryKey(tUser.getDepartmentId());
+        //status项目状态0草稿1部门负责人审核 2:分管领导审核3：技术委员会审核4：总经办审核5：规划部归档6:已完成7:提交8:退回 9:废除
+        LinkedList list = new LinkedList();
+        if(projectApplication.getStatus().equals("0")){
+            //草稿时查询部门负责人（根据当前登录人 查询当前登录人所在部门 然后查询部门对应负责人）
+
+
+            if (!StringUtils.isEmpty(tDepartment.getLeaderId())){
+                TUser user = userMapper.selectByPrimaryKey(tDepartment.getLeaderId());
+                list.add(user);
+            }
+        }else if(projectApplication.getStatus().equals("1")){
+            //部门负责人审核时查询分管领导通过角色查询人员
+
+            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxFgRoleId);
+            list.addLast(users);
+        }else if(projectApplication.getStatus().equals("2")){
+            //分管领导审核时通过角色查询所有技术委员会成员
+            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxFgRoleId);
+            list.addLast(users);
+        }else if(projectApplication.getStatus().equals("3")){
+            //技术委员会审核时通过角色查询总经办
+            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxzjbRoleId);
+            list.addLast(users);
+        }else if(projectApplication.getStatus().equals("4")){
+            //技术委员会审核时通过角色查询总经办
+            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxghbRoleId);
+            list.addLast(users);
+        }
 
         //查询申报信息
         ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
@@ -239,12 +281,31 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         }
         //待办信息查询
         List<TTodo> tTodo=todoMapper.toApprove(id,ownerId);
+
         map.put("Application",projectApplication);
         map.put("Declaration",projectDeclarations);
-
         map.put("Records",tWorkflowsteps);
         map.put("Todo",tTodo);
+        map.put("Users",list);
         return  new ResponseMessage(Code.CODE_OK,"项目信息",map);
+    }
+
+    /**
+     *新增时查询对应部门领导
+     * @param requestJson
+     * @return
+     */
+    @Override
+    public ResponseMessage selectLeader(JSONObject requestJson) {
+        String loginId = requestJson.getString("loginId");
+        TUser tUser = userMapper.selectByPrimaryKey(loginId);
+        TDepartment tDepartment = departmentMapper.selectByPrimaryKey(tUser.getDepartmentId());
+        if (!StringUtils.isEmpty(tDepartment.getLeaderId())){
+            TUser user = userMapper.selectByPrimaryKey(tDepartment.getLeaderId());
+            return new ResponseMessage(Code.CODE_OK,"查询成功",user);
+        }
+        return new ResponseMessage(Code.CODE_ERROR,"查询失败");
+
     }
 
     @Override

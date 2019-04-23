@@ -5,6 +5,7 @@ import com.portjs.base.entity.ProjectApplicationExample;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedList;
 import java.util.List;
 @Repository
 public interface ProjectApplicationMapper {
@@ -32,7 +33,7 @@ public interface ProjectApplicationMapper {
 
     int queryProjectCount(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
 
-    List<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
+    LinkedList<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
 
     int updateProject(ProjectApplication projectApplication);
 

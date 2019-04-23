@@ -54,6 +54,22 @@ public class ProjectApplicationController extends BaseController {
             return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
         }
     }
+
+    @LogInfo(methodName = "查询部门负责人",modelName = "立项管理")
+    @RequestMapping("select-leader")
+    @ResponseBody
+    public ResponseMessage selectLeader(@RequestBody String responseBody) {
+        logger.debug(TAG + "select-leader() begin");
+        try {
+            JSONObject requestJson=JSONObject.parseObject(responseBody);
+            return  applicationService.selectLeader(requestJson);
+        } catch (Exception e) {
+            return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
+        }
+    }
+
+
+
     @LogInfo(methodName = "项目人员",modelName = "立项管理")
     @RequestMapping("queryProjectPersons")
     @ResponseBody

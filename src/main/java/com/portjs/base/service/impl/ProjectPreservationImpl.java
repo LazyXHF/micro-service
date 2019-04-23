@@ -66,7 +66,6 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     @Autowired
     private BusinessConfigurationMapper configurationMapper;
 
-
     //返参信息
     public final static String PARAM_MESSAGE_1 = "未传";
     public final static String PARAM_MESSAGE_2 = "已存在";
@@ -92,6 +91,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         /*String projectName = jsonObject.getString("projectName");//项目名字*/
         String type = jsonObject.getString("type");//1立项申请 2 项目注册
 
+
         if(StringUtils.isEmpty(status)){
             /*return new ResponseMessage(Code.CODE_ERROR,"Status"+PARAM_MESSAGE_1);*/
             throw  new Exception("Status"+PARAM_MESSAGE_1);
@@ -116,11 +116,15 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         String message2="";
         //0暂存
         if(status.equals("0")){
+            projectUtils.projectMethod(application.getProjectId(),null,
+                    "A", "Aa0");
             message1="暂存失败";
             message2="更新失败";
             //暂存状态，不用接收负责人
             nextViewJSON.clear();
         }else{
+            projectUtils.projectMethod(application.getProjectId(),null,
+                    "A", "Aa2");
             application.setEnable("1");
             //提交
             if(type.equals("1")){
@@ -171,8 +175,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         if(StringUtils.isEmpty(application.getId())){
             /*String id = String.valueOf(IDUtils.genItemId());*/
             //生成一条project记录
-            projectUtils.projectMethod(application.getProjectId(),null,
-                    "A", "Aa2");
+
 
             application.setId(String.valueOf(IDUtils.genItemId()));
             application.setCreater(userId);
@@ -788,6 +791,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
 
         return list;
     }
+
+
 
     /**
      *总经办查询

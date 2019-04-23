@@ -1,6 +1,7 @@
 package com.portjs.base.service;
 
 import com.portjs.base.entity.InvestmentPlan;
+import com.portjs.base.entity.TUser;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,6 +70,4 @@ public interface ProjectPreservationService {
      * @return
      */
     ResponseMessage selectUser();
-
-
 }

@@ -763,6 +763,9 @@
     select * from t_user
   </select>
 
+  <select id="selectUserByRoleId" resultMap="BaseResultMap">
+    SELECT u.* FROM t_user u LEFT JOIN t_user_role ur ON u.`ID` = ur.`user_id` WHERE ur.`role_id` = #{rid}
+  </select>
   <select id="queryUserNameByUserId" resultType="String">
     select name_cn from t_user where id=#{actionUserId}
   </select>

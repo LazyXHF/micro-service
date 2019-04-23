@@ -1,12 +1,7 @@
 package com.portjs.base.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.portjs.base.entity.Acceptance;
 import com.portjs.base.util.ResponseMessage;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author gumingyang
@@ -38,4 +33,5 @@ public interface ProjectApplicationService {
 
     ResponseMessage abolishProject(JSONObject requestJson);
 
+    ResponseMessage selectLeader(JSONObject requestJson);
 }
