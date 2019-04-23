@@ -3,6 +3,7 @@ package com.portjs.base.controller;
 import com.portjs.base.aop.LogInfo;
 import com.portjs.base.service.TenderService;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.util.workflow.ApplicationUserConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,6 +70,8 @@ public class TenderController extends BaseController {
     @ResponseBody
     public ResponseMessage queryTender(@RequestBody String requestBody){
         try {
+
+
             logger.error(TAG+"query-tender()begin....."+requestBody);
             return tenderService.queryTender(requestBody);
         } catch (Exception e) {

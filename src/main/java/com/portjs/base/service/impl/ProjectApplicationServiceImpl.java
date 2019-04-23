@@ -10,6 +10,7 @@ import com.portjs.base.service.AcceptanceService;
 import com.portjs.base.service.ProjectApplicationService;
 import com.portjs.base.util.*;
 import com.portjs.base.util.StringUtils.StringUtils;
+import com.portjs.base.util.workflow.ApplicationUserConfig;
 import org.apache.juli.logging.LogFactory;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.omg.CORBA.CODESET_INCOMPATIBLE;
@@ -63,7 +64,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     @Autowired
     private TRoleMapper roleMapper;
     @Autowired
-    private WorkflowConfig config;
+    private ApplicationUserConfig applicationUserConfig;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResponseMessage updateProject(JSONObject requestJson) {
@@ -219,19 +220,19 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         }else if(projectApplication.getStatus().equals("1")){
             //部门负责人审核时查询分管领导通过角色查询人员
 
-            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxFgRoleId);
+            List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxfgRoleId());
             list.addLast(users);
         }else if(projectApplication.getStatus().equals("2")){
             //分管领导审核时通过角色查询所有技术委员会成员
-            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxFgRoleId);
+            List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxjswyhRoleId());
             list.addLast(users);
         }else if(projectApplication.getStatus().equals("3")){
             //技术委员会审核时通过角色查询总经办
-            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxzjbRoleId);
+            List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxzjbRoleId());
             list.addLast(users);
         }else if(projectApplication.getStatus().equals("4")){
             //技术委员会审核时通过角色查询总经办
-            List<TUser> users = tUserMapper.selectUserByRoleId(config.lxghbRoleId);
+            List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxghbRoleId());
             list.addLast(users);
         }
 
