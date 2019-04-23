@@ -28,7 +28,7 @@ public class ProjectUtils {
 
     public void projectMethod(String projectId, String projectCode, String schedule, String projectStatus) {
 
-        if ("2".equals(projectStatus.substring(2, 3))) {
+        if ("1".equals(projectStatus.substring(2, 3))) {
             BusinessConfigurationExample example = new BusinessConfigurationExample();
             BusinessConfigurationExample.Criteria criteria = example.createCriteria();
             criteria.andProjectIdEqualTo(projectId);
@@ -44,10 +44,11 @@ public class ProjectUtils {
             }
         }
         Project project = projectMapper.selectByPrimaryKey(projectId);
-        String status = project.getProjectStatus();
-        if (status == null) {
+
+        if (project.getProjectStatus() == null) {
             project.setProjectStatus(projectStatus);
         }
+        String status = project.getProjectStatus();
         //这个存放第一种情况
         StringBuffer buffer = new StringBuffer();
         //这个存放第二种情况
