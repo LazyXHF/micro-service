@@ -296,6 +296,7 @@ public class TenderServiceImpl implements TenderService {
         page.init(count,pageNum,pageCount);
         List<TenderApplication> list =  tenderApplicationMapper.selectPage(projectCode,projectName,method,supplier,bidDate,status,userId,page.getRowNum(),page.getPageCount());
 
+
         //处理操作状态
         List<TenderApplication> datalist = new ArrayList<TenderApplication>();
         list.forEach(map->{
