@@ -20,6 +20,9 @@ public class ProjectUtils {
     public void projectMethod(String projectId, String projectCode, String schedule, String projectStatus) {
 
         Project project = projectMapper.selectByPrimaryKey(projectId);
+        if (project.getProjectStatus() == null) {
+            project.setProjectStatus(projectStatus);
+        }
         String status = project.getProjectStatus();
         //这个存放第一种情况
         StringBuffer buffer = new StringBuffer();
@@ -51,6 +54,19 @@ public class ProjectUtils {
         else {
             String newStatus = buffer2.toString();
             projectMapper.updateProjectById(projectId, projectCode, schedule, newStatus);
+        }
+
+        String[] statuss = project.getProjectStatus().split(",");
+        for (String prostatus : statuss) {
+            if ("3".equals(prostatus.substring(2, 3))) {
+                project.setStatus("3");
+                break;
+            } else if ("2".equals(prostatus.substring(2, 3))) {
+                project.setStatus("2");
+            } else {
+                project.setStatus("1");
+            }
+
         }
     }
 }

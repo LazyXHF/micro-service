@@ -52,7 +52,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
     @Autowired
     private InvestmentPlanMapper planMapper;
     @Autowired
-    private ProjectAddorUpdateUtil updateUtil;
+    private ProjectUtils projectUtils;
     @Autowired
     private TRoleMapper roleMapper;
     @Autowired
@@ -171,9 +171,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         if(StringUtils.isEmpty(application.getId())){
             /*String id = String.valueOf(IDUtils.genItemId());*/
             //生成一条project记录
-            updateUtil.projectMethod(application.getProjectId(),null,application.getProjectName(),
-                    application.getProjectType(),"A",userId,application.getOrganization()
-                    ,application.getApplicationAmount().toString(),"Ab2",application.getInvestor());
+            projectUtils.projectMethod(application.getProjectId(),null,
+                    "A", "Aa2");
 
             application.setId(String.valueOf(IDUtils.genItemId()));
             application.setCreater(userId);
@@ -729,9 +728,8 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 if (agendaInsert != 1) {
                     return new ResponseMessage(Code.CODE_ERROR, "导入失败");
                 }
-                updateUtil.projectMethod(id,null,plan.getProjectName(),
-                        plan.getProjectType(),"A",loginId,plan.getOrganization(),
-                        plan.getAmount().toString(),"Aa1",plan.getInvestor());
+
+
             }
         }
         return new ResponseMessage(Code.CODE_OK, "导入成功");
