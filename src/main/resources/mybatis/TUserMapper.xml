@@ -769,4 +769,19 @@
   <select id="queryUserNameByUserId" resultType="String">
     select name_cn from t_user where id=#{actionUserId}
   </select>
+
+
+  <select id="selectUserByDidAndRids" resultMap="BaseResultMap">
+    SELECT * FROM t_user u INNER JOIN t_user_department ud ON ud.`u_id` = u.`ID` INNER JOIN t_user_role ur ON u.`ID` = ur.`user_id`
+     WHERE  1 = 1
+    <if test="did != null and did !=''">
+      AND  ud.`d_id` = #{did}
+    </if>
+
+    <if test="rid != null and rid !=''">
+      AND ur.`role_id` = #{rid}
+    </if>
+
+
+  </select>
 </mapper>

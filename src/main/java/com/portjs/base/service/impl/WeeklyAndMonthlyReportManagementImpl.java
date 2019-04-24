@@ -63,7 +63,12 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                     List<ProjectWeekly> weeklies = weeklyMapper.selectByExample(weeklyExample);
 
                     map.put("project",project);
-                    map.put("weeklies",weeklies);
+                    if(!CollectionUtils.isEmpty(weeklies)){
+                        map.put("weekly",weeklies.get(0));
+                    }else {
+                        map.put("weekly",null);
+                    }
+
                     list.add(map);
                 }
                 return new ResponseMessage(Code.CODE_OK,"查询成功",list);

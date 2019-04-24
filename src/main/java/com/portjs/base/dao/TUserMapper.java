@@ -72,7 +72,6 @@ public interface TUserMapper {
 
 
     //根据角色id和部门id查询用户
-    @Select("SELECT * FROM t_user u INNER JOIN t_user_department ud ON ud.`u_id` = u.`ID` INNER JOIN t_user_role ur ON u.`ID` = ur.`user_id` WHERE ud.`d_id` = #{did} AND ur.`role_id` = #{rid}")
     List<TUser> selectUserByDidAndRids(@Param("did") String did, @Param("rid") String rid);
 
 
