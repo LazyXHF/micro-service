@@ -253,9 +253,11 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
         declarationCriteria.andApplicationIdEqualTo(id);
         List<ProjectDeclaration> projectDeclarations = declarationMapper.selectByExample(declarationExample);
-        if(CollectionUtils.isEmpty(projectDeclarations)){
-            /*return  new ResponseMessage(Code.CODE_OK,"申报信息查询失败");*/
-            throw new Exception("申报信息查询失败");
+        if(projectApplication.getDeclareType().equals("研究开发项目")){
+            if(CollectionUtils.isEmpty(projectDeclarations)){
+                /*return  new ResponseMessage(Code.CODE_OK,"申报信息查询失败");*/
+                throw new Exception("申报信息查询失败");
+            }
         }
         if(projectApplication.getType().equals("1")){
             //查询里程碑

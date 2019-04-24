@@ -580,10 +580,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 //				}
 				if(projectApplication.getType().equals("1")){
 					//查询里程碑
-					BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
-					BusinessConfigurationExample.Criteria configurationCriteria = configurationExample.createCriteria();
-					configurationCriteria.andProjectIdEqualTo(projectId);
-					List<BusinessConfiguration> businessConfigurations = configurationMapper.selectByExample(configurationExample);
+					List<BusinessConfiguration> businessConfigurations = configurationMapper.selectBySchedule(projectId);
 					Page page=new Page();
 					//查询人员信息
 					int totalCount=projectMembersMapper.queryProjectPersonsCount(id);
