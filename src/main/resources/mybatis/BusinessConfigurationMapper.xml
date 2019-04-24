@@ -22,6 +22,7 @@
         <result column="project_node_name" property="projectNodeName" jdbcType="VARCHAR"/>
         <result column="project_status" property="projectStatus" jdbcType="VARCHAR"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -86,7 +87,7 @@
     <sql id="Base_Column_List">
     id, project_type, schedule, node, create_time, creator, Modifier, update_time, delete_time,
     project_schedule, project_id, project_node, predict_startTime, pridect_endTime, actual_startTime,
-    actual_endTime,content
+    actual_endTime,content,project_name
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
             parameterType="com.portjs.base.entity.BusinessConfigurationExample">
@@ -125,13 +126,13 @@
       Modifier, update_time, delete_time,
       project_schedule, project_id, project_node,
       predict_startTime, pridect_endTime, actual_startTime,
-      actual_endTime,content)
+      actual_endTime,content,project_name)
     values (#{id,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR},
       #{node,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR},
       #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP},
       #{projectSchedule,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectNode,jdbcType=VARCHAR},
       #{predictStarttime,jdbcType=TIMESTAMP}, #{pridectEndtime,jdbcType=TIMESTAMP}, #{actualStarttime,jdbcType=TIMESTAMP},
-      #{actualEndtime,jdbcType=TIMESTAMP},#{content,jdbcType=VARCHAR})
+      #{actualEndtime,jdbcType=TIMESTAMP},#{content,jdbcType=VARCHAR},#{projectName,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.portjs.base.entity.BusinessConfiguration">
         insert into business_configuration
@@ -187,6 +188,9 @@
             <if test="content != null">
                 content,
             </if>
+            <if test="projectName != null">
+                project_name,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -239,6 +243,9 @@
             </if>
             <if test="content != null">
                 #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="projectName != null">
+                #{projectName,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -303,6 +310,9 @@
             <if test="record.content != null">
                 content = #{record.content,jdbcType=VARCHAR},
             </if>
+            <if test="record.projectName != null">
+                project_name = #{record.projectName,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -326,7 +336,8 @@
         pridect_endTime = #{record.pridectEndtime,jdbcType=TIMESTAMP},
         actual_startTime = #{record.actualStarttime,jdbcType=TIMESTAMP},
         actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP},
-        content = #{record.content,jdbcType=VARCHAR}
+        content = #{record.content,jdbcType=VARCHAR},
+        project_name = #{record.projectName,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -382,6 +393,9 @@
             <if test="content != null">
                 content = #{content,jdbcType=VARCHAR},
             </if>
+            <if test="projectName != null">
+                project_name = #{projectName,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
@@ -402,7 +416,8 @@
       pridect_endTime = #{pridectEndtime,jdbcType=TIMESTAMP},
       actual_startTime = #{actualStarttime,jdbcType=TIMESTAMP},
       actual_endTime = #{actualEndtime,jdbcType=TIMESTAMP},
-      content = #{content,jdbcType=VARCHAR}
+      content = #{content,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
