@@ -2,6 +2,8 @@ package com.portjs.base.controller;
 
 import java.util.List;
 
+import com.portjs.base.exception.UnifiedExceptionHandler;
+import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +29,9 @@ import com.portjs.base.util.ResponseMessage;
 @RestController
 @RequestMapping("/downloadSoftware")
 public class DownloadSoftwareController extends BaseController{
-	
+
+	ResponseMessage responseMessage = null;
+
 	static final String tag = "DownloadDocumentController======";
 	@Autowired
 	private DownloadSoftwareService DownloadSoftwareService;
@@ -39,17 +43,11 @@ public class DownloadSoftwareController extends BaseController{
 	@LogInfo(methodName = "展示所有软件")
 	@RequestMapping("/selectAllSoftware")
 	@ResponseBody
-	public ResponseMessage selectAllSoftware(){
+	public ResponseMessage selectAllSoftware(@RequestBody PageVo pageVo){
 		logger.debug(tag+"selectAllSoftware() begin===>");
-		try{
-			List<TXietongSoftware> selectAllSoftware = DownloadSoftwareService.selectAllSoftware();
-			return new ResponseMessage(Code.CODE_OK ,"success",selectAllSoftware);
-		}catch(Exception e){
-			e.printStackTrace();
-			logger.error(tag+"selectAllSoftware() end===>"+e);
-			return new ResponseMessage(Code.CODE_ERROR ,"error","未知异常");
-		}
-		
+		UnifiedExceptionHandler.method = tag + "selectAllSoftware()==================================>" ;
+		responseMessage = DownloadSoftwareService.selectAllSoftware(pageVo);
+		return responseMessage;
 	}
 
 	/**

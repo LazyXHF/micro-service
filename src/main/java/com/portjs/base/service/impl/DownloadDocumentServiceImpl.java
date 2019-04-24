@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.portjs.base.entity.TUser;
+import com.portjs.base.util.Page;
+import com.portjs.base.vo.PageVo;
+import com.portjs.base.vo.UserRoleDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,22 +25,25 @@ import com.portjs.base.util.Upload;
 @Transactional
 public class DownloadDocumentServiceImpl implements DownloadDocumentService{
 
-	
+
 	@Autowired
 	private TXietongDocModelMapper tXietongDocModelMapper;
 	@Autowired
 	private Upload upload;
-	
+
 	//展示所有未删除模板文件
 	@Override
-	public List<TXietongDocModel> selectAllDocument() {
-		
-		TXietongDocModelExample example = new TXietongDocModelExample();
-		Criteria createCriteria = example.createCriteria();
-		createCriteria.andIsdeleteEqualTo(1);
-		return  tXietongDocModelMapper.selectByExample(example );
+	public ResponseMessage selectAllDocument(PageVo pageVo) {
+
+		Page<TXietongDocModel> page = new Page<>();
+		int total = tXietongDocModelMapper.selectCounts();
+		page.init(total,pageVo.getPageNo(),pageVo.getPageSize());
+		List<TXietongDocModel> list = tXietongDocModelMapper.queryDocModelByPage(page.getRowNum(),page.getPageCount());
+		page.setList(list);
+
+		return  new ResponseMessage(Code.CODE_OK,"查询成功！",page);
 	}
-	
+
 	//新增文档模板
 	@Override
 	public ResponseMessage insertDocument(String filePath, String docName,String docDescription) {
@@ -46,8 +53,8 @@ public class DownloadDocumentServiceImpl implements DownloadDocumentService{
 		if("1".equals(flieUrl)){
 			return new ResponseMessage(Code.CODE_STOP ,"stop","上传失败");
 		}*/
-		
-		
+
+
 		TXietongDocModel tXietongDocModel = new TXietongDocModel();
 		tXietongDocModel.setId(UUID.randomUUID().toString());
 		tXietongDocModel.setDownloadPath(filePath);
@@ -56,7 +63,7 @@ public class DownloadDocumentServiceImpl implements DownloadDocumentService{
 		tXietongDocModel.setDownloadTimes(0);
 		tXietongDocModel.setIsdelete(1);
 		tXietongDocModel.setCreatetime(new Date());
-		
+
 		int status = tXietongDocModelMapper.insert(tXietongDocModel);
 		if(status>0){
 			return new ResponseMessage(Code.CODE_OK ,"success","保存成功");

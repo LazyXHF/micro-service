@@ -29,4 +29,17 @@ public interface TXietongDocModelMapper {
     int updateByPrimaryKeySelective(TXietongDocModel record);
 
     int updateByPrimaryKey(TXietongDocModel record);
+
+    /**
+     * 分页
+     * @return
+     */
+    List<TXietongDocModel> queryDocModelByPage(@Param("pageNo")int pageNo, @Param("pageSize")int pageSize);
+
+    /**
+     * 统计
+     * @return
+     */
+    int selectCounts();
+
 }
