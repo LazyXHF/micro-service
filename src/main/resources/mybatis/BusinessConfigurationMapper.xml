@@ -471,7 +471,7 @@
     </select>
 
     <select id="selectBySchedule" resultMap="BaseResultMap">
-        SELECT DISTINCT(a.project_schedule) FROM business_configuration a
-        where a.project_id =#{projectId,jdbcType=VARCHAR}
+        SELECT * FROM business_configuration a
+        where a.project_id =#{projectId,jdbcType=VARCHAR} GROUP BY project_schedule
     </select>
 </mapper>
