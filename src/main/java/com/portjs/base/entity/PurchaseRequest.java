@@ -1,5 +1,7 @@
 package com.portjs.base.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,6 +24,7 @@ public class PurchaseRequest implements Serializable {
 
     private String agency;//代理机构
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date applyDate;//申请时间
 
     private BigDecimal amount;//采购预算

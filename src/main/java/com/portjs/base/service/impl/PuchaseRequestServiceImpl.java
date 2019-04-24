@@ -69,7 +69,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
      */
     @Override
     public ResponseMessage insertPurchaseRequestSelective(String responseBody) {
-        com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(responseBody);
+        JSONObject jsonObject = JSONObject.parseObject(responseBody);
         //申请单
         //这是前段传过来的id  如果这个id存在说明已经暂存过  进行更新  如果为null 说明是新增
         String id = jsonObject.getString("id");
