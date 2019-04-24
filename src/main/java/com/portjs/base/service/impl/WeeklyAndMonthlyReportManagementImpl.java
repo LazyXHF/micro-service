@@ -74,6 +74,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                 }
                 return new ResponseMessage(Code.CODE_OK,"查询成功",list);
             }
+            return new ResponseMessage(Code.CODE_ERROR,"暂无数据");
         }
         return new ResponseMessage(Code.CODE_ERROR,"当前登录人不是项目经理");
     }
