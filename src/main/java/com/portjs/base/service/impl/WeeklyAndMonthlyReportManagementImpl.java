@@ -49,6 +49,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
             projectExample.setOrderByClause("create_time");
             ProjectExample.Criteria projectCriteria = projectExample.createCriteria();
             projectCriteria.andBackUp1EqualTo(UserId);
+            projectCriteria.andStatusNotEqualTo("1");
             List<Project> projectList = projectMapper.selectByExample(projectExample);
             LinkedList list = new LinkedList();
             if(!CollectionUtils.isEmpty(projectList)){
