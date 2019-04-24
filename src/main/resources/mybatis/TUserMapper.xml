@@ -782,6 +782,5 @@
       AND ur.`role_id` = #{rid}
     </if>
 
-
   </select>
 </mapper>
