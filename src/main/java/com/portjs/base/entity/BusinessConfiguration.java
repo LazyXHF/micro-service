@@ -41,6 +41,16 @@ public class BusinessConfiguration {
 
     private String projectStatus;
 
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getProNode() {
         return proNode;
     }

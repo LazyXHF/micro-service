@@ -21,6 +21,7 @@
         <result column="pro_node" property="proNode" jdbcType="VARCHAR"/>
         <result column="project_node_name" property="projectNodeName" jdbcType="VARCHAR"/>
         <result column="project_status" property="projectStatus" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -85,7 +86,7 @@
     <sql id="Base_Column_List">
     id, project_type, schedule, node, create_time, creator, Modifier, update_time, delete_time,
     project_schedule, project_id, project_node, predict_startTime, pridect_endTime, actual_startTime,
-    actual_endTime
+    actual_endTime,content
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
             parameterType="com.portjs.base.entity.BusinessConfigurationExample">
@@ -124,13 +125,13 @@
       Modifier, update_time, delete_time,
       project_schedule, project_id, project_node,
       predict_startTime, pridect_endTime, actual_startTime,
-      actual_endTime)
+      actual_endTime,content)
     values (#{id,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR},
       #{node,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR},
       #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP},
       #{projectSchedule,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectNode,jdbcType=VARCHAR},
       #{predictStarttime,jdbcType=TIMESTAMP}, #{pridectEndtime,jdbcType=TIMESTAMP}, #{actualStarttime,jdbcType=TIMESTAMP},
-      #{actualEndtime,jdbcType=TIMESTAMP})
+      #{actualEndtime,jdbcType=TIMESTAMP},#{content,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.portjs.base.entity.BusinessConfiguration">
         insert into business_configuration
@@ -183,6 +184,9 @@
             <if test="actualEndtime != null">
                 actual_endTime,
             </if>
+            <if test="content != null">
+                content,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -232,6 +236,9 @@
             </if>
             <if test="actualEndtime != null">
                 #{actualEndtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -293,6 +300,9 @@
             <if test="record.actualEndtime != null">
                 actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP},
             </if>
+            <if test="record.content != null">
+                content = #{record.content,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -315,7 +325,8 @@
         predict_startTime = #{record.predictStarttime,jdbcType=TIMESTAMP},
         pridect_endTime = #{record.pridectEndtime,jdbcType=TIMESTAMP},
         actual_startTime = #{record.actualStarttime,jdbcType=TIMESTAMP},
-        actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP}
+        actual_endTime = #{record.actualEndtime,jdbcType=TIMESTAMP},
+        content = #{record.content,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -368,6 +379,9 @@
             <if test="actualEndtime != null">
                 actual_endTime = #{actualEndtime,jdbcType=TIMESTAMP},
             </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
@@ -387,7 +401,8 @@
       predict_startTime = #{predictStarttime,jdbcType=TIMESTAMP},
       pridect_endTime = #{pridectEndtime,jdbcType=TIMESTAMP},
       actual_startTime = #{actualStarttime,jdbcType=TIMESTAMP},
-      actual_endTime = #{actualEndtime,jdbcType=TIMESTAMP}
+      actual_endTime = #{actualEndtime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 

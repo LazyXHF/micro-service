@@ -119,6 +119,8 @@ public class ProjectUtils {
 
         BusinessConfiguration businessConfiguration = businessConfigurationMapper.selectByprostatus(projectStatus.substring(0, 1),
                 projectId, projectStatus.substring(0, 2));
-        businessConfiguration.setNode(projectStatus);
+        if (businessConfiguration != null) {
+            businessConfiguration.setNode(projectStatus);
+        }
     }
 }
