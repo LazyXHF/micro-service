@@ -1,9 +1,11 @@
 package com.portjs.base.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class TDepartment {
+public class TDepartment implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String id;
 
     private String name;
