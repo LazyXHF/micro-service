@@ -208,19 +208,27 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         LinkedList list = new LinkedList();
         if(projectApplication.getStatus().equals("0")){
             //部门负责人审核时查询分管领导通过角色查询人员
-            TUserExample tUserExample = new TUserExample();
-            TUserExample.Criteria criteria = tUserExample.createCriteria();
-            criteria.andDepartmentIdEqualTo(tDepartment.getId());
-            List<TUser> tUsers = userMapper.selectByExample(tUserExample);
-            for (TUser user :tUsers ) {
-                if(user.getDuty().equals("分管领导")){
-                    list.add(user);
-                    break;
-                }
-            }
-        }else if(projectApplication.getStatus().equals("2")){
+//            TUserExample tUserExample = new TUserExample();
+//            TUserExample.Criteria criteria = tUserExample.createCriteria();
+//            criteria.andDepartmentIdEqualTo(tDepartment.getId());
+//            List<TUser> tUsers = userMapper.selectByExample(tUserExample);
+//            for (TUser user :tUsers ) {
+//                if(user.getDuty().equals("分管领导")){
+//                    list.add(user);
+//                    break;
+//                }
+//            }
+            List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxjswyhRoleId());
+            list.add(users.get(0));
+        }else if(projectApplication.getStatus().equals("2")&&("1").equals(projectApplication.getType())){
             //分管领导审核时通过角色查询所有技术委员会成员
             List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxjswyhRoleId());
+            for (TUser user :users ) {
+                list.add(user);
+            }
+        }else if(projectApplication.getStatus().equals("2")&&("2").equals(projectApplication.getType())){
+            //技术委员会审核时通过角色查询总经办
+            List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxghbRoleId());
             for (TUser user :users ) {
                 list.add(user);
             }
