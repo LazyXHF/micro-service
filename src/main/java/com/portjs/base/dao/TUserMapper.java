@@ -77,4 +77,8 @@ public interface TUserMapper {
 
     UserRoleDO selectUserAndRoleAndDepartmentByUids(@Param("uid") String rid);
 
+    //一人多部门查询
+//    @Select("SELECT u.* FROM t_user u LEFT JOIN t_user_department ud ON u.`ID` = ud.`u_id`  WHERE ud.`d_id` = #{did}")
+    List<TUser> selectUserByUD(String did);
+
 }

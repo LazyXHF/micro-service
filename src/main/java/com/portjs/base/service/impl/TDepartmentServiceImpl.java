@@ -214,7 +214,7 @@ public class TDepartmentServiceImpl implements TDepartmentService {
 
         //将该部门下的用户加入到部门下
         for (int i=0;i<departmentTrees.size();i++){
-            List<TUser> users = selectUsersByDepartmentId(departmentTrees.get(i).getId());
+            List<TUser> users = userMapper.selectUserByUD(departmentTrees.get(i).getId());
             departmentTrees.get(i).setUserList(users);
         }
         DepartmentTree departmentTree = new DepartmentTree();
