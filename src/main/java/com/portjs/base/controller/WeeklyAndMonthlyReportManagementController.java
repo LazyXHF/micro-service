@@ -4,7 +4,7 @@ import com.portjs.base.aop.LogInfo;
 import com.portjs.base.entity.Project;
 import com.portjs.base.entity.ProjectWeekly;
 import com.portjs.base.exception.UnifiedExceptionHandler;
-import com.portjs.base.service.TUserService;
+
 import com.portjs.base.service.WeeklyAndMonthlyReportManagementService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
@@ -12,6 +12,10 @@ import com.portjs.base.util.poi.ExcelUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,13 +24,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by dengshuangzhen on 2019\4\23 0023
- * 周报月报管理
+ * 周报管理
  */
 @RestController
 @RequestMapping("WeeklyAndMonthlyReportManagement")
@@ -34,11 +38,10 @@ import java.util.Map;
 public class WeeklyAndMonthlyReportManagementController extends BaseController  {
     static  final String tag = "UserController======>";
     private ResponseMessage responseMessage;
+//    @Value("@{web.excel-path}")
+    private String excelPath;
     @Autowired
     private WeeklyAndMonthlyReportManagementService weeklyAndMonthlyReportManagementService;
-
-
-
 
     @LogInfo(methodName = "周报详情查询",modelName = "周报月报管理模块")
     @RequestMapping("select-weekly-details")
@@ -114,13 +117,13 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
                 content[i][0] = project.getProjectType();
                 content[i][1] = project.getProjectCode();
                 content[i][2] = project.getProjectName();
-                if(project.getStatus().equals(0)){
+                if(project.getStatus().equals("0")){
                     content[i][3] ="未完成";
-                }else if(project.getStatus().equals(1)){
+                }else if(project.getStatus().equals("1")){
                     content[i][3] ="已完成";
-                }else if(project.getStatus().equals(2)){
+                }else if(project.getStatus().equals("2")){
                     content[i][3] ="进行中";
-                }else if(project.getStatus().equals(3)){
+                }else if(project.getStatus().equals("3")){
                     content[i][3] ="延期";
                 }
 
@@ -138,7 +141,14 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
             }
             //创建HSSFWorkbook
             String basePath = request.getSession().getServletContext().getRealPath("/");
-            String excel = basePath + "/excel/项目周报表.xls";
+            File file = new File("");
+            Resource resource = new ClassPathResource("/excel/项目周报表.xls");
+            File file1 = resource.getFile();
+//            String excel = excelPath+file.separator+"mgt-contrl-platform"+file.separator+"src"+file.separator+"main"+file.separator+"resources"+file.separator+"excel"+file.separator+"项目周报表.xls";
+            /*String excel = basePath + "/excel/项目周报表.xls";*/
+
+            String excel = file1.getAbsolutePath();
+
             File fi = new File(excel);
             POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(fi));
             // 读取excel模板
