@@ -60,6 +60,17 @@ private TUserDepartmentMapper userDepartmentMapper;
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserUtils.USER_NAME_ACCOUNT = s;
+
+        TUserExample example = new TUserExample();
+        TUserExample.Criteria criteria = example.createCriteria();
+        criteria.andLoginAccountEqualTo(s);
+        List<TUser> users = userMapper.selectByExample(example);
+
+        if (!CollectionUtils.isEmpty(users)){
+            List<TDepartment> departments = departmentMapper.selectDepartmentByUid(users.get(0).getId());
+        }
+
+//        userList.get(i).setDepartments(departments);
         TUser user = userMapper.loginUserByAccount(s);
         user.setPasswdWrongCount(0);
         return user;
