@@ -52,6 +52,9 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
         } catch (Exception e) {
             return new ResponseMessage(Code.CODE_ERROR,e.getMessage());
         }
+
+
+
         return responseMessage;
     }
 
