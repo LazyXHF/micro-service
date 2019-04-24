@@ -86,10 +86,11 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
      */
     @Override
     public ResponseMessage submissionWeeklyDetails(String requestBody) {
-        JSONObject jsonObject = JSONObject.parseObject(requestBody);
-        JSONArray weeklyJSON = jsonObject.getJSONArray("WeeklyJSON");
-        if(!CollectionUtils.isEmpty(weeklyJSON)){
-            for (Object weekly : weeklyJSON) {
+        JSONArray objects = JSONArray.parseArray(requestBody);
+        /*JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        JSONArray weeklyJSON = jsonObject.getJSONArray("WeeklyJSON");*/
+        if(!CollectionUtils.isEmpty(objects)){
+            for (Object weekly : objects) {
                 ProjectWeekly projectWeekly = JSONObject.toJavaObject((JSONObject)weekly, ProjectWeekly.class);
                 //判断是否是更新还是新增
                 if(StringUtils.isEmpty(projectWeekly.getId())){
