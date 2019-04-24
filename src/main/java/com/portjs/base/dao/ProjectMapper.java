@@ -86,9 +86,11 @@ public interface ProjectMapper {
 
     String selectByStatus();
 
-    int selectapplicationByYear(String toString);
+    int selectapplicationByYearError(String toString);
 
     List<String> queryYears();
 
     List<Project> queryNotInproject();
+
+    List<Project> selectapplicationByYear(String toString);
 }

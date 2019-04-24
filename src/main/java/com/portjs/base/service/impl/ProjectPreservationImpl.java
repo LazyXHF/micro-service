@@ -119,14 +119,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         //0暂存
         if(status.equals("0")){
             projectUtils.projectMethod(application.getProjectId(),null,
-                    "A", "Aa0");
+                    "A", "Aa0",application.getApplicationAmount().toString());
             message1="暂存失败";
             message2="更新失败";
             //暂存状态，不用接收负责人
             nextViewJSON.clear();
         }else{
             projectUtils.projectMethod(application.getProjectId(),null,
-                    "A", "Aa2");
+                    "A", "Aa2",application.getApplicationAmount().toString());
             application.setEnable("1");
             //提交
             if(type.equals("1")){
@@ -197,22 +197,24 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 throw  new Exception("操作失败");
             }
         }
-        //新增申报信息 先删除后增加
-        ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
-        ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
-        declarationCriteria.andApplicationIdEqualTo(application.getId());
-        declarationMapper.deleteByExample(declarationExample);
-        //增加申报信息
-        ProjectDeclaration declaration = JSONObject.toJavaObject(declarationJSON, ProjectDeclaration.class);
-        declaration.setId(String.valueOf(IDUtils.genItemId()));
-        declaration.setCreateTime(new Date());
-        declaration.setApplicationId(application.getId());
-        declaration.setProjectId(application.getProjectId());
-        declaration.setCreator(userId);
-        int i2 = declarationMapper.insertSelective(declaration);
-        if(i2<=0){
-                /*return new ResponseMessage(Code.CODE_ERROR,message2);*/
-            throw  new Exception("操作失败");
+        if(application.getDeclareType().equals("研究开发项目")){
+            //新增申报信息 先删除后增加
+            ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
+            ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
+            declarationCriteria.andApplicationIdEqualTo(application.getId());
+            declarationMapper.deleteByExample(declarationExample);
+            //增加申报信息
+            ProjectDeclaration declaration = JSONObject.toJavaObject(declarationJSON, ProjectDeclaration.class);
+            declaration.setId(String.valueOf(IDUtils.genItemId()));
+            declaration.setCreateTime(new Date());
+            declaration.setApplicationId(application.getId());
+            declaration.setProjectId(application.getProjectId());
+            declaration.setCreator(userId);
+            int i2 = declarationMapper.insertSelective(declaration);
+            if(i2<=0){
+                    /*return new ResponseMessage(Code.CODE_ERROR,message2);*/
+                throw  new Exception("操作失败");
+            }
         }
         if(type.equals("1")){
             //新增人员 先删除后增加
