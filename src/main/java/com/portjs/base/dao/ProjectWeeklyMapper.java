@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.ProjectWeekly;
 import com.portjs.base.entity.ProjectWeeklyExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ProjectWeeklyMapper {
     int countByExample(ProjectWeeklyExample example);
 

@@ -291,6 +291,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                     configuration.setId(String.valueOf(IDUtils.genItemId()));
                     configuration.setCreator(userId);
                     configuration.setProjectId(application.getProjectId());
+                    configuration.setProjectName(application.getProjectName());
                     configuration.setProjectNode(businessDictionary.getProjectNode());
                     configuration.setCreateTime(new Date());
                     int num = configurationMapper.insertSelective(configuration);

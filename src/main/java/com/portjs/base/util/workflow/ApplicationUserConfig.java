@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:workflower.properties")
 @Data
 public class ApplicationUserConfig extends BaseEntity {
-    private String lxfgRoleId;
+    private String lxghbfgRoleId;
+    private String lxkfbfgldRoleId;
     private String lxjswyhRoleId;
     private String lxzjbRoleId;
     private String lxghbRoleId;

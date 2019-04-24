@@ -52,9 +52,6 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     private ProjectDeclarationMapper declarationMapper;
     @Autowired
     private BusinessConfigurationMapper configurationMapper;
-
-    @Value("${lxfgRoleId}")
-    public String lxFgRoleId;
     @Autowired
     private ProjectBudgetMapper budgetMapper;
     @Autowired
@@ -210,30 +207,35 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         //status项目状态0草稿1部门负责人审核 2:分管领导审核3：技术委员会审核4：总经办审核5：规划部归档6:已完成7:提交8:退回 9:废除
         LinkedList list = new LinkedList();
         if(projectApplication.getStatus().equals("0")){
-            //草稿时查询部门负责人（根据当前登录人 查询当前登录人所在部门 然后查询部门对应负责人）
-
-
-            if (!StringUtils.isEmpty(tDepartment.getLeaderId())){
-                TUser user = userMapper.selectByPrimaryKey(tDepartment.getLeaderId());
-                list.add(user);
-            }
-        }else if(projectApplication.getStatus().equals("1")){
             //部门负责人审核时查询分管领导通过角色查询人员
-
-            List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxfgRoleId());
-            list.addLast(users);
+            TUserExample tUserExample = new TUserExample();
+            TUserExample.Criteria criteria = tUserExample.createCriteria();
+            criteria.andDepartmentIdEqualTo(tDepartment.getId());
+            List<TUser> tUsers = userMapper.selectByExample(tUserExample);
+            for (TUser user :tUsers ) {
+                if(user.getDuty().equals("分管领导")){
+                    list.add(user);
+                    break;
+                }
+            }
         }else if(projectApplication.getStatus().equals("2")){
             //分管领导审核时通过角色查询所有技术委员会成员
             List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxjswyhRoleId());
-            list.addLast(users);
+            for (TUser user :users ) {
+                list.add(user);
+            }
         }else if(projectApplication.getStatus().equals("3")){
             //技术委员会审核时通过角色查询总经办
             List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxzjbRoleId());
-            list.addLast(users);
+            for (TUser user :users ) {
+                list.add(user);
+            }
         }else if(projectApplication.getStatus().equals("4")){
             //技术委员会审核时通过角色查询总经办
             List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxghbRoleId());
-            list.addLast(users);
+            for (TUser user :users ) {
+                list.add(user);
+            }
         }
 
         //查询申报信息
@@ -298,9 +300,15 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String loginId = requestJson.getString("loginId");
         TUser tUser = userMapper.selectByPrimaryKey(loginId);
         TDepartment tDepartment = departmentMapper.selectByPrimaryKey(tUser.getDepartmentId());
-        if (!StringUtils.isEmpty(tDepartment.getLeaderId())){
-            TUser user = userMapper.selectByPrimaryKey(tDepartment.getLeaderId());
-            return new ResponseMessage(Code.CODE_OK,"查询成功",user);
+        //部门负责人审核时查询分管领导通过角色查询人员
+        TUserExample tUserExample = new TUserExample();
+        TUserExample.Criteria criteria = tUserExample.createCriteria();
+        criteria.andDepartmentIdEqualTo(tDepartment.getId());
+        List<TUser> tUsers = userMapper.selectByExample(tUserExample);
+        for (TUser user :tUsers ) {
+            if(user.getDuty().equals("分管领导")){
+                return new ResponseMessage(Code.CODE_OK,"查询成功",user);
+            }
         }
         return new ResponseMessage(Code.CODE_ERROR,"查询失败");
 
