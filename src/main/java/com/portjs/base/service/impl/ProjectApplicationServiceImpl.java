@@ -219,7 +219,9 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
 //                }
 //            }
             List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxjswyhRoleId());
-            list.add(users.get(0));
+            for (TUser user :users ) {
+                list.add(user);
+            }
         }else if(projectApplication.getStatus().equals("2")&&("1").equals(projectApplication.getType())){
             //分管领导审核时通过角色查询所有技术委员会成员
             List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxjswyhRoleId());
@@ -322,7 +324,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
        /* for (TUser user :users ) {
             list.add(user);
         }*/
-        return new ResponseMessage(Code.CODE_OK,"查询成功",users.get(0));
+        return new ResponseMessage(Code.CODE_OK,"查询成功",users);
 
     }
 
