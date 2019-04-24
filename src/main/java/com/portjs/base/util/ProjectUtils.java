@@ -121,6 +121,7 @@ public class ProjectUtils {
                 projectId, projectStatus.substring(0, 2));
         if (businessConfiguration != null) {
             businessConfiguration.setNode(projectStatus);
+            businessConfigurationMapper.updateByPrimaryKeySelective(businessConfiguration);
         }
     }
 }

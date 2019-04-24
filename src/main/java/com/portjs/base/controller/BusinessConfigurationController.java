@@ -27,12 +27,12 @@ public class BusinessConfigurationController extends BaseController {
     @RequestMapping("/select_BusinessConfiguration_ById")
     public ResponseMessage selectBusinessConfigurationById(@RequestBody String requestBody) {
         logger.debug("select_BusinessConfiguration_ById()begin......" + requestBody);
-//        try {
+        try {
             return businessConfigurationService.selectBusinessConfigurationById(requestBody);
-//        } catch (Exception e) {
-//            logger.error("select_BusinessConfiguration_ById()error....", e);
-//            throw new RuntimeException();
-//        }
-
+        } catch (Exception e) {
+            logger.error("select_BusinessConfiguration_ById()error....", e);
+            throw new RuntimeException();
+        }
     }
+
 }
