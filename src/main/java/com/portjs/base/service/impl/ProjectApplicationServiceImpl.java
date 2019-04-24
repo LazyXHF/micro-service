@@ -206,7 +206,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         TDepartment tDepartment = departmentMapper.selectByPrimaryKey(tUser.getDepartmentId());
         //status项目状态0草稿1部门负责人审核 2:分管领导审核3：技术委员会审核4：总经办审核5：规划部归档6:已完成7:提交8:退回 9:废除
         LinkedList list = new LinkedList();
-        if(projectApplication.getStatus().equals("0")){
+        if(projectApplication.getStatus().equals("0")||projectApplication.getStatus().equals("8")){
             //部门负责人审核时查询分管领导通过角色查询人员
 //            TUserExample tUserExample = new TUserExample();
 //            TUserExample.Criteria criteria = tUserExample.createCriteria();
