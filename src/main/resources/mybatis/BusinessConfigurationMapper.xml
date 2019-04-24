@@ -472,6 +472,6 @@
 
     <select id="selectBySchedule" resultMap="BaseResultMap">
         SELECT DISTINCT(a.project_schedule) FROM business_configuration a
-        where a.project_id =#{projectNode,jdbcType=VARCHAR}
+        where a.project_id =#{projectId,jdbcType=VARCHAR}
     </select>
 </mapper>
