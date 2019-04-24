@@ -139,6 +139,7 @@
     <if test="status != null and status!=''">
       and pr.status like concat('%',#{status},'%')
     </if>
+
     order by pr.create_time DESC   LIMIT  #{pageNo},#{pageSize}
   </select>
   <select id="purchaseRequestCounts" resultType="Integer">
