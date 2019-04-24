@@ -19,7 +19,7 @@ public class TUser implements UserDetails {
 
     private String loginAccount;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String loginPassword;
 
     private String loginName;
@@ -33,15 +33,15 @@ public class TUser implements UserDetails {
     private Integer sort;
 
     private Integer status;
-    @JsonIgnore
+//    @JsonIgnore
     private Date lastLoginTime;
-    @JsonIgnore
+//    @JsonIgnore
     private Date lastUpdPasswdTime;
-    @JsonIgnore
+//    @JsonIgnore
     private Integer passwordModifyCycle;
-    @JsonIgnore
+//    @JsonIgnore
     private String historyPassword;
-    @JsonIgnore
+//    @JsonIgnore
     private Integer passwdWrongCount;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -61,6 +61,9 @@ public class TUser implements UserDetails {
 
 
 
+
+
+    private List<TDepartment> departments;
 
 
 
@@ -85,6 +88,15 @@ public class TUser implements UserDetails {
     private String reserved10;
 
     private String nameCn;
+
+
+    public List<TDepartment> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<TDepartment> departments) {
+        this.departments = departments;
+    }
 
     public List<TUser> getUsers() {
         return users;

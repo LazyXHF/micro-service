@@ -641,10 +641,10 @@
   </resultMap>
 
   <select id="loginUserByAccount" resultMap="loginUserByAccount">
-    SELECT u.*,r.*,u.`ID` AS uid, r.`id` AS rid ,u.`STATUS` AS ustatus, r.`status` AS rstatus  ,d.`NAME` AS departmentName FROM t_user u
+    SELECT u.*,r.*,u.`ID` AS uid, r.`id` AS rid ,u.`STATUS` AS ustatus, r.`status` AS rstatus   FROM t_user u
     LEFT JOIN t_user_role ur ON ur.`user_id` = u.`ID`
     INNER JOIN t_role r ON ur.`role_id` = r.`id`
-    INNER JOIN t_department d ON d.`ID` = u.`DEPARTMENT_ID`
+--     INNER JOIN t_department d ON d.`ID` = u.`DEPARTMENT_ID`
     AND u.`login_account` = #{account}
   </select>
 
