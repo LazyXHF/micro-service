@@ -600,6 +600,16 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					map.put("Budget",projectBudgets);
 					map.put("Files",internalAttachments);
 				}
+				//查询历史记录
+				List<TWorkflowstep> tWorkflowsteps=tWorkflowstepMapper.queryProjectRecords(id);
+				if(!CollectionUtils.isEmpty(tWorkflowsteps)){
+					for(TWorkflowstep tWorkflowstep:tWorkflowsteps){
+						String actionUserId=tWorkflowstep.getActionuserId();
+						String userName=tUserMapper.queryUserNameByUserId(actionUserId);
+						tWorkflowstep.setUserName(userName);
+					}
+				}
+				map.put("Records",tWorkflowsteps);
 				map.put("Application",projectApplication);
 				map.put("Declaration",projectDeclarations);
 				return  new ResponseMessage(Code.CODE_OK, MessageUtils.SUCCESS,map);

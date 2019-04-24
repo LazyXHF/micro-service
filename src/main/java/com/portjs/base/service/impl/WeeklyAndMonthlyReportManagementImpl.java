@@ -86,27 +86,27 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
      */
     @Override
     public ResponseMessage submissionWeeklyDetails(String requestBody) {
-        JSONArray objects = JSONArray.parseArray(requestBody);
-        /*JSONObject jsonObject = JSONObject.parseObject(requestBody);
-        JSONArray weeklyJSON = jsonObject.getJSONArray("WeeklyJSON");*/
-        if(!CollectionUtils.isEmpty(objects)){
-            for (Object weekly : objects) {
-                ProjectWeekly projectWeekly = JSONObject.toJavaObject((JSONObject)weekly, ProjectWeekly.class);
+        JSONObject jsonObject = JSONObject.parseObject(requestBody);
+        JSONArray weeklyJSON = jsonObject.getJSONArray("WeeklyJSON");
+        if(!CollectionUtils.isEmpty(weeklyJSON)){
+            for (int i =0;i<weeklyJSON.size();i++) {
+                JSONObject object = weeklyJSON.getJSONObject(i);
+                ProjectWeekly projectWeekly = JSONObject.toJavaObject(object, ProjectWeekly.class);
                 //判断是否是更新还是新增
                 if(StringUtils.isEmpty(projectWeekly.getId())){
                     projectWeekly.setId(String.valueOf(IDUtils.genItemId()));
                     projectWeekly.setCreateTime(new Date());
 
-                    int i = weeklyMapper.insertSelective(projectWeekly);
-                    if(i!=1){
+                    int p = weeklyMapper.insertSelective(projectWeekly);
+                    if(p!=1){
                         return new ResponseMessage(Code.CODE_ERROR,"新增失败");
                     }
                     return new ResponseMessage(Code.CODE_OK,"新增成功");
                 }else {
                     projectWeekly.setUpdateTime(new Date());
 
-                    int i = weeklyMapper.updateByPrimaryKeySelective(projectWeekly);
-                    if(i!=1){
+                    int k = weeklyMapper.updateByPrimaryKeySelective(projectWeekly);
+                    if(k!=1){
                         return new ResponseMessage(Code.CODE_ERROR,"修改失败");
                     }
                     return new ResponseMessage(Code.CODE_OK,"修改成功");
