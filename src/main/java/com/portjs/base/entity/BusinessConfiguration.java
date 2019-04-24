@@ -1,5 +1,7 @@
 package com.portjs.base.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class BusinessConfiguration {
@@ -11,14 +13,15 @@ public class BusinessConfiguration {
 
     private String node;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
 
     private String creator;
 
     private String modifier;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updateTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date deleteTime;
 
     private String projectSchedule;
@@ -26,13 +29,13 @@ public class BusinessConfiguration {
     private String projectId;
 
     private String projectNode;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date predictStarttime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date pridectEndtime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date actualStarttime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date actualEndtime;
 
     private String proNode;

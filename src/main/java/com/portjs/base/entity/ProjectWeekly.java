@@ -5,37 +5,37 @@ import java.util.Date;
 public class ProjectWeekly {
     private String id;
 
-    private String projectId;
+    private String projectId;//项目id
 
-    private String projectType;
+    private String projectType;//项目类型
 
-    private String leval;
+    private String leval;//项目等级
 
-    private String status;
+    private String status;//项目状态
 
-    private String projectCode;
+    private String projectCode;//项目编码
 
-    private String projectName;
+    private String projectName;//项目名称
 
-    private String projectManager;
+    private String projectManager;//项目经理
 
-    private String performance;
+    private String performance;//本周完成情况
 
-    private String schedule;
+    private String schedule;//下周任务计划
 
-    private String coordination;
+    private String coordination;//需协调事项
 
     private Date createTime;
 
     private String creator;
 
-    private String modifier;
+    private String modifier;//项目经理id
 
     private Date updateTime;
 
     private Date deleteTime;
 
-    private String weekNum;
+    private String weekNum;//第几周
 
     public String getId() {
         return id;
