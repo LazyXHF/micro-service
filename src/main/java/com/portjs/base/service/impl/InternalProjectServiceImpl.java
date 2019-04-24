@@ -447,11 +447,11 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             if(map.containsKey(list.get(i))) {
                 continue;
             }
-            List<ProjectApplication> projectApplications = applicationMapper.selectapplicationByYear(list.get(i).toString());
+            List<Project> projectApplications = projectMapper.selectapplicationByYear(list.get(i).toString());
 
             /*map.put(list.get(i)+"年", projectApplications.size());*/
 
-            int count = projectMapper.selectapplicationByYear(list.get(i).toString());
+            int count = projectMapper.selectapplicationByYearError(list.get(i).toString());
             /*map.put(list.get(i)+"年",projectApplications.size()+"~"+count);*/
             if (CollectionUtils.isEmpty(projectApplications)){
                 list1.add(0);
@@ -490,11 +490,11 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             if(map.containsKey(list.get(i))) {
                 continue;
             }
-            int count = projectMapper.selectapplicationByYear(list.get(i).toString());
-            if (count==0){
+            List<Project> projectList = projectMapper.selectapplicationByYear(list.get(i).toString());
+            if (CollectionUtils.isEmpty(projectList)){
                 return map;
             }
-            map.put(list.get(i)+"年",count);
+            map.put(list.get(i)+"年",projectList.size());
 
         }
         return map;
@@ -531,15 +531,15 @@ public class InternalProjectServiceImpl implements InternalProjectService {
             if(map.containsKey(list.get(i))) {
                 continue;
             }
-            List<ProjectApplication> projectApplications = applicationMapper.selectapplicationByYear(list.get(i).toString());
+            List<Project> projectApplications = projectMapper.selectapplicationByYear(list.get(i).toString());
             if (CollectionUtils.isEmpty(projectApplications)){
                 return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
             }
             BigDecimal decimal = new BigDecimal(0);
-            for (ProjectApplication projectApplication : projectApplications) {
+            for (Project projectApplication : projectApplications) {
                 /*money+=projectApplication.getApplicationAmount();*/
-                if(projectApplication.getApplicationAmount()!=null){
-                    decimal = decimal.add(projectApplication.getApplicationAmount());
+                if(projectApplication.getProjectMoney()!=null){
+                    decimal = decimal.add((new BigDecimal( projectApplication.getProjectMoney())));
                 }
             }
 

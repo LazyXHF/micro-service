@@ -3,9 +3,10 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.BusinessDictionary;
 import com.portjs.base.entity.BusinessDictionaryExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface BusinessDictionaryMapper {
     int countByExample(BusinessDictionaryExample example);
 
