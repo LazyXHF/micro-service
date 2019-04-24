@@ -29,4 +29,13 @@ public interface TXietongSoftwareMapper {
     int updateByPrimaryKeySelective(TXietongSoftware record);
 
     int updateByPrimaryKey(TXietongSoftware record);
+
+    /**
+     * 分页查询
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    List<TXietongSoftware> querySoftwareByPage(@Param("softwareName")String softwareName,@Param("pageNo")int pageNo, @Param("pageSize")int pageSize);
+    int selectSoftwareCounts(@Param("softwareName")String softwareName);
 }

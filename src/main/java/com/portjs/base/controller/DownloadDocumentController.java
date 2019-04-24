@@ -2,6 +2,8 @@ package com.portjs.base.controller;
 
 import java.util.List;
 
+import com.portjs.base.exception.UnifiedExceptionHandler;
+import com.portjs.base.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,7 @@ import com.portjs.base.util.ResponseMessage;
 @RestController
 @RequestMapping("/downloadDocument")
 public class DownloadDocumentController extends BaseController{
+	ResponseMessage responseMessage = null;
 
 	static final String tag = "DownloadDocumentController======";
 
@@ -38,16 +41,12 @@ public class DownloadDocumentController extends BaseController{
 	@LogInfo(methodName = "页面文档展示")
 	@RequestMapping("/selectAllDocument")
 	@ResponseBody
-	public ResponseMessage selectAllDocument(){
+	public ResponseMessage selectAllDocument(@RequestBody String requestBody){
 		logger.debug(tag+"selectAllDocument()===> begin");
-		try{
-			List<TXietongDocModel> documents = downloadDocumentService.selectAllDocument();
-			return new ResponseMessage(Code.CODE_OK ,"success",documents);
-		}catch(Exception e){
-			e.printStackTrace();
-			logger.error(tag+"selectAllDocument()===> end"+e);
-			return new ResponseMessage(Code.CODE_ERROR ,"error","未知异常");
-		}
+		UnifiedExceptionHandler.method = tag + "findAllDepartment()==================================>" ;
+		responseMessage = downloadDocumentService.selectAllDocument(requestBody);
+		return responseMessage;
+
 	}
 
 	/**
@@ -134,7 +133,7 @@ public class DownloadDocumentController extends BaseController{
 			logger.error(tag+"selectByDocumentName() end===>"+e);
 			return new ResponseMessage(Code.CODE_ERROR ,"error","未知异常");
 		}
-		
+
 	}
 	
 	

@@ -5,12 +5,13 @@ import java.util.List;
 
 import com.portjs.base.entity.TXietongSoftware;
 import com.portjs.base.util.ResponseMessage;
+import com.portjs.base.vo.PageVo;
 
 
 public interface DownloadSoftwareService {
 
 	//页面展示数据
-	List<TXietongSoftware> selectAllSoftware();
+	ResponseMessage selectAllSoftware(String requestBody);
 
 	//新增软件
 	ResponseMessage insertSoftware(String filePath, String softwareName, String softwareVersion);
