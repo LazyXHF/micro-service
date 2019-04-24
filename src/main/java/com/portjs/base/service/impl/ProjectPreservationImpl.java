@@ -149,10 +149,13 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
                 }
 
             }
-            if(CollectionUtils.isEmpty(declarationJSON)){
+            if(application.getDeclareType().equals("研究开发项目")){
+                if(CollectionUtils.isEmpty(declarationJSON)){
                     /*return new ResponseMessage(Code.CODE_ERROR,"declaration"+PARAM_MESSAGE_1);*/
-                throw  new Exception("Declaration"+PARAM_MESSAGE_1);
+                    throw  new Exception("Declaration"+PARAM_MESSAGE_1);
+                }
             }
+
             if (!StringUtils.isEmpty(tTodoId)){
                 TTodo todo = new TTodo();
                 todo.setId(tTodoId);

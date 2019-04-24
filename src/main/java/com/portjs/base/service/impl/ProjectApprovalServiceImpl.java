@@ -575,9 +575,9 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				ProjectDeclarationExample.Criteria declarationCriteria = declarationExample.createCriteria();
 				declarationCriteria.andApplicationIdEqualTo(id);
 				List<ProjectDeclaration> projectDeclarations = declarationMapper.selectByExample(declarationExample);
-				if(CollectionUtils.isEmpty(projectDeclarations)){
-					return new ResponseMessage(Code.CODE_ERROR, "申报信息查询失败");
-				}
+//				if(CollectionUtils.isEmpty(projectDeclarations)){
+//					return new ResponseMessage(Code.CODE_ERROR, "申报信息查询失败");
+//				}
 				if(projectApplication.getType().equals("1")){
 					//查询里程碑
 					BusinessConfigurationExample configurationExample = new BusinessConfigurationExample();
