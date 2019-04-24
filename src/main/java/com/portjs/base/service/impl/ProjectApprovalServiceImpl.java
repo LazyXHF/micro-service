@@ -734,14 +734,15 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		String stepDesc="";
 		String ss="1";
 		if(backup3.equals("2")){
-			ss=backup3;
-			stepDesc="分管领导审核";
-			backup3=new String("3");
-		}else if(backup3.equals("3")){
 			ss="5";
 			stepDesc="规划部归档";
-			backup3=new String("4");
+			backup3=new String("3");
 		}
+//		else if(backup3.equals("3")){
+//			ss="5";
+//			stepDesc="规划部归档";
+//			backup3=new String("4");
+//		}
 
 		//查询待办类型
 		TXietongDictionaryExample example = new TXietongDictionaryExample();

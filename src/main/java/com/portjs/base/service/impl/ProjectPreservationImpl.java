@@ -166,7 +166,7 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
             }
             message1="提交失败";
             message2="提交失败";
-            application.setStatus("1");
+            application.setStatus("2");
         }
         //项目基本信息
         /*ProjectApplication application = JSONObject.toJavaObject(application1JSON,ProjectApplication.class);

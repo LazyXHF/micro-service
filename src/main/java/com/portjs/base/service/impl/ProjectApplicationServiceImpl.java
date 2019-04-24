@@ -298,7 +298,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     @Override
     public ResponseMessage selectLeader(JSONObject requestJson) {
         String loginId = requestJson.getString("loginId");
-        TUser tUser = userMapper.selectByPrimaryKey(loginId);
+     /*   TUser tUser = userMapper.selectByPrimaryKey(loginId);
         TDepartment tDepartment = departmentMapper.selectByPrimaryKey(tUser.getDepartmentId());
         //部门负责人审核时查询分管领导通过角色查询人员
         TUserExample tUserExample = new TUserExample();
@@ -309,8 +309,12 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             if(user.getDuty().equals("分管领导")){
                 return new ResponseMessage(Code.CODE_OK,"查询成功",user);
             }
-        }
-        return new ResponseMessage(Code.CODE_ERROR,"查询失败");
+        }*/
+        List<TUser> users = tUserMapper.selectUserByRoleId(applicationUserConfig.getLxjswyhRoleId());
+       /* for (TUser user :users ) {
+            list.add(user);
+        }*/
+        return new ResponseMessage(Code.CODE_OK,"查询成功",users.get(0));
 
     }
 
