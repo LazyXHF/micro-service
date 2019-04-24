@@ -474,4 +474,11 @@
         SELECT * FROM business_configuration a
         where a.project_id =#{projectId,jdbcType=VARCHAR} GROUP BY project_schedule
     </select>
+
+    <select id="queryBySchedule" resultMap="BaseResultMap">
+         SELECT * FROM business_configuration a
+        where a.project_id =#{projectId,jdbcType=VARCHAR}
+        and project_schedule=#{projectSchedule,jdbcType=VARCHAR}
+        GROUP BY project_schedule
+    </select>
 </mapper>

@@ -886,4 +886,35 @@
     <select id="selectapplicationByYear" resultMap="BaseResultMap">
     select * from project where DATE_FORMAT(create_time,'%Y')=#{niandu}  and status = 2
   </select>
+
+    <select id="selectByCreateMonth" resultMap="BaseResultMap">
+        SELECT * FROM `project` where back_up1=#{userId} and create_time like CONCAT('%',#{createTime},'%')
+    </select>
+
+    <select id="queryProjectByMonth" resultMap="BaseResultMap" parameterType="String">
+        select a.* from project a
+        <where>
+            <if test="projectCode !=null and projectCode!=''">
+                and a.project_code like "%" #{projectCode} "%"
+            </if>
+            <if test="projectName !=null and projectName!=''">
+                and a.project_name like "%" #{projectName} "%"
+            </if>
+            <if test="projectType !=null and projectType!=''">
+                and a.project_type like "%" #{projectType} "%"
+            </if>
+            <if test="leval !=null and leval!=''">
+                and a.leval like "%" #{leval} "%"
+            </if>
+            <if test="projectManager !=null and projectManager!=''">
+                and a.project_manager like "%" #{projectManager} "%"
+            </if>
+            <if test="status !=null and status!=''">
+                and a.status =#{status}
+            </if>
+            <if test="createTime !=null and createTime!=''">
+                and a.create_time like "%" #{createTime} "%"
+            </if>
+        </where>
+    </select>
 </mapper>

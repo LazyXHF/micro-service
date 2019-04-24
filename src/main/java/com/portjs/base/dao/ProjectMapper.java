@@ -93,4 +93,11 @@ public interface ProjectMapper {
     List<Project> queryNotInproject();
 
     List<Project> selectapplicationByYear(String toString);
+
+    List<Project> selectByCreateMonth(@Param("userId") String userId,@Param("createTime") String createTime);
+
+    List<Project> queryProjectByMonth(@Param("projectCode") String projectCode, @Param("projectName") String projectName,
+                                      @Param("projectType") String projectType, @Param("leval") String leval,
+                                      @Param("projectManager") String projectManager,
+                                      @Param("status") String status, @Param("createTime") String createTime);
 }
