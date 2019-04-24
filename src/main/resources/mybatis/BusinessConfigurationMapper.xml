@@ -454,4 +454,9 @@
         and project_id=#{projectId,jdbcType=VARCHAR}
         and project_node=#{projectNode,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectBySchedule" resultMap="BaseResultMap">
+        SELECT DISTINCT(a.project_schedule) FROM business_configuration a
+        where a.project_id =#{projectNode,jdbcType=VARCHAR}
+    </select>
 </mapper>
