@@ -2,7 +2,6 @@ package com.portjs.base.service;
 
 import com.portjs.base.entity.ProjectClarificaiton;
 import com.portjs.base.util.ResponseMessage;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +17,7 @@ public interface ProjectClarificaitonService {
      */
     ResponseMessage queryByPage(String responseBody);
 
+    ResponseMessage selectByPrimaryKey(String id);
     /**
      * 批量软删除
      * @param ids

@@ -25,6 +25,11 @@ public class ProjectClarificaitonServiceImpl implements ProjectClarificaitonServ
     @Autowired
     ProjectClarificaitonMapper projectClarificaitonMapper;
 
+    /**
+     * 添加信息
+     * @param record
+     * @return
+     */
     @Override
     public ResponseMessage insertSelective(ProjectClarificaiton record) {
         record.setId(UUID.randomUUID().toString());
@@ -36,6 +41,11 @@ public class ProjectClarificaitonServiceImpl implements ProjectClarificaitonServ
         return new ResponseMessage(Code.CODE_OK,"保存成功!",i);
     }
 
+    /**
+     * 根据id去更新
+     * @param record
+     * @return
+     */
     @Override
     public ResponseMessage updateByPrimaryKeySelective(ProjectClarificaiton record) {
         if(record.getId().equals("")){
@@ -48,6 +58,11 @@ public class ProjectClarificaitonServiceImpl implements ProjectClarificaitonServ
         return new ResponseMessage(Code.CODE_OK,"修改成功！",i);
     }
 
+    /**
+     * 分页并模糊查询
+     * @param responseBody
+     * @return
+     */
     @Override
     public ResponseMessage queryByPage(String responseBody) {
         JSONObject jsonObject = (JSONObject) JSONObject.parse(responseBody);
@@ -69,6 +84,27 @@ public class ProjectClarificaitonServiceImpl implements ProjectClarificaitonServ
         return new ResponseMessage(Code.CODE_OK,"查询成功！",page);
     }
 
+    /**
+     * 根据id去查询数据信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ResponseMessage selectByPrimaryKey(String id) {
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(id);
+        String id1 = jsonObject.getString("id");
+        ProjectClarificaiton projectClarificaiton = projectClarificaitonMapper.selectByPrimaryKey(id1);
+        if(projectClarificaiton.equals("")){
+            return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
+        }
+        return new ResponseMessage(Code.CODE_OK,"查询成功！",projectClarificaiton);
+    }
+
+    /**
+     * 批量软删除
+     * @param ids
+     * @return
+     */
     @Override
     public ResponseMessage updateDeleteTimeByIds(List<String> ids) {
         ProjectClarificaiton projectClarificaiton = null;
@@ -86,4 +122,7 @@ public class ProjectClarificaitonServiceImpl implements ProjectClarificaitonServ
         }
         return new ResponseMessage(Code.CODE_OK,"批量删除成功！",i);
     }
+
+
+
 }

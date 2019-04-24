@@ -37,7 +37,19 @@ public class ProjectClarificaitonController extends BaseController{
         responseMessage = projectClarificaitonService.queryByPage(requestBody);
         return responseMessage;
     }
-
+    /**
+     * 根据id查询项目交底信息
+     * @param id
+     * @return
+     */
+    @RequestMapping("query-project-clarificaiton-info-by-id")
+    @LogInfo(methodName = "根据id查询项目交底信息")
+    public ResponseMessage selectByPrimaryKey(@RequestBody String id) {
+        logger.debug(TAG+id);
+        UnifiedExceptionHandler.method = TAG + "selectByPrimaryKey()==================================>" + id;
+        responseMessage = projectClarificaitonService.queryByPage(id);
+        return responseMessage;
+    }
     /**
      * 新建项目交底信息并分页且模糊查询
      * @param record

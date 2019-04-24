@@ -39,6 +39,16 @@ public class ProjectMonthly {
 
     private String monthNum;
 
+    private String projectSchedule;
+
+    public String getProjectSchedule() {
+        return projectSchedule;
+    }
+
+    public void setProjectSchedule(String projectSchedule) {
+        this.projectSchedule = projectSchedule;
+    }
+
     public String getId() {
         return id;
     }
