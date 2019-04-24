@@ -34,12 +34,12 @@ public interface TXietongDocModelMapper {
      * 分页
      * @return
      */
-    List<TXietongDocModel> queryDocModelByPage(@Param("pageNo")int pageNo, @Param("pageSize")int pageSize);
+    List<TXietongDocModel> queryDocModelByPage(@Param("docName")String documentName,@Param("pageNo")int pageNo, @Param("pageSize")int pageSize);
 
     /**
      * 统计
      * @return
      */
-    int selectCounts();
+    int selectCounts(@Param("docName")String documentName);
 
 }

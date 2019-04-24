@@ -41,10 +41,10 @@ public class DownloadDocumentController extends BaseController{
 	@LogInfo(methodName = "页面文档展示")
 	@RequestMapping("/selectAllDocument")
 	@ResponseBody
-	public ResponseMessage selectAllDocument(@RequestBody PageVo pageVo){
+	public ResponseMessage selectAllDocument(@RequestBody String requestBody){
 		logger.debug(tag+"selectAllDocument()===> begin");
 		UnifiedExceptionHandler.method = tag + "findAllDepartment()==================================>" ;
-		responseMessage = downloadDocumentService.selectAllDocument(pageVo);
+		responseMessage = downloadDocumentService.selectAllDocument(requestBody);
 		return responseMessage;
 
 	}
@@ -133,7 +133,7 @@ public class DownloadDocumentController extends BaseController{
 			logger.error(tag+"selectByDocumentName() end===>"+e);
 			return new ResponseMessage(Code.CODE_ERROR ,"error","未知异常");
 		}
-		
+
 	}
 	
 	

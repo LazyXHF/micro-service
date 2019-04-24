@@ -11,7 +11,7 @@ import com.portjs.base.vo.PageVo;
 public interface DownloadSoftwareService {
 
 	//页面展示数据
-	ResponseMessage selectAllSoftware(PageVo pageVo);
+	ResponseMessage selectAllSoftware(String requestBody);
 
 	//新增软件
 	ResponseMessage insertSoftware(String filePath, String softwareName, String softwareVersion);

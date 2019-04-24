@@ -10,7 +10,7 @@ import com.portjs.base.vo.PageVo;
 
 public interface DownloadDocumentService {
 
-	ResponseMessage selectAllDocument(PageVo pageVo);
+	ResponseMessage selectAllDocument(String requestBody);
 
 	ResponseMessage insertDocument(String filePath, String docName, String docDescription);
 

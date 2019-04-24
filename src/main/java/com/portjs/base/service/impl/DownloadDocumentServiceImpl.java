@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.alibaba.fastjson.JSONObject;
+import com.portjs.base.entity.BugDetails;
 import com.portjs.base.entity.TUser;
 import com.portjs.base.util.Page;
 import com.portjs.base.vo.PageVo;
@@ -33,15 +35,19 @@ public class DownloadDocumentServiceImpl implements DownloadDocumentService{
 
 	//展示所有未删除模板文件
 	@Override
-	public ResponseMessage selectAllDocument(PageVo pageVo) {
+	public ResponseMessage selectAllDocument(String requestBody) {
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(requestBody);
+        String documentName = jsonObject.getString("documentName");
+        Integer pageNo = jsonObject.getInteger("pageNo");
+        Integer pageSize = jsonObject.getInteger("pageSize");
 
-		Page<TXietongDocModel> page = new Page<>();
-		int total = tXietongDocModelMapper.selectCounts();
-		page.init(total,pageVo.getPageNo(),pageVo.getPageSize());
-		List<TXietongDocModel> list = tXietongDocModelMapper.queryDocModelByPage(page.getRowNum(),page.getPageCount());
-		page.setList(list);
+        Page<TXietongDocModel> page = new Page<>();
+        int totelCount = tXietongDocModelMapper.selectCounts(documentName);
+        page.init(totelCount, pageNo, pageSize);
+        List<TXietongDocModel> list = tXietongDocModelMapper.queryDocModelByPage(documentName,page.getRowNum(),page.getPageCount());
+        page.setList(list);
 
-		return  new ResponseMessage(Code.CODE_OK,"查询成功！",page);
+        return  new ResponseMessage(Code.CODE_OK,"查询成功！",page);
 	}
 
 	//新增文档模板

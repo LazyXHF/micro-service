@@ -43,10 +43,10 @@ public class DownloadSoftwareController extends BaseController{
 	@LogInfo(methodName = "展示所有软件")
 	@RequestMapping("/selectAllSoftware")
 	@ResponseBody
-	public ResponseMessage selectAllSoftware(@RequestBody PageVo pageVo){
+	public ResponseMessage selectAllSoftware(@RequestBody String requestBody){
 		logger.debug(tag+"selectAllSoftware() begin===>");
 		UnifiedExceptionHandler.method = tag + "selectAllSoftware()==================================>" ;
-		responseMessage = DownloadSoftwareService.selectAllSoftware(pageVo);
+		responseMessage = DownloadSoftwareService.selectAllSoftware(requestBody);
 		return responseMessage;
 	}
 

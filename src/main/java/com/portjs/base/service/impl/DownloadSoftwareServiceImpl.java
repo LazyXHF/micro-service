@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.alibaba.fastjson.JSONObject;
 import com.portjs.base.entity.TXietongDocModel;
 import com.portjs.base.util.Page;
 import com.portjs.base.vo.PageVo;
@@ -31,14 +32,17 @@ public class DownloadSoftwareServiceImpl implements DownloadSoftwareService{
 
 	//页面展示下载软件
 	@Override
-	public ResponseMessage selectAllSoftware(PageVo pageVo) {
+	public ResponseMessage selectAllSoftware(String requestBody) {
+		JSONObject jsonObject = (JSONObject) JSONObject.parse(requestBody);
+		String softwareName = jsonObject.getString("softwareName");
+		Integer pageNo = jsonObject.getInteger("pageNo");
+		Integer pageSize = jsonObject.getInteger("pageSize");
 
 		Page<TXietongSoftware> page = new Page<>();
-		int total = tXietongSoftwareMapper.selectSoftwareCounts();
-		page.init(total,pageVo.getPageNo(),pageVo.getPageSize());
-		List<TXietongSoftware> list = tXietongSoftwareMapper.querySoftwareByPage(page.getRowNum(),page.getPageCount());
+		int total = tXietongSoftwareMapper.selectSoftwareCounts(softwareName);
+		page.init(total, pageNo, pageSize);
+		List<TXietongSoftware> list = tXietongSoftwareMapper.querySoftwareByPage(softwareName,page.getRowNum(),page.getPageCount());
 		page.setList(list);
-
 		return new ResponseMessage(Code.CODE_OK,"查询成功！",page);
 	}
 

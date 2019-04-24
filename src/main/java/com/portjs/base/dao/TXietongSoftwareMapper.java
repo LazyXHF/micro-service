@@ -36,6 +36,6 @@ public interface TXietongSoftwareMapper {
      * @param pageSize
      * @return
      */
-    List<TXietongSoftware> querySoftwareByPage(@Param("pageNo")int pageNo, @Param("pageSize")int pageSize);
-    int selectSoftwareCounts();
+    List<TXietongSoftware> querySoftwareByPage(@Param("softwareName")String softwareName,@Param("pageNo")int pageNo, @Param("pageSize")int pageSize);
+    int selectSoftwareCounts(@Param("softwareName")String softwareName);
 }
