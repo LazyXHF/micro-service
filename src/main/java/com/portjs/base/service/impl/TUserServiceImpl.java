@@ -61,14 +61,14 @@ private TUserDepartmentMapper userDepartmentMapper;
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserUtils.USER_NAME_ACCOUNT = s;
 
-
-
 //        userList.get(i).setDepartments(departments);
         TUser user = userMapper.loginUserByAccount(s);
         TUserExample example = new TUserExample();
         TUserExample.Criteria criteria = example.createCriteria();
         criteria.andLoginAccountEqualTo(s);
         List<TUser> users = userMapper.selectByExample(example);
+
+        //查询一人多部门用户
         if (!CollectionUtils.isEmpty(users)){
           List<TDepartment> departments = departmentMapper.selectDepartmentByUid(users.get(0).getId());
             user.setDepartments(departments);
