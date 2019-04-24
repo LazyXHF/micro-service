@@ -131,8 +131,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
 
         int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
         LinkedList<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
-        if(alllist.isEmpty()){
-            return  new ResponseMessage(Code.CODE_ERROR,"查询项目信息为空");
+        if(CollectionUtils.isEmpty(alllist)){
+            return  new ResponseMessage(Code.CODE_OK,"暂无数据");
         }else {
             for (ProjectApplication application : alllist) {
                 TTodoExample todoExample = new TTodoExample();
