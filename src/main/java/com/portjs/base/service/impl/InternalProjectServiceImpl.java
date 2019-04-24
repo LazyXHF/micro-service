@@ -421,16 +421,16 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     public Map selectAbuildingProject() {
         LinkedHashMap map=new LinkedHashMap();
         //查询在建项目的时间点
-        ProjectApplicationExample example = new ProjectApplicationExample();
-        ProjectApplicationExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectCodeIsNotNull();
+        ProjectExample example = new ProjectExample();
         example.setOrderByClause("create_time");
-        List<ProjectApplication> applications = applicationMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(applications)){
+        ProjectExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo("2");
+        List<Project> projectList = projectMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(projectList)){
             return map;
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String minYear = format.format(applications.get(0).getCreateTime());
+        String minYear = format.format(projectList.get(0).getCreateTime());
         /*String minYear = applicationMapper.selectCreateTime(projectId);*/
         Calendar cale = null;
         cale = Calendar.getInstance();
@@ -507,16 +507,16 @@ public class InternalProjectServiceImpl implements InternalProjectService {
     public ResponseMessage selectAbuildingProjectMoney() {
         LinkedHashMap map=new LinkedHashMap();
         //查询在建项目的时间点
-        ProjectApplicationExample example = new ProjectApplicationExample();
+        ProjectExample example = new ProjectExample();
         example.setOrderByClause("create_time");
-        ProjectApplicationExample.Criteria criteria = example.createCriteria();
-        criteria.andProjectCodeIsNotNull();
-        List<ProjectApplication> applications = applicationMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(applications)){
+        ProjectExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo("2");
+        List<Project> projectList = projectMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(projectList)){
             return new ResponseMessage(Code.CODE_ERROR,"查询失败！");
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String minYear = format.format(applications.get(0).getCreateTime());
+        String minYear = format.format(projectList.get(0).getCreateTime());
         /*String minYear = applicationMapper.selectCreateTime(projectId);*/
         Calendar cale = null;
         cale = Calendar.getInstance();
