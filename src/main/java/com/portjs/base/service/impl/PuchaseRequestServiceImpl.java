@@ -724,8 +724,8 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             ss=backup3;
         }else if(backup3.equals("5")){
 
-            stepTodo="执行董事审核";
-            stepDesc="采购管理委员会审核";
+            stepTodo="已完成";
+            stepDesc="执行董事审核";
             backup3 = new String("10");
             ss=backup3;
         }
