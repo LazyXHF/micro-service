@@ -8,7 +8,6 @@ import com.portjs.base.util.Code;
 import com.portjs.base.util.IDUtils;
 import com.portjs.base.util.Page;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.util.StringUtils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -186,7 +185,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (list.size() == 0) {
             return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
         }
-        return new ResponseMessage(Code.CODE_OK, "投资列表信息", list);
+        return new ResponseMessage(Code.CODE_OK, "查询成功", list);
     }
 
     @Override
@@ -195,8 +194,19 @@ public class ProjectServiceImpl implements ProjectService {
         if (list.size() == 0) {
             return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
         }
-        return new ResponseMessage(Code.CODE_OK, "项目名称下拉", list);
+        return new ResponseMessage(Code.CODE_OK, "查询成功", list);
     }
+
+    @Override
+    public ResponseMessage selectByNameCn(JSONObject requestJson) {
+        String nameNc = requestJson.getString("nameNc");
+        List<TUser> users = userMapper.selectByNameCn(nameNc);
+        if (users.size() == 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
+        }
+        return new ResponseMessage(Code.CODE_OK, "查询成功", users);
+    }
+
 
 }
 

@@ -228,4 +228,14 @@ public class ProjectController extends BaseController {
         logger.debug(TAG+"queryNotInproject() begin");
         return  projectService.queryNotInproject();
     }
+
+    //项目经理模糊查询
+    @LogInfo(methodName = "项目经理模糊查询",modelName = "立项管理")
+    @RequestMapping("selectByNameCn")
+    @ResponseBody
+    public ResponseMessage selectByNameCn(@RequestBody String requestBody){
+        logger.debug(TAG+"selectByNameCn() begin");
+        JSONObject requestJson = JSONObject.parseObject(requestBody);
+        return  projectService.selectByNameCn(requestJson);
+    }
 }

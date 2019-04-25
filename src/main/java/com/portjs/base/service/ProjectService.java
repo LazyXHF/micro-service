@@ -21,4 +21,7 @@ public interface ProjectService {
     ResponseMessage queryProjectPlanByProject();
 
     ResponseMessage queryNotInproject();
+
+
+    ResponseMessage selectByNameCn(JSONObject requestJson);
 }

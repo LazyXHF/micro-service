@@ -60,9 +60,6 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
             List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectBySchedule(project.getId());
             for (BusinessConfiguration businessConfiguration : businessConfigurations) {
                 ProjectVo projectVo = new ProjectVo();
-                projectVo.setProjectName(project.getProjectName());
-                projectVo.setProjectId(project.getId());
-
                 if ("D".equals(businessConfiguration.getProjectSchedule()) ||
                         "E".equals(businessConfiguration.getProjectSchedule()) ||
                         "F".equals(businessConfiguration.getProjectSchedule())) {
@@ -71,9 +68,19 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                     if ("D".equals(businessConfiguration.getProjectSchedule())) {
                         projectV1.setPredictStarttime(businessConfiguration.getPredictStarttime());
                     }
-                    if ("F".equals(businessConfiguration.getProjectSchedule())) {
+                    BusinessConfiguration Dconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+                            "D");
+                    BusinessConfiguration Econfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+                            "E");
+                    BusinessConfiguration Fconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+                            "F");
 
-                        projectV1.setPredictEndtime(businessConfiguration.getPridectEndtime());
+                    if (Econfiguration == null && Fconfiguration == null) {
+                        projectV1.setPredictEndtime(Dconfiguration.getPridectEndtime());
+                    } else if (Econfiguration != null && Fconfiguration == null) {
+                        projectV1.setPredictEndtime(Econfiguration.getPridectEndtime());
+                    }else if (Fconfiguration != null){
+                        projectV1.setPredictEndtime(Fconfiguration.getPridectEndtime());
                     }
                     projectV1.setProjectName(project.getProjectName());
                     projectV1.setProjectId(project.getId());
@@ -82,8 +89,12 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                     projectV1.setLeval(project.getLeval());
                     projectV1.setProjectManager(project.getProjectManager());
                     projectV1.setStatus(project.getStatus());
-
+                    projectV1.setProjectSchedule("项目建设");
+                    projectV1.setContent(content);
+                    map1.put("项目建设", projectV1);
                 } else {
+                    projectVo.setProjectName(project.getProjectName());
+                    projectVo.setProjectId(project.getId());
                     projectVo.setProjectSchedule(businessConfiguration.getProjectSchedule());
                     projectVo.setPredictStarttime(businessConfiguration.getPredictStarttime());
                     projectVo.setPredictEndtime(businessConfiguration.getPridectEndtime());
@@ -96,9 +107,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                     projectVo.setStatus(project.getStatus());
                     map1.put(businessConfiguration.getProjectSchedule(), projectVo);
                 }
-                projectV1.setProjectSchedule("项目建设");
-                projectV1.setContent(content);
-                map1.put("项目建设", projectV1);
+
                 map.put(project.getProjectName(), map1);
             }
         }

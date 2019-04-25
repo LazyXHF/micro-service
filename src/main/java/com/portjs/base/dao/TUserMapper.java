@@ -41,34 +41,33 @@ public interface TUserMapper {
     int selectMaxSort();
 
 
-
     //查询用户信息
     List<TUser> selectUserByLoginNameOrDepartmentId(@Param("loginName") String loginName, @Param("departmentId") String departmentId, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
+
     int selectUserCountByLoginNameOrDepartmentId(@Param("loginName") String loginName, @Param("departmentId") String departmentId);
 
 
     //查询用户角色部门
-     UserRoleDO selectUserAndRoleAndDepartmentByUid(String uid);
+    UserRoleDO selectUserAndRoleAndDepartmentByUid(String uid);
 
-     //排序
+    //排序
     int updateSortByUid(@Param("sort") int sort, @Param("uid") String uid);
 
 
-
-//    List<TUser> selectUserByDepartmentId(String did);
+    //    List<TUser> selectUserByDepartmentId(String did);
     String selectById(@Param("id") String id);
 
     List<TUser> queryUserInfo();
 
-    List<TUser> selectUserByRoleId(@Param("rid")String rid);
+    List<TUser> selectUserByRoleId(@Param("rid") String rid);
 
     String queryUserNameByUserId(@Param("actionUserId") String actionUserId);
 
 
     //多部门查询用户
     List<TUser> selectUserByLoginNameAndDepartmentIds(@Param("loginName") String loginName, @Param("departmentId") String departmentId, @Param("pageNo") int pageNo, @Param("pageSize") int pageSize);
-    int selectUserCountByLoginNameAndDepartmentIds(@Param("loginName") String loginName, @Param("departmentId") String departmentId);
 
+    int selectUserCountByLoginNameAndDepartmentIds(@Param("loginName") String loginName, @Param("departmentId") String departmentId);
 
 
     //根据角色id和部门id查询用户
@@ -80,5 +79,7 @@ public interface TUserMapper {
     //一人多部门查询
 //    @Select("SELECT u.* FROM t_user u LEFT JOIN t_user_department ud ON u.`ID` = ud.`u_id`  WHERE ud.`d_id` = #{did}")
     List<TUser> selectUserByUD(String did);
+
+    List<TUser> selectByNameCn(@Param("nameCn") String nameCn);
 
 }
