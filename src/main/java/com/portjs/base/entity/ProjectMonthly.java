@@ -41,6 +41,36 @@ public class ProjectMonthly {
 
     private String projectSchedule;
 
+    private String content;
+
+    private Date predictStarttime;
+
+    private Date pridectEndtime;
+
+    public Date getPredictStarttime() {
+        return predictStarttime;
+    }
+
+    public void setPredictStarttime(Date predictStarttime) {
+        this.predictStarttime = predictStarttime;
+    }
+
+    public Date getPridectEndtime() {
+        return pridectEndtime;
+    }
+
+    public void setPridectEndtime(Date pridectEndtime) {
+        this.pridectEndtime = pridectEndtime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getProjectSchedule() {
         return projectSchedule;
     }

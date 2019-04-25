@@ -21,6 +21,9 @@
         <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP"/>
         <result column="month_num" property="monthNum" jdbcType="VARCHAR"/>
         <result column="project_schedule" property="projectSchedule" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="predict_startTime" property="predictStarttime" jdbcType="VARCHAR"/>
+        <result column="pridect_endTime" property="pridectEndtime" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -85,7 +88,7 @@
     <sql id="Base_Column_List">
     id, project_id, project_type, leval, status, project_code, project_name, project_manager, 
     situation, performance, schedule, remark, create_time, creator, Modifier, update_time, 
-    delete_time, month_num,project_schedule
+    delete_time, month_num,project_schedule,content,predict_startTime,pridect_endTime
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectMonthlyExample">
         select
@@ -123,7 +126,7 @@
       project_name, project_manager, situation, 
       performance, schedule, remark, 
       create_time, creator, Modifier, 
-      update_time, delete_time, month_num,project_schedule
+      update_time, delete_time, month_num,project_schedule,content,predict_startTime,pridect_endTime
       )
     values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, 
       #{leval,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
@@ -131,7 +134,8 @@
       #{performance,jdbcType=VARCHAR}, #{schedule,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, #{monthNum,jdbcType=VARCHAR},
-      #{projectSchedule,jdbcType=VARCHAR}
+      #{projectSchedule,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{predictStarttime,jdbcType=VARCHAR},
+      #{pridectEndtime,jdbcType=VARCHAR}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectMonthly">
@@ -194,6 +198,15 @@
             <if test="projectSchedule != null">
                 project_schedule,
             </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="predictStarttime != null">
+                predict_startTime,
+            </if>
+            <if test="pridectEndtime != null">
+                pridect_endTime,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -252,6 +265,15 @@
             </if>
             <if test="projectSchedule != null">
                 #{projectSchedule,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="predictStarttime != null">
+                #{predictStarttime,jdbcType=VARCHAR},
+            </if>
+            <if test="pridectEndtime != null">
+                #{pridectEndtime,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -322,6 +344,15 @@
             <if test="record.projectSchedule != null">
                 project_schedule = #{record.projectSchedule,jdbcType=VARCHAR},
             </if>
+            <if test="record.content != null">
+                content = #{record.content,jdbcType=VARCHAR},
+            </if>
+            <if test="record.predictStarttime != null">
+                predict_startTime = #{record.predictStarttime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.content != null">
+                pridect_endTime = #{record.pridectEndtime,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -347,7 +378,10 @@
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
         delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
         month_num = #{record.monthNum,jdbcType=VARCHAR},
-        project_schedule = #{record.projectSchedule,jdbcType=VARCHAR}
+        project_schedule = #{record.projectSchedule,jdbcType=VARCHAR},
+        content = #{record.content,jdbcType=VARCHAR},
+        predict_startTime = #{record.predictStarttime,jdbcType=VARCHAR},
+        pridect_endTime = #{record.pridectEndtime,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -409,6 +443,15 @@
             <if test="projectSchedule != null">
                 project_schedule = #{projectSchedule,jdbcType=VARCHAR},
             </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="predictStarttime != null">
+                predict_startTime = #{predictStarttime,jdbcType=VARCHAR},
+            </if>
+            <if test="pridectEndtime != null">
+                pridect_endTime = #{pridectEndtime,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
@@ -431,7 +474,10 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       delete_time = #{deleteTime,jdbcType=TIMESTAMP},
       month_num = #{monthNum,jdbcType=VARCHAR},
-      project_schedule = #{projectSchedule,jdbcType=VARCHAR}
+      project_schedule = #{projectSchedule,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      predict_startTime = #{predictStarttime,jdbcType=VARCHAR},
+      pridect_endTime = #{pridectEndtime,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
