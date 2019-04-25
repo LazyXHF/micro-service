@@ -1290,6 +1290,8 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             }else {
                 purchaseList.setId(UuidPlus.getUUIDPlus());
                 purchaseList.setCreateTime(new Date());
+                purchaseList.setRequestId(id);
+                purchaseList.setProjectId(projectId);
                 int i1 =  purchaseListMapper.insertSelective(purchaseList);
                 if(i1==0){
                     return new ResponseMessage(Code.CODE_ERROR,"添加采购列表失败！！",i1);
