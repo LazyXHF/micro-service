@@ -880,7 +880,7 @@
   </select>
 
     <select id="queryNotInproject" resultMap="BaseResultMap">
-        select p.* from project p where id not in(select project_id from project_application where project_id is not null)
+        select p.* from project p where id not in(select project_id from project_application where project_id is not null AND is_delete="0")
     </select>
 
     <select id="selectapplicationByYear" resultMap="BaseResultMap">
