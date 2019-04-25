@@ -471,6 +471,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					}else{
 						map.put("returnStatus","1");
 					}
+					map.put("projectName",list1.get(0).getProjectName());
 					map.put("projectId",list1.get(0).getProjectId());
 					map.put("type",list1.get(0).getType());
 					tTodo.setParams(map);
