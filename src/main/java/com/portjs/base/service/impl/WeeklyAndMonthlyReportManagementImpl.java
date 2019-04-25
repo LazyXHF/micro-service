@@ -222,7 +222,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                 ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
                 ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
                 //项目经理id
-                weeklyCriteria.andManagerPhoneEqualTo(tUser.getId());
+                weeklyCriteria.andModifierEqualTo(tUser.getId());
                 //项目经理名称
                 if(!StringUtils.isEmpty(projectWeekly.getProjectManager())){
                     weeklyCriteria.andProjectManagerLike("%"+projectWeekly.getProjectManager()+"%");
