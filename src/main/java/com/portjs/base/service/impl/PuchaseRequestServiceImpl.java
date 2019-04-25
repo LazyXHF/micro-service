@@ -1186,6 +1186,14 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         String ownerId = jsonObject.getString("ownerId");//当前登录人id
         PurchaseRequest purchaseRequest = purchaseRequestMapper.queryPurchaseRequestById(ids);
         List<TWorkflowstep> tWorkflowsteps = tWorkflowstepMapper.queryByRelateddomainId(ids);
+
+        int count = tWorkflowstepMapper.isApprover(purchaseRequest.getId(), ownerId);
+        if (count == 1) {
+            purchaseRequest.setIsApprover("1");
+        }else {
+            purchaseRequest.setIsApprover("0");
+        }
+
         //审核信息查询
         List<TWorkflowstep> tWorkflowsteps2=tWorkflowstepMapper.queryPurchaseRecords(ids,ownerId);
         if(!CollectionUtils.isEmpty(tWorkflowsteps2)){

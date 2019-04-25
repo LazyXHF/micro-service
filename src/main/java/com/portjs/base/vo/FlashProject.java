@@ -9,7 +9,17 @@ FlashProject {
 
     private String project_type;//项目分类
 
+    private String project_code;//项目编码
+
     private String schedule;//项目阶段
+
+    public String getProject_code() {
+        return project_code;
+    }
+
+    public void setProject_code(String project_code) {
+        this.project_code = project_code;
+    }
 
     public String getSchedule() {
         return schedule;

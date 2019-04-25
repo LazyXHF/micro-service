@@ -62,7 +62,7 @@ public interface ProjectMapper {
      *
      * @return
      */
-    @Select("select id,project_name,project_type,schedule from project")
+    @Select("select id,project_name,project_type,project_code,schedule from project")
     List<FlashProject> selectProjectAll();
 
     Project queryProjectDetails2(@Param("id") String id, @Param("projectType") String projectType);
