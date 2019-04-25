@@ -327,6 +327,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			//更新projectApplication
 			ProjectApplication projectApplication = new ProjectApplication();
 			projectApplication.setId(relateddomain_id);
+			projectApplication.setUpdateTime(new Date());
 			//多人审核阶段
 			if(backup3.equals("5")){
 				//审核结束
@@ -414,6 +415,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		example.setId(relateddomainId);
 		example.setProjectCode(projectCoding);
 		example.setStatus("6");
+		example.setUpdateTime(new Date());
 		count = projectApplicationMapper.updateByPrimaryKeySelective(example);
 		if(count<=0){
 			return new ResponseMessage(Code.CODE_ERROR, "归档失败");
@@ -804,7 +806,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		ProjectApplication projectApplication = new ProjectApplication();
 		projectApplication.setId(relateddomain_id);
 		projectApplication.setStatus(ss);
-
+		projectApplication.setUpdateTime(new Date());
 		int num =projectApplicationMapper.updateByPrimaryKeySelective(projectApplication);
 		if(num<=0){
 			return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");

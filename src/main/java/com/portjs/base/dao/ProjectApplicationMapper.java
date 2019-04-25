@@ -33,7 +33,7 @@ public interface ProjectApplicationMapper {
 
     int queryProjectCount(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
 
-    LinkedList<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId);
+    LinkedList<ProjectApplication> queryProject(@Param("projectCode") String projectCode, @Param("projectName") String projectName, @Param("projectType") String projectType, @Param("organization") String organization, @Param("leval") String leval, @Param("projectManager") String projectManager, @Param("ownerId") String ownerId,@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
 
     int updateProject(ProjectApplication projectApplication);
 

@@ -830,7 +830,7 @@
       <if test="projectManager !=null and projectManager!=''">
         and  project_manager like "%" #{projectManager} "%"
       </if>
-    order by   create_time desc
+    order by   update_time desc LIMIT  #{pageNo},#{pageSize}
 
   </select>
 

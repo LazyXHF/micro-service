@@ -126,8 +126,11 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         String pageNum=requestJson.getString("pageNum");
         String pageCount=requestJson.getString("pageCount");
 
+        Page page=new Page();
+
         int totalCount=applicationMapper.queryProjectCount(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
-        LinkedList<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId);
+        page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
+        LinkedList<ProjectApplication> alllist=applicationMapper.queryProject(projectCode,projectName,projectType,organization,leval,projectManager,owneId,page.getRowNum(),page.getPageCount());
         if(CollectionUtils.isEmpty(alllist)){
             return  new ResponseMessage(Code.CODE_OK,"暂无数据");
         }else {
@@ -157,8 +160,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                     application.setIsApprover("1");
                 }
             }
-
-            Set<ProjectApplication> treeSet = new TreeSet<>(new Comparator<ProjectApplication>() {
+            page.setList(alllist);
+           /* Set<ProjectApplication> treeSet = new TreeSet<>(new Comparator<ProjectApplication>() {
                 @Override
                 public int compare(ProjectApplication o1, ProjectApplication o2) {
                     //按照年龄排序，主要条件
@@ -168,16 +171,16 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
                     return num1;
                 }
             });
-            treeSet.addAll(alllist);
+            treeSet.addAll(alllist);*/
 
-            Page page=new Page();
-            ArrayList arrayList = new ArrayList(treeSet);
+
+           /* ArrayList arrayList = new ArrayList(treeSet);
             page.init(totalCount,Integer.valueOf(pageNum),Integer.valueOf(pageCount));
             if(page.getRowNum()+page.getPageCount()>arrayList.size()){
                 page.setList(arrayList.subList(page.getRowNum(),arrayList.size()));
             }else {
                 page.setList(arrayList.subList(page.getRowNum(), page.getPageCount() * page.getPageNum()));
-            }
+            }*/
             return new ResponseMessage(Code.CODE_OK, "项目分页信息", page);
         }
     }
