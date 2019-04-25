@@ -404,6 +404,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		TWorkflowstep tWorkflowstep=new TWorkflowstep();
 		tWorkflowstep.setId(workflowstepId);
 		tWorkflowstep.setActionTime(new Date());
+		tWorkflowstep.setActionResult(0);
 		tWorkflowstep.setStatus("1");
 		int j=tWorkflowstepMapper.updateByPrimaryKeySelective(tWorkflowstep);
 		if(j<=0) {
