@@ -47,6 +47,16 @@ public class ProjectMonthly {
 
     private Date pridectEndtime;
 
+    private String currentProgress;
+
+    public String getCurrentProgress() {
+        return currentProgress;
+    }
+
+    public void setCurrentProgress(String currentProgress) {
+        this.currentProgress = currentProgress;
+    }
+
     public Date getPredictStarttime() {
         return predictStarttime;
     }

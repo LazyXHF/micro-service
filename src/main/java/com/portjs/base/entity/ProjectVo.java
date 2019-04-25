@@ -14,12 +14,57 @@ public class ProjectVo {
     private String content;
     private Date predictStarttime;
     private Date predictEndtime;
-//    private String schedule;
+    //    private String schedule;
     private String projectCode;
     private String projectType;
     private String leval;
     private String projectManager;
     private String status;
+    private String currentProgress;
+    private String performance;
+    private String schedule;
+    private String remark;
+    private String situation;
+
+    public String getSituation() {
+        return situation;
+    }
+
+    public void setSituation(String situation) {
+        this.situation = situation;
+    }
+
+    public String getCurrentProgress() {
+        return currentProgress;
+    }
+
+    public void setCurrentProgress(String currentProgress) {
+        this.currentProgress = currentProgress;
+    }
+
+    public String getPerformance() {
+        return performance;
+    }
+
+    public void setPerformance(String performance) {
+        this.performance = performance;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getProjectId() {
         return projectId;

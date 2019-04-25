@@ -36,11 +36,23 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
     @Override
     public ResponseMessage insertProjectMonthly(List<ProjectMonthly> projectMonthlyList) {
         for (ProjectMonthly projectMonthly : projectMonthlyList) {
-            projectMonthly.setId(String.valueOf(IDUtils.genItemId()));
-            projectMonthly.setCreateTime(new Date());
-            int flag = projectMonthlyMapper.insert(projectMonthly);
-            if (flag == 0) {
-                return new ResponseMessage(Code.CODE_ERROR, "添加失败");
+            ProjectMonthlyExample example = new ProjectMonthlyExample();
+            ProjectMonthlyExample.Criteria criteria = example.createCriteria();
+            criteria.andProjectIdEqualTo(projectMonthly.getProjectId());
+            criteria.andMonthNumEqualTo(projectMonthly.getMonthNum());
+            List<ProjectMonthly> list = projectMonthlyMapper.selectByExample(example);
+            if (list.size() != 0) {
+                int flag = projectMonthlyMapper.updateByPrimaryKeySelective(projectMonthly);
+                if (flag == 0) {
+                    return new ResponseMessage(Code.CODE_ERROR, "添加失败");
+                }
+            } else {
+                projectMonthly.setId(String.valueOf(IDUtils.genItemId()));
+                projectMonthly.setCreateTime(new Date());
+                int flag = projectMonthlyMapper.insert(projectMonthly);
+                if (flag == 0) {
+                    return new ResponseMessage(Code.CODE_ERROR, "添加失败");
+                }
             }
         }
         return new ResponseMessage(Code.CODE_OK, "添加成功");
@@ -53,61 +65,91 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
         String createTime = requestMsg.getString("createTime");
         List<Project> projects = projectMapper.selectByCreateMonth(userId, createTime);
         Map<String, Map<String, ProjectVo>> map = new LinkedHashMap<>();
+
         for (Project project : projects) {
             Map<String, ProjectVo> map1 = new LinkedHashMap<>();
             ProjectVo projectV1 = new ProjectVo();
             String content = "";
-            List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectBySchedule(project.getId());
-            for (BusinessConfiguration businessConfiguration : businessConfigurations) {
-                ProjectVo projectVo = new ProjectVo();
-                if ("D".equals(businessConfiguration.getProjectSchedule()) ||
-                        "E".equals(businessConfiguration.getProjectSchedule()) ||
-                        "F".equals(businessConfiguration.getProjectSchedule())) {
-
-                    content += businessConfiguration.getContent();
-                    if ("D".equals(businessConfiguration.getProjectSchedule())) {
-                        projectV1.setPredictStarttime(businessConfiguration.getPredictStarttime());
-                    }
-                    BusinessConfiguration Dconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
-                            "D");
-                    BusinessConfiguration Econfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
-                            "E");
-                    BusinessConfiguration Fconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
-                            "F");
-
-                    if (Econfiguration == null && Fconfiguration == null) {
-                        projectV1.setPredictEndtime(Dconfiguration.getPridectEndtime());
-                    } else if (Econfiguration != null && Fconfiguration == null) {
-                        projectV1.setPredictEndtime(Econfiguration.getPridectEndtime());
-                    }else if (Fconfiguration != null){
-                        projectV1.setPredictEndtime(Fconfiguration.getPridectEndtime());
-                    }
-                    projectV1.setProjectName(project.getProjectName());
-                    projectV1.setProjectId(project.getId());
-                    projectV1.setProjectCode(project.getProjectCode());
-                    projectV1.setProjectType(project.getProjectType());
-                    projectV1.setLeval(project.getLeval());
-                    projectV1.setProjectManager(project.getProjectManager());
-                    projectV1.setStatus(project.getStatus());
-                    projectV1.setProjectSchedule("项目建设");
-                    projectV1.setContent(content);
-                    map1.put("项目建设", projectV1);
-                } else {
-                    projectVo.setProjectName(project.getProjectName());
-                    projectVo.setProjectId(project.getId());
-                    projectVo.setProjectSchedule(businessConfiguration.getProjectSchedule());
-                    projectVo.setPredictStarttime(businessConfiguration.getPredictStarttime());
-                    projectVo.setPredictEndtime(businessConfiguration.getPridectEndtime());
-                    projectVo.setContent(businessConfiguration.getContent());
-//                projectVo.setSchedule(schedule);
-                    projectVo.setProjectCode(project.getProjectCode());
-                    projectVo.setProjectType(project.getProjectType());
-                    projectVo.setLeval(project.getLeval());
-                    projectVo.setProjectManager(project.getProjectManager());
-                    projectVo.setStatus(project.getStatus());
-                    map1.put(businessConfiguration.getProjectSchedule(), projectVo);
+            ProjectMonthlyExample example = new ProjectMonthlyExample();
+            ProjectMonthlyExample.Criteria criteria = example.createCriteria();
+            criteria.andCreatorEqualTo(userId);
+            criteria.andMonthNumEqualTo(createTime);
+            criteria.andProjectIdEqualTo(project.getId());
+            List<ProjectMonthly> projectMonthlies = projectMonthlyMapper.selectByExample(example);
+            if (projectMonthlies.size() != 0) {
+                for (ProjectMonthly projectMonthly : projectMonthlies) {
+                    ProjectVo projectVo = new ProjectVo();
+                    projectVo.setProjectName(projectMonthly.getProjectName());
+                    projectVo.setProjectId(projectMonthly.getProjectId());
+                    projectVo.setProjectSchedule(projectMonthly.getProjectSchedule());
+                    projectVo.setContent(projectMonthly.getContent());
+                    projectVo.setPredictStarttime(projectMonthly.getPredictStarttime());
+                    projectVo.setPredictEndtime(projectMonthly.getPridectEndtime());
+                    projectVo.setProjectCode(projectMonthly.getProjectCode());
+                    projectVo.setProjectType(projectMonthly.getProjectType());
+                    projectVo.setLeval(projectMonthly.getLeval());
+                    projectVo.setProjectManager(projectMonthly.getProjectManager());
+                    projectVo.setStatus(projectMonthly.getStatus());
+                    projectVo.setCurrentProgress(projectMonthly.getCurrentProgress());
+                    projectVo.setPerformance(projectMonthly.getPerformance());
+                    projectVo.setSchedule(projectMonthly.getSchedule());
+                    projectVo.setRemark(projectMonthly.getRemark());
+                    projectVo.setSituation(projectMonthly.getSituation());
+                    map1.put(projectMonthly.getProjectSchedule(), projectVo);
                 }
+                map.put(project.getProjectName(), map1);
+            } else {
+                List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectBySchedule(project.getId());
+                for (BusinessConfiguration businessConfiguration : businessConfigurations) {
+                    ProjectVo projectVo = new ProjectVo();
+                    if ("D".equals(businessConfiguration.getProjectSchedule()) ||
+                            "E".equals(businessConfiguration.getProjectSchedule()) ||
+                            "F".equals(businessConfiguration.getProjectSchedule())) {
 
+                        content += businessConfiguration.getContent();
+                        if ("D".equals(businessConfiguration.getProjectSchedule())) {
+                            projectV1.setPredictStarttime(businessConfiguration.getPredictStarttime());
+                        }
+                        BusinessConfiguration Dconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+                                "D");
+                        BusinessConfiguration Econfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+                                "E");
+                        BusinessConfiguration Fconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+                                "F");
+
+                        if (Econfiguration == null && Fconfiguration == null) {
+                            projectV1.setPredictEndtime(Dconfiguration.getPridectEndtime());
+                        } else if (Econfiguration != null && Fconfiguration == null) {
+                            projectV1.setPredictEndtime(Econfiguration.getPridectEndtime());
+                        } else if (Fconfiguration != null) {
+                            projectV1.setPredictEndtime(Fconfiguration.getPridectEndtime());
+                        }
+                        projectV1.setProjectName(project.getProjectName());
+                        projectV1.setProjectId(project.getId());
+                        projectV1.setProjectCode(project.getProjectCode());
+                        projectV1.setProjectType(project.getProjectType());
+                        projectV1.setLeval(project.getLeval());
+                        projectV1.setProjectManager(project.getProjectManager());
+                        projectV1.setStatus(project.getStatus());
+                        projectV1.setProjectSchedule("项目建设");
+                        projectV1.setContent(content);
+                        map1.put("项目建设", projectV1);
+                    } else {
+                        projectVo.setProjectName(project.getProjectName());
+                        projectVo.setProjectId(project.getId());
+                        projectVo.setProjectSchedule(businessConfiguration.getProjectSchedule());
+                        projectVo.setPredictStarttime(businessConfiguration.getPredictStarttime());
+                        projectVo.setPredictEndtime(businessConfiguration.getPridectEndtime());
+                        projectVo.setContent(businessConfiguration.getContent());
+//                projectVo.setSchedule(schedule);
+                        projectVo.setProjectCode(project.getProjectCode());
+                        projectVo.setProjectType(project.getProjectType());
+                        projectVo.setLeval(project.getLeval());
+                        projectVo.setProjectManager(project.getProjectManager());
+                        projectVo.setStatus(project.getStatus());
+                        map1.put(businessConfiguration.getProjectSchedule(), projectVo);
+                    }
+                }
                 map.put(project.getProjectName(), map1);
             }
         }

@@ -30,4 +30,7 @@ public interface ProjectMonthlyMapper {
     int updateByPrimaryKey(ProjectMonthly record);
 
     List<ProjectMonthly> queryProjectMonthByProjectId(@Param("projectId") String projectId);
+
+    ProjectMonthly selectByprojectIdAndSchedule(@Param("projectId") String projectId,
+                                                @Param("projectSchedule") String projectSchedule);
 }
