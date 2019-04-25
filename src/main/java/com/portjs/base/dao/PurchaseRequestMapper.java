@@ -76,7 +76,8 @@ public interface PurchaseRequestMapper {
      * @param method
      * @return
      */
-    int purchaseRequestCounts(@Param("projectId") String projectId, @Param("applyDate") Date applyDate, @Param("status") String status,
+    int purchaseRequestCounts(@Param("projectId") String projectId, @Param("applyDate") String applyDate, @Param("status") String status,
+                              @Param("projectCode")String projectCode,@Param("projectName")String projectName,
                               @Param("applicant")String applicant, @Param("method")String method);
 
     /**
@@ -87,8 +88,9 @@ public interface PurchaseRequestMapper {
      * @param pageSize
      * @return
      */
-    List<PurchaseRequest> queryPurchaseRequestInfo(@Param("projectId") String projectId, @Param("applyDate") Date applyDate,
-                                                   @Param("status") String status, @Param("applicant")String applicant,
+    List<PurchaseRequest> queryPurchaseRequestInfo(@Param("projectId") String projectId, @Param("applyDate") String applyDate,
+                                                   @Param("status") String status,@Param("projectCode")String projectCode,
+                                                   @Param("projectName")String projectName,@Param("applicant")String applicant,
                                                    @Param("method")String method,@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
 
 

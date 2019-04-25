@@ -7,6 +7,7 @@ import com.portjs.base.entity.*;
 import com.portjs.base.service.PuchaseRequestService;
 import com.portjs.base.util.*;
 import com.portjs.base.util.StringUtils.StringUtils;
+import com.portjs.base.util.UUID.UuidPlus;
 import com.portjs.base.vo.FlashProject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -330,7 +331,11 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                     purchaseList.setBrand(object.getString("brand"));//品牌
 
                     purchaseList.setRequestId(id);
-                    int i1 = purchaseListMapper.updateByRequestId(purchaseList);
+
+                    PurchaseListExample purchaseListExample = new PurchaseListExample();
+                    PurchaseListExample.Criteria criteria = purchaseListExample.createCriteria();
+                    criteria.andIdEqualTo(purchaseList.getId());
+                    int i1 =  purchaseListMapper.updateByExampleSelective(purchaseList,purchaseListExample);
                     if(i1==0){
                         return new ResponseMessage(Code.CODE_ERROR,"采购清单列表修改失败！",i1);
                     }
@@ -416,17 +421,20 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         JSONObject jsonObject = JSONObject.parseObject(responseBody);
         String status = jsonObject.getString("status");//0暂存1提交
         String projectId = jsonObject.getString("projectId");//所属项目id
-        Date applyDate = jsonObject.getDate("applyDate");//采购申请时间
+        String applyDate1 = jsonObject.getString("applyDate");//采购申请时间
+//        Date applyDate =   DateUtils.parseDate(applyDate1);
         String applicant = jsonObject.getString("applicant");//申请人姓名
         String ownerId = jsonObject.getString("ownerId");//当前登录人id
+        String projectCode = jsonObject.getString("projectCode");
+        String projectName = jsonObject.getString("projectName");
         String method = jsonObject.getString("method");//采购方式1:公开招标、2:邀请招标、3:竞争性谈判、4:询价、5:单一来源、6:其他
         int pageNo = jsonObject.getInteger("pageNo");
         int pageSize = jsonObject.getInteger("pageSize");
 
         Page<PurchaseRequest> page = new Page<>();
-        int totalCount = purchaseRequestMapper.purchaseRequestCounts(projectId,applyDate,status,applicant,method);
+        int totalCount = purchaseRequestMapper.purchaseRequestCounts(projectId,applyDate1,status,projectCode,projectName,applicant,method);
         page.init(totalCount,pageNo,pageSize);
-        List<PurchaseRequest> list = purchaseRequestMapper.queryPurchaseRequestInfo(projectId,applyDate,status,applicant,method,page.getRowNum(), page.getPageCount());
+        List<PurchaseRequest> list = purchaseRequestMapper.queryPurchaseRequestInfo(projectId,applyDate1,status,projectCode,projectName,applicant,method,page.getRowNum(), page.getPageCount());
 //        for (PurchaseRequest purchaseRequest : list) {
 //            TTodoExample todoExample = new TTodoExample();
 //            TTodoExample.Criteria todoCriteria = todoExample.createCriteria();
@@ -1239,7 +1247,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         String content = jsonObject.getString("content");//内容说明(字段名字已改 原：desc 现：content)
         String creater = jsonObject.getString("creater");//创建人姓名
         String createrId = jsonObject.getString("createrId");//创建人id
-        String DS = jsonObject.getString("DS");//获取导入的清单列表JSON数组字符串
+        //String DS = jsonObject.getString("DS");//获取导入的清单列表JSON数组字符串
 
         PurchaseRequest purchaseRequest = new PurchaseRequest();
         //purchaseRequest.setRequestNum(LSUtils.createOdd());
@@ -1269,30 +1277,23 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         for (int x = 0; x < purchaseLists.size(); x++) {
             id1 = purchaseLists.get(x).getId();
         }*/
-        PurchaseList purchaseList = new PurchaseList();
-        net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(DS);//并将DS内容取出转为json数组
+        JSONArray jsonArray = jsonObject.getJSONArray("DS");//并将DS内容取出转为json数组
         for (int j = 0; j < jsonArray.size(); j++) {     //遍历json数组内容
-            net.sf.json.JSONObject object = jsonArray.getJSONObject(j);
-
-            //purchaseList.setId(UUID.randomUUID().toString());
-            //purchaseList.setRequestId(id);//上面刚刚创建的采购申请数据的id
-            //purchaseList.setProjectId(projectId);//所属项目id
-            purchaseList.setId(object.getString("id"));
-            purchaseList.setContent(object.getString("content"));//需求说明
-            purchaseList.setDemander(object.getString("demander"));//需求人id
-            BigDecimal b = new BigDecimal(object.getLong("quantity"));
-            purchaseList.setQuantity(b);//数量
-            purchaseList.setUnit(object.getString("unit"));//单位
-            purchaseList.setSpec(object.getString("spec"));//规格
-            purchaseList.setModel(object.getString("model"));//型号
-            purchaseList.setName(object.getString("name"));//品名
-            purchaseList.setBrand(object.getString("brand"));//品牌
-            //purchaseList.setCreater(createrId);//创建人id
-            //purchaseList.setCreateTime(new Date());//创建时间
-
-            int i1 = purchaseListMapper.updateByPrimaryKeySelective(purchaseList);
-            if(i1==0){
-                return new ResponseMessage(Code.CODE_ERROR,"修改采购列表失败！！",i1);
+           JSONObject object = jsonArray.getJSONObject(j);
+            PurchaseList purchaseList =JSONObject.toJavaObject(object,PurchaseList.class);
+            if(!StringUtils.isEmpty(purchaseList.getId())){
+                purchaseList.setUpdateTime(new Date());
+                int i1 =  purchaseListMapper.updateByRequestId(purchaseList);
+                if(i1==0){
+                    return new ResponseMessage(Code.CODE_ERROR,"修改采购列表失败！！",i1);
+                }
+            }else {
+                purchaseList.setId(UuidPlus.getUUIDPlus());
+                purchaseList.setCreateTime(new Date());
+                int i1 =  purchaseListMapper.insertSelective(purchaseList);
+                if(i1==0){
+                    return new ResponseMessage(Code.CODE_ERROR,"添加采购列表失败！！",i1);
+                }
             }
 
         }

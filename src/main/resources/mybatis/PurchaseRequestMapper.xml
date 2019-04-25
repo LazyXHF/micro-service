@@ -127,6 +127,12 @@
     <if test="projectId != null and projectId!=''">
       and   pr.project_id like concat('%',#{projectId},'%')
     </if>
+    <if test="projectCode != null and projectCode!=''">
+      and   p.project_code like concat('%',#{projectCode},'%')
+    </if>
+    <if test="projectName != null and projectName!=''">
+      and   p.project_name like concat('%',#{projectName},'%')
+    </if>
     <if test="applicant != null and applicant!=''">
       and  pr.applicant like concat('%',#{applicant},'%')
     </if>
@@ -134,7 +140,7 @@
       and  pr.method like concat('%',#{method},'%')
     </if>
     <if test="applyDate != null and applyDate!=''">
-      and pr.apply_date like concat('%',#{applyDate},'%')
+      and pr.apply_date=DATE_FORMAT(#{applyDate},'%Y-%m-%d')
     </if>
     <if test="status != null and status!=''">
       and pr.status like concat('%',#{status},'%')
@@ -145,23 +151,30 @@
   <select id="purchaseRequestCounts" resultType="Integer">
     select
     count(*)
-    from purchase_request
+    from purchase_request pr left join project p
+    on pr.project_id = p.id
     where
-    delete_time is null
+    pr.delete_time is null
     <if test="projectId != null and projectId!=''">
-      and  project_id like concat('%',#{projectId},'%')
+      and   pr.project_id like concat('%',#{projectId},'%')
+    </if>
+    <if test="projectCode != null and projectCode!=''">
+      and   p.project_code like concat('%',#{projectCode},'%')
+    </if>
+    <if test="projectName != null and projectName!=''">
+      and   p.project_name like concat('%',#{projectName},'%')
     </if>
     <if test="applicant != null and applicant!=''">
-      and  applicant like concat('%',#{applicant},'%')
+      and  pr.applicant like concat('%',#{applicant},'%')
     </if>
     <if test="method != null and method!=''">
-      and  method like concat('%',#{method},'%')
+      and  pr.method like concat('%',#{method},'%')
     </if>
     <if test="applyDate != null and applyDate!=''">
-      and apply_date like concat('%',#{applyDate},'%')
+      and pr.apply_date=DATE_FORMAT(#{applyDate},'%Y-%m-%d')
     </if>
     <if test="status != null and status!=''">
-      and status like concat('%',#{status},'%')
+      and pr.status like concat('%',#{status},'%')
     </if>
   </select>
 
