@@ -37,6 +37,8 @@ public class ProjectWeekly {
 
     private String weekNum;//第几周
 
+    private String managerPhone;
+
     public String getId() {
         return id;
     }
@@ -171,5 +173,13 @@ public class ProjectWeekly {
 
     public void setWeekNum(String weekNum) {
         this.weekNum = weekNum == null ? null : weekNum.trim();
+    }
+
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone == null ? null : managerPhone.trim();
     }
 }

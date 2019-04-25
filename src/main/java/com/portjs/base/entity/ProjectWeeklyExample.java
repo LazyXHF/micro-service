@@ -1264,6 +1264,76 @@ public class ProjectWeeklyExample {
             addCriterion("week_num not between", value1, value2, "weekNum");
             return (Criteria) this;
         }
+
+        public Criteria andManagerPhoneIsNull() {
+            addCriterion("manager_phone is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneIsNotNull() {
+            addCriterion("manager_phone is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneEqualTo(String value) {
+            addCriterion("manager_phone =", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneNotEqualTo(String value) {
+            addCriterion("manager_phone <>", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneGreaterThan(String value) {
+            addCriterion("manager_phone >", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneGreaterThanOrEqualTo(String value) {
+            addCriterion("manager_phone >=", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneLessThan(String value) {
+            addCriterion("manager_phone <", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneLessThanOrEqualTo(String value) {
+            addCriterion("manager_phone <=", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneLike(String value) {
+            addCriterion("manager_phone like", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneNotLike(String value) {
+            addCriterion("manager_phone not like", value, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneIn(List<String> values) {
+            addCriterion("manager_phone in", values, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneNotIn(List<String> values) {
+            addCriterion("manager_phone not in", values, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneBetween(String value1, String value2) {
+            addCriterion("manager_phone between", value1, value2, "managerPhone");
+            return (Criteria) this;
+        }
+
+        public Criteria andManagerPhoneNotBetween(String value1, String value2) {
+            addCriterion("manager_phone not between", value1, value2, "managerPhone");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

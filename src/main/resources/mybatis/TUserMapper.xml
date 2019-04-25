@@ -789,4 +789,14 @@
     <select id="selectByNameCn" resultMap="BaseResultMap">
     SELECT * FROM `t_user` where name_cn like CONCAT('%',#{nameCn,jdbcType=VARCHAR},'%')
     </select>
+
+  <!--根据分管领导id查询分管领导对应所有部门的所有项目经理和项目组长-->
+  <select id="selectUserByUserId" resultMap="BaseResultMap">
+    select * from t_user where
+    id in (select u_id from t_user_department where
+    d_id in(select d_id from  t_user_department where u_id=#{id}))
+    <if test="duty!=null and duty!=''">
+      and duty!=#{duty}
+    </if>
+  </select>
 </mapper>

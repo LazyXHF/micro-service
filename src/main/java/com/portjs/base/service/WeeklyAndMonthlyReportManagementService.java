@@ -13,19 +13,19 @@ public interface WeeklyAndMonthlyReportManagementService {
      * @param requestBody
      * @return
      */
-    ResponseMessage selectWeeklyDetails(String requestBody) throws Exception;
+    ResponseMessage selectWeeklyDetails(String requestBody);
 
     /**
      * 提交保存周报详情
      * @param requestBody
      * @return
      */
-    ResponseMessage submissionWeeklyDetails(String requestBody);
+    ResponseMessage submissionWeeklyDetails(String requestBody)throws Exception ;
 
     /**
      * 周报查询
      * @param requestBody
      * @return
      */
-    ResponseMessage selectWeekly(String requestBody) throws Exception;
+    ResponseMessage selectWeekly(String requestBody);
 }

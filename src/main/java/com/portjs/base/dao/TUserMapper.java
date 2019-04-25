@@ -82,4 +82,6 @@ public interface TUserMapper {
 
     List<TUser> selectByNameCn(@Param("nameCn") String nameCn);
 
+    //根据分管领导id查询分管领导对应所有部门的所有项目经理和项目组长
+    List<TUser> selectUserByUserId(@Param("id") String id,@Param("duty") String duty);
 }
