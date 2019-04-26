@@ -123,7 +123,7 @@
     select
     *
     from t_workflowstep
-    where relateddomain = "采购申请" and relateddomain_id=#{relateddomainId} order by backup_3,action_time asc
+    where relateddomain = "采购申请" and relateddomain_id=#{relateddomainId} and action_time is not null order by backup_3,action_time asc
   </select>
 
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
@@ -507,7 +507,7 @@
     a.action_result as actionResult , a.file_url as fileUrl, a.action_comment as actionComment, a.enable, a.status as status,a.backup_3,a.back_up7,a.back_up8,a.back_up9,a.status as bstatus
     from t_workflowstep a left join purchase_request b
     on a.relateddomain_id=b.id
-    where relateddomain_id = #{id,jdbcType=VARCHAR} and a.actionuser_id = #{actionuserId}
+    where relateddomain_id = #{id,jdbcType=VARCHAR} and a.actionuser_id = #{actionuserId} and a.status = '0'
     order by case when action_time is null then 1 else 0 end asc,  action_time asc
   </select>
   <select id="queryNotReviewProject" resultMap="BaseResultMap3" parameterType="java.lang.String" >
