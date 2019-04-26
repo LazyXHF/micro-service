@@ -809,7 +809,7 @@
   <!--//根据角色id或部门id或职务id-->
 
   <select id="selectRidOrDidOrDuty" resultMap="BaseResultMap">
-    SELECT u.* FROM t_user u
+    SELECT DISTINCT u.id,u.* FROM t_user u
     LEFT JOIN t_user_role ur ON u.`ID` = ur.`user_id`
     LEFT JOIN t_user_department ud ON u.`ID` = ud.`u_id`
     WHERE 1=1
