@@ -6,6 +6,7 @@ import com.portjs.base.vo.UserRoleDO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -70,8 +71,8 @@ public interface TUserMapper {
     int selectUserCountByLoginNameAndDepartmentIds(@Param("loginName") String loginName, @Param("departmentId") String departmentId);
 
 
-    //根据角色id和部门id查询用户
-    List<TUser> selectUserByDidAndRids(@Param("did") String did, @Param("rid") String rid);
+    //根据角色id和部门id或职务查询用户
+    List<TUser> selectUserByDidAndRidsAndDuty(@Param("did") String did, @Param("rid") String rid, @Param("duty")String duty);
 
 
     UserRoleDO selectUserAndRoleAndDepartmentByUids(@Param("uid") String rid);

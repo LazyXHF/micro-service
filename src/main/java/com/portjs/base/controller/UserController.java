@@ -10,7 +10,6 @@ import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.TUserService;
 import com.portjs.base.util.Code;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.util.SelectAuditors;
 import com.portjs.base.vo.ArrayVO;
 import com.portjs.base.vo.PageVo;
 import com.portjs.base.vo.SortVo;
@@ -36,8 +35,6 @@ public class UserController extends BaseController  {
     @Autowired
     TUserService tUserService;
 
-    @Autowired
-    private SelectAuditors selectAuditors;
     /**
      * 添加用户
      */

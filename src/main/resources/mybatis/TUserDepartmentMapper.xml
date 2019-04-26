@@ -5,6 +5,8 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="u_id" property="uId" jdbcType="VARCHAR" />
     <result column="d_id" property="dId" jdbcType="VARCHAR" />
+    <result column="duty" property="duty" jdbcType="VARCHAR" />
+
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -65,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, u_id, d_id
+    id, u_id, d_id,duty
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.TUserDepartmentExample" >
     select
@@ -98,8 +100,8 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.TUserDepartment" >
-    insert into t_user_department (id, u_id, d_id)
-    values (#{id,jdbcType=INTEGER}, #{uId,jdbcType=VARCHAR}, #{dId,jdbcType=VARCHAR})
+    insert into t_user_department (id, u_id, d_id,duty)
+    values (#{id,jdbcType=INTEGER}, #{uId,jdbcType=VARCHAR}, #{dId,jdbcType=VARCHAR}, #{duty,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.TUserDepartment" >
     insert into t_user_department
@@ -112,6 +114,9 @@
       </if>
       <if test="dId != null" >
         d_id,
+      </if>
+      <if test="duty != null" >
+        duty,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -144,6 +149,10 @@
       <if test="record.dId != null" >
         d_id = #{record.dId,jdbcType=VARCHAR},
       </if>
+      <if test="record.duty != null" >
+        duty = #{record.duty,jdbcType=VARCHAR},
+      </if>
+
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -153,7 +162,8 @@
     update t_user_department
     set id = #{record.id,jdbcType=INTEGER},
       u_id = #{record.uId,jdbcType=VARCHAR},
-      d_id = #{record.dId,jdbcType=VARCHAR}
+      d_id = #{record.dId,jdbcType=VARCHAR},
+      duty = #{record.duty,jdbcType=VARCHAR},
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -167,13 +177,17 @@
       <if test="dId != null" >
         d_id = #{dId,jdbcType=VARCHAR},
       </if>
+      <if test="duty != null" >
+        duty = #{duty,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.TUserDepartment" >
     update t_user_department
     set u_id = #{uId,jdbcType=VARCHAR},
-      d_id = #{dId,jdbcType=VARCHAR}
+      d_id = #{dId,jdbcType=VARCHAR},
+      duty = #{duty,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

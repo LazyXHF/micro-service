@@ -385,6 +385,7 @@ private TUserDepartmentMapper userDepartmentMapper;
             TUserDepartment userDepartment = new TUserDepartment();
             userDepartment.setuId(user.getId());
             userDepartment.setdId(dids.get(i));
+            userDepartment.setDuty(user.getDuty());
             userDepartmentMapper.insert(userDepartment);
         }
 
@@ -439,6 +440,7 @@ private TUserDepartmentMapper userDepartmentMapper;
             TUserDepartment userDepartment = new TUserDepartment();
             userDepartment.setuId(user.getId());
             userDepartment.setdId(dids.get(i));
+            userDepartment.setDuty(user.getDuty());
             userDepartmentMapper.insert(userDepartment);
         }
 
