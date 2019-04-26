@@ -89,6 +89,6 @@ public interface TUserMapper {
 
 
     //根据角色id或部门id或职务id
-    List<TUser> selectRidOrDidOrDuty(@Param("rid")String rid,@Param("did")String did,@Param("duty")String duty);
+    List<TUser> selectRidOrDidOrDuty(@Param("rid")String rid,@Param("did")List<String> did,@Param("duty")String duty);
 
 }

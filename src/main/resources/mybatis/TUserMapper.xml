@@ -820,7 +820,10 @@
       ur.`role_id` =#{rid}
     </if>
     <if test="did != null and did !=''">
-      AND ud.`d_id` = #{did}
+      AND ud.`d_id` IN
+      <foreach item="did" index="index" collection="did" open="(" separator="," close=")">
+        #{did}
+      </foreach>
     </if>
 
   </select>
