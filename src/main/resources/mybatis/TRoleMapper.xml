@@ -389,5 +389,7 @@
     SELECT COUNT(r.`id`) FROM t_role r
   </select>
 
-
+<select id="selectRoleByUserId" resultMap="BaseResultMap">
+  select * from t_role where id in (select role_id from t_user_role where user_id=#{userId})
+</select>
 </mapper>

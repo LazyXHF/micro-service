@@ -90,5 +90,6 @@ public interface TUserMapper {
 
     //根据角色id或部门id或职务id
     List<TUser> selectRidOrDidOrDuty(@Param("rid")String rid,@Param("did")List<String> did,@Param("duty")String duty);
-
+    //根据部门id查询该部门下的所有人
+    List<TUser> selectByDid(@Param("did") String dId);
 }

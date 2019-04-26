@@ -39,4 +39,7 @@ public interface TRoleMapper {
 
     //角色中最大的值
     int selectMaxSort();
+
+    //通过用户查角色
+    List<TRole> selectRoleByUserId(@Param("userId") String userId);
 }

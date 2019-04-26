@@ -27,5 +27,5 @@ public interface WeeklyAndMonthlyReportManagementService {
      * @param requestBody
      * @return
      */
-    ResponseMessage selectWeekly(String requestBody);
+    ResponseMessage selectWeekly(String requestBody) throws Exception;
 }

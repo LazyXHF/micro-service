@@ -817,15 +817,19 @@
       AND ud.`duty` = #{duty}
     </if>
     <if test="rid != null and rid !=''">
-      AND ur.`role_id` =#{rid}
+      ur.`role_id` =#{rid}
     </if>
-    <if test="did != null and did.size >0">
+    <if test="did != null and did !=''">
       AND ud.`d_id` IN
       <foreach item="did" index="index" collection="did" open="(" separator="," close=")">
         #{did}
       </foreach>
     </if>
 
+  </select>
+
+  <select id="selectByDid" resultMap="BaseResultMap">
+    select u.* from t_user u LEFT JOIN t_user_department d ON u.id=d.u_id  where d.d_id=#{did}
   </select>
 </mapper>
 
