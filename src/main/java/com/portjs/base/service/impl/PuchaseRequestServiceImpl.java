@@ -844,7 +844,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
 
         //将当前对应流程关闭
         TWorkflowstep workflowstep = new TWorkflowstep();
-        workflowstep.setId(workflowstep_id);
+        /*workflowstep.setId(workflowstep_id);
         workflowstep.setStepDesc("退回");
         workflowstep.setStatus("1");
         workflowstep.setActionResult(1);
@@ -853,7 +853,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         int i = tWorkflowstepMapper.updateByPrimaryKeySelective(workflowstep);
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-        }
+        }*/
         //修改当前待办表
         TTodo tTodo = new TTodo();
         tTodo.setId(todoId);
