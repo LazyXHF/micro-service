@@ -13,7 +13,7 @@ public class ProjectVo {
     private String projectSchedule;
     private String content;
     private Date predictStarttime;
-    private Date predictEndtime;
+    private Date pridectEndtime;
     //    private String schedule;
     private String projectCode;
     private String projectType;
@@ -25,6 +25,15 @@ public class ProjectVo {
     private String schedule;
     private String remark;
     private String situation;
+    private String proMonId;
+
+    public String getProMonId() {
+        return proMonId;
+    }
+
+    public void setProMonId(String proMonId) {
+        this.proMonId = proMonId;
+    }
 
     public String getSituation() {
         return situation;
@@ -146,14 +155,13 @@ public class ProjectVo {
         this.predictStarttime = predictStarttime;
     }
 
-    public Date getPredictEndtime() {
-        return predictEndtime;
+    public Date getPridectEndtime() {
+        return pridectEndtime;
     }
 
-    public void setPredictEndtime(Date predictEndtime) {
-        this.predictEndtime = predictEndtime;
+    public void setPridectEndtime(Date pridectEndtime) {
+        this.pridectEndtime = pridectEndtime;
     }
-
 //    public String getSchedule() {
 //        return schedule;
 //    }

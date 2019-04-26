@@ -212,30 +212,30 @@ public class ProjectController extends BaseController {
     }
 
     //新建项目投资下拉
-    @LogInfo(methodName = "投资计划下拉",modelName = "项目概览")
+    @LogInfo(methodName = "投资计划下拉", modelName = "项目概览")
     @RequestMapping("queryProjectPlanByProject")
     @ResponseBody
-    public ResponseMessage queryProjectPlanByProject(){
-        logger.debug(TAG+"queryProjectPlanByProject() begin");
-        return  projectService.queryProjectPlanByProject();
+    public ResponseMessage queryProjectPlanByProject() {
+        logger.debug(TAG + "queryProjectPlanByProject() begin");
+        return projectService.queryProjectPlanByProject();
     }
 
     //项目名称下拉
-    @LogInfo(methodName = "项目名称下拉",modelName = "立项管理")
+    @LogInfo(methodName = "项目名称下拉", modelName = "立项管理")
     @RequestMapping("queryNotInproject")
     @ResponseBody
-    public ResponseMessage queryNotInproject(){
-        logger.debug(TAG+"queryNotInproject() begin");
-        return  projectService.queryNotInproject();
+    public ResponseMessage queryNotInproject() {
+        logger.debug(TAG + "queryNotInproject() begin");
+        return projectService.queryNotInproject();
     }
 
     //项目经理模糊查询
-    @LogInfo(methodName = "项目经理模糊查询",modelName = "立项管理")
+    @LogInfo(methodName = "项目经理模糊查询", modelName = "立项管理")
     @RequestMapping("selectByNameCn")
     @ResponseBody
-    public ResponseMessage selectByNameCn(@RequestBody String requestBody){
-        logger.debug(TAG+"selectByNameCn() begin");
+    public ResponseMessage selectByNameCn(@RequestBody String requestBody) {
+        logger.debug(TAG + "selectByNameCn() begin");
         JSONObject requestJson = JSONObject.parseObject(requestBody);
-        return  projectService.selectByNameCn(requestJson);
+        return projectService.selectByNameCn(requestJson);
     }
 }

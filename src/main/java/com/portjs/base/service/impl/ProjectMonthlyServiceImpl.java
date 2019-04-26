@@ -36,12 +36,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
     @Override
     public ResponseMessage insertProjectMonthly(List<ProjectMonthly> projectMonthlyList) {
         for (ProjectMonthly projectMonthly : projectMonthlyList) {
-            ProjectMonthlyExample example = new ProjectMonthlyExample();
-            ProjectMonthlyExample.Criteria criteria = example.createCriteria();
-            criteria.andProjectIdEqualTo(projectMonthly.getProjectId());
-            criteria.andMonthNumEqualTo(projectMonthly.getMonthNum());
-            List<ProjectMonthly> list = projectMonthlyMapper.selectByExample(example);
-            if (list.size() != 0) {
+            if (projectMonthly.getId() != null) {
                 int flag = projectMonthlyMapper.updateByPrimaryKeySelective(projectMonthly);
                 if (flag == 0) {
                     return new ResponseMessage(Code.CODE_ERROR, "添加失败");
@@ -84,7 +79,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                     projectVo.setProjectSchedule(projectMonthly.getProjectSchedule());
                     projectVo.setContent(projectMonthly.getContent());
                     projectVo.setPredictStarttime(projectMonthly.getPredictStarttime());
-                    projectVo.setPredictEndtime(projectMonthly.getPridectEndtime());
+                    projectVo.setPridectEndtime(projectMonthly.getPridectEndtime());
                     projectVo.setProjectCode(projectMonthly.getProjectCode());
                     projectVo.setProjectType(projectMonthly.getProjectType());
                     projectVo.setLeval(projectMonthly.getLeval());
@@ -95,6 +90,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                     projectVo.setSchedule(projectMonthly.getSchedule());
                     projectVo.setRemark(projectMonthly.getRemark());
                     projectVo.setSituation(projectMonthly.getSituation());
+                    projectVo.setProMonId(projectMonthly.getId());
                     map1.put(projectMonthly.getProjectSchedule(), projectVo);
                 }
                 map.put(project.getProjectName(), map1);
@@ -118,11 +114,11 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                                 "F");
 
                         if (Econfiguration == null && Fconfiguration == null) {
-                            projectV1.setPredictEndtime(Dconfiguration.getPridectEndtime());
+                            projectV1.setPridectEndtime(Dconfiguration.getPridectEndtime());
                         } else if (Econfiguration != null && Fconfiguration == null) {
-                            projectV1.setPredictEndtime(Econfiguration.getPridectEndtime());
+                            projectV1.setPridectEndtime(Econfiguration.getPridectEndtime());
                         } else if (Fconfiguration != null) {
-                            projectV1.setPredictEndtime(Fconfiguration.getPridectEndtime());
+                            projectV1.setPridectEndtime(Fconfiguration.getPridectEndtime());
                         }
                         projectV1.setProjectName(project.getProjectName());
                         projectV1.setProjectId(project.getId());
@@ -139,7 +135,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                         projectVo.setProjectId(project.getId());
                         projectVo.setProjectSchedule(businessConfiguration.getProjectSchedule());
                         projectVo.setPredictStarttime(businessConfiguration.getPredictStarttime());
-                        projectVo.setPredictEndtime(businessConfiguration.getPridectEndtime());
+                        projectVo.setPridectEndtime(businessConfiguration.getPridectEndtime());
                         projectVo.setContent(businessConfiguration.getContent());
 //                projectVo.setSchedule(schedule);
                         projectVo.setProjectCode(project.getProjectCode());
@@ -169,6 +165,9 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
         String projectManager = requestMsg.getString("projectManager");
         String status = requestMsg.getString("status");
         String monthNum = requestMsg.getString("monthNum");
+        if (monthNum == null) {
+            return new ResponseMessage(Code.CODE_ERROR, "请选择月份");
+        }
         List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
                 projectManager, status, monthNum);
         Map<String, List<ProjectMonthly>> map = new LinkedHashMap<>();

@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.portjs.base.dao.ProjectMapper" >
-    <resultMap id="BaseResultMap" type="com.portjs.base.entity.Project" >
-        <id column="id" property="id" jdbcType="VARCHAR" />
-        <result column="investment_id" property="investmentId" jdbcType="VARCHAR" />
-        <result column="project_code" property="projectCode" jdbcType="VARCHAR" />
-        <result column="project_name" property="projectName" jdbcType="VARCHAR" />
-        <result column="project_type" property="projectType" jdbcType="VARCHAR" />
-        <result column="status" property="status" jdbcType="VARCHAR" />
-        <result column="leval" property="leval" jdbcType="VARCHAR" />
-        <result column="organization" property="organization" jdbcType="VARCHAR" />
-        <result column="schedule" property="schedule" jdbcType="VARCHAR" />
-        <result column="contractor" property="contractor" jdbcType="VARCHAR" />
-        <result column="project_manager" property="projectManager" jdbcType="VARCHAR" />
-        <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="creator" property="creator" jdbcType="VARCHAR" />
-        <result column="creator_name" property="creatorName" jdbcType="VARCHAR" />
-        <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
-        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-        <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
-        <result column="project_money" property="projectMoney" jdbcType="VARCHAR" />
-        <result column="project_stage" property="projectStage" jdbcType="VARCHAR" />
-        <result column="project_status" property="projectStatus" jdbcType="VARCHAR" />
-        <result column="back_up1" property="backUp1" jdbcType="VARCHAR" />
-        <result column="back_up2" property="backUp2" jdbcType="VARCHAR" />
-        <result column="back_up3" property="backUp3" jdbcType="VARCHAR" />
-        <result column="back_up4" property="backUp4" jdbcType="VARCHAR" />
-        <result column="back_up5" property="backUp5" jdbcType="VARCHAR" />
-        <result column="back_up6" property="backUp6" jdbcType="VARCHAR" />
-        <result column="back_up7" property="backUp7" jdbcType="VARCHAR" />
-        <result column="back_up8" property="backUp8" jdbcType="VARCHAR" />
-        <result column="back_up9" property="backUp9" jdbcType="VARCHAR" />
-        <result column="back_up10" property="backUp10" jdbcType="VARCHAR" />
-        <result column="application_end_time" property="applicationEndTime" jdbcType="TIMESTAMP" />
-        <result column="project_end_time" property="projectEndTime" jdbcType="TIMESTAMP" />
+<mapper namespace="com.portjs.base.dao.ProjectMapper">
+    <resultMap id="BaseResultMap" type="com.portjs.base.entity.Project">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="investment_id" property="investmentId" jdbcType="VARCHAR"/>
+        <result column="project_code" property="projectCode" jdbcType="VARCHAR"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="project_type" property="projectType" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="leval" property="leval" jdbcType="VARCHAR"/>
+        <result column="organization" property="organization" jdbcType="VARCHAR"/>
+        <result column="schedule" property="schedule" jdbcType="VARCHAR"/>
+        <result column="contractor" property="contractor" jdbcType="VARCHAR"/>
+        <result column="project_manager" property="projectManager" jdbcType="VARCHAR"/>
+        <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="creator_name" property="creatorName" jdbcType="VARCHAR"/>
+        <result column="Modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP"/>
+        <result column="project_money" property="projectMoney" jdbcType="VARCHAR"/>
+        <result column="project_stage" property="projectStage" jdbcType="VARCHAR"/>
+        <result column="project_status" property="projectStatus" jdbcType="VARCHAR"/>
+        <result column="back_up1" property="backUp1" jdbcType="VARCHAR"/>
+        <result column="back_up2" property="backUp2" jdbcType="VARCHAR"/>
+        <result column="back_up3" property="backUp3" jdbcType="VARCHAR"/>
+        <result column="back_up4" property="backUp4" jdbcType="VARCHAR"/>
+        <result column="back_up5" property="backUp5" jdbcType="VARCHAR"/>
+        <result column="back_up6" property="backUp6" jdbcType="VARCHAR"/>
+        <result column="back_up7" property="backUp7" jdbcType="VARCHAR"/>
+        <result column="back_up8" property="backUp8" jdbcType="VARCHAR"/>
+        <result column="back_up9" property="backUp9" jdbcType="VARCHAR"/>
+        <result column="back_up10" property="backUp10" jdbcType="VARCHAR"/>
+        <result column="application_end_time" property="applicationEndTime" jdbcType="TIMESTAMP"/>
+        <result column="project_end_time" property="projectEndTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <sql id="Example_Where_Clause" >
-        <where >
-            <foreach collection="oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
                                     and ${criterion.condition}
                                 </when>
-                                <when test="criterion.singleValue" >
+                                <when test="criterion.singleValue">
                                     and ${criterion.condition} #{criterion.value}
                                 </when>
-                                <when test="criterion.betweenValue" >
+                                <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
-                                <when test="criterion.listValue" >
+                                <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -65,25 +66,26 @@
             </foreach>
         </where>
     </sql>
-    <sql id="Update_By_Example_Where_Clause" >
-        <where >
-            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
                                     and ${criterion.condition}
                                 </when>
-                                <when test="criterion.singleValue" >
+                                <when test="criterion.singleValue">
                                     and ${criterion.condition} #{criterion.value}
                                 </when>
-                                <when test="criterion.betweenValue" >
+                                <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
-                                <when test="criterion.listValue" >
+                                <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -94,44 +96,44 @@
             </foreach>
         </where>
     </sql>
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
     id, investment_id, project_code, project_name, project_type, status, leval, organization,
     schedule, contractor, project_manager, manager_phone, create_time, creator, creator_name,
     Modifier, update_time, delete_time, project_money, project_stage, project_status,
     back_up1, back_up2, back_up3, back_up4, back_up5, back_up6, back_up7, back_up8, back_up9,
     back_up10, application_end_time, project_end_time
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectExample">
         select
-        <if test="distinct" >
+        <if test="distinct">
             distinct
         </if>
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from project
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
-        <if test="orderByClause != null" >
+        <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from project
         where id = #{id,jdbcType=VARCHAR}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from project
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-    <delete id="deleteByExample" parameterType="com.portjs.base.entity.ProjectExample" >
+    <delete id="deleteByExample" parameterType="com.portjs.base.entity.ProjectExample">
         delete from project
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.portjs.base.entity.Project" >
+    <insert id="insert" parameterType="com.portjs.base.entity.Project">
     insert into project (id, investment_id, project_code,
       project_name, project_type, status,
       leval, organization, schedule,
@@ -157,325 +159,325 @@
       #{backUp10,jdbcType=VARCHAR}, #{applicationEndTime,jdbcType=TIMESTAMP}, #{projectEndTime,jdbcType=TIMESTAMP}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.portjs.base.entity.Project" >
+    <insert id="insertSelective" parameterType="com.portjs.base.entity.Project">
         insert into project
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 id,
             </if>
-            <if test="investmentId != null" >
+            <if test="investmentId != null">
                 investment_id,
             </if>
-            <if test="projectCode != null" >
+            <if test="projectCode != null">
                 project_code,
             </if>
-            <if test="projectName != null" >
+            <if test="projectName != null">
                 project_name,
             </if>
-            <if test="projectType != null" >
+            <if test="projectType != null">
                 project_type,
             </if>
-            <if test="status != null" >
+            <if test="status != null">
                 status,
             </if>
-            <if test="leval != null" >
+            <if test="leval != null">
                 leval,
             </if>
-            <if test="organization != null" >
+            <if test="organization != null">
                 organization,
             </if>
-            <if test="schedule != null" >
+            <if test="schedule != null">
                 schedule,
             </if>
-            <if test="contractor != null" >
+            <if test="contractor != null">
                 contractor,
             </if>
-            <if test="projectManager != null" >
+            <if test="projectManager != null">
                 project_manager,
             </if>
-            <if test="managerPhone != null" >
+            <if test="managerPhone != null">
                 manager_phone,
             </if>
-            <if test="createTime != null" >
+            <if test="createTime != null">
                 create_time,
             </if>
-            <if test="creator != null" >
+            <if test="creator != null">
                 creator,
             </if>
-            <if test="creatorName != null" >
+            <if test="creatorName != null">
                 creator_name,
             </if>
-            <if test="modifier != null" >
+            <if test="modifier != null">
                 Modifier,
             </if>
-            <if test="updateTime != null" >
+            <if test="updateTime != null">
                 update_time,
             </if>
-            <if test="deleteTime != null" >
+            <if test="deleteTime != null">
                 delete_time,
             </if>
-            <if test="projectMoney != null" >
+            <if test="projectMoney != null">
                 project_money,
             </if>
-            <if test="projectStage != null" >
+            <if test="projectStage != null">
                 project_stage,
             </if>
-            <if test="projectStatus != null" >
+            <if test="projectStatus != null">
                 project_status,
             </if>
-            <if test="backUp1 != null" >
+            <if test="backUp1 != null">
                 back_up1,
             </if>
-            <if test="backUp2 != null" >
+            <if test="backUp2 != null">
                 back_up2,
             </if>
-            <if test="backUp3 != null" >
+            <if test="backUp3 != null">
                 back_up3,
             </if>
-            <if test="backUp4 != null" >
+            <if test="backUp4 != null">
                 back_up4,
             </if>
-            <if test="backUp5 != null" >
+            <if test="backUp5 != null">
                 back_up5,
             </if>
-            <if test="backUp6 != null" >
+            <if test="backUp6 != null">
                 back_up6,
             </if>
-            <if test="backUp7 != null" >
+            <if test="backUp7 != null">
                 back_up7,
             </if>
-            <if test="backUp8 != null" >
+            <if test="backUp8 != null">
                 back_up8,
             </if>
-            <if test="backUp9 != null" >
+            <if test="backUp9 != null">
                 back_up9,
             </if>
-            <if test="backUp10 != null" >
+            <if test="backUp10 != null">
                 back_up10,
             </if>
-            <if test="applicationEndTime != null" >
+            <if test="applicationEndTime != null">
                 application_end_time,
             </if>
-            <if test="projectEndTime != null" >
+            <if test="projectEndTime != null">
                 project_end_time,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 #{id,jdbcType=VARCHAR},
             </if>
-            <if test="investmentId != null" >
+            <if test="investmentId != null">
                 #{investmentId,jdbcType=VARCHAR},
             </if>
-            <if test="projectCode != null" >
+            <if test="projectCode != null">
                 #{projectCode,jdbcType=VARCHAR},
             </if>
-            <if test="projectName != null" >
+            <if test="projectName != null">
                 #{projectName,jdbcType=VARCHAR},
             </if>
-            <if test="projectType != null" >
+            <if test="projectType != null">
                 #{projectType,jdbcType=VARCHAR},
             </if>
-            <if test="status != null" >
+            <if test="status != null">
                 #{status,jdbcType=VARCHAR},
             </if>
-            <if test="leval != null" >
+            <if test="leval != null">
                 #{leval,jdbcType=VARCHAR},
             </if>
-            <if test="organization != null" >
+            <if test="organization != null">
                 #{organization,jdbcType=VARCHAR},
             </if>
-            <if test="schedule != null" >
+            <if test="schedule != null">
                 #{schedule,jdbcType=VARCHAR},
             </if>
-            <if test="contractor != null" >
+            <if test="contractor != null">
                 #{contractor,jdbcType=VARCHAR},
             </if>
-            <if test="projectManager != null" >
+            <if test="projectManager != null">
                 #{projectManager,jdbcType=VARCHAR},
             </if>
-            <if test="managerPhone != null" >
+            <if test="managerPhone != null">
                 #{managerPhone,jdbcType=VARCHAR},
             </if>
-            <if test="createTime != null" >
+            <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="creator != null" >
+            <if test="creator != null">
                 #{creator,jdbcType=VARCHAR},
             </if>
-            <if test="creatorName != null" >
+            <if test="creatorName != null">
                 #{creatorName,jdbcType=VARCHAR},
             </if>
-            <if test="modifier != null" >
+            <if test="modifier != null">
                 #{modifier,jdbcType=VARCHAR},
             </if>
-            <if test="updateTime != null" >
+            <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="deleteTime != null" >
+            <if test="deleteTime != null">
                 #{deleteTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="projectMoney != null" >
+            <if test="projectMoney != null">
                 #{projectMoney,jdbcType=VARCHAR},
             </if>
-            <if test="projectStage != null" >
+            <if test="projectStage != null">
                 #{projectStage,jdbcType=VARCHAR},
             </if>
-            <if test="projectStatus != null" >
+            <if test="projectStatus != null">
                 #{projectStatus,jdbcType=VARCHAR},
             </if>
-            <if test="backUp1 != null" >
+            <if test="backUp1 != null">
                 #{backUp1,jdbcType=VARCHAR},
             </if>
-            <if test="backUp2 != null" >
+            <if test="backUp2 != null">
                 #{backUp2,jdbcType=VARCHAR},
             </if>
-            <if test="backUp3 != null" >
+            <if test="backUp3 != null">
                 #{backUp3,jdbcType=VARCHAR},
             </if>
-            <if test="backUp4 != null" >
+            <if test="backUp4 != null">
                 #{backUp4,jdbcType=VARCHAR},
             </if>
-            <if test="backUp5 != null" >
+            <if test="backUp5 != null">
                 #{backUp5,jdbcType=VARCHAR},
             </if>
-            <if test="backUp6 != null" >
+            <if test="backUp6 != null">
                 #{backUp6,jdbcType=VARCHAR},
             </if>
-            <if test="backUp7 != null" >
+            <if test="backUp7 != null">
                 #{backUp7,jdbcType=VARCHAR},
             </if>
-            <if test="backUp8 != null" >
+            <if test="backUp8 != null">
                 #{backUp8,jdbcType=VARCHAR},
             </if>
-            <if test="backUp9 != null" >
+            <if test="backUp9 != null">
                 #{backUp9,jdbcType=VARCHAR},
             </if>
-            <if test="backUp10 != null" >
+            <if test="backUp10 != null">
                 #{backUp10,jdbcType=VARCHAR},
             </if>
-            <if test="applicationEndTime != null" >
+            <if test="applicationEndTime != null">
                 #{applicationEndTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="projectEndTime != null" >
+            <if test="projectEndTime != null">
                 #{projectEndTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.portjs.base.entity.ProjectExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.portjs.base.entity.ProjectExample" resultType="java.lang.Integer">
         select count(*) from project
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
     </select>
-    <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByExampleSelective" parameterType="map">
         update project
-        <set >
-            <if test="record.id != null" >
+        <set>
+            <if test="record.id != null">
                 id = #{record.id,jdbcType=VARCHAR},
             </if>
-            <if test="record.investmentId != null" >
+            <if test="record.investmentId != null">
                 investment_id = #{record.investmentId,jdbcType=VARCHAR},
             </if>
-            <if test="record.projectCode != null" >
+            <if test="record.projectCode != null">
                 project_code = #{record.projectCode,jdbcType=VARCHAR},
             </if>
-            <if test="record.projectName != null" >
+            <if test="record.projectName != null">
                 project_name = #{record.projectName,jdbcType=VARCHAR},
             </if>
-            <if test="record.projectType != null" >
+            <if test="record.projectType != null">
                 project_type = #{record.projectType,jdbcType=VARCHAR},
             </if>
-            <if test="record.status != null" >
+            <if test="record.status != null">
                 status = #{record.status,jdbcType=VARCHAR},
             </if>
-            <if test="record.leval != null" >
+            <if test="record.leval != null">
                 leval = #{record.leval,jdbcType=VARCHAR},
             </if>
-            <if test="record.organization != null" >
+            <if test="record.organization != null">
                 organization = #{record.organization,jdbcType=VARCHAR},
             </if>
-            <if test="record.schedule != null" >
+            <if test="record.schedule != null">
                 schedule = #{record.schedule,jdbcType=VARCHAR},
             </if>
-            <if test="record.contractor != null" >
+            <if test="record.contractor != null">
                 contractor = #{record.contractor,jdbcType=VARCHAR},
             </if>
-            <if test="record.projectManager != null" >
+            <if test="record.projectManager != null">
                 project_manager = #{record.projectManager,jdbcType=VARCHAR},
             </if>
-            <if test="record.managerPhone != null" >
+            <if test="record.managerPhone != null">
                 manager_phone = #{record.managerPhone,jdbcType=VARCHAR},
             </if>
-            <if test="record.createTime != null" >
+            <if test="record.createTime != null">
                 create_time = #{record.createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.creator != null" >
+            <if test="record.creator != null">
                 creator = #{record.creator,jdbcType=VARCHAR},
             </if>
-            <if test="record.creatorName != null" >
+            <if test="record.creatorName != null">
                 creator_name = #{record.creatorName,jdbcType=VARCHAR},
             </if>
-            <if test="record.modifier != null" >
+            <if test="record.modifier != null">
                 Modifier = #{record.modifier,jdbcType=VARCHAR},
             </if>
-            <if test="record.updateTime != null" >
+            <if test="record.updateTime != null">
                 update_time = #{record.updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.deleteTime != null" >
+            <if test="record.deleteTime != null">
                 delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.projectMoney != null" >
+            <if test="record.projectMoney != null">
                 project_money = #{record.projectMoney,jdbcType=VARCHAR},
             </if>
-            <if test="record.projectStage != null" >
+            <if test="record.projectStage != null">
                 project_stage = #{record.projectStage,jdbcType=VARCHAR},
             </if>
-            <if test="record.projectStatus != null" >
+            <if test="record.projectStatus != null">
                 project_status = #{record.projectStatus,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp1 != null" >
+            <if test="record.backUp1 != null">
                 back_up1 = #{record.backUp1,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp2 != null" >
+            <if test="record.backUp2 != null">
                 back_up2 = #{record.backUp2,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp3 != null" >
+            <if test="record.backUp3 != null">
                 back_up3 = #{record.backUp3,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp4 != null" >
+            <if test="record.backUp4 != null">
                 back_up4 = #{record.backUp4,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp5 != null" >
+            <if test="record.backUp5 != null">
                 back_up5 = #{record.backUp5,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp6 != null" >
+            <if test="record.backUp6 != null">
                 back_up6 = #{record.backUp6,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp7 != null" >
+            <if test="record.backUp7 != null">
                 back_up7 = #{record.backUp7,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp8 != null" >
+            <if test="record.backUp8 != null">
                 back_up8 = #{record.backUp8,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp9 != null" >
+            <if test="record.backUp9 != null">
                 back_up9 = #{record.backUp9,jdbcType=VARCHAR},
             </if>
-            <if test="record.backUp10 != null" >
+            <if test="record.backUp10 != null">
                 back_up10 = #{record.backUp10,jdbcType=VARCHAR},
             </if>
-            <if test="record.applicationEndTime != null" >
+            <if test="record.applicationEndTime != null">
                 application_end_time = #{record.applicationEndTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.projectEndTime != null" >
+            <if test="record.projectEndTime != null">
                 project_end_time = #{record.projectEndTime,jdbcType=TIMESTAMP},
             </if>
         </set>
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByExample" parameterType="map" >
+    <update id="updateByExample" parameterType="map">
         update project
         set id = #{record.id,jdbcType=VARCHAR},
         investment_id = #{record.investmentId,jdbcType=VARCHAR},
@@ -510,113 +512,113 @@
         back_up10 = #{record.backUp10,jdbcType=VARCHAR},
         application_end_time = #{record.applicationEndTime,jdbcType=TIMESTAMP},
         project_end_time = #{record.projectEndTime,jdbcType=TIMESTAMP}
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.Project" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.portjs.base.entity.Project">
         update project
-        <set >
-            <if test="investmentId != null" >
+        <set>
+            <if test="investmentId != null">
                 investment_id = #{investmentId,jdbcType=VARCHAR},
             </if>
-            <if test="projectCode != null" >
+            <if test="projectCode != null">
                 project_code = #{projectCode,jdbcType=VARCHAR},
             </if>
-            <if test="projectName != null" >
+            <if test="projectName != null">
                 project_name = #{projectName,jdbcType=VARCHAR},
             </if>
-            <if test="projectType != null" >
+            <if test="projectType != null">
                 project_type = #{projectType,jdbcType=VARCHAR},
             </if>
-            <if test="status != null" >
+            <if test="status != null">
                 status = #{status,jdbcType=VARCHAR},
             </if>
-            <if test="leval != null" >
+            <if test="leval != null">
                 leval = #{leval,jdbcType=VARCHAR},
             </if>
-            <if test="organization != null" >
+            <if test="organization != null">
                 organization = #{organization,jdbcType=VARCHAR},
             </if>
-            <if test="schedule != null" >
+            <if test="schedule != null">
                 schedule = #{schedule,jdbcType=VARCHAR},
             </if>
-            <if test="contractor != null" >
+            <if test="contractor != null">
                 contractor = #{contractor,jdbcType=VARCHAR},
             </if>
-            <if test="projectManager != null" >
+            <if test="projectManager != null">
                 project_manager = #{projectManager,jdbcType=VARCHAR},
             </if>
-            <if test="managerPhone != null" >
+            <if test="managerPhone != null">
                 manager_phone = #{managerPhone,jdbcType=VARCHAR},
             </if>
-            <if test="createTime != null" >
+            <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="creator != null" >
+            <if test="creator != null">
                 creator = #{creator,jdbcType=VARCHAR},
             </if>
-            <if test="creatorName != null" >
+            <if test="creatorName != null">
                 creator_name = #{creatorName,jdbcType=VARCHAR},
             </if>
-            <if test="modifier != null" >
+            <if test="modifier != null">
                 Modifier = #{modifier,jdbcType=VARCHAR},
             </if>
-            <if test="updateTime != null" >
+            <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="deleteTime != null" >
+            <if test="deleteTime != null">
                 delete_time = #{deleteTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="projectMoney != null" >
+            <if test="projectMoney != null">
                 project_money = #{projectMoney,jdbcType=VARCHAR},
             </if>
-            <if test="projectStage != null" >
+            <if test="projectStage != null">
                 project_stage = #{projectStage,jdbcType=VARCHAR},
             </if>
-            <if test="projectStatus != null" >
+            <if test="projectStatus != null">
                 project_status = #{projectStatus,jdbcType=VARCHAR},
             </if>
-            <if test="backUp1 != null" >
+            <if test="backUp1 != null">
                 back_up1 = #{backUp1,jdbcType=VARCHAR},
             </if>
-            <if test="backUp2 != null" >
+            <if test="backUp2 != null">
                 back_up2 = #{backUp2,jdbcType=VARCHAR},
             </if>
-            <if test="backUp3 != null" >
+            <if test="backUp3 != null">
                 back_up3 = #{backUp3,jdbcType=VARCHAR},
             </if>
-            <if test="backUp4 != null" >
+            <if test="backUp4 != null">
                 back_up4 = #{backUp4,jdbcType=VARCHAR},
             </if>
-            <if test="backUp5 != null" >
+            <if test="backUp5 != null">
                 back_up5 = #{backUp5,jdbcType=VARCHAR},
             </if>
-            <if test="backUp6 != null" >
+            <if test="backUp6 != null">
                 back_up6 = #{backUp6,jdbcType=VARCHAR},
             </if>
-            <if test="backUp7 != null" >
+            <if test="backUp7 != null">
                 back_up7 = #{backUp7,jdbcType=VARCHAR},
             </if>
-            <if test="backUp8 != null" >
+            <if test="backUp8 != null">
                 back_up8 = #{backUp8,jdbcType=VARCHAR},
             </if>
-            <if test="backUp9 != null" >
+            <if test="backUp9 != null">
                 back_up9 = #{backUp9,jdbcType=VARCHAR},
             </if>
-            <if test="backUp10 != null" >
+            <if test="backUp10 != null">
                 back_up10 = #{backUp10,jdbcType=VARCHAR},
             </if>
-            <if test="applicationEndTime != null" >
+            <if test="applicationEndTime != null">
                 application_end_time = #{applicationEndTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="projectEndTime != null" >
+            <if test="projectEndTime != null">
                 project_end_time = #{projectEndTime,jdbcType=TIMESTAMP},
             </if>
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Project" >
+    <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.Project">
     update project
     set investment_id = #{investmentId,jdbcType=VARCHAR},
       project_code = #{projectCode,jdbcType=VARCHAR},
@@ -915,9 +917,7 @@
             <if test="status !=null and status!=''">
                 and a.status =#{status}
             </if>
-            <if test="createTime !=null and createTime!=''">
-                and a.create_time like "%" #{createTime} "%"
-            </if>
+            and a.create_time like "%" #{createTime} "%"
         </where>
     </select>
 </mapper>

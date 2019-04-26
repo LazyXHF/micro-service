@@ -58,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
             Map<String, String> map = new LinkedHashMap<>();
             List<BusinessDictionary> businessDictionaries = businessDictionaryMapper.selectAllProjectSchedule();
             for (BusinessDictionary businessDictionary : businessDictionaries) {
-                map.put(businessDictionary.getProjectSchedule(), "0");
+                map.put(businessDictionary.getProjectSchedule(), null);
             }
             if (project.getProjectStatus() != null && !"".equals(project.getProjectStatus())) {
                 String[] statuss = project.getProjectStatus().split(",");
