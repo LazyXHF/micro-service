@@ -854,16 +854,10 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				return new ResponseMessage(Code.CODE_ERROR, MessageUtils.USER_EXCEPITON);
 			}
 			List<TDepartment> departments = user.getDepartments();
-			if(CollectionUtils.isEmpty(departments)){
-				return new ResponseMessage(Code.CODE_ERROR, MessageUtils.USER_EXCEPITON);
+			for (int i=0;i<departments.size();i++){
+				TUser tUser =tUserMapper.selectByPrimaryKey(departments.get(i).getReserved1());
+				listUser.add(tUser);
 			}
-			List<String> departIds = new ArrayList<>();
-			departments.forEach(tDepartment->{
-				if(!StringUtils.isEmpty(tDepartment.getId())){
-					departIds.add(tDepartment.getId());
-				}
-			});
-			listUser = tUserMapper.selectRidOrDidOrDuty(null,departIds,null);
 		}else if("7".equals(status)&&("1").equals(type)){
 			//查询技术委员会
 			if(StringUtils.isEmpty(type)){
