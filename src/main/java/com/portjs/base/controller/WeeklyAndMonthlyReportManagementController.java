@@ -136,15 +136,9 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
                 }
             }
             //创建HSSFWorkbook
-            String basePath = request.getSession().getServletContext().getRealPath("/");
-            File file = new File("");
             Resource resource = new ClassPathResource("/excel/项目周报表.xls");
-            File file1 = resource.getFile();
-//            String excel = excelPath+file.separator+"mgt-contrl-platform"+file.separator+"src"+file.separator+"main"+file.separator+"resources"+file.separator+"excel"+file.separator+"项目周报表.xls";
-            /*String excel = basePath + "/excel/项目周报表.xls";*/
-
-            String excel = file1.getAbsolutePath();
-
+            File file = resource.getFile();
+            String excel = file.getAbsolutePath();
             File fi = new File(excel);
             POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(fi));
             // 读取excel模板
@@ -172,7 +166,7 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
     @LogInfo(methodName = "周报导出",modelName = "周报月报管理模块")
     @RequestMapping("export-weekly")
     @ResponseBody
-    public void exportWeekly(@RequestBody String requestBody, HttpServletRequest request, HttpServletResponse response){
+    public void exportWeekly(@RequestBody String requestBody, HttpServletResponse response){
         logger.debug(tag+requestBody);
         UnifiedExceptionHandler.method= tag+"select-weekly=============================="+requestBody;
         try {
@@ -222,14 +216,12 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
                 }
             }
             //创建HSSFWorkbook
-            String basePath = request.getSession().getServletContext().getRealPath("/");
-            File file = new File("");
             Resource resource = new ClassPathResource("/excel/项目周报表.xls");
-            File file1 = resource.getFile();
+            File file = resource.getFile();
 //            String excel = excelPath+file.separator+"mgt-contrl-platform"+file.separator+"src"+file.separator+"main"+file.separator+"resources"+file.separator+"excel"+file.separator+"项目周报表.xls";
             /*String excel = basePath + "/excel/项目周报表.xls";*/
 
-            String excel = file1.getAbsolutePath();
+            String excel = file.getAbsolutePath();
 
             File fi = new File(excel);
             POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(fi));
