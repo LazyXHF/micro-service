@@ -5,6 +5,7 @@ import com.portjs.base.entity.TUserExample;
 import com.portjs.base.vo.UserRoleDO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -85,4 +86,9 @@ public interface TUserMapper {
 
     //根据分管领导id查询分管领导对应所有部门的所有项目经理和项目组长
     List<TUser> selectUserByUserId(@Param("id") String id,@Param("duty") String duty);
+
+
+    //根据角色id或部门id或职务id
+    List<TUser> selectRidOrDidOrDuty(@Param("rid")String rid,@Param("did")String did,@Param("duty")String duty);
+
 }
