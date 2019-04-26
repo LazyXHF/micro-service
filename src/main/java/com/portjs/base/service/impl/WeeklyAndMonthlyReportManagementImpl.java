@@ -55,7 +55,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         //得到当前年和周数
         String flag = year+"-"+num;
-        if(user.getDuty().equals("项目组长")||user.getDuty().equals("组员")){
+        if(user.getDuty().equals("项目组长")||user.getDuty().equals("组员")||user.getDuty().equals("分管领导")){
             //判断传入时间是不是当前周
             if(weekNum.equals(flag)){
                 //则取project中数据
@@ -107,7 +107,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
             }
 
         }
-        return new ResponseMessage(Code.CODE_ERROR,"当前登录人不是项目经理");
+        return new ResponseMessage(Code.CODE_ERROR,"当前登录人无新增权限");
     }
 
     /**
@@ -168,6 +168,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
             LinkedList list = new LinkedList();
             for (TUser tUser :users ) {
                 ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
+                weeklyExample.setOrderByClause("create_time");
                 ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
                 //项目经理id
                 weeklyCriteria.andModifierEqualTo(tUser.getId());
@@ -220,6 +221,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
             LinkedList list = new LinkedList();
             for (TUser tUser :users ) {
                 ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
+                weeklyExample.setOrderByClause("create_time");
                 ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
                 //项目经理id
                 weeklyCriteria.andModifierEqualTo(tUser.getId());
@@ -263,6 +265,53 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                 return new ResponseMessage(Code.CODE_ERROR,"暂无数据");
             }
             return new ResponseMessage(Code.CODE_OK,"查询成功",list);
+        }else  if(user.getDuty().equals("组员")){
+            //查询所有对应的项目经理和项目组长的
+            //根据分管领导id查询分管领导对应所有部门的所有项目经理和项目组长
+
+            TUser tUser = userMapper.selectByPrimaryKey(user.getId());
+
+            ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
+            weeklyExample.setOrderByClause("create_time");
+            ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
+            //项目经理id
+            weeklyCriteria.andModifierEqualTo(tUser.getId());
+            //项目经理名称
+            if(!StringUtils.isEmpty(projectWeekly.getProjectManager())){
+                weeklyCriteria.andProjectManagerLike("%"+projectWeekly.getProjectManager()+"%");
+            }
+            //项目编码
+            if(!StringUtils.isEmpty(projectWeekly.getProjectCode())){
+                weeklyCriteria.andProjectCodeEqualTo("%"+projectWeekly.getProjectCode()+"%");
+
+            }
+            //项目名称
+            if(!StringUtils.isEmpty(projectWeekly.getProjectName())){
+                weeklyCriteria.andProjectNameLike("%"+projectWeekly.getProjectName()+"%");
+
+            }
+            //项目类型
+            if(!StringUtils.isEmpty(projectWeekly.getProjectType())){
+                weeklyCriteria.andProjectTypeEqualTo(projectWeekly.getProjectType());
+
+            }
+            //项目等级
+            if(!StringUtils.isEmpty(projectWeekly.getLeval())){
+                weeklyCriteria.andLevalEqualTo(projectWeekly.getLeval());
+
+            }
+            //项目状态
+            if(!StringUtils.isEmpty(projectWeekly.getStatus())){
+                weeklyCriteria.andStatusEqualTo(projectWeekly.getStatus());
+
+            }
+            //周数
+            weeklyCriteria.andWeekNumEqualTo(projectWeekly.getWeekNum());
+            List<ProjectWeekly> weeklies = weeklyMapper.selectByExample(weeklyExample);
+            if(!CollectionUtils.isEmpty(weeklies)){
+                return new ResponseMessage(Code.CODE_OK,"查询成功",weeklies);
+            }
+            return new ResponseMessage(Code.CODE_ERROR,"暂无数据");
         }
 
        return new ResponseMessage(Code.CODE_ERROR,"当前用户无权限");
