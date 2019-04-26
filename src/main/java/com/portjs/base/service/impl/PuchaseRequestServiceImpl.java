@@ -347,7 +347,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                 tWorkflowstep.setRelateddomain("采购申请");
                 tWorkflowstep.setRelateddomainId(id);
                 tWorkflowstep.setPrestepId("0提交");
-                tWorkflowstep.setStepDesc("采购申请提交");
+                tWorkflowstep.setStepDesc("提交采购申请");
                 tWorkflowstep.setActionuserId(actionuserId);
                 tWorkflowstep.setBackUp7(approveUserName);
                 tWorkflowstep.setActionTime(new Date());
@@ -918,7 +918,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             }
         }
         //新增一条退回流程
-            TWorkflowstep tWorkflowstep = new TWorkflowstep();
+           /* TWorkflowstep tWorkflowstep = new TWorkflowstep();
             tWorkflowstep.setId(UUID.randomUUID().toString());
             tWorkflowstep.setRelateddomain("采购申请");
             tWorkflowstep.setRelateddomainId(application_id);
@@ -930,7 +930,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             int i4 = tWorkflowstepMapper.insertSelective(tWorkflowstep);
             if(i4!=1){
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
-            }
+            }*/
         return new ResponseMessage(Code.CODE_OK,"退回成功");
     }
 
