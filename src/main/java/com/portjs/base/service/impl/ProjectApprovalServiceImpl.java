@@ -858,13 +858,13 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				TUser tUser =tUserMapper.selectByPrimaryKey(departments.get(i).getReserved1());
 				listUser.add(tUser);
 			}
-		}else if("7".equals(status)&&("1").equals(type)){
+		}else if("2".equals(status)&&("1").equals(type)){
 			//查询技术委员会
 			if(StringUtils.isEmpty(type)){
 				return new ResponseMessage(Code.CODE_ERROR, "type"+MessageUtils.NOT_PASSED);
 			}
 			listUser = tUserMapper.selectRidOrDidOrDuty(applicationUserConfig.getLxjswyhRoleId(),null,null);
-		}else if(("7".equals(status)&&("2").equals(type))||(("4".equals(status)&&("1").equals(type)))){
+		}else if(("2".equals(status)&&("2").equals(type))||(("4".equals(status)&&("1").equals(type)))){
 			//查询规划部 归档员
 			List<String> departIds = new ArrayList<String>();
 			departIds.add(applicationUserConfig.getPlanDepartmentId());
