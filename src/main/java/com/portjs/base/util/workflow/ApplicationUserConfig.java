@@ -20,4 +20,7 @@ public class ApplicationUserConfig extends BaseEntity {
     private String lxjswyhRoleId;
     private String lxzjbRoleId;
     private String lxghbRoleId;
+    private String planDepartmentId;
+    private String generalManagerDepartmentId;
+    private String planRoleId;
 }

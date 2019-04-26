@@ -817,9 +817,9 @@
       AND ud.`duty` = #{duty}
     </if>
     <if test="rid != null and rid !=''">
-      ur.`role_id` =#{rid}
+      AND ur.`role_id` =#{rid}
     </if>
-    <if test="did != null and did !=''">
+    <if test="did != null and did.size >0">
       AND ud.`d_id` IN
       <foreach item="did" index="index" collection="did" open="(" separator="," close=")">
         #{did}

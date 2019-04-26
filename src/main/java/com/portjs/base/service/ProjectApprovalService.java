@@ -49,4 +49,12 @@ public interface ProjectApprovalService {
 	 * @throws Exception
 	 */
 	ResponseMessage insertProjectProcedureRegistration(String requestBody)throws  Exception;
+	/**
+	 *查询当前登录人是否可用新建立项
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
+	ResponseMessage queryApplicationer(String requestBody)throws  Exception;
+
 }

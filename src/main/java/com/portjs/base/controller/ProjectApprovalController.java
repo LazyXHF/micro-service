@@ -103,4 +103,16 @@ public class ProjectApprovalController extends BaseController{
             throw new RuntimeException();
         }
     }
+    @LogInfo(methodName = "根据账户登录信息查询所有分管领导信息",modelName = "立项")
+    @RequestMapping("/query-applicationer")
+    @ResponseBody
+    public ResponseMessage queryApplicationer(@RequestBody String responseBody){
+        try {
+            logger.error(TAG+"query-applicationer()begin....."+responseBody);
+            return projectApprovalService.queryApplicationer(responseBody);
+        } catch (Exception e) {
+            logger.error(TAG+"query-applicationer()error.....",e);
+            throw new RuntimeException();
+        }
+    }
 }

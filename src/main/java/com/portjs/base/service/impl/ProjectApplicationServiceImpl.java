@@ -205,11 +205,11 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             throw new Exception("项目基本信息查询失败");
 
         }
-        TUser tUser = userMapper.selectByPrimaryKey(ownerId);
-        TDepartment tDepartment = departmentMapper.selectByPrimaryKey(tUser.getDepartmentId());
+      //  TUser tUser = userMapper.selectByPrimaryKey(ownerId);
+      //  TDepartment tDepartment = departmentMapper.selectByPrimaryKey(tUser.getDepartmentId());
         //status项目状态0草稿1部门负责人审核 2:分管领导审核3：技术委员会审核4：总经办审核5：规划部归档6:已完成7:提交8:退回 9:废除
-        LinkedList list = new LinkedList();
-        if(projectApplication.getStatus().equals("0")||projectApplication.getStatus().equals("8")){
+    //    LinkedList list = new LinkedList();
+/*        if(projectApplication.getStatus().equals("0")||projectApplication.getStatus().equals("8")){
             //部门负责人审核时查询分管领导通过角色查询人员
 //            TUserExample tUserExample = new TUserExample();
 //            TUserExample.Criteria criteria = tUserExample.createCriteria();
@@ -249,7 +249,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
             for (TUser user :users ) {
                 list.add(user);
             }
-        }
+        }*/
 
         //查询申报信息
         ProjectDeclarationExample declarationExample = new ProjectDeclarationExample();
@@ -301,7 +301,7 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         map.put("Declaration",projectDeclarations);
         map.put("Records",tWorkflowsteps);
         map.put("Todo",tTodo);
-        map.put("Users",list);
+        //map.put("Users",list);
         return  new ResponseMessage(Code.CODE_OK,"项目信息",map);
     }
 

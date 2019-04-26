@@ -8,8 +8,8 @@ import com.portjs.base.service.ProjectApprovalService;
 import com.portjs.base.util.*;
 import com.portjs.base.util.Message.MessageUtils;
 import com.portjs.base.util.StringUtils.StringUtils;
+import com.portjs.base.util.workflow.ApplicationUserConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -44,6 +44,10 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private ProjectBudgetMapper budgetMapper;
 	@Autowired
 	private TenderApplicationMapper tenderApplicationMapper;
+	@Autowired
+	private TDepartmentMapper departmentMapper;
+	@Autowired
+	private ApplicationUserConfig applicationUserConfig;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -813,5 +817,69 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			return new ResponseMessage(Code.CODE_ERROR, "审核完成失败");
 		}
 		return new ResponseMessage(Code.CODE_OK, "审核完成");
+	}
+
+	/**
+	 * 根据账户查询用户信息
+	 * @param requestBody
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public ResponseMessage queryApplicationer(String requestBody) throws Exception {
+		JSONObject jsonObj=JSONObject.parseObject(requestBody);
+		String account = jsonObj.getString("account");//当前登录人id
+		String status= jsonObj.getString("status");//操作状态
+		String type= jsonObj.getString("type");//审核类型
+
+		List<TUser> listUser = new ArrayList<TUser>();
+		//根据立项状态分条件  用户账户查询分管领导
+		if(("0").equals(status)||("8").equals(status)||("").equals(status)){
+			if(StringUtils.isEmpty(account)){
+				return new ResponseMessage(Code.CODE_ERROR, "account"+MessageUtils.NOT_PASSED);
+			}
+			//查询登录人信息
+			TUser user = tUserMapper.loginUserByAccount(account);
+			TUserExample example = new TUserExample();
+			TUserExample.Criteria criteria = example.createCriteria();
+			criteria.andLoginAccountEqualTo(account);
+			//查询部门信息
+			List<TUser> users = tUserMapper.selectByExample(example);
+
+			//查询一人多部门用户
+			if (!CollectionUtils.isEmpty(users)){
+				List<TDepartment> departments = departmentMapper.selectDepartmentByUid(users.get(0).getId());
+				user.setDepartments(departments);
+			}else{
+				return new ResponseMessage(Code.CODE_ERROR, MessageUtils.USER_EXCEPITON);
+			}
+			List<TDepartment> departments = user.getDepartments();
+			if(CollectionUtils.isEmpty(departments)){
+				return new ResponseMessage(Code.CODE_ERROR, MessageUtils.USER_EXCEPITON);
+			}
+			List<String> departIds = new ArrayList<>();
+			departments.forEach(tDepartment->{
+				if(!StringUtils.isEmpty(tDepartment.getId())){
+					departIds.add(tDepartment.getId());
+				}
+			});
+			listUser = tUserMapper.selectRidOrDidOrDuty(null,departIds,null);
+		}else if("7".equals(status)&&("1").equals(type)){
+			//查询技术委员会
+			if(StringUtils.isEmpty(type)){
+				return new ResponseMessage(Code.CODE_ERROR, "type"+MessageUtils.NOT_PASSED);
+			}
+			listUser = tUserMapper.selectRidOrDidOrDuty(applicationUserConfig.getLxjswyhRoleId(),null,null);
+		}else if(("7".equals(status)&&("2").equals(type))||(("4".equals(status)&&("1").equals(type)))){
+			//查询规划部 归档员
+			List<String> departIds = new ArrayList<String>();
+			departIds.add(applicationUserConfig.getPlanDepartmentId());
+			listUser = tUserMapper.selectRidOrDidOrDuty(applicationUserConfig.getPlanRoleId(),departIds,null);
+		}else if(("3".equals(status)&&("1").equals(type))){
+			//查询总经办 总经理助理
+			listUser = tUserMapper.selectRidOrDidOrDuty(applicationUserConfig.getLxzjbRoleId(),null,null);
+		}
+
+		return new ResponseMessage(Code.CODE_OK, "查询成功",listUser);
 	}
 }
