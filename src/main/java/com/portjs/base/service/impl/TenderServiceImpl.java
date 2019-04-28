@@ -35,6 +35,8 @@ public class TenderServiceImpl implements TenderService {
     private TXietongDictionaryMapper dictionaryMapper;
     @Autowired
     private InternalAttachmentMapper attachmentMapper;
+    @Autowired
+    private TUserMapper tUserMapper;
 
     @Override
     public ResponseMessage queryRequests(String requestBody) throws Exception {
@@ -379,8 +381,15 @@ public class TenderServiceImpl implements TenderService {
         TWorkflowstepExample tWorkflowstepExample = new TWorkflowstepExample();
         tWorkflowstepExample.setOrderByClause("IF(ISNULL(action_time),1,0),action_time");
         TWorkflowstepExample.Criteria criteria1 = tWorkflowstepExample.createCriteria();
-        criteria1.andRelateddomainEqualTo(application.getId());
+        criteria1.andRelateddomainIdEqualTo(application.getId());
         List<TWorkflowstep> tWorkflowsteps = workflowstepMapper.selectByExample(tWorkflowstepExample);
+        if(!CollectionUtils.isEmpty(tWorkflowsteps)){
+            for(TWorkflowstep tWorkflowstep:tWorkflowsteps){
+                String actionUserId=tWorkflowstep.getActionuserId();
+                String userName=tUserMapper.queryUserNameByUserId(actionUserId);
+                tWorkflowstep.setUserName(userName);
+            }
+        }
         map.put("TWorkflowstep",tWorkflowsteps);
 
         return new ResponseMessage(Code.CODE_OK,"查询成功",map);
