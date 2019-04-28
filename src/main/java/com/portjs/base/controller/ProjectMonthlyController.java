@@ -5,8 +5,13 @@ import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectMonthlyService;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.poi.ExcelUtil;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -22,8 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: daiyueyuan
@@ -85,74 +89,72 @@ public class ProjectMonthlyController extends BaseController {
         try {
             ResponseMessage responseMessage = projectMonthlyService.selectProjectMonthly(requestBody);
             //excel标题
-            String[] title = {"项目名称", "项目阶段", "工作内容", "计划开始时间", "计划完成时间", "当前进度", "截至本月工作", "下月计划", "备注"};
+            String[] title = {"项目名称", "项目阶段", "工作内容", "计划开始时间", "计划完成时间", "当前进度", "截至本月工作",
+                    "下月计划", "备注"};
             //excel文件名
             String fileName = "项目月报表" + System.currentTimeMillis() + ".xls";
             //sheet名
             String sheetName = "项目月报表";
 
+            //创建HSSFWorkbook
+            Resource resource = new ClassPathResource("/excel/项目月报表.xls");
+            File file = resource.getFile();
+
+            String excel = file.getAbsolutePath();
+
+            File fi = new File(excel);
+            POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(fi));
+            // 读取excel模板
+            HSSFWorkbook wb = null;
+
+            wb = new HSSFWorkbook(fs);
             if (responseMessage.getData() != null) {
                 Object data = responseMessage.getData();
                 Map<String, List> map = (Map) data;
-                String[][] content = new String[title.length][];
-                for (Map.Entry<String, List> entry : map.entrySet()) {
-                    /*content[0][0] = entry.getKey();*/
-                    if (!CollectionUtils.isEmpty(entry.getValue())) {
-                        for (int i = 0; i < entry.getValue().size(); i++) {
-                            content[i] = new String[title.length];
-                            ProjectMonthly monthly = (ProjectMonthly) entry.getValue().get(i);
-                            if (monthly.getProjectSchedule().equals("A")) {
-                                System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
-                                System.out.println(content[i]);
-                                System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
-                                content[i][1] = "项目立项";
-                            } else if (monthly.getProjectSchedule().equals("B")) {
-                                content[i][1] = "合同签订";
-                            } else if (monthly.getProjectSchedule().equals("C")) {
-                                content[i][1] = "项目启动";
-                            } else if (monthly.getProjectSchedule().equals("项目建设")) {
-                                content[i][1] = "项目建设";
-                            } else if (monthly.getProjectSchedule().equals("G")) {
-                                content[i][1] = "上线试运行";
-                            } else if (monthly.getProjectSchedule().equals("H")) {
-                                content[i][1] = "项目验收";
-                            }
-                            if (!StringUtils.isEmpty(monthly.getPredictStarttime())) {
-                                content[i][2] = monthly.getPredictStarttime().toString();
-                            }
-                            if (!StringUtils.isEmpty(monthly.getPridectEndtime())) {
-                                content[i][3] = monthly.getPridectEndtime().toString();
-                            }
-                            content[i][4] = monthly.getContent();
-                            content[i][5] = monthly.getCurrentProgress();
-                            content[i][6] = monthly.getPerformance();
-                            content[i][7] = monthly.getSchedule();
-                            content[i][8] = monthly.getRemark();
+
+                //wb = new HSSFWorkbook(fs);
+                HSSFSheet sheet = wb.createSheet();
+                HSSFRow sheetRow = sheet.createRow(0);
+
+                for (int i = 0; i < title.length; i++) {
+                    HSSFCell cell = sheetRow.createCell(i);
+                    cell.setCellValue(title[i]);
+                }
+                List<Map<String, List<ProjectMonthly>>> list = new ArrayList<>();
+                for (Map.Entry<String, List> listEntry : map.entrySet()) {
+                    Map<String, List<ProjectMonthly>> map1 = new HashMap<>();
+                    String key = listEntry.getKey();
+                    List value = listEntry.getValue();
+                    map1.put(key, value);
+                    list.add(map1);
+                }
+
+                for (int i = 0; i < list.size(); i++) {
+                    Set<Map.Entry<String, List<ProjectMonthly>>> entries = list.get(i).entrySet();
+                    for (Map.Entry<String, List<ProjectMonthly>> entry : entries) {
+                        String key = entry.getKey();
+                        List<ProjectMonthly> list1 = entry.getValue();
+
+                        if ((i - 1) % 6 == 0) {
+                            HSSFRow row = sheet.createRow(i);
+                            HSSFCell cell = row.createCell(0);
+                            cell.setCellValue(key);
                         }
+
                     }
                 }
-                //创建HSSFWorkbook
-                Resource resource = new ClassPathResource("/excel/项目月报表.xls");
-                File file = resource.getFile();
-                String excel = file.getAbsolutePath();
 
-                File fi = new File(excel);
-                POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(fi));
-                // 读取excel模板
-                HSSFWorkbook wb = null;
-                wb = new HSSFWorkbook(fs);
-                HSSFWorkbook workbook = ExcelUtil.getHSSFWorkbook(sheetName, title, content, wb);
+
                 //响应到客户端
                 try {
                     this.setResponseHeader(response, fileName);
                     OutputStream os = response.getOutputStream();
-                    workbook.write(os);
+                    wb.write(os);
                     os.flush();
                     os.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
 
 
@@ -179,4 +181,11 @@ public class ProjectMonthlyController extends BaseController {
             ex.printStackTrace();
         }
     }
+
+    public static String getSystemFileCharset() {
+        Properties pro = System.getProperties();
+        return pro.getProperty("file.encoding");
+    }
+
+
 }
