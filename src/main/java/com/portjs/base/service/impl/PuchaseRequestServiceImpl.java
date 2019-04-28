@@ -939,6 +939,24 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
     }
 
     /**
+     * 废除
+     * @param purchaseRequest
+     * @return
+     */
+    @Override
+    public ResponseMessage abolishRecord(PurchaseRequest purchaseRequest) {
+        if(StringUtils.isEmpty(purchaseRequest.getId())){
+            return new ResponseMessage(Code.CODE_OK,"采购单id未传！！");
+        }
+        purchaseRequest.setStatus("9");//废除状态为9
+        int i = purchaseRequestMapper.abolishRecord(purchaseRequest);
+        if(i==0){
+            return new ResponseMessage(Code.CODE_ERROR,"废除失败！！");
+        }
+        return new ResponseMessage(Code.CODE_OK,"废除成功！！");
+    }
+
+    /**
      * 批量软删除采购申请信息
      * @param ids
      * @return

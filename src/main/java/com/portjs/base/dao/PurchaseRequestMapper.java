@@ -94,4 +94,10 @@ public interface PurchaseRequestMapper {
                                                    @Param("method")String method,@Param("pageNo") Integer pageNo, @Param("pageSize") Integer pageSize);
 
 
+    /**
+     * 废除
+     * @param purchaseRequest
+     * @return
+     */
+    int abolishRecord(PurchaseRequest purchaseRequest);
 }

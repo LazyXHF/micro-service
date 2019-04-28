@@ -581,6 +581,61 @@
     </set>
     where Id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <update id="abolishRecord" parameterType="com.portjs.base.entity.PurchaseRequest">
+    update purchase_request
+    <set>
+      <if test="requestNum != null">
+        request_num = #{requestNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseDept != null">
+        purchase_dept = #{purchaseDept,jdbcType=VARCHAR},
+      </if>
+      <if test="applicant != null">
+        applicant = #{applicant,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantId != null">
+        applicant_id = #{applicantId,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="agency != null">
+        agency = #{agency,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null">
+        apply_date = #{applyDate,jdbcType=DATE},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null">
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null">
+        creater_id = #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.portjs.base.entity.PurchaseRequest">
     update purchase_request
     set request_num = #{requestNum,jdbcType=VARCHAR},

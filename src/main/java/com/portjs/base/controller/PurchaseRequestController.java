@@ -68,6 +68,21 @@ public class PurchaseRequestController extends BaseController {
     }
 
     /**
+     * 废除购物清单信息
+     * @param purchaseRequest
+     * @return
+     */
+    @RequestMapping("abolish-record")
+    @LogInfo(methodName = "废除购物清单信息")
+    public ResponseMessage abolishRecord(@RequestBody PurchaseRequest purchaseRequest) {
+        logger.debug(TAG+purchaseRequest);
+        UnifiedExceptionHandler.method = TAG + "abolishRecord============================" +purchaseRequest;
+        responseMessage = puchaseRequestService.abolishRecord(purchaseRequest);
+        return responseMessage;
+    }
+
+
+    /**
      * 批量软删除购物清单信息
      * @param arrayVO
      * @return

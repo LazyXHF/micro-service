@@ -59,4 +59,10 @@ public interface PuchaseRequestService {
 
     ResponseMessage returnRecord(String requestBody);
 
+    /**
+     * 废除
+     * @return  更新status:9 废除 根据主键更新
+     */
+    ResponseMessage abolishRecord(PurchaseRequest purchaseRequest);
+
 }
