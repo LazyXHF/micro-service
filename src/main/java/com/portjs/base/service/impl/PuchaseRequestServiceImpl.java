@@ -112,7 +112,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
 
 
         PurchaseList purchaseList = new PurchaseList();
-        net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(DS);//并将DS内容取出转为json数组
+        /*net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(DS);//并将DS内容取出转为json数组
         for (int j = 0; j < jsonArray.size(); j++) {     //遍历json数组内容
             net.sf.json.JSONObject object = jsonArray.getJSONObject(j);
             purchaseList.setId(UUID.randomUUID().toString());
@@ -134,7 +134,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                 return new ResponseMessage(Code.CODE_ERROR,"采购清单列表添加失败！",i1);
             }
 
-        }
+        }*/
         //获取所有审批人的id
         JSONArray jsonArray1 = jsonObject.getJSONArray("approvers");
         net.sf.json.JSONArray ja = net.sf.json.JSONArray.fromObject(jsonArray1);
@@ -213,7 +213,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
         } else if (status.equals("1")) {
             purchaseRequest.setStatus("1");
             //id为空 直接添加
-            if (id.isEmpty()) {
+            if (StringUtils.isEmpty(id)) {
                 String id2 = UUID.randomUUID().toString();
                 purchaseRequest.setId(id2);
                 int f = purchaseRequestMapper.insertPurchaseRequest(purchaseRequest);
@@ -285,7 +285,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                     TTodo todo = new TTodo();
                     todo.setId(UUID.randomUUID().toString());
                     todo.setCurrentstepId(tWorkflowstep2.getId());
-                    todo.setStepDesc("采购办人员审核");
+                    todo.setStepDesc("采购单号为："+reviewNum+" 采购流程等待您的处理");
                     todo.setRelateddomain("采购申请");
                     todo.setRelateddomainId(id2);
                     todo.setSenderId(ownerId);
@@ -316,28 +316,26 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                 if (f != 1) {
                     return new ResponseMessage(Code.CODE_ERROR, "更新采购申请失败");
                 }
-                net.sf.json.JSONArray jsonArray3 = net.sf.json.JSONArray.fromObject(DS);//并将DS内容取出转为json数组
-                for (int j = 0; j < jsonArray3.size(); j++) {     //遍历json数组内容
-                    net.sf.json.JSONObject object = jsonArray3.getJSONObject(j);
-                    purchaseList.setId(object.getString("id"));
-                    purchaseList.setContent(object.getString("content"));//需求说明
-                    purchaseList.setDemander(object.getString("demander"));//需求人id
-                    BigDecimal b = new BigDecimal(object.getLong("quantity"));
-                    purchaseList.setQuantity(b);//数量
-                    purchaseList.setUnit(object.getString("unit"));//单位
-                    purchaseList.setSpec(object.getString("spec"));//规格
-                    purchaseList.setModel(object.getString("model"));//型号
-                    purchaseList.setName(object.getString("name"));//品名
-                    purchaseList.setBrand(object.getString("brand"));//品牌
 
-                    purchaseList.setRequestId(id);
-
-                    PurchaseListExample purchaseListExample = new PurchaseListExample();
-                    PurchaseListExample.Criteria criteria = purchaseListExample.createCriteria();
-                    criteria.andIdEqualTo(purchaseList.getId());
-                    int i1 =  purchaseListMapper.updateByExampleSelective(purchaseList,purchaseListExample);
-                    if(i1==0){
-                        return new ResponseMessage(Code.CODE_ERROR,"采购清单列表修改失败！",i1);
+                JSONArray jsonArray5 = jsonObject.getJSONArray("DS");//并将DS内容取出转为json数组
+                for (int j = 0; j < jsonArray5.size(); j++) {     //遍历json数组内容
+                    JSONObject object = jsonArray5.getJSONObject(j);
+                    PurchaseList purchaseList2 =JSONObject.toJavaObject(object,PurchaseList.class);
+                    if(!StringUtils.isEmpty(purchaseList2.getId())){
+                        purchaseList2.setUpdateTime(new Date());
+                        int i1 =  purchaseListMapper.updateByRequestId(purchaseList2);
+                        if(i1==0){
+                            return new ResponseMessage(Code.CODE_ERROR,"修改采购列表失败！！",i1);
+                        }
+                    }else {
+                        purchaseList2.setId(UuidPlus.getUUIDPlus());
+                        purchaseList2.setCreateTime(new Date());
+                        purchaseList2.setRequestId(id);
+                        purchaseList2.setProjectId(projectId);
+                        int i1 =  purchaseListMapper.insertSelective(purchaseList);
+                        if(i1==0){
+                            return new ResponseMessage(Code.CODE_ERROR,"添加采购列表失败！！",i1);
+                        }
                     }
 
                 }
@@ -385,7 +383,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                     TTodo todo = new TTodo();
                     todo.setId(UUID.randomUUID().toString());
                     todo.setCurrentstepId(tWorkflowstep2.getId());
-                    todo.setStepDesc("采购办人员审核");
+                    todo.setStepDesc("采购单号为："+reviewNum+" 采购流程等待您的处理");
                     todo.setRelateddomain("采购申请");
                     todo.setRelateddomainId(id);
                     todo.setSenderId(ownerId);
@@ -535,8 +533,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             return new ResponseMessage(Code.CODE_ERROR, "审核失败");
         }
 
-
-
+        PurchaseRequest purchaseRequest2 = purchaseRequestMapper.selectByPrimaryKey(relateddomain_id);
         //步骤描述
         String stepDesc="";
         String stepTodo="";
@@ -561,6 +558,11 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             stepTodo="执行董事审核";
             stepDesc="采购管理委员会审核";
             backup3 = new String("4");
+            ss=backup3;
+        }else if(backup3.equals("3") && ((purchaseRequest2.getAmount()).compareTo(new BigDecimal("500000")) <= 0)){//金额小于50万
+            stepTodo="已完成";
+            stepDesc="采购管理委员会审核";
+            backup3 = new String("10");
             ss=backup3;
         }else if(backup3.equals("4")){
             stepTodo="已完成";
@@ -627,7 +629,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                 TTodo todo = new TTodo();
                 todo.setId(String.valueOf(IDUtils.genItemId()));
                 todo.setCurrentstepId(workflowstep_id);
-                todo.setStepDesc(purchaseRequest1.getRequestNum()+"的采购申请流程等待您的处理");
+                todo.setStepDesc("采购单号为："+purchaseRequest1.getRequestNum()+" 采购流程等待您的处理");//"采购单号为："+reviewNum+" 采购流程等待您的处理"
                 todo.setRelateddomain("采购申请");
                 todo.setRelateddomainId(relateddomain_id);
                 todo.setSenderId(sender_id);
@@ -719,7 +721,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                         internalToDo.setReceiverId(nextReviewerId.getString(c));
                         internalToDo.setSenderTime(new Date());
                         internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
-                        internalToDo.setStepDesc(purchaseRequest1.getRequestNum()+"的采购申请流程等待您的处理");
+                        internalToDo.setStepDesc("采购单号为："+purchaseRequest1.getRequestNum()+" 采购流程等待您的处理");
                         internalToDo.setStatus("0");
                         internalToDo.setBackUp7(userName);//发起人
                         //加入待办的立项分类
@@ -754,7 +756,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                     internalToDo.setReceiverId(nextReviewerId.getString(c));
                     internalToDo.setSenderTime(new Date());
                     internalToDo.setTodoType(dictionaryList.get(0).getMainValue());
-                    internalToDo.setStepDesc(purchaseRequest1.getRequestNum()+"的采购申请流程等待您的处理");
+                    internalToDo.setStepDesc("采购单号为："+purchaseRequest1.getRequestNum()+" 采购流程等待您的处理");
                     internalToDo.setStatus("0");
                     internalToDo.setBackUp7(userName);//发起人
                     //加入待办的立项分类
@@ -770,7 +772,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             PurchaseRequest purchaseRequest = new PurchaseRequest();
             purchaseRequest.setId(relateddomain_id);
             //多人审核阶段
-            if(backup3.equals("3")){
+            if(backup3.equals("5")){
                 //审核结束
                 if(flag){
                     purchaseRequest.setStatus("4");

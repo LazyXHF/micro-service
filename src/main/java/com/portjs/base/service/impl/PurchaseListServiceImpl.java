@@ -145,19 +145,10 @@ public class PurchaseListServiceImpl implements PurchaseListService {
     @Override
     public ResponseMessage updateDeleteTimeByIds(List<String> ids) {
         PurchaseList purchaseList = null;
-        /*Date date = new Date();//获得系统时间.
-        SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
-        String nowTime = sdf.format(date);
-        Date time = null;
-        try {
-            time = sdf.parse(nowTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
         for (int j = 0 ;j < ids.size() ; j++) {
             String id = ids.get(j);
             purchaseList = purchaseListMapper.selectByPrimaryKey(id);
-            if(!StringUtils.isEmpty(String.valueOf(purchaseList.getDeleteTime()))){
+            if(StringUtils.isEmpty(String.valueOf(purchaseList.getDeleteTime()))){
                 return new ResponseMessage(Code.CODE_ERROR,"删除失败","失败的列表问题id："+purchaseList.getId()+" ： "+purchaseList.getDeleteTime());
             }
         }
