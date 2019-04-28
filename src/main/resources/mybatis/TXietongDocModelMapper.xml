@@ -102,7 +102,7 @@
     select
     count(*)
     from t_xietong_doc_model
-    where 1=1
+    where isdelete = '1'
     <if test="docName != null and docName!=''">
       and  doc_name like concat('%',#{docName},'%')
     </if>
