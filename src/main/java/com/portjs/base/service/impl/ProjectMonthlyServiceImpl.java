@@ -169,7 +169,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
             return new ResponseMessage(Code.CODE_ERROR, "请选择月份");
         }
         List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                projectManager, status, monthNum);
+                projectManager, status, monthNum,null);
         Map<String, List<ProjectMonthly>> map = new LinkedHashMap<>();
         for (Project project : projects) {
             List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());

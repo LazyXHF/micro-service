@@ -48,6 +48,12 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 	private TDepartmentMapper departmentMapper;
 	@Autowired
 	private ApplicationUserConfig applicationUserConfig;
+	@Autowired
+	private ProjectWeeklyMapper weeklyMapper;
+	@Autowired
+	private ProjectMonthlyMapper projectMonthlyMapper;
+	@Autowired
+	private ProjectMapper projectMapper;
 
 	//返参信息
 	public final static String PARAM_MESSAGE_1 = "未传";
@@ -656,10 +662,33 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			return  new ResponseMessage(Code.CODE_OK, "查询成功",page);
 		}else if("XMZB".equals(stage)){
 			//项目周报
-			return null;
+			//周数
+			String weekNum = jsonObj.getString("weekNum");
+
+			ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
+			weeklyExample.setOrderByClause("create_time");
+			ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
+			weeklyCriteria.andWeekNumEqualTo(weekNum);
+			weeklyCriteria.andProjectIdEqualTo(projectId);
+			List<ProjectWeekly> weeklies = weeklyMapper.selectByExample(weeklyExample);
+			return  new ResponseMessage(Code.CODE_OK, "查询成功",weeklies);
 		}else if("XMYB".equals(stage)){
 			//项目月报
-			return null;
+			String monthNum = jsonObj.getString("monthNum");
+			if(StringUtils.isEmpty(monthNum)){
+				return new ResponseMessage(Code.CODE_ERROR, "monthNum"+MessageUtils.NOT_PASSED);
+			}
+			List<Project> projects = projectMapper.queryProjectByMonth(null, null, null, null,
+					null, null, monthNum,projectId);
+			Map<String, List<ProjectMonthly>> map = new LinkedHashMap<>();
+			for (Project project : projects) {
+				List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+				map.put(project.getProjectName(), list);
+			}
+			if (CollectionUtils.isEmpty(map)) {
+				return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
+			}
+			return new ResponseMessage(Code.CODE_OK, "查询成功", map);
 		}else{
 			return new ResponseMessage(Code.CODE_ERROR, "不存在此种状态");
 		}

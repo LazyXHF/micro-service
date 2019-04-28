@@ -917,6 +917,9 @@
             <if test="status !=null and status!=''">
                 and a.status =#{status}
             </if>
+            <if test="id !=null and id!=''">
+                and a.id =#{id}
+            </if>
             and a.create_time like "%" #{createTime} "%"
         </where>
     </select>
