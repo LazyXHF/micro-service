@@ -821,7 +821,7 @@ public class TenderServiceImpl implements TenderService {
 
         //更新招标表
         tenderApplication.setUpdateTime(new Date());
-        tenderApplication.setStatus("7");
+        tenderApplication.setStatus("9");
         if(StringUtils.isEmpty(tenderApplication.getId())){
             return  new ResponseMessage(Code.CODE_ERROR, "TenderApplication中缺少id参数");
         }
