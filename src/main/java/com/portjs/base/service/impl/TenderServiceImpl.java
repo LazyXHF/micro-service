@@ -153,6 +153,7 @@ public class TenderServiceImpl implements TenderService {
         }
 
         //操作招标,判断插入还是更新
+        application.setUpdateTime(new Date());
         if(StringUtils.isEmpty(application.getId())){
             application.setId(String.valueOf(IDUtils.genItemId()));
             application.setCreater(userId);
@@ -163,8 +164,6 @@ public class TenderServiceImpl implements TenderService {
                 return new ResponseMessage(Code.CODE_ERROR,message1);
             }
         }else{
-            application.setUpdateTime(new Date());
-
             int i = tenderApplicationMapper.updateByPrimaryKeySelective(application);
             if(i!=1){
                 return new ResponseMessage(Code.CODE_ERROR,message2);
@@ -440,6 +439,7 @@ public class TenderServiceImpl implements TenderService {
         if(StringUtils.isEmpty(application.getId())){
             return new ResponseMessage(Code.CODE_ERROR,"id"+MessageUtils.NOT_PASSED);
         }
+        application.setUpdateTime(new Date());
         application.setDeleteTime(new Date());
         int count = tenderApplicationMapper.updateByPrimaryKeySelective(application);
         if(count!=1){
