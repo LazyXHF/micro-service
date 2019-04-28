@@ -95,6 +95,16 @@ public class Project {
 
     private String managerPhone;
 
+    private Integer projectApprovalType;
+
+    public Integer getProjectApprovalType() {
+        return projectApprovalType;
+    }
+
+    public void setProjectApprovalType(Integer projectApprovalType) {
+        this.projectApprovalType = projectApprovalType;
+    }
+
     public String getManagerPhone() {
         return managerPhone;
     }

@@ -377,7 +377,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 		String schedule="A";
 		String projectStatus="Aa1";
 
-		projectUtils.projectMethod(projectId,projectCoding,schedule,projectStatus,null);
+		projectUtils.projectMethod(projectId,projectCoding,schedule,projectStatus,null,null);
 
 		if(StringUtils.isEmpty(todoId)){
 			return new ResponseMessage(Code.CODE_ERROR, "todoId"+PARAM_MESSAGE_1);

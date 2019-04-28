@@ -119,14 +119,14 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         //0暂存
         if(status.equals("0")){
             projectUtils.projectMethod(application.getProjectId(),null,
-                    "A", "Aa0",application.getApplicationAmount().toString());
+                    "A", "Aa0",application.getApplicationAmount().toString(),1);
             message1="暂存失败";
             message2="更新失败";
             //暂存状态，不用接收负责人
             nextViewJSON.clear();
         }else{
             projectUtils.projectMethod(application.getProjectId(),null,
-                    "A", "Aa2",application.getApplicationAmount().toString());
+                    "A", "Aa2",application.getApplicationAmount().toString(),1);
             application.setEnable("1");
             //提交
             if(type.equals("1")){

@@ -36,7 +36,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
     @Override
     public ResponseMessage insertProjectMonthly(List<ProjectMonthly> projectMonthlyList) {
         for (ProjectMonthly projectMonthly : projectMonthlyList) {
-            if (projectMonthly.getId() != null) {
+            if (projectMonthly.getId() != null && !projectMonthly.getId().equals("")) {
                 int flag = projectMonthlyMapper.updateByPrimaryKeySelective(projectMonthly);
                 if (flag == 0) {
                     return new ResponseMessage(Code.CODE_ERROR, "添加失败");
@@ -169,11 +169,13 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
             return new ResponseMessage(Code.CODE_ERROR, "请选择月份");
         }
         List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                projectManager, status, monthNum,null);
+                projectManager, status, monthNum, null);
         Map<String, List<ProjectMonthly>> map = new LinkedHashMap<>();
         for (Project project : projects) {
             List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-            map.put(project.getProjectName(), list);
+            if (map.get(project.getProjectName()) == null) {
+                map.put(project.getProjectName(), list);
+            }
         }
         if (map.size() == 0) {
             return new ResponseMessage(Code.CODE_ERROR, "暂无数据");

@@ -26,7 +26,8 @@ public class ProjectUtils {
     @Autowired
     private BusinessConfigurationMapper businessConfigurationMapper;
 
-    public void projectMethod(String projectId, String projectCode, String schedule, String projectStatus, String projectMoney) {
+    public void projectMethod(String projectId, String projectCode, String schedule, String projectStatus,
+                              String projectMoney, Integer projectApprovalType) {
 
         if ("1".equals(projectStatus.substring(2, 3))) {
             BusinessConfigurationExample example = new BusinessConfigurationExample();
@@ -49,7 +50,12 @@ public class ProjectUtils {
         if (project.getProjectStatus() == null) {
             project.setProjectStatus(projectStatus);
         }
-        project.setProjectMoney(projectMoney);
+        if (projectMoney != null) {
+            project.setProjectMoney(projectMoney);
+        }
+        if (projectApprovalType != null) {
+            project.setProjectApprovalType(projectApprovalType);
+        }
         String status = project.getProjectStatus();
         //这个存放第一种情况
         StringBuffer buffer = new StringBuffer();
