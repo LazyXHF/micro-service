@@ -559,6 +559,13 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             stepDesc="采购管理委员会审核";
             backup3 = new String("4");
             ss=backup3;
+            int i = purchaseRequest2.getAmount().compareTo(new BigDecimal("500000"));
+            if(purchaseRequest2.getAmount().compareTo(new BigDecimal("500000")) <= 0){
+                stepTodo="已完成";
+                stepDesc="采购管理委员会审核";
+                backup3 = new String("7");
+                ss=backup3;
+            }
         }else if(backup3.equals("4")){
             stepTodo="已完成";
             stepDesc="执行董事审核";
