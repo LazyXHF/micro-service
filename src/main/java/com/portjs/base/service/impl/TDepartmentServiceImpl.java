@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 部门实现类
@@ -199,8 +196,20 @@ public class TDepartmentServiceImpl implements TDepartmentService {
     @Override
     public ResponseMessage selectAllDepartmentNoTree() {
 
+
+
         List<TDepartment> departments = departmentMapper.selectAllDepartment();
-       responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",departments);
+        List<TDepartment> leafDepartment = new ArrayList<>();
+        for (int i=0;i<departments.size();i++){
+            //根据parentID查询部门
+           List<TDepartment> parent = selectDepartmentByParent(departments.get(i).getId());
+           //判断此部门是否存在子节点
+           if (CollectionUtils.isEmpty(parent)){
+               leafDepartment.add(departments.get(i));
+           }
+        }
+
+        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功",leafDepartment);
         return responseMessage;
     }
 

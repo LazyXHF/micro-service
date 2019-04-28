@@ -80,7 +80,7 @@ public class DictionaryController extends  BaseController{
 
     /**
      * 添加人员配置信息
-     * @param dictionary
+     * @param dictionary 字典表含义
      * @return
      */
     @LogInfo(methodName = "人员分类配置",modelName = "统一模块配置")

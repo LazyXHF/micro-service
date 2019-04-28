@@ -137,19 +137,14 @@ public class ProjectMonthlyController extends BaseController {
                     Set<Map.Entry<String, List<ProjectMonthly>>> entries = list.get(i).entrySet();
                     for (Map.Entry<String, List<ProjectMonthly>> entry : entries) {
                         String key = entry.getKey();
-
                         List<ProjectMonthly> list1 = entry.getValue();
-
                         if (i == 0) {
                             HSSFRow row = sheet.createRow(i + 1);
                             HSSFCell cell = row.createCell(0);
                             cell.setCellValue(key);
                             cell.setCellStyle(cellStyle);
-
-
+                            int z = 0;
                             for (int j=0;j<list1.size();j++){
-
-                                int z = 0;
                                 HSSFRow row1 = sheet.createRow(z + 1);
                                     if ("A".equals(list1.get(j).getProjectSchedule())) {
                                         list1.get(j).setProjectSchedule("项目立项");
@@ -181,7 +176,32 @@ public class ProjectMonthlyController extends BaseController {
                             HSSFCell cell = row.createCell(0);
                             cell.setCellValue(key);
                             cell.setCellStyle(cellStyle);
-
+                            int z = i * 6 + 1;
+                            for (int j=0;j<list1.size();j++){
+                                HSSFRow row1 = sheet.createRow(z + 1);
+                                if ("A".equals(list1.get(j).getProjectSchedule())) {
+                                    list1.get(j).setProjectSchedule("项目立项");
+                                } else if ("B".equals(list1.get(j).getProjectSchedule())) {
+                                    list1.get(j).setProjectSchedule("合同签订");
+                                } else if ("C".equals(list1.get(j).getProjectSchedule())) {
+                                    list1.get(j).setProjectSchedule("项目启动");
+                                } else if ("项目建设".equals(list1.get(j).getProjectSchedule())) {
+                                    list1.get(j).setProjectSchedule("项目建设");
+                                } else if ("G".equals(list1.get(j).getProjectSchedule())) {
+                                    list1.get(j).setProjectSchedule("上线试运行");
+                                } else if ("H".equals(list1.get(j).getProjectSchedule())) {
+                                    list1.get(j).setProjectSchedule("项目验收");
+                                }
+                                row1.createCell(1).setCellValue(list1.get(j).getProjectSchedule());
+                                row1.createCell(2).setCellValue(list1.get(j).getContent());
+                                row1.createCell(3).setCellValue(list1.get(j).getPredictStarttime());
+                                row1.createCell(4).setCellValue(list1.get(j).getPridectEndtime());
+                                row1.createCell(5).setCellValue(list1.get(j).getCurrentProgress());
+                                row1.createCell(6).setCellValue(list1.get(j).getPerformance());
+                                row1.createCell(7).setCellValue(list1.get(j).getSchedule());
+                                row1.createCell(8).setCellValue(list1.get(j).getRemark());
+                                z++;
+                            }
                         }
                     }
 

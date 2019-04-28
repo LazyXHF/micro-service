@@ -207,12 +207,18 @@ private TUserDepartmentMapper userDepartmentMapper;
     public ResponseMessage deleteUser(ArrayVO arrayVO) {
         List<String> uids = arrayVO.getList();
         for (int i=0;i<uids.size();i++){
-            //删除关联表数据
-          userRoleMapper.deleteUserRoleByUid(uids.get(i));
-          //删除部门用户关联表
-          deleteUserDepartment(uids.get(i));
-          //删除用户
-            userMapper.deleteByPrimaryKey(uids.get(i));
+//            //删除关联表数据
+//          userRoleMapper.deleteUserRoleByUid(uids.get(i));
+//          //删除部门用户关联表
+          deleteUserDepartment(uids.get(i),arrayVO.getDid());
+          int isUserDepartments = selectUserDepartmentByUid(uids.get(i));
+          //判断是否还存在其他部门，如果不存在，则直接删除用户角色关联表、删除用户
+          if (isUserDepartments == 0){
+              userRoleMapper.deleteUserRoleByUid(uids.get(i));
+              userMapper.deleteByPrimaryKey(uids.get(i));
+          }
+//          //删除用户
+//            userMapper.deleteByPrimaryKey(uids.get(i));
         }
 
         responseMessage = new ResponseMessage(Code.CODE_OK,"删除成功");
@@ -561,6 +567,25 @@ private TUserDepartmentMapper userDepartmentMapper;
         TUserDepartmentExample.Criteria criteria = example.createCriteria();
         criteria.andUIdEqualTo(uid);
         userDepartmentMapper.deleteByExample(example);
+    }
+
+    //批量删除部门用户关联表信息
+    public void deleteUserDepartment(String uid,String did){
+        TUserDepartmentExample example = new TUserDepartmentExample();
+        TUserDepartmentExample.Criteria criteria = example.createCriteria();
+        criteria.andUIdEqualTo(uid);
+        criteria.andDIdEqualTo(did);
+        userDepartmentMapper.deleteByExample(example);
+    }
+
+
+    //查询用户部门表该用户是否存在其他的部门
+    public int selectUserDepartmentByUid(String uid){
+        TUserDepartmentExample example = new TUserDepartmentExample();
+        TUserDepartmentExample.Criteria criteria = example.createCriteria();
+        criteria.andUIdEqualTo(uid);
+        List<TUserDepartment> users = userDepartmentMapper.selectByExample(example);
+        return users.size();
     }
 
 

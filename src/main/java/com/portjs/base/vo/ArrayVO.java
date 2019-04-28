@@ -6,7 +6,17 @@ import java.util.List;
 
 public class ArrayVO {
     private List<String> list;
+    private String did;
     private List<T> ObjectList;
+
+
+    public String getDid() {
+        return did;
+    }
+
+    public void setDid(String did) {
+        this.did = did;
+    }
 
     public List<T> getObjectList() {
         return ObjectList;

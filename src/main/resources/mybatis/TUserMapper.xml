@@ -682,7 +682,7 @@
     <if test="departmentId != null and departmentId !=''">
       AND d.id = #{departmentId}
     </if>
-    ORDER BY u.`SORT` LIMIT #{pageNo},#{pageSize}
+    ORDER BY d.`SORT` ,u.`SORT` LIMIT #{pageNo},#{pageSize}
   </select>
 
   <select id="selectUserCountByLoginNameAndDepartmentIds"  resultType="int">
