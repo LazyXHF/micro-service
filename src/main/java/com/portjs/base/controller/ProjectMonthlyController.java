@@ -46,32 +46,32 @@ public class ProjectMonthlyController extends BaseController {
     @RequestMapping("/insert_projectMonthly")
     public ResponseMessage insertProjectMonthly(@RequestBody List<ProjectMonthly> projectMonthlyList) {
         logger.debug("insertProjectMonthly()begin......" + projectMonthlyList);
-//        try {
+        try {
         return projectMonthlyService.insertProjectMonthly(projectMonthlyList);
-//        } catch (Exception e) {
-//            logger.error("select_BusinessConfiguration_ById()error....", e);
-//            throw new RuntimeException();
-//        }
+        } catch (Exception e) {
+            logger.error("select_BusinessConfiguration_ById()error....", e);
+            throw new RuntimeException();
+        }
     }
 
     //根据项目id查询里程碑
     @RequestMapping("/select_businessConfiguration")
     public ResponseMessage selectBusinessConfiguration(@RequestBody String requestBody) {
         logger.debug("selectBusinessConfiguration()begin......" + requestBody);
-//        try {
+        try {
         return projectMonthlyService.selectBusinessConfiguration(requestBody);
-//        } catch (Exception e) {
-//            logger.error("select_BusinessConfiguration_ById()error....", e);
-//            throw new RuntimeException();
-//        }
+        } catch (Exception e) {
+            logger.error("select_BusinessConfiguration_ById()error....", e);
+            throw new RuntimeException();
+        }
     }
 
-    //月报查询
+    //月报导出查询
     @RequestMapping("/select_projectMonthly")
     public ResponseMessage selectProjectMonthly(@RequestBody String requestBody) {
         logger.debug("selectProjectMonthly()begin......" + requestBody);
         try {
-            return projectMonthlyService.selectProjectMonthly(requestBody);
+            return projectMonthlyService.selectProjectMonthlyBymohu(requestBody);
         } catch (Exception e) {
             logger.error("selectProjectMonthly()error....", e);
             throw new RuntimeException();

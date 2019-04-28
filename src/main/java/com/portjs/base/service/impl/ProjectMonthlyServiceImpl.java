@@ -182,4 +182,36 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
         }
         return new ResponseMessage(Code.CODE_OK, "查询成功", map);
     }
+
+    @Override
+    public ResponseMessage selectProjectMonthlyBymohu(String requestBody) {
+        JSONObject requestMsg = JSONObject.parseObject(requestBody);
+        String projectCode = requestMsg.getString("projectCode");
+        String projectName = requestMsg.getString("projectName");
+        String projectType = requestMsg.getString("projectType");
+        String leval = requestMsg.getString("leval");
+        String projectManager = requestMsg.getString("projectManager");
+        String status = requestMsg.getString("status");
+        String monthNum = requestMsg.getString("monthNum");
+        if (monthNum == null) {
+            return new ResponseMessage(Code.CODE_ERROR, "请选择月份");
+        }
+        List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+                projectManager, status, monthNum, null);
+        Map<String, Map<String, ProjectMonthly>> map = new LinkedHashMap<>();
+        for (Project project : projects) {
+            List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+            Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+            for (ProjectMonthly projectMonthly : list) {
+                map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+            }
+            if (map.get(project.getProjectName()) == null) {
+                map.put(project.getProjectName(), map1);
+            }
+        }
+        if (map.size() == 0) {
+            return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
+        }
+        return new ResponseMessage(Code.CODE_OK, "查询成功", map);
+    }
 }

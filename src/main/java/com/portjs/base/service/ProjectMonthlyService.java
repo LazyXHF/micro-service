@@ -16,4 +16,6 @@ public interface ProjectMonthlyService {
     ResponseMessage selectBusinessConfiguration(String requestBody);
 
     ResponseMessage selectProjectMonthly(String requestBody);
+
+    ResponseMessage selectProjectMonthlyBymohu(String requestBody);
 }
