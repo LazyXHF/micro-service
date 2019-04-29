@@ -216,10 +216,10 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
                 }
             }
             //创建HSSFWorkbook
-            Resource resource = new ClassPathResource("/excel/项目周报表.xls");
+            /*Resource resource = new ClassPathResource("/excel/项目周报表.xls");
             File file = resource.getFile();
 //            String excel = excelPath+file.separator+"mgt-contrl-platform"+file.separator+"src"+file.separator+"main"+file.separator+"resources"+file.separator+"excel"+file.separator+"项目周报表.xls";
-            /*String excel = basePath + "/excel/项目周报表.xls";*/
+            *//*String excel = basePath + "/excel/项目周报表.xls";*//*
 
             String excel = file.getAbsolutePath();
 
@@ -228,9 +228,9 @@ public class WeeklyAndMonthlyReportManagementController extends BaseController  
             // 读取excel模板
             HSSFWorkbook wb = null;
 
-            wb = new HSSFWorkbook(fs);
+            wb = new HSSFWorkbook(fs);*/
 
-            HSSFWorkbook workbook = ExcelUtil.getHSSFWorkbook(sheetName, title, content, wb);
+            HSSFWorkbook workbook = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
             //响应到客户端
             try {
                 this.setResponseHeader(response, fileName);
