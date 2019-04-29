@@ -66,12 +66,12 @@ public class ProjectMonthlyController extends BaseController {
     @RequestMapping("/select_projectMonthly")
     public ResponseMessage selectProjectMonthly(@RequestBody String requestBody) {
         logger.debug("selectProjectMonthly()begin......" + requestBody);
-//        try {
+        try {
             return projectMonthlyService.selectProjectMonthlyBymohu(requestBody);
-//        } catch (Exception e) {
-//            logger.error("selectProjectMonthly()error....", e);
-//            throw new RuntimeException();
-//        }
+        } catch (Exception e) {
+            logger.error("selectProjectMonthly()error....", e);
+            throw new RuntimeException();
+        }
     }
 
 
@@ -133,60 +133,67 @@ public class ProjectMonthlyController extends BaseController {
                         //第一行第一列
                         if (i == 0) {
                             int z = 0;
-                            for (int j = 0; j < list1.size(); j++) {
-                                HSSFRow row = null;
-                                if (i + z + 1 == 1) {
-                                    row = sheet.createRow(i + 1);
-                                    HSSFCell cell = row.createCell(0);
-                                    cell.setCellValue(key);
-                                    cell.setCellStyle(cellStyle);
+                            HSSFRow row = null;
+                            //判断月报对象是否有值/如果没有给第一格塞名字
+                            if (CollectionUtils.isEmpty(list1)){
+                                row = sheet.createRow(i + 1);
+                                HSSFCell cell = row.createCell(0);
+                                cell.setCellValue(key);
+                                cell.setCellStyle(cellStyle);
+                            }else {
+                                for (int j = 0; j < list1.size(); j++) {
+                                    if (i + z + 1 == 1) {
+                                        row = sheet.createRow(i + 1);
+                                        HSSFCell cell = row.createCell(0);
+                                        cell.setCellValue(key);
+                                        cell.setCellStyle(cellStyle);
+                                    } else {
+                                        row = sheet.createRow(i + 1 + z);
+                                    }
+                                    if ("A".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目立项");
+                                    } else if ("B".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("合同签订");
+                                    } else if ("C".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目启动");
+                                    } else if ("项目建设".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目建设");
+                                    } else if ("G".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("上线试运行");
+                                    } else if ("H".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目验收");
+                                    }
 
-                                } else {
-                                    row = sheet.createRow(i + 1 + z);
+                                    HSSFCell cell1 = row.createCell(1);
+                                    cell1.setCellStyle(cellStyle);
+                                    HSSFCell cell2 = row.createCell(2);
+                                    cell2.setCellStyle(cellStyle);
+                                    HSSFCell cell3 = row.createCell(3);
+                                    cell3.setCellStyle(cellStyle);
+                                    HSSFCell cell4 = row.createCell(4);
+                                    cell4.setCellStyle(cellStyle);
+                                    HSSFCell cell5 = row.createCell(5);
+                                    cell5.setCellStyle(cellStyle);
+                                    HSSFCell cell6 = row.createCell(6);
+                                    cell6.setCellStyle(cellStyle);
+                                    HSSFCell cell7 = row.createCell(7);
+                                    cell7.setCellStyle(cellStyle);
+                                    HSSFCell cell8 = row.createCell(8);
+                                    cell8.setCellStyle(cellStyle);
+
+                                    cell1.setCellValue(list1.get(j).getProjectSchedule());
+                                    cell2.setCellValue(list1.get(j).getContent());
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    String predictStarttime = sdf.format(list1.get(j).getPredictStarttime());
+                                    cell3.setCellValue(predictStarttime);
+                                    String pridectEndtime = sdf.format(list1.get(j).getPridectEndtime());
+                                    cell4.setCellValue(pridectEndtime);
+                                    cell5.setCellValue(list1.get(j).getCurrentProgress());
+                                    cell6.setCellValue(list1.get(j).getPerformance());
+                                    cell7.setCellValue(list1.get(j).getSchedule());
+                                    cell8.setCellValue(list1.get(j).getRemark());
+                                    z++;
                                 }
-                                if ("A".equals(list1.get(j).getProjectSchedule())) {
-                                    list1.get(j).setProjectSchedule("项目立项");
-                                } else if ("B".equals(list1.get(j).getProjectSchedule())) {
-                                    list1.get(j).setProjectSchedule("合同签订");
-                                } else if ("C".equals(list1.get(j).getProjectSchedule())) {
-                                    list1.get(j).setProjectSchedule("项目启动");
-                                } else if ("项目建设".equals(list1.get(j).getProjectSchedule())) {
-                                    list1.get(j).setProjectSchedule("项目建设");
-                                } else if ("G".equals(list1.get(j).getProjectSchedule())) {
-                                    list1.get(j).setProjectSchedule("上线试运行");
-                                } else if ("H".equals(list1.get(j).getProjectSchedule())) {
-                                    list1.get(j).setProjectSchedule("项目验收");
-                                }
-
-                                HSSFCell cell1 = row.createCell(1);
-                                cell1.setCellStyle(cellStyle);
-                                HSSFCell cell2 = row.createCell(2);
-                                cell2.setCellStyle(cellStyle);
-                                HSSFCell cell3 = row.createCell(3);
-                                cell3.setCellStyle(cellStyle);
-                                HSSFCell cell4 = row.createCell(4);
-                                cell4.setCellStyle(cellStyle);
-                                HSSFCell cell5 = row.createCell(5);
-                                cell5.setCellStyle(cellStyle);
-                                HSSFCell cell6 = row.createCell(6);
-                                cell6.setCellStyle(cellStyle);
-                                HSSFCell cell7 = row.createCell(7);
-                                cell7.setCellStyle(cellStyle);
-                                HSSFCell cell8 = row.createCell(8);
-                                cell8.setCellStyle(cellStyle);
-
-                                cell1.setCellValue(list1.get(j).getProjectSchedule());
-                                cell2.setCellValue(list1.get(j).getContent());
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                String predictStarttime = sdf.format(list1.get(j).getPredictStarttime());
-                                cell3.setCellValue(predictStarttime);
-                                String pridectEndtime = sdf.format(list1.get(j).getPridectEndtime());
-                                cell4.setCellValue(pridectEndtime);
-                                cell5.setCellValue(list1.get(j).getCurrentProgress());
-                                cell6.setCellValue(list1.get(j).getPerformance());
-                                cell7.setCellValue(list1.get(j).getSchedule());
-                                cell8.setCellValue(list1.get(j).getRemark());
-                                z++;
                             }
                         } else {
                             int z = i * 6 + 1;

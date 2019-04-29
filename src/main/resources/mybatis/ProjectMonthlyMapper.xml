@@ -499,6 +499,7 @@
     <select id="queryProjectMonthByProjectId" resultMap="BaseResultMap">
         select * from project_monthly
         where project_id = #{projectId,jdbcType=VARCHAR}
+        order by create_time desc
     </select>
 
     <select id="selectByprojectIdAndSchedule" resultMap="BaseResultMap">
