@@ -188,12 +188,26 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                 criteria.andDepartmentidEqualTo(department.getId());
                 List<TUser> users = userMapper.selectByExample(example);
                 for (TUser tuser : users) {
-                    List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                            projectManager, status, monthNum, null, tuser.getId());
-                    for (Project project : projects) {
-                        List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                        if (map.get(project.getProjectName()) == null) {
-                            map.put(project.getProjectName(), list);
+                    if (department.getReserved1() != null) {
+                        String departmentFDL = department.getReserved1();
+                        if (!departmentFDL.equals(user.getId())) {
+                            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+                                    projectManager, status, monthNum, null, tuser.getId());
+                            for (Project project : projects) {
+                                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+                                if (map.get(project.getProjectName()) == null) {
+                                    map.put(project.getProjectName(), list);
+                                }
+                            }
+                        }
+                    } else {
+                        List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+                                projectManager, status, monthNum, null, tuser.getId());
+                        for (Project project : projects) {
+                            List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+                            if (map.get(project.getProjectName()) == null) {
+                                map.put(project.getProjectName(), list);
+                            }
                         }
                     }
                 }
@@ -281,21 +295,40 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                 criteria.andDepartmentidEqualTo(department.getId());
                 List<TUser> users = userMapper.selectByExample(example);
                 for (TUser tuser : users) {
-                    List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                            projectManager, status, monthNum, null, tuser.getId());
-                    for (Project project : projects) {
-                        List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                        Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
-                        for (ProjectMonthly projectMonthly : list) {
-                            map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+                    //部门负责人无法查看分管领导项目
+                    if (department.getReserved1() != null) {
+                        String departmentFLD = department.getReserved1();
+                        if (!departmentFLD.equals(user.getId())) {
+                            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+                                    projectManager, status, monthNum, null, tuser.getId());
+                            for (Project project : projects) {
+                                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+                                Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+                                for (ProjectMonthly projectMonthly : list) {
+                                    map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+                                }
+                                if (map.get(project.getProjectName()) == null) {
+                                    map.put(project.getProjectName(), map1);
+                                }
+                            }
                         }
-                        if (map.get(project.getProjectName()) == null) {
-                            map.put(project.getProjectName(), map1);
+                    } else {
+                        List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+                                projectManager, status, monthNum, null, tuser.getId());
+                        for (Project project : projects) {
+                            List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+                            Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+                            for (ProjectMonthly projectMonthly : list) {
+                                map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+                            }
+                            if (map.get(project.getProjectName()) == null) {
+                                map.put(project.getProjectName(), map1);
+                            }
                         }
                     }
                 }
             } else {
-                //不是负责人或分管领导
+                //不是负责人
                 List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
                         projectManager, status, monthNum, null, userId);
                 for (Project project : projects) {
@@ -331,7 +364,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                     }
                 }
             } else {
-                //不是负责人或分管领导
+                //不是负责人或
                 List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
                         projectManager, status, monthNum, null, userId);
                 for (Project project : projects) {

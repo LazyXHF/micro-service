@@ -166,7 +166,11 @@ public class ProjectServiceImpl implements ProjectService {
         project.setSchedule("A");
         project.setContractor(requestJson.getString("contractor"));//承建单位
         project.setProjectManager(requestJson.getString("projectManager"));//项目经理
-        project.setBackUp1(requestJson.getString("applicantId"));
+        if (requestJson.getString("applicantId") == null) {
+            return new ResponseMessage(Code.CODE_ERROR, "项目经理id不能为空");
+        } else {
+            project.setBackUp1(requestJson.getString("applicantId"));//项目经理id
+        }
         project.setManagerPhone(requestJson.getString("managerPhone"));//项目经理电话
         project.setCreateTime(new Date());
         project.setCreator(requestJson.getString("creator"));//创建人id
