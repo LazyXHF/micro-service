@@ -755,9 +755,9 @@ public class TenderServiceImpl implements TenderService {
             if(backup3.equals("5")){
                 //审核结束
                 if(flag){
-                    projectApplication.setStatus("4");
+                    projectApplication.setStatus("5");
                 }else{
-                    projectApplication.setStatus("3");
+                    projectApplication.setStatus("4");
                 }
             }else{
                 if("7".equals(backup3)){

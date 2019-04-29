@@ -799,13 +799,13 @@
         and  project_type like "%" #{projectType} "%"
       </if>
       <if test="organization !=null and organization!=''">
-        and  organization = #{organization}
+        and  organization like "%" #{organization} "%"
       </if>
       <if test="leval !=null and leval!=''">
         and  leval like "%" #{leval} "%"
       </if>
       <if test="projectManager !=null and projectManager!=''">
-        and  project_manager = #{projectManager}
+        and  project_manager like "%" #{projectManager} "%"
       </if>
     UNION ALL
     select  *
