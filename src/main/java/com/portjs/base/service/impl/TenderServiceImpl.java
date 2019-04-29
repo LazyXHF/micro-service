@@ -544,19 +544,19 @@ public class TenderServiceImpl implements TenderService {
         //backup3 :下一步的操作步骤 stepDesc: 下一步的审核步骤名称
         if(backup3.equals("2")){
             ss=backup3;
-            stepDesc="招标办人员审核";
+            stepDesc="招标办主任审核";
             backup3=new String("3");
         }else if(backup3.equals("3")){
             ss=backup3;
-            stepDesc="招标办主任审核";
+            stepDesc="招标委员会审核";
             backup3=new String("4");
         }else if(backup3.equals("4")){
             ss=backup3;
-            stepDesc="招标委员会审核";
+            stepDesc="执行董事审核";
             backup3=new String("5");
         }else if(backup3.equals("5")){
             ss=backup3;
-            stepDesc="执行董事审核";
+            stepDesc="维护定标信息";
             backup3=new String("7");
         }
 
@@ -651,7 +651,7 @@ public class TenderServiceImpl implements TenderService {
             boolean flag= false;//最后一人审核标识
             for(int c=0;c<nextReviewerId.size();c++) {
                 //进入到多个人审核阶段，修改待办
-                if(ss.equals("4")){
+                if(backup3.equals("5")){
                     TWorkflowstepExample example2=new TWorkflowstepExample();
                     TWorkflowstepExample.Criteria criteria2 = example2.createCriteria();
                     criteria2.andStatusEqualTo("0");
@@ -706,7 +706,7 @@ public class TenderServiceImpl implements TenderService {
                     if(m<=0) {
                         return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
                     }
-                    if(ss.equals("5")){
+                    if(backup3.equals("7")){
                         TTodo internalToDo=new TTodo();
                         internalToDo.setId(String.valueOf(UUID.randomUUID()));
                         internalToDo.setCurrentstepId(workflowstep.getId());
@@ -752,12 +752,16 @@ public class TenderServiceImpl implements TenderService {
             if(backup3.equals("5")){
                 //审核结束
                 if(flag){
-                    projectApplication.setStatus("5");
-                }else{
                     projectApplication.setStatus("4");
+                }else{
+                    projectApplication.setStatus("3");
                 }
             }else{
-                projectApplication.setStatus(ss);
+                if("7".equals(backup3)){
+                    projectApplication.setStatus("7");
+                }else{
+                    projectApplication.setStatus(ss);
+                }
             }
 
             int num =tenderApplicationMapper.updateByPrimaryKeySelective(projectApplication);
