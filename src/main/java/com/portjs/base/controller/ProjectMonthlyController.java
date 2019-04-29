@@ -1,10 +1,12 @@
 package com.portjs.base.controller;
 
+import com.alibaba.druid.sql.visitor.functions.If;
 import com.portjs.base.entity.ProjectMonthly;
 import com.portjs.base.exception.UnifiedExceptionHandler;
 import com.portjs.base.service.ProjectMonthlyService;
 import com.portjs.base.util.ResponseMessage;
 import com.portjs.base.util.poi.ExcelUtil;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -47,7 +50,7 @@ public class ProjectMonthlyController extends BaseController {
     public ResponseMessage insertProjectMonthly(@RequestBody List<ProjectMonthly> projectMonthlyList) {
         logger.debug("insertProjectMonthly()begin......" + projectMonthlyList);
         try {
-        return projectMonthlyService.insertProjectMonthly(projectMonthlyList);
+            return projectMonthlyService.insertProjectMonthly(projectMonthlyList);
         } catch (Exception e) {
             logger.error("select_BusinessConfiguration_ById()error....", e);
             throw new RuntimeException();
@@ -59,7 +62,7 @@ public class ProjectMonthlyController extends BaseController {
     public ResponseMessage selectBusinessConfiguration(@RequestBody String requestBody) {
         logger.debug("selectBusinessConfiguration()begin......" + requestBody);
         try {
-        return projectMonthlyService.selectBusinessConfiguration(requestBody);
+            return projectMonthlyService.selectBusinessConfiguration(requestBody);
         } catch (Exception e) {
             logger.error("select_BusinessConfiguration_ById()error....", e);
             throw new RuntimeException();
@@ -93,17 +96,6 @@ public class ProjectMonthlyController extends BaseController {
             String fileName = "项目月报表" + System.currentTimeMillis() + ".xls";
             //sheet名
             String sheetName = "项目月报表";
-
-            //创建HSSFWorkbook
-//            Resource resource = new ClassPathResource("/excel/项目月报表.xls");
-//            File file = resource.getFile();
-//
-//            String excel = file.getAbsolutePath();
-//
-//            File fi = new File(excel);
-//            POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(fi));
-            // 读取excel模板
-//            HSSFWorkbook wb = null;
             HSSFWorkbook wb = new HSSFWorkbook();
             HSSFCellStyle cellStyle = wb.createCellStyle();
             cellStyle.setAlignment(CellStyle.ALIGN_CENTER);//水平居中  
@@ -113,16 +105,16 @@ public class ProjectMonthlyController extends BaseController {
                 Object data = responseMessage.getData();
                 Map<String, List> map = (Map) data;
 
-                //wb = new HSSFWorkbook(fs);
                 HSSFSheet sheet = wb.createSheet(sheetName);
                 HSSFRow sheetRow = sheet.createRow(0);
 
-
+                //遍历标题栏
                 for (int i = 0; i < title.length; i++) {
                     HSSFCell cell = sheetRow.createCell(i);
                     cell.setCellStyle(cellStyle);
                     cell.setCellValue(title[i]);
                 }
+                //获得数据塞入集合
                 List<Map<String, List<ProjectMonthly>>> list = new ArrayList<>();
                 for (Map.Entry<String, List> listEntry : map.entrySet()) {
                     Map<String, List<ProjectMonthly>> map1 = new HashMap<>();
@@ -132,53 +124,25 @@ public class ProjectMonthlyController extends BaseController {
                     list.add(map1);
                 }
 
+                //遍历集合取得数据
                 for (int i = 0; i < list.size(); i++) {
-
                     Set<Map.Entry<String, List<ProjectMonthly>>> entries = list.get(i).entrySet();
                     for (Map.Entry<String, List<ProjectMonthly>> entry : entries) {
                         String key = entry.getKey();
                         List<ProjectMonthly> list1 = entry.getValue();
+                        //第一行第一列
                         if (i == 0) {
-                            HSSFRow row = sheet.createRow(i + 1);
-                            HSSFCell cell = row.createCell(0);
-                            cell.setCellValue(key);
-                            cell.setCellStyle(cellStyle);
                             int z = 0;
-                            for (int j=0;j<list1.size();j++){
-                                HSSFRow row1 = sheet.createRow(z + 1);
-                                    if ("A".equals(list1.get(j).getProjectSchedule())) {
-                                        list1.get(j).setProjectSchedule("项目立项");
-                                    } else if ("B".equals(list1.get(j).getProjectSchedule())) {
-                                        list1.get(j).setProjectSchedule("合同签订");
-                                    } else if ("C".equals(list1.get(j).getProjectSchedule())) {
-                                        list1.get(j).setProjectSchedule("项目启动");
-                                    } else if ("项目建设".equals(list1.get(j).getProjectSchedule())) {
-                                        list1.get(j).setProjectSchedule("项目建设");
-                                    } else if ("G".equals(list1.get(j).getProjectSchedule())) {
-                                        list1.get(j).setProjectSchedule("上线试运行");
-                                    } else if ("H".equals(list1.get(j).getProjectSchedule())) {
-                                        list1.get(j).setProjectSchedule("项目验收");
-                                    }
-                                row1.createCell(1).setCellValue(list1.get(j).getProjectSchedule());
-                                row1.createCell(2).setCellValue(list1.get(j).getContent());
-                                row1.createCell(3).setCellValue(list1.get(j).getPredictStarttime());
-                                row1.createCell(4).setCellValue(list1.get(j).getPridectEndtime());
-                                row1.createCell(5).setCellValue(list1.get(j).getCurrentProgress());
-                                row1.createCell(6).setCellValue(list1.get(j).getPerformance());
-                                row1.createCell(7).setCellValue(list1.get(j).getSchedule());
-                                row1.createCell(8).setCellValue(list1.get(j).getRemark());
-                                    z++;
+                            for (int j = 0; j < list1.size(); j++) {
+                                HSSFRow row = null;
+                                if (i + z + 1 == 1) {
+                                    row = sheet.createRow(i + 1);
+                                    HSSFCell cell = row.createCell(0);
+                                    cell.setCellValue(key);
+                                    cell.setCellStyle(cellStyle);
+                                } else {
+                                    row = sheet.createRow(i + 1 + z);
                                 }
-
-
-                        } else {
-                            HSSFRow row = sheet.createRow(i * 6 + 1);
-                            HSSFCell cell = row.createCell(0);
-                            cell.setCellValue(key);
-                            cell.setCellStyle(cellStyle);
-                            int z = i * 6 + 1;
-                            for (int j=0;j<list1.size();j++){
-                                HSSFRow row1 = sheet.createRow(z + 1);
                                 if ("A".equals(list1.get(j).getProjectSchedule())) {
                                     list1.get(j).setProjectSchedule("项目立项");
                                 } else if ("B".equals(list1.get(j).getProjectSchedule())) {
@@ -192,15 +156,63 @@ public class ProjectMonthlyController extends BaseController {
                                 } else if ("H".equals(list1.get(j).getProjectSchedule())) {
                                     list1.get(j).setProjectSchedule("项目验收");
                                 }
-                                row1.createCell(1).setCellValue(list1.get(j).getProjectSchedule());
-                                row1.createCell(2).setCellValue(list1.get(j).getContent());
-                                row1.createCell(3).setCellValue(list1.get(j).getPredictStarttime());
-                                row1.createCell(4).setCellValue(list1.get(j).getPridectEndtime());
-                                row1.createCell(5).setCellValue(list1.get(j).getCurrentProgress());
-                                row1.createCell(6).setCellValue(list1.get(j).getPerformance());
-                                row1.createCell(7).setCellValue(list1.get(j).getSchedule());
-                                row1.createCell(8).setCellValue(list1.get(j).getRemark());
+                                row.createCell(1).setCellValue(list1.get(j).getProjectSchedule());
+                                row.createCell(2).setCellValue(list1.get(j).getContent());
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                String predictStarttime = sdf.format(list1.get(j).getPredictStarttime());
+                                row.createCell(3).setCellValue(predictStarttime);
+                                String pridectEndtime = sdf.format(list1.get(j).getPridectEndtime());
+                                row.createCell(4).setCellValue(pridectEndtime);
+                                row.createCell(5).setCellValue(list1.get(j).getCurrentProgress());
+                                row.createCell(6).setCellValue(list1.get(j).getPerformance());
+                                row.createCell(7).setCellValue(list1.get(j).getSchedule());
+                                row.createCell(8).setCellValue(list1.get(j).getRemark());
                                 z++;
+                            }
+                        } else {
+                            int z = i * 6 + 1;
+                            HSSFRow row = null;
+                            if (CollectionUtils.isEmpty(list1)) {
+                                row = sheet.createRow(i * 6 + 1);
+                                HSSFCell cell = row.createCell(0);
+                                cell.setCellValue(key);
+                                cell.setCellStyle(cellStyle);
+                            } else {
+                                for (int j = 0; j < list1.size(); j++) {
+                                    if (z == i * 6 + 1) {
+                                        row = sheet.createRow(i * 6 + 1);
+                                        HSSFCell cell = row.createCell(0);
+                                        cell.setCellValue(key);
+                                        cell.setCellStyle(cellStyle);
+                                    } else {
+                                        row = sheet.createRow(z);
+                                    }
+                                    if ("A".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目立项");
+                                    } else if ("B".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("合同签订");
+                                    } else if ("C".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目启动");
+                                    } else if ("项目建设".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目建设");
+                                    } else if ("G".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("上线试运行");
+                                    } else if ("H".equals(list1.get(j).getProjectSchedule())) {
+                                        list1.get(j).setProjectSchedule("项目验收");
+                                    }
+                                    row.createCell(1).setCellValue(list1.get(j).getProjectSchedule());
+                                    row.createCell(2).setCellValue(list1.get(j).getContent());
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    String predictStarttime = sdf.format(list1.get(j).getPredictStarttime());
+                                    row.createCell(3).setCellValue(predictStarttime);
+                                    String pridectEndtime = sdf.format(list1.get(j).getPridectEndtime());
+                                    row.createCell(4).setCellValue(pridectEndtime);
+                                    row.createCell(5).setCellValue(list1.get(j).getCurrentProgress());
+                                    row.createCell(6).setCellValue(list1.get(j).getPerformance());
+                                    row.createCell(7).setCellValue(list1.get(j).getSchedule());
+                                    row.createCell(8).setCellValue(list1.get(j).getRemark());
+                                    z++;
+                                }
                             }
                         }
                     }
@@ -212,11 +224,7 @@ public class ProjectMonthlyController extends BaseController {
                         CellRangeAddress region = new CellRangeAddress(i * 6 + 1, i * 6 + 6, 0, 0);
                         sheet.addMergedRegion(region);
                     }
-
-
                 }
-
-
                 //响应到客户端
                 try {
                     this.setResponseHeader(response, fileName);
@@ -228,8 +236,6 @@ public class ProjectMonthlyController extends BaseController {
                     e.printStackTrace();
                 }
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -252,11 +258,6 @@ public class ProjectMonthlyController extends BaseController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public static String getSystemFileCharset() {
-        Properties pro = System.getProperties();
-        return pro.getProperty("file.encoding");
     }
 
 
