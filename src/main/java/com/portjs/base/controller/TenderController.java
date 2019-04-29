@@ -38,7 +38,6 @@ public class TenderController extends BaseController {
             throw new RuntimeException();
         }
     }
-
     @LogInfo(methodName = "生成招标申请单",modelName = "招标模块")
     @RequestMapping("/get-tender-num")
     @ResponseBody
@@ -51,6 +50,7 @@ public class TenderController extends BaseController {
             throw new RuntimeException();
         }
     }
+
 
     @LogInfo(methodName = "查询招标流程申请单",modelName = "招标模块")
     @RequestMapping("/query-review-tender")

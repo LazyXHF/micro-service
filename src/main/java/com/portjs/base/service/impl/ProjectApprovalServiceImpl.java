@@ -900,7 +900,9 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			listUser = tUserMapper.selectRidOrDidOrDuty(applicationUserConfig.getPlanRoleId(),departIds,null);
 		}else if(("3".equals(status)&&("1").equals(type))){
 			//查询总经办 总经理助理
-			listUser = tUserMapper.selectRidOrDidOrDuty(applicationUserConfig.getLxzjbRoleId(),null,null);
+			List<String> departIds = new ArrayList<String>();
+			departIds.add(applicationUserConfig.getGeneralManagerDepartmentId());
+			listUser = tUserMapper.selectRidOrDidOrDuty(applicationUserConfig.getLxzjbRoleId(),departIds,null);
 		}
 
 		return new ResponseMessage(Code.CODE_OK, "查询成功",listUser);

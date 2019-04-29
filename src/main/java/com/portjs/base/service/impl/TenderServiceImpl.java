@@ -437,7 +437,7 @@ public class TenderServiceImpl implements TenderService {
             return new ResponseMessage(Code.CODE_ERROR,"废除失败");
         }
 
-        return new ResponseMessage(Code.CODE_ERROR,"废除成功");
+        return new ResponseMessage(Code.CODE_OK,"废除成功");
     }
 
     @Override
