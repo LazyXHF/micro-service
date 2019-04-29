@@ -171,29 +171,43 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
         if(user==null){
             return new ResponseMessage(Code.CODE_ERROR,"用户不存在");
         }
-        //根据id查询对应职务和部门id
-        TUserDepartmentExample example = new TUserDepartmentExample();
-        TUserDepartmentExample.Criteria criteria = example.createCriteria();
-        criteria.andUIdEqualTo(user.getId());
-        List<TUserDepartment> tUserDepartments = tdMapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(tUserDepartments)){
-            return new ResponseMessage(Code.CODE_ERROR,"查询失败");
-        }
+        //判断当前登录人是否是分管领导
+        TDepartmentExample tDepartmentExample = new TDepartmentExample();
+        TDepartmentExample.Criteria tDepartmentCriteria = tDepartmentExample.createCriteria();
+        tDepartmentCriteria.andReserved1EqualTo(user.getId());
+        List<TDepartment> tDepartments = departmentMapper.selectByExample(tDepartmentExample);
         LinkedList list = new LinkedList();
-        for (TUserDepartment userDepartment : tUserDepartments) {
-            TDepartment tDepartment = departmentMapper.selectByPrimaryKey(userDepartment.getdId());
-            if(CollectionUtils.isEmpty(tUserDepartments)){
-                throw  new Exception("查询失败");
+        if(CollectionUtils.isEmpty(tDepartments)){
+            //当前登录人不是分管领导再判断当前登录人是否是部门负责人
+            TDepartmentExample departmentExample = new TDepartmentExample();
+            TDepartmentExample.Criteria criteria = departmentExample.createCriteria();
+            criteria.andLeaderIdEqualTo(user.getId());
+            List<TDepartment> departments = departmentMapper.selectByExample(departmentExample);
+            if(CollectionUtils.isEmpty(departments)){
+                //当前登录人是组员只查询自己
+                List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
+                if(!CollectionUtils.isEmpty(weeklies)){
+                    list.addAll(weeklies);
+                }
+            }else {
+                //当前登录人为部门负责人查询对应部门中出分管领导的记录
+                for (TDepartment department : departments) {
+                    List<TUser> users = userMapper.selectByDid(department.getId());
+                    if(!CollectionUtils.isEmpty(users)){
+                        for (TUser tUser :users ) {
+                            List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
+                            if(!CollectionUtils.isEmpty(weeklies)){
+                                list.addAll(weeklies);
+                            }
+                        }
+                    }
+                }
             }
-            if(StringUtils.isEmpty(tDepartment.getReserved1())){
-                throw  new Exception("当前登录人分管领导为空");
-            }
-            if(StringUtils.isEmpty(tDepartment.getLeaderId())){
-                throw  new Exception("当前登录人部门负责人为空");
-            }
-            if(user.getId().equals(tDepartment.getReserved1()) || user.getId().equals(tDepartment.getLeaderId())){
-                //当前登录人是分管领导或者部门负责人时查询当前部门下所有人
-                List<TUser> users = userMapper.selectByDid(userDepartment.getdId());
+
+        }else {
+            //当前登录人是分管领导可以看到分管部门的周报
+            for (TDepartment department : tDepartments) {
+                List<TUser> users = userMapper.selectByDid(department.getId());
                 if(!CollectionUtils.isEmpty(users)){
                     for (TUser tUser :users ) {
                         List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
@@ -202,181 +216,15 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                         }
                     }
                 }
-            }else {
-                //当前登录人不是分管领导也不是部门负责人就查询自己
-                List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
-                if(!CollectionUtils.isEmpty(weeklies)){
-                    list.addAll(weeklies);
-                }
+            }
+            //和他自己的周报
+            List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
+            if(!CollectionUtils.isEmpty(weeklies)){
+                list.addAll(weeklies);
             }
         }
 
         return new ResponseMessage(Code.CODE_OK,"查询成功",list);
-
-
-
-
-
-
-
-
-
-        /*if(user.getDuty().equals("项目组长")){
-            //根据项目组长id查询对应部门的所有项目经理和项目组长
-            List<TUser> users = userMapper.selectUserByUserId(user.getId(),"分管领导");
-            LinkedList list = new LinkedList();
-            for (TUser tUser :users ) {
-                *//*ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
-                weeklyExample.setOrderByClause("create_time");
-                ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
-                //项目经理id
-                weeklyCriteria.andModifierEqualTo(tUser.getId());
-                //项目经理名称
-                if(!StringUtils.isEmpty(projectWeekly.getProjectManager())){
-                    weeklyCriteria.andProjectManagerLike("%"+projectWeekly.getProjectManager()+"%");
-                }
-                //项目编码
-                if(!StringUtils.isEmpty(projectWeekly.getProjectCode())){
-                    weeklyCriteria.andProjectCodeLike("%"+projectWeekly.getProjectCode()+"%");
-
-                }
-                //项目名称
-                if(!StringUtils.isEmpty(projectWeekly.getProjectName())){
-                    weeklyCriteria.andProjectNameLike("%"+projectWeekly.getProjectName()+"%");
-
-                }
-                //项目类型
-                if(!StringUtils.isEmpty(projectWeekly.getProjectType())){
-                    weeklyCriteria.andProjectTypeEqualTo(projectWeekly.getProjectType());
-
-                }
-                //项目等级
-                if(!StringUtils.isEmpty(projectWeekly.getLeval())){
-                    weeklyCriteria.andLevalEqualTo(projectWeekly.getLeval());
-
-                }
-                //项目状态
-                if(!StringUtils.isEmpty(projectWeekly.getStatus())){
-                    weeklyCriteria.andStatusEqualTo(projectWeekly.getStatus());
-
-                }
-                //周数
-                weeklyCriteria.andWeekNumEqualTo(projectWeekly.getWeekNum());
-                List<ProjectWeekly> weeklies = weeklyMapper.selectByExample(weeklyExample);*//*
-                List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
-                if(!CollectionUtils.isEmpty(weeklies)){
-                    list.addAll(weeklies);
-                }
-            }
-            if(CollectionUtils.isEmpty(list)){
-                return new ResponseMessage(Code.CODE_ERROR,"暂无数据");
-            }
-            return new ResponseMessage(Code.CODE_OK,"查询成功",list);
-
-
-        }else if(user.getDuty().equals("分管领导")){
-            //查询所有对应的项目经理和项目组长的
-            //根据分管领导id查询分管领导对应所有部门的所有项目经理和项目组长
-            List<TUser> users = userMapper.selectUserByUserId(user.getId(),null);
-            LinkedList list = new LinkedList();
-            for (TUser tUser :users ) {
-                *//*ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
-                weeklyExample.setOrderByClause("create_time");
-                ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
-                //项目经理id
-                weeklyCriteria.andModifierEqualTo(tUser.getId());
-                //项目经理名称
-                if(!StringUtils.isEmpty(projectWeekly.getProjectManager())){
-                    weeklyCriteria.andProjectManagerLike("%"+projectWeekly.getProjectManager()+"%");
-                }
-                //项目编码
-                if(!StringUtils.isEmpty(projectWeekly.getProjectCode())){
-                    weeklyCriteria.andProjectCodeEqualTo("%"+projectWeekly.getProjectCode()+"%");
-
-                }
-                //项目名称
-                if(!StringUtils.isEmpty(projectWeekly.getProjectName())){
-                    weeklyCriteria.andProjectNameLike("%"+projectWeekly.getProjectName()+"%");
-
-                }
-                //项目类型
-                if(!StringUtils.isEmpty(projectWeekly.getProjectType())){
-                    weeklyCriteria.andProjectTypeEqualTo(projectWeekly.getProjectType());
-
-                }
-                //项目等级
-                if(!StringUtils.isEmpty(projectWeekly.getLeval())){
-                    weeklyCriteria.andLevalEqualTo(projectWeekly.getLeval());
-
-                }
-                //项目状态
-                if(!StringUtils.isEmpty(projectWeekly.getStatus())){
-                    weeklyCriteria.andStatusEqualTo(projectWeekly.getStatus());
-
-                }*//*
-                //周数
-                *//*weeklyCriteria.andWeekNumEqualTo(projectWeekly.getWeekNum());
-                List<ProjectWeekly> weeklies = weeklyMapper.selectByExample(weeklyExample);*//*
-                List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
-                if(!CollectionUtils.isEmpty(weeklies)){
-                    list.addAll(weeklies);
-                }
-            }
-            if(CollectionUtils.isEmpty(list)){
-                return new ResponseMessage(Code.CODE_ERROR,"暂无数据");
-            }
-            return new ResponseMessage(Code.CODE_OK,"查询成功",list);
-        }else  if(user.getDuty().equals("组员")){
-            //查询所有对应的项目经理和项目组长的
-            //根据分管领导id查询分管领导对应所有部门的所有项目经理和项目组长
-
-            TUser tUser = userMapper.selectByPrimaryKey(user.getId());
-
-            *//*ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
-            weeklyExample.setOrderByClause("create_time");
-            ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
-            //项目经理id
-            weeklyCriteria.andModifierEqualTo(tUser.getId());
-            //项目经理名称
-            if(!StringUtils.isEmpty(projectWeekly.getProjectManager())){
-                weeklyCriteria.andProjectManagerLike("%"+projectWeekly.getProjectManager()+"%");
-            }
-            //项目编码
-            if(!StringUtils.isEmpty(projectWeekly.getProjectCode())){
-                weeklyCriteria.andProjectCodeEqualTo("%"+projectWeekly.getProjectCode()+"%");
-
-            }
-            //项目名称
-            if(!StringUtils.isEmpty(projectWeekly.getProjectName())){
-                weeklyCriteria.andProjectNameLike("%"+projectWeekly.getProjectName()+"%");
-
-            }
-            //项目类型
-            if(!StringUtils.isEmpty(projectWeekly.getProjectType())){
-                weeklyCriteria.andProjectTypeEqualTo(projectWeekly.getProjectType());
-
-            }
-            //项目等级
-            if(!StringUtils.isEmpty(projectWeekly.getLeval())){
-                weeklyCriteria.andLevalEqualTo(projectWeekly.getLeval());
-
-            }
-            //项目状态
-            if(!StringUtils.isEmpty(projectWeekly.getStatus())){
-                weeklyCriteria.andStatusEqualTo(projectWeekly.getStatus());
-
-            }
-            //周数
-            weeklyCriteria.andWeekNumEqualTo(projectWeekly.getWeekNum());
-            List<ProjectWeekly> weeklies = weeklyMapper.selectByExample(weeklyExample);*//*
-            List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
-            if(!CollectionUtils.isEmpty(weeklies)){
-                return new ResponseMessage(Code.CODE_OK,"查询成功",weeklies);
-            }
-            return new ResponseMessage(Code.CODE_ERROR,"暂无数据");
-        }*/
-
-
     }
 
     //统一周报信息查询
