@@ -143,7 +143,7 @@
       and pr.apply_date=DATE_FORMAT(#{applyDate},'%Y-%m-%d')
     </if>
     <if test="status != null and status!=''">
-      and pr.status like concat('%',#{status},'%')
+      and pr.status = #{status}
     </if>
 
     order by pr.create_time DESC   LIMIT  #{pageNo},#{pageSize}
@@ -174,7 +174,7 @@
       and pr.apply_date=DATE_FORMAT(#{applyDate},'%Y-%m-%d')
     </if>
     <if test="status != null and status!=''">
-      and pr.status like concat('%',#{status},'%')
+      and pr.status = #{status}
     </if>
   </select>
 
