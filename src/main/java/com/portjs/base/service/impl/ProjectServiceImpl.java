@@ -151,6 +151,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project();
         project.setId(String.valueOf(IDUtils.genItemId()));
         project.setInvestmentId(requestJson.getString("investmentId"));//投资计划id
+        project.setBackUp2(requestJson.getString("investmentName"));//投资计划名称
         ProjectExample example = new ProjectExample();
         List<Project> projects = projectMapper.selectByExample(example);
         for (Project project1 : projects) {
