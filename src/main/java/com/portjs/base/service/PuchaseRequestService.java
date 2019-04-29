@@ -59,6 +59,8 @@ public interface PuchaseRequestService {
 
     ResponseMessage returnRecord(String requestBody);
 
+    ResponseMessage queryDropList();
+
     /**
      * 废除
      * @return  更新status:9 废除 根据主键更新

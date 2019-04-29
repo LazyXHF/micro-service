@@ -3,6 +3,7 @@ package com.portjs.base.dao;
 import com.portjs.base.entity.ProjectApplication;
 import com.portjs.base.entity.ProjectApplicationExample;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
@@ -49,4 +50,10 @@ public interface ProjectApplicationMapper {
     /*List<Project> selectapplicationByYear(@Param("niandu") String niandu);*/
 
     int abolishProject(@Param("id") String id);
+
+    /**
+     * 查询采购下拉框
+     * @return
+     */
+    List<ProjectApplication> queryDropList();
 }

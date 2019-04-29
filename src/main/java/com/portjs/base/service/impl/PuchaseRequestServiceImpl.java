@@ -36,6 +36,8 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
     TTodoMapper todoMapper;
     @Autowired
     TUserMapper tUserMapper;
+    @Autowired
+    ProjectApplicationMapper projectApplicationMapper;
 
     @Autowired
     InternalAttachmentMapper internalAttachmentMapper;
@@ -563,7 +565,7 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
             if(purchaseRequest2.getAmount().compareTo(new BigDecimal("500000")) <= 0){
                 stepTodo="已完成";
                 stepDesc="采购管理委员会审核";
-                backup3 = new String("7");
+                backup3 = new String("10");
                 ss=backup3;
             }
         }else if(backup3.equals("4")){
@@ -936,6 +938,18 @@ public class PuchaseRequestServiceImpl implements PuchaseRequestService {
                 return new ResponseMessage(Code.CODE_ERROR,"退回失败");
             }*/
         return new ResponseMessage(Code.CODE_OK,"退回成功");
+    }
+
+    /**
+     * 去查询下拉框
+     * @return
+     */
+    @Override
+    public ResponseMessage queryDropList() {
+        List<ProjectApplication> projectApplications = projectApplicationMapper.queryDropList();
+        responseMessage = new ResponseMessage(Code.CODE_OK,"查询成功！",projectApplications);
+
+        return responseMessage;
     }
 
     /**

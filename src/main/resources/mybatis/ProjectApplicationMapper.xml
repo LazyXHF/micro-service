@@ -121,6 +121,14 @@
     from project_application
     where Id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="queryDropList" resultMap="BaseResultMap" >
+    select
+    *
+    from project_application
+    where status = '6'
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from project_application
     where Id = #{id,jdbcType=VARCHAR}

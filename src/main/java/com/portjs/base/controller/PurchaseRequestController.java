@@ -156,4 +156,18 @@ public class PurchaseRequestController extends BaseController {
         logger.debug("approvePurchaseRequest" + requestBody);
         return puchaseRequestService.approvePurchaseRequest(requestBody);
     }
+    /**
+     * 下拉框查询
+     * @param
+     * @return
+     */
+    @RequestMapping("query-dropList")
+    @LogInfo(methodName = "下拉框查询")
+    public ResponseMessage queryDropList() {
+        logger.debug(TAG);
+        UnifiedExceptionHandler.method = TAG + "queryDropList============================" ;
+        responseMessage = puchaseRequestService.queryDropList();
+        return responseMessage;
+    }
+
 }
