@@ -99,5 +99,6 @@ public interface ProjectMapper {
     List<Project> queryProjectByMonth(@Param("projectCode") String projectCode, @Param("projectName") String projectName,
                                       @Param("projectType") String projectType, @Param("leval") String leval,
                                       @Param("projectManager") String projectManager,
-                                      @Param("status") String status, @Param("createTime") String createTime ,@Param("id")String projectId);
+                                      @Param("status") String status, @Param("createTime") String createTime ,
+                                      @Param("id")String projectId,@Param("creator")String creator);
 }

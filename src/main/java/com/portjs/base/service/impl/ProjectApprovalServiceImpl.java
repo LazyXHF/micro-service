@@ -679,7 +679,7 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 				return new ResponseMessage(Code.CODE_ERROR, "monthNum"+MessageUtils.NOT_PASSED);
 			}
 			List<Project> projects = projectMapper.queryProjectByMonth(null, null, null, null,
-					null, null, monthNum,projectId);
+					null, null, monthNum,projectId,null);
 			Map<String, List<ProjectMonthly>> map = new LinkedHashMap<>();
 			for (Project project : projects) {
 				List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());

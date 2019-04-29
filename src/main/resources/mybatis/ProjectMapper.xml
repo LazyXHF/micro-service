@@ -937,6 +937,8 @@
                 and a.id =#{id}
             </if>
             and a.create_time like "%" #{createTime} "%"
+            and a.creator = #{creator,jdbcType=VARCHAR}
         </where>
+        order by create_time desc
     </select>
 </mapper>

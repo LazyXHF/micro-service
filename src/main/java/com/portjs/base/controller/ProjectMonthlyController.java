@@ -62,16 +62,16 @@ public class ProjectMonthlyController extends BaseController {
         }
     }
 
-    //月报导出查询
+    //月报查询
     @RequestMapping("/select_projectMonthly")
     public ResponseMessage selectProjectMonthly(@RequestBody String requestBody) {
         logger.debug("selectProjectMonthly()begin......" + requestBody);
-        try {
+//        try {
             return projectMonthlyService.selectProjectMonthlyBymohu(requestBody);
-        } catch (Exception e) {
-            logger.error("selectProjectMonthly()error....", e);
-            throw new RuntimeException();
-        }
+//        } catch (Exception e) {
+//            logger.error("selectProjectMonthly()error....", e);
+//            throw new RuntimeException();
+//        }
     }
 
 
