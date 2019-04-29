@@ -569,7 +569,7 @@
     r.request_num AS tenderNum,
     r.project_id AS projectId,
     r.method AS method
-    from purchase_request r,project p where  r.status="10" AND r.project_id=p.id
+    from purchase_request r,project p where  (r.status="10" OR r.status="7" )AND r.project_id=p.id
     <if test="projectName!=null">
       and p.project_name  like concat("%", #{projectName},"%")
     </if>
@@ -587,7 +587,7 @@
   <!--招标中的采购清单总数查询-->
   <select id="selectRequestsCount"  resultType="int">
     select count(1) from purchase_request r,project p
-    where  r.status="10" AND r.project_id=p.id
+    where  (r.status="10" OR r.status="7") AND r.project_id=p.id
     <if test="projectName !=null">
       and p.project_name  like concat("%", #{projectName},"%")
     </if>
