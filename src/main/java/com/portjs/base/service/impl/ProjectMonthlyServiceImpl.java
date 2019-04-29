@@ -10,6 +10,7 @@ import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -174,33 +175,37 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
         if (user == null) {
             return new ResponseMessage(Code.CODE_ERROR, "用户不存在");
         }
-        TDepartment department = departmentMapper.selectByPrimaryKey(user.getDepartmentId());
-        if (department == null) {
-            return new ResponseMessage(Code.CODE_ERROR, "部门不存在");
-        }
-
         Map<String, List<ProjectMonthly>> map = new LinkedHashMap<>();
-        //如果当前登录人是部门负责人
-        if (department.getLeaderId() != null) {
-            if (department.getLeaderId().equals(userId)) {
-                TUserExample example = new TUserExample();
-                TUserExample.Criteria criteria = example.createCriteria();
-                criteria.andDepartmentidEqualTo(department.getId());
-                List<TUser> users = userMapper.selectByExample(example);
-                for (TUser tuser : users) {
-                    if (department.getReserved1() != null) {
-                        String departmentFDL = department.getReserved1();
-                        if (!departmentFDL.equals(user.getId())) {
-                            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                                    projectManager, status, monthNum, null, tuser.getId());
-                            for (Project project : projects) {
-                                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                                if (map.get(project.getProjectName()) == null) {
-                                    map.put(project.getProjectName(), list);
-                                }
-                            }
-                        }
-                    } else {
+
+        TDepartmentExample departmentExample = new TDepartmentExample();
+        TDepartmentExample.Criteria departmentExampleCriteria = departmentExample.createCriteria();
+        departmentExampleCriteria.andReserved1EqualTo(userId);
+        List<TDepartment> departments = departmentMapper.selectByExample(departmentExample);
+        //判断是否为分管领导
+        if (CollectionUtils.isEmpty(departments)) {
+            //不是分管领导判断是否为部门负责人
+            TDepartmentExample departmentExample1 = new TDepartmentExample();
+            TDepartmentExample.Criteria criteria = departmentExample1.createCriteria();
+            criteria.andLeaderIdEqualTo(userId);
+            List<TDepartment> tDepartments = departmentMapper.selectByExample(departmentExample1);
+            if (CollectionUtils.isEmpty(tDepartments)) {
+                //不是分管领导,不是部门负责人查看自己项目
+                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+                        projectManager, status, monthNum, null, userId);
+                for (Project project : projects) {
+                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+                    if (map.get(project.getProjectName()) == null) {
+                        map.put(project.getProjectName(), list);
+                    }
+                }
+            } else {
+                //不是分管领导,是部门负责人查看该部门除分管领导所有项目
+                for (TDepartment department : tDepartments) {
+                    TUserExample example = new TUserExample();
+                    TUserExample.Criteria exampleCriteria = example.createCriteria();
+                    exampleCriteria.andDepartmentidEqualTo(department.getId());
+                    List<TUser> users = userMapper.selectByExample(example);
+                    for (TUser tuser : users) {
                         List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
                                 projectManager, status, monthNum, null, tuser.getId());
                         for (Project project : projects) {
@@ -211,18 +216,10 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                         }
                     }
                 }
-            } else {
-                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                        projectManager, status, monthNum, null, userId);
-                for (Project project : projects) {
-                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                    if (map.get(project.getProjectName()) == null) {
-                        map.put(project.getProjectName(), list);
-                    }
-                }
             }
-        } else if (department.getReserved1() != null) {
-            if (department.getReserved1().equals(userId)) {
+        } else {
+            //是分管领导查看所在部门下项目
+            for (TDepartment department : departments) {
                 TUserExample example = new TUserExample();
                 TUserExample.Criteria criteria = example.createCriteria();
                 criteria.andDepartmentidEqualTo(department.getId());
@@ -237,26 +234,85 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                         }
                     }
                 }
-            } else {
-                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                        projectManager, status, monthNum, null, userId);
-                for (Project project : projects) {
-                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                    if (map.get(project.getProjectName()) == null) {
-                        map.put(project.getProjectName(), list);
-                    }
-                }
-            }
-        } else {
-            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                    projectManager, status, monthNum, null, userId);
-            for (Project project : projects) {
-                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                if (map.get(project.getProjectName()) == null) {
-                    map.put(project.getProjectName(), list);
-                }
             }
         }
+//        //如果当前登录人是部门负责人
+//        if (department.getLeaderId() != null) {
+//            if (department.getLeaderId().equals(userId)) {
+//                TUserExample example = new TUserExample();
+//                TUserExample.Criteria criteria = example.createCriteria();
+//                criteria.andDepartmentidEqualTo(department.getId());
+//                List<TUser> users = userMapper.selectByExample(example);
+//                for (TUser tuser : users) {
+//                    if (department.getReserved1() != null) {
+//                        String departmentFDL = department.getReserved1();
+//                        if (!departmentFDL.equals(user.getId())) {
+//                            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                                    projectManager, status, monthNum, null, tuser.getId());
+//                            for (Project project : projects) {
+//                                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                                if (map.get(project.getProjectName()) == null) {
+//                                    map.put(project.getProjectName(), list);
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                                projectManager, status, monthNum, null, tuser.getId());
+//                        for (Project project : projects) {
+//                            List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                            if (map.get(project.getProjectName()) == null) {
+//                                map.put(project.getProjectName(), list);
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                        projectManager, status, monthNum, null, userId);
+//                for (Project project : projects) {
+//                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                    if (map.get(project.getProjectName()) == null) {
+//                        map.put(project.getProjectName(), list);
+//                    }
+//                }
+//            }
+//        } else if (department.getReserved1() != null) {
+//            if (department.getReserved1().equals(userId)) {
+//                TUserExample example = new TUserExample();
+//                TUserExample.Criteria criteria = example.createCriteria();
+//                criteria.andDepartmentidEqualTo(department.getId());
+//                List<TUser> users = userMapper.selectByExample(example);
+//                for (TUser tuser : users) {
+//                    List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                            projectManager, status, monthNum, null, tuser.getId());
+//                    for (Project project : projects) {
+//                        List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                        if (map.get(project.getProjectName()) == null) {
+//                            map.put(project.getProjectName(), list);
+//                        }
+//                    }
+//                }
+//            } else {
+//                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                        projectManager, status, monthNum, null, userId);
+//                for (Project project : projects) {
+//                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                    if (map.get(project.getProjectName()) == null) {
+//                        map.put(project.getProjectName(), list);
+//                    }
+//                }
+//            }
+//        } else {
+//            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                    projectManager, status, monthNum, null, userId);
+//            for (Project project : projects) {
+//                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                if (map.get(project.getProjectName()) == null) {
+//                    map.put(project.getProjectName(), list);
+//                }
+//            }
+//        }
 
         if (map.size() == 0) {
             return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
@@ -282,39 +338,42 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
         if (user == null) {
             return new ResponseMessage(Code.CODE_ERROR, "用户不存在");
         }
-        TDepartment department = departmentMapper.selectByPrimaryKey(user.getDepartmentId());
-        if (department == null) {
-            return new ResponseMessage(Code.CODE_ERROR, "部门不存在");
-        }
         Map<String, Map<String, ProjectMonthly>> map = new LinkedHashMap<>();
-        //如果当前登录人是部门负责人
-        if (department.getLeaderId() != null) {
-            if (department.getLeaderId().equals(userId)) {
-                TUserExample example = new TUserExample();
-                TUserExample.Criteria criteria = example.createCriteria();
-                criteria.andDepartmentidEqualTo(department.getId());
-                List<TUser> users = userMapper.selectByExample(example);
-                for (TUser tuser : users) {
-                    //部门负责人无法查看分管领导项目
-                    if (department.getReserved1() != null) {
-                        String departmentFLD = department.getReserved1();
-                        if (!departmentFLD.equals(user.getId())) {
-                            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                                    projectManager, status, monthNum, null, tuser.getId());
-                            for (Project project : projects) {
-                                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                                Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
-                                for (ProjectMonthly projectMonthly : list) {
-                                    map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
-                                }
-                                if (map.get(project.getProjectName()) == null) {
-                                    map.put(project.getProjectName(), map1);
-                                }
-                            }
-                        }
-                    } else {
+        TDepartmentExample departmentExample = new TDepartmentExample();
+        TDepartmentExample.Criteria departmentExampleCriteria = departmentExample.createCriteria();
+        departmentExampleCriteria.andReserved1EqualTo(userId);
+        List<TDepartment> departments = departmentMapper.selectByExample(departmentExample);
+        //判断是否为分管领导
+        if (CollectionUtils.isEmpty(departments)) {
+            //不是分管领导判断是否为部门负责人
+            TDepartmentExample departmentExample1 = new TDepartmentExample();
+            TDepartmentExample.Criteria criteria = departmentExample1.createCriteria();
+            criteria.andLeaderIdEqualTo(userId);
+            List<TDepartment> tDepartments = departmentMapper.selectByExample(departmentExample1);
+            if (CollectionUtils.isEmpty(tDepartments)) {
+                //不是分管领导,不是部门负责人查看自己项目
+                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+                        projectManager, status, monthNum, null, userId);
+                for (Project project : projects) {
+                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+                    Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+                    for (ProjectMonthly projectMonthly : list) {
+                        map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+                    }
+                    if (map.get(project.getProjectName()) == null) {
+                        map.put(project.getProjectName(), map1);
+                    }
+                }
+            } else {
+                //不是分管领导,是部门负责人查看该部门除分管领导所有项目
+                for (TDepartment department : tDepartments) {
+                    TUserExample example = new TUserExample();
+                    TUserExample.Criteria exampleCriteria = example.createCriteria();
+                    exampleCriteria.andDepartmentidEqualTo(department.getId());
+                    List<TUser> users = userMapper.selectByExample(example);
+                    for (TUser tUser : users) {
                         List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                                projectManager, status, monthNum, null, tuser.getId());
+                                projectManager, status, monthNum, null, tUser.getId());
                         for (Project project : projects) {
                             List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
                             Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
@@ -327,31 +386,17 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                         }
                     }
                 }
-            } else {
-                //不是负责人
-                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                        projectManager, status, monthNum, null, userId);
-                for (Project project : projects) {
-                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                    Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
-                    for (ProjectMonthly projectMonthly : list) {
-                        map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
-                    }
-                    if (map.get(project.getProjectName()) == null) {
-                        map.put(project.getProjectName(), map1);
-                    }
-                }
             }
-        } else if (department.getReserved1() != null) {
-            //如果当前登录人为分管领导
-            if (department.getReserved1().equals(userId)) {
+        } else {
+            //是分管领导查看所在部门下项目
+            for (TDepartment department : departments) {
                 TUserExample example = new TUserExample();
-                TUserExample.Criteria criteria = example.createCriteria();
-                criteria.andDepartmentidEqualTo(department.getId());
+                TUserExample.Criteria exampleCriteria = example.createCriteria();
+                exampleCriteria.andDepartmentidEqualTo(department.getId());
                 List<TUser> users = userMapper.selectByExample(example);
-                for (TUser tuser : users) {
+                for (TUser tUser : users) {
                     List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                            projectManager, status, monthNum, null, tuser.getId());
+                            projectManager, status, monthNum, null, tUser.getId());
                     for (Project project : projects) {
                         List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
                         Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
@@ -363,36 +408,118 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                         }
                     }
                 }
-            } else {
-                //不是负责人或
-                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                        projectManager, status, monthNum, null, userId);
-                for (Project project : projects) {
-                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                    Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
-                    for (ProjectMonthly projectMonthly : list) {
-                        map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
-                    }
-                    if (map.get(project.getProjectName()) == null) {
-                        map.put(project.getProjectName(), map1);
-                    }
-                }
-            }
-
-        } else {
-            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
-                    projectManager, status, monthNum, null, userId);
-            for (Project project : projects) {
-                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
-                Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
-                for (ProjectMonthly projectMonthly : list) {
-                    map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
-                }
-                if (map.get(project.getProjectName()) == null) {
-                    map.put(project.getProjectName(), map1);
-                }
             }
         }
+//        TDepartment department = departmentMapper.selectByPrimaryKey(user.getDepartmentId());
+//        if (department == null) {
+//            return new ResponseMessage(Code.CODE_ERROR, "部门不存在");
+//        }
+//        //如果当前登录人是部门负责人
+//        if (department.getLeaderId() != null) {
+//            if (department.getLeaderId().equals(userId)) {
+//                TUserExample example = new TUserExample();
+//                TUserExample.Criteria criteria = example.createCriteria();
+//                criteria.andDepartmentidEqualTo(department.getId());
+//                List<TUser> users = userMapper.selectByExample(example);
+//                for (TUser tuser : users) {
+//                    //部门负责人无法查看分管领导项目
+//                    if (department.getReserved1() != null) {
+//                        String departmentFLD = department.getReserved1();
+//                        if (!departmentFLD.equals(user.getId())) {
+//                            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                                    projectManager, status, monthNum, null, tuser.getId());
+//                            for (Project project : projects) {
+//                                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                                Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+//                                for (ProjectMonthly projectMonthly : list) {
+//                                    map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+//                                }
+//                                if (map.get(project.getProjectName()) == null) {
+//                                    map.put(project.getProjectName(), map1);
+//                                }
+//                            }
+//                        }
+//                    } else {
+//                        List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                                projectManager, status, monthNum, null, tuser.getId());
+//                        for (Project project : projects) {
+//                            List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                            Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+//                            for (ProjectMonthly projectMonthly : list) {
+//                                map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+//                            }
+//                            if (map.get(project.getProjectName()) == null) {
+//                                map.put(project.getProjectName(), map1);
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                //不是负责人
+//                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                        projectManager, status, monthNum, null, userId);
+//                for (Project project : projects) {
+//                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                    Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+//                    for (ProjectMonthly projectMonthly : list) {
+//                        map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+//                    }
+//                    if (map.get(project.getProjectName()) == null) {
+//                        map.put(project.getProjectName(), map1);
+//                    }
+//                }
+//            }
+//        } else if (department.getReserved1() != null) {
+//            //如果当前登录人为分管领导
+//            if (department.getReserved1().equals(userId)) {
+//                TUserExample example = new TUserExample();
+//                TUserExample.Criteria criteria = example.createCriteria();
+//                criteria.andDepartmentidEqualTo(department.getId());
+//                List<TUser> users = userMapper.selectByExample(example);
+//                for (TUser tuser : users) {
+//                    List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                            projectManager, status, monthNum, null, tuser.getId());
+//                    for (Project project : projects) {
+//                        List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                        Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+//                        for (ProjectMonthly projectMonthly : list) {
+//                            map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+//                        }
+//                        if (map.get(project.getProjectName()) == null) {
+//                            map.put(project.getProjectName(), map1);
+//                        }
+//                    }
+//                }
+//            } else {
+//                //不是负责人或
+//                List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                        projectManager, status, monthNum, null, userId);
+//                for (Project project : projects) {
+//                    List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                    Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+//                    for (ProjectMonthly projectMonthly : list) {
+//                        map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+//                    }
+//                    if (map.get(project.getProjectName()) == null) {
+//                        map.put(project.getProjectName(), map1);
+//                    }
+//                }
+//            }
+//
+//        } else {
+//            List<Project> projects = projectMapper.queryProjectByMonth(projectCode, projectName, projectType, leval,
+//                    projectManager, status, monthNum, null, userId);
+//            for (Project project : projects) {
+//                List<ProjectMonthly> list = projectMonthlyMapper.queryProjectMonthByProjectId(project.getId());
+//                Map<String, ProjectMonthly> map1 = new LinkedHashMap<>();
+//                for (ProjectMonthly projectMonthly : list) {
+//                    map1.put(projectMonthly.getProjectSchedule(), projectMonthly);
+//                }
+//                if (map.get(project.getProjectName()) == null) {
+//                    map.put(project.getProjectName(), map1);
+//                }
+//            }
+//        }
         if (map.size() == 0) {
             return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
         }

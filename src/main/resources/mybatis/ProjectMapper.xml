@@ -928,7 +928,7 @@
                 and a.leval like "%" #{leval} "%"
             </if>
             <if test="projectManager !=null and projectManager!=''">
-                and a.project_manager like "%" #{projectManager} "%"
+                and a.back_up1 like "%" #{projectManager} "%"
             </if>
             <if test="status !=null and status!=''">
                 and a.status =#{status}
