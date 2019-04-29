@@ -507,7 +507,7 @@
     a.action_result as actionResult , a.file_url as fileUrl, a.action_comment as actionComment, a.enable, a.status as status,a.backup_3,a.back_up7,a.back_up8,a.back_up9,a.status as bstatus
     from t_workflowstep a left join purchase_request b
     on a.relateddomain_id=b.id
-    where relateddomain_id = #{id,jdbcType=VARCHAR} and a.actionuser_id = #{actionuserId} and a.status = '0'
+    where relateddomain_id = #{id,jdbcType=VARCHAR} and a.actionuser_id = #{actionuserId} and a.status = '0' and a.relateddomain = '采购申请'
     order by case when action_time is null then 1 else 0 end asc,  action_time asc
   </select>
   <select id="queryNotReviewProject" resultMap="BaseResultMap3" parameterType="java.lang.String" >

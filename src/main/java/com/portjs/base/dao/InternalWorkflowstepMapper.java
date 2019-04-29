@@ -4,7 +4,9 @@ import com.portjs.base.entity.InternalWorkflowstep;
 import com.portjs.base.entity.InternalWorkflowstepExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface InternalWorkflowstepMapper {
     int countByExample(InternalWorkflowstepExample example);
 

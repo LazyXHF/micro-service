@@ -101,14 +101,14 @@ public class ProjectCommunicationServiceImpl implements ProjectCommunicationServ
 //            }
 //        }
 
-        int i1 = dealtWith.dealtWithMethodStringArray(record.getFollower(),record.getSponsor(),record.getSponsor(),
+        if(!record.getFollower().isEmpty()){
+            int i1 = dealtWith.dealtWithMethodStringArray(record.getFollower(),record.getSponsor(),record.getSponsor(),
                 "风控记录",id,"事务处理",record.getTitle()+"存在问题，需要您的回复!",record.getPriority());
 
-
-        if(i1==0){
+            if(i1==0){
                 return new ResponseMessage(Code.CODE_ERROR,"存入待办表失败！",i1);
             }
-
+        }
         if(i==0){
             return new ResponseMessage(Code.CODE_ERROR,"添加信息失败！",i);
 
