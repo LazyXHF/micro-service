@@ -1,30 +1,21 @@
 package com.portjs.base.controller;
 
-import com.alibaba.druid.sql.visitor.functions.If;
 import com.portjs.base.entity.ProjectMonthly;
 import com.portjs.base.exception.UnifiedExceptionHandler;
+import com.portjs.base.service.DictionaryService;
 import com.portjs.base.service.ProjectMonthlyService;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.util.poi.ExcelUtil;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -44,6 +35,8 @@ public class ProjectMonthlyController extends BaseController {
     static final String tag = "ProjectProceduresService===>";
     @Autowired
     private ProjectMonthlyService projectMonthlyService;
+    @Autowired
+    private DictionaryService dictionaryService;
 
     //项目月报新增
     @RequestMapping("/insert_projectMonthly")
@@ -98,6 +91,11 @@ public class ProjectMonthlyController extends BaseController {
             String sheetName = "项目月报表";
             HSSFWorkbook wb = new HSSFWorkbook();
             HSSFCellStyle cellStyle = wb.createCellStyle();
+            //新建font实体
+            HSSFFont hssfFont = wb.createFont();
+            //字体大小
+            hssfFont.setFontHeightInPoints((short)12);
+            cellStyle.setFont(hssfFont);
             cellStyle.setAlignment(CellStyle.ALIGN_CENTER);//水平居中  
             cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);//垂直居中  
 
@@ -106,6 +104,8 @@ public class ProjectMonthlyController extends BaseController {
                 Map<String, List> map = (Map) data;
 
                 HSSFSheet sheet = wb.createSheet(sheetName);
+                sheet.setDefaultColumnWidth(25);
+                sheet.setDefaultRowHeight((short) (20 * 20));
                 HSSFRow sheetRow = sheet.createRow(0);
 
                 //遍历标题栏
@@ -140,6 +140,7 @@ public class ProjectMonthlyController extends BaseController {
                                     HSSFCell cell = row.createCell(0);
                                     cell.setCellValue(key);
                                     cell.setCellStyle(cellStyle);
+
                                 } else {
                                     row = sheet.createRow(i + 1 + z);
                                 }
@@ -156,17 +157,35 @@ public class ProjectMonthlyController extends BaseController {
                                 } else if ("H".equals(list1.get(j).getProjectSchedule())) {
                                     list1.get(j).setProjectSchedule("项目验收");
                                 }
-                                row.createCell(1).setCellValue(list1.get(j).getProjectSchedule());
-                                row.createCell(2).setCellValue(list1.get(j).getContent());
+
+                                HSSFCell cell1 = row.createCell(1);
+                                cell1.setCellStyle(cellStyle);
+                                HSSFCell cell2 = row.createCell(2);
+                                cell2.setCellStyle(cellStyle);
+                                HSSFCell cell3 = row.createCell(3);
+                                cell3.setCellStyle(cellStyle);
+                                HSSFCell cell4 = row.createCell(4);
+                                cell4.setCellStyle(cellStyle);
+                                HSSFCell cell5 = row.createCell(5);
+                                cell5.setCellStyle(cellStyle);
+                                HSSFCell cell6 = row.createCell(6);
+                                cell6.setCellStyle(cellStyle);
+                                HSSFCell cell7 = row.createCell(7);
+                                cell7.setCellStyle(cellStyle);
+                                HSSFCell cell8 = row.createCell(8);
+                                cell8.setCellStyle(cellStyle);
+
+                                cell1.setCellValue(list1.get(j).getProjectSchedule());
+                                cell2.setCellValue(list1.get(j).getContent());
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                 String predictStarttime = sdf.format(list1.get(j).getPredictStarttime());
-                                row.createCell(3).setCellValue(predictStarttime);
+                                cell3.setCellValue(predictStarttime);
                                 String pridectEndtime = sdf.format(list1.get(j).getPridectEndtime());
-                                row.createCell(4).setCellValue(pridectEndtime);
-                                row.createCell(5).setCellValue(list1.get(j).getCurrentProgress());
-                                row.createCell(6).setCellValue(list1.get(j).getPerformance());
-                                row.createCell(7).setCellValue(list1.get(j).getSchedule());
-                                row.createCell(8).setCellValue(list1.get(j).getRemark());
+                                cell4.setCellValue(pridectEndtime);
+                                cell5.setCellValue(list1.get(j).getCurrentProgress());
+                                cell6.setCellValue(list1.get(j).getPerformance());
+                                cell7.setCellValue(list1.get(j).getSchedule());
+                                cell8.setCellValue(list1.get(j).getRemark());
                                 z++;
                             }
                         } else {
@@ -187,6 +206,7 @@ public class ProjectMonthlyController extends BaseController {
                                     } else {
                                         row = sheet.createRow(z);
                                     }
+
                                     if ("A".equals(list1.get(j).getProjectSchedule())) {
                                         list1.get(j).setProjectSchedule("项目立项");
                                     } else if ("B".equals(list1.get(j).getProjectSchedule())) {
@@ -200,17 +220,34 @@ public class ProjectMonthlyController extends BaseController {
                                     } else if ("H".equals(list1.get(j).getProjectSchedule())) {
                                         list1.get(j).setProjectSchedule("项目验收");
                                     }
-                                    row.createCell(1).setCellValue(list1.get(j).getProjectSchedule());
-                                    row.createCell(2).setCellValue(list1.get(j).getContent());
+                                    HSSFCell cell1 = row.createCell(1);
+                                    cell1.setCellStyle(cellStyle);
+                                    HSSFCell cell2 = row.createCell(2);
+                                    cell2.setCellStyle(cellStyle);
+                                    HSSFCell cell3 = row.createCell(3);
+                                    cell3.setCellStyle(cellStyle);
+                                    HSSFCell cell4 = row.createCell(4);
+                                    cell4.setCellStyle(cellStyle);
+                                    HSSFCell cell5 = row.createCell(5);
+                                    cell5.setCellStyle(cellStyle);
+                                    HSSFCell cell6 = row.createCell(6);
+                                    cell6.setCellStyle(cellStyle);
+                                    HSSFCell cell7 = row.createCell(7);
+                                    cell7.setCellStyle(cellStyle);
+                                    HSSFCell cell8 = row.createCell(8);
+                                    cell8.setCellStyle(cellStyle);
+
+                                    cell1.setCellValue(list1.get(j).getProjectSchedule());
+                                    cell2.setCellValue(list1.get(j).getContent());
                                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                     String predictStarttime = sdf.format(list1.get(j).getPredictStarttime());
-                                    row.createCell(3).setCellValue(predictStarttime);
+                                    cell3.setCellValue(predictStarttime);
                                     String pridectEndtime = sdf.format(list1.get(j).getPridectEndtime());
-                                    row.createCell(4).setCellValue(pridectEndtime);
-                                    row.createCell(5).setCellValue(list1.get(j).getCurrentProgress());
-                                    row.createCell(6).setCellValue(list1.get(j).getPerformance());
-                                    row.createCell(7).setCellValue(list1.get(j).getSchedule());
-                                    row.createCell(8).setCellValue(list1.get(j).getRemark());
+                                    cell4.setCellValue(pridectEndtime);
+                                    cell5.setCellValue(list1.get(j).getCurrentProgress());
+                                    cell6.setCellValue(list1.get(j).getPerformance());
+                                    cell7.setCellValue(list1.get(j).getSchedule());
+                                    cell8.setCellValue(list1.get(j).getRemark());
                                     z++;
                                 }
                             }
@@ -218,6 +255,7 @@ public class ProjectMonthlyController extends BaseController {
                     }
 
                     if (i == 0) {
+                        //合并单元格
                         CellRangeAddress region = new CellRangeAddress(i + 1, (i + 1) * 5 + 1, 0, 0);
                         sheet.addMergedRegion(region);
                     } else {
@@ -259,6 +297,5 @@ public class ProjectMonthlyController extends BaseController {
             ex.printStackTrace();
         }
     }
-
 
 }
