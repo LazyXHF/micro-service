@@ -940,7 +940,7 @@
                and a.create_time like "%" #{createTime} "%"
             </if>
             <if test="creator !=null and creator!=''">
-               and a.creator = #{creator,jdbcType=VARCHAR}
+               and a.back_up1 = #{creator,jdbcType=VARCHAR}
             </if>
         </where>
         order by create_time desc
