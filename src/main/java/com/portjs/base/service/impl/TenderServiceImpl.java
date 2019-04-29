@@ -706,6 +706,9 @@ public class TenderServiceImpl implements TenderService {
                     if(m<=0) {
                         return new ResponseMessage(Code.CODE_ERROR, "添加下一个审核人信息失败");
                     }
+                    /**
+                     * 待定标
+                     */
                     if(backup3.equals("7")){
                         TTodo internalToDo=new TTodo();
                         internalToDo.setId(String.valueOf(UUID.randomUUID()));
