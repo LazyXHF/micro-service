@@ -56,6 +56,7 @@ public class ProjectUtils {
         if (projectApprovalType != null) {
             project.setProjectApprovalType(projectApprovalType);
         }
+        //如果立项为注册
         if (project.getProjectApprovalType() != 2) {
             String status = project.getProjectStatus();
             //这个存放第一种情况
