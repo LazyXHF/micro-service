@@ -225,58 +225,6 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
             list.addAll(weeklies);
         }
 
-        /*if(CollectionUtils.isEmpty(tDepartments)){
-            //当前登录人不是分管领导再判断当前登录人是否是部门负责人
-            TDepartmentExample departmentExample = new TDepartmentExample();
-            TDepartmentExample.Criteria criteria = departmentExample.createCriteria();
-            criteria.andLeaderIdEqualTo(user.getId());
-            List<TDepartment> departments = departmentMapper.selectByExample(departmentExample);
-            if(CollectionUtils.isEmpty(departments)){
-                //当前登录人是组员只查询自己
-                List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
-                if(!CollectionUtils.isEmpty(weeklies)){
-                    list.addAll(weeklies);
-                }
-            }else {
-                //当前登录人为部门负责人查询对应部门中除了分管领导的记录
-                for (TDepartment department : departments) {
-                    List<TUser> users = userMapper.selectByDid(department.getId());
-                    if(!CollectionUtils.isEmpty(users)){
-                        for (TUser tUser :users ) {
-                            List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
-                            if(!CollectionUtils.isEmpty(weeklies)){
-                                list.addAll(weeklies);
-                            }
-                        }
-                    }
-                    //和他自己的周报
-                    List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
-                    if(!CollectionUtils.isEmpty(weeklies)){
-                        list.addAll(weeklies);
-                    }
-                }
-            }
-
-        }else {
-            //当前登录人是分管领导可以看到分管部门的周报
-            for (TDepartment department : tDepartments) {
-                List<TUser> users = userMapper.selectByDid(department.getId());
-                if(!CollectionUtils.isEmpty(users)){
-                    for (TUser tUser :users ) {
-                        List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
-                        if(!CollectionUtils.isEmpty(weeklies)){
-                            list.addAll(weeklies);
-                        }
-                    }
-                }
-            }
-
-            //和他自己的周报
-            List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
-            if(!CollectionUtils.isEmpty(weeklies)){
-                list.addAll(weeklies);
-            }
-        }*/
         Set<ProjectWeekly> set = new TreeSet<ProjectWeekly>(new Comparator<ProjectWeekly>() {
             @Override
             public int compare(ProjectWeekly a, ProjectWeekly b) {
@@ -302,7 +250,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
         }
         //项目编码
         if(!StringUtils.isEmpty(projectWeekly.getProjectCode())){
-            weeklyCriteria.andProjectCodeEqualTo("%"+projectWeekly.getProjectCode()+"%");
+            weeklyCriteria.andProjectCodeLike("%"+projectWeekly.getProjectCode()+"%");
 
         }
         //项目名称
