@@ -77,6 +77,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                             Project project = projectList.get(i);
                             //一周完成情况
                             ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
+                            weeklyExample.setOrderByClause("create_time");
                             ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
                             weeklyCriteria.andProjectIdEqualTo(project.getId());
                             weeklyCriteria.andWeekNumEqualTo(weekNum);
@@ -184,7 +185,12 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
             if(CollectionUtils.isEmpty(tUserDepartments)){
                 throw  new Exception("查询失败");
             }
-
+            if(StringUtils.isEmpty(tDepartment.getReserved1())){
+                throw  new Exception("当前登录人分管领导为空");
+            }
+            if(StringUtils.isEmpty(tDepartment.getLeaderId())){
+                throw  new Exception("当前登录人部门负责人为空");
+            }
             if(user.getId().equals(tDepartment.getReserved1()) || user.getId().equals(tDepartment.getLeaderId())){
                 //当前登录人是分管领导或者部门负责人时查询当前部门下所有人
                 List<TUser> users = userMapper.selectByDid(userDepartment.getdId());

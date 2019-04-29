@@ -118,15 +118,26 @@ public class ProjectPreservationImpl implements ProjectPreservationService {
         String message2="";
         //0暂存
         if(status.equals("0")){
-            projectUtils.projectMethod(application.getProjectId(),null,
-                    "A", "Aa0",application.getApplicationAmount().toString(),1);
+            if("2".equals(type)){
+                projectUtils.projectMethod(application.getProjectId(),null,
+                        "A", "Aa0",application.getApplicationAmount().toString(),2);
+            }else if("1".equals(type)){
+                projectUtils.projectMethod(application.getProjectId(),null,
+                        "A", "Aa0",application.getApplicationAmount().toString(),1);
+            }
+
             message1="暂存失败";
             message2="更新失败";
             //暂存状态，不用接收负责人
             nextViewJSON.clear();
         }else{
+            if("2".equals(type)){
             projectUtils.projectMethod(application.getProjectId(),null,
-                    "A", "Aa2",application.getApplicationAmount().toString(),1);
+                    "A", "Aa2",application.getApplicationAmount().toString(),2);
+            }else if("1".equals(type)){
+                projectUtils.projectMethod(application.getProjectId(),null,
+                        "A", "Aa2",application.getApplicationAmount().toString(),1);
+            }
             application.setEnable("1");
             //提交
             if(type.equals("1")){
