@@ -67,32 +67,6 @@ public class ProjectApprovalController extends BaseController{
             throw new RuntimeException();
         }
     }
-    /**
-     * @api {post} /FProject/query-todos  查询当前登录人的待办事项
-     * @apiGroup Ttodo
-     * @apiName GetTtodoList
-     * @apiversion 1.0.0
-     *
-     * @apiDescription 分页条件查询
-     * @apiParam {String} [keyword]  关键字
-     * @apiParam {String} [todoType]  待办类型
-     * @apiParam {String} [receiverId]  发送人
-     * @apiParamExample {json} 入参示例(选传参数keyword status method):
-     *{"params":{"pageSize":1,"pageNo":10,"keyword":""},"userId":"","todoType":""}
-     * @apiSuccess (Success) {Number} status_code Status Code
-     * @apiSuccess (Success) {String} message  Message
-     * @apiSuccess (Success) {Object} [data='null'] data
-     * @apiSuccessExample  {json} Success 200:
-     *  {"code":200,"message":"查询成功","data":{"pageNum":10,"totalCount":11,"totalPage":11,"pageCount":1,"rowNum":9,"isProcessor":null,"typeApply":null,"list":[{"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{"returnStatus":"0","projectName":"sfh","type":"1","projectId":"155610364278103"},"id":"155610382778161","currentstepId":"beb3394a-18bd-4b6e-834a-5e4d5762f247","stepDesc":"sfh的立项批复流程等待您的处理","relateddomain":"项目立项","relateddomainId":"155610375053527","senderId":"陶凯","senderTime":"2019-04-24 19:03:48","receiverId":"de4a0a88-f2d3-44aa-8084-6331c059ca09","todoType":"流程审批","actiontime":null,"enable":"1","status":"0","sort":null,"backup3":null,"backUp7":"陶凯","backUp8":null,"backUp9":null}]}}
-     *  (返参说明=>data:)
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 404 文件找不到
-     *     HTTP/1.1 500 内部服务器错误
-     *     ...
-     *     {
-     *       "error": "Exception"
-     *     }
-     */
     @LogInfo(methodName = "待办任务查询",modelName = "待办模块")
     @RequestMapping("/query-todos")
     @ResponseBody

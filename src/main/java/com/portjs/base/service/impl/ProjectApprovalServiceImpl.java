@@ -500,6 +500,8 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 					//status 8和0(暂存编辑状态):退回状态,其余审核中
 					if("6".equals(list1.get(0).getStatus())||"0".equals(list1.get(0).getStatus())){
 						map.put("returnStatus","0");
+					}else if("7".equals(list1.get(0).getStatus())){
+						map.put("returnStatus","2");
 					}else{
 						map.put("returnStatus","1");
 					}
