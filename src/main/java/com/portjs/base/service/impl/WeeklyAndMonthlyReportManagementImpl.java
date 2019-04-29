@@ -133,11 +133,19 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
             for (int i =0;i<weeklyJSON.size();i++) {
                 JSONObject object = weeklyJSON.getJSONObject(i);
                 ProjectWeekly projectWeekly = JSONObject.toJavaObject(object, ProjectWeekly.class);
+                ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
+
+                List<ProjectWeekly> projectWeeklies = weeklyMapper.selectByExample(weeklyExample);
                 //判断是否是更新还是新增
                 if(StringUtils.isEmpty(projectWeekly.getId())){
                     projectWeekly.setId(UuidPlus.getUUIDPlus());
                     projectWeekly.setCreateTime(new Date());
-                    projectWeekly.setSort(i+1);
+                    if(!CollectionUtils.isEmpty(projectWeeklies)){
+                        projectWeekly.setSort(projectWeeklies.size()+i+1);
+                    }else {
+                        projectWeekly.setSort(i+1   );
+                    }
+
                     int p = weeklyMapper.insertSelective(projectWeekly);
                     if(p!=1){
                         throw new Exception("保存失败");
@@ -177,7 +185,47 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
         tDepartmentCriteria.andReserved1EqualTo(user.getId());
         List<TDepartment> tDepartments = departmentMapper.selectByExample(tDepartmentExample);
         LinkedList list = new LinkedList();
-        if(CollectionUtils.isEmpty(tDepartments)){
+        //当前登录人是不是分管领导
+        if(!CollectionUtils.isEmpty(tDepartments)){
+            //当前登录人是分管领导可以看到分管部门的周报
+            for (TDepartment department : tDepartments) {
+                List<TUser> users = userMapper.selectByDid(department.getId());
+                if(!CollectionUtils.isEmpty(users)){
+                    for (TUser tUser :users ) {
+                        List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
+                        if(!CollectionUtils.isEmpty(weeklies)){
+                            list.addAll(weeklies);
+                        }
+                    }
+                }
+            }
+        }
+        //当前登录人是不是部门负责人
+        TDepartmentExample departmentExample = new TDepartmentExample();
+        TDepartmentExample.Criteria criteria = departmentExample.createCriteria();
+        criteria.andLeaderIdEqualTo(user.getId());
+        List<TDepartment> departments = departmentMapper.selectByExample(departmentExample);
+        if(!CollectionUtils.isEmpty(departments)){
+              // 当前登录人为部门负责人查询对应部门中除了分管领导的记录
+              for (TDepartment department : departments) {
+                  List<TUser> users = userMapper.selectByDid(department.getId());
+                  if (!CollectionUtils.isEmpty(users)) {
+                      for (TUser tUser : users) {
+                          List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
+                          if (!CollectionUtils.isEmpty(weeklies)) {
+                              list.addAll(weeklies);
+                          }
+                      }
+                  }
+              }
+        }
+        //和他自己的周报
+        List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
+        if(!CollectionUtils.isEmpty(weeklies)){
+            list.addAll(weeklies);
+        }
+
+        /*if(CollectionUtils.isEmpty(tDepartments)){
             //当前登录人不是分管领导再判断当前登录人是否是部门负责人
             TDepartmentExample departmentExample = new TDepartmentExample();
             TDepartmentExample.Criteria criteria = departmentExample.createCriteria();
@@ -190,7 +238,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                     list.addAll(weeklies);
                 }
             }else {
-                //当前登录人为部门负责人查询对应部门中出分管领导的记录
+                //当前登录人为部门负责人查询对应部门中除了分管领导的记录
                 for (TDepartment department : departments) {
                     List<TUser> users = userMapper.selectByDid(department.getId());
                     if(!CollectionUtils.isEmpty(users)){
@@ -200,6 +248,11 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                                 list.addAll(weeklies);
                             }
                         }
+                    }
+                    //和他自己的周报
+                    List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
+                    if(!CollectionUtils.isEmpty(weeklies)){
+                        list.addAll(weeklies);
                     }
                 }
             }
@@ -217,14 +270,23 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                     }
                 }
             }
+
             //和他自己的周报
             List<ProjectWeekly> weeklies = selectProjectWeekly(user, projectWeekly);
             if(!CollectionUtils.isEmpty(weeklies)){
                 list.addAll(weeklies);
             }
-        }
+        }*/
+        Set<ProjectWeekly> set = new TreeSet<ProjectWeekly>(new Comparator<ProjectWeekly>() {
+            @Override
+            public int compare(ProjectWeekly a, ProjectWeekly b) {
+                // 字符串则按照asicc码升序排列
+                return a.getId().compareTo(b.getId());
+            }
+        });
 
-        return new ResponseMessage(Code.CODE_OK,"查询成功",list);
+        set.addAll(list);
+        return new ResponseMessage(Code.CODE_OK,"查询成功",new LinkedList(set));
     }
 
     //统一周报信息查询
