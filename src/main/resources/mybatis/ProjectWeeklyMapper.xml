@@ -20,6 +20,7 @@
     <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
     <result column="week_num" property="weekNum" jdbcType="VARCHAR" />
     <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -80,9 +81,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, project_id, project_type, leval, status, project_code, project_name, project_manager,
-    performance, schedule, coordination, create_time, creator, Modifier, update_time,
-    delete_time, week_num, manager_phone
+    id, project_id, project_type, leval, status, project_code, project_name, project_manager, 
+    performance, schedule, coordination, create_time, creator, Modifier, update_time, 
+    delete_time, week_num, manager_phone, sort
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.portjs.base.entity.ProjectWeeklyExample" >
     select
@@ -99,7 +100,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select
+    select 
     <include refid="Base_Column_List" />
     from project_weekly
     where id = #{id,jdbcType=VARCHAR}
@@ -115,20 +116,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.portjs.base.entity.ProjectWeekly" >
-    insert into project_weekly (id, project_id, project_type,
-      leval, status, project_code,
-      project_name, project_manager, performance,
-      schedule, coordination, create_time,
-      creator, Modifier, update_time,
-      delete_time, week_num, manager_phone
-      )
-    values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR},
-      #{leval,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR},
-      #{projectName,jdbcType=VARCHAR}, #{projectManager,jdbcType=VARCHAR}, #{performance,jdbcType=VARCHAR},
-      #{schedule,jdbcType=VARCHAR}, #{coordination,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-      #{deleteTime,jdbcType=TIMESTAMP}, #{weekNum,jdbcType=VARCHAR}, #{managerPhone,jdbcType=VARCHAR}
-      )
+    insert into project_weekly (id, project_id, project_type, 
+      leval, status, project_code, 
+      project_name, project_manager, performance, 
+      schedule, coordination, create_time, 
+      creator, Modifier, update_time, 
+      delete_time, week_num, manager_phone, 
+      sort)
+    values (#{id,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectType,jdbcType=VARCHAR}, 
+      #{leval,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{projectCode,jdbcType=VARCHAR}, 
+      #{projectName,jdbcType=VARCHAR}, #{projectManager,jdbcType=VARCHAR}, #{performance,jdbcType=VARCHAR}, 
+      #{schedule,jdbcType=VARCHAR}, #{coordination,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{weekNum,jdbcType=VARCHAR}, #{managerPhone,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.portjs.base.entity.ProjectWeekly" >
     insert into project_weekly
@@ -187,6 +188,9 @@
       <if test="managerPhone != null" >
         manager_phone,
       </if>
+      <if test="sort != null" >
+        sort,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -242,6 +246,9 @@
       </if>
       <if test="managerPhone != null" >
         #{managerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -308,6 +315,9 @@
       <if test="record.managerPhone != null" >
         manager_phone = #{record.managerPhone,jdbcType=VARCHAR},
       </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -316,23 +326,24 @@
   <update id="updateByExample" parameterType="map" >
     update project_weekly
     set id = #{record.id,jdbcType=VARCHAR},
-    project_id = #{record.projectId,jdbcType=VARCHAR},
-    project_type = #{record.projectType,jdbcType=VARCHAR},
-    leval = #{record.leval,jdbcType=VARCHAR},
-    status = #{record.status,jdbcType=VARCHAR},
-    project_code = #{record.projectCode,jdbcType=VARCHAR},
-    project_name = #{record.projectName,jdbcType=VARCHAR},
-    project_manager = #{record.projectManager,jdbcType=VARCHAR},
-    performance = #{record.performance,jdbcType=VARCHAR},
-    schedule = #{record.schedule,jdbcType=VARCHAR},
-    coordination = #{record.coordination,jdbcType=VARCHAR},
-    create_time = #{record.createTime,jdbcType=TIMESTAMP},
-    creator = #{record.creator,jdbcType=VARCHAR},
-    Modifier = #{record.modifier,jdbcType=VARCHAR},
-    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-    delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
-    week_num = #{record.weekNum,jdbcType=VARCHAR},
-    manager_phone = #{record.managerPhone,jdbcType=VARCHAR}
+      project_id = #{record.projectId,jdbcType=VARCHAR},
+      project_type = #{record.projectType,jdbcType=VARCHAR},
+      leval = #{record.leval,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      project_code = #{record.projectCode,jdbcType=VARCHAR},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_manager = #{record.projectManager,jdbcType=VARCHAR},
+      performance = #{record.performance,jdbcType=VARCHAR},
+      schedule = #{record.schedule,jdbcType=VARCHAR},
+      coordination = #{record.coordination,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      Modifier = #{record.modifier,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{record.deleteTime,jdbcType=TIMESTAMP},
+      week_num = #{record.weekNum,jdbcType=VARCHAR},
+      manager_phone = #{record.managerPhone,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -391,6 +402,9 @@
       <if test="managerPhone != null" >
         manager_phone = #{managerPhone,jdbcType=VARCHAR},
       </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -412,7 +426,8 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       delete_time = #{deleteTime,jdbcType=TIMESTAMP},
       week_num = #{weekNum,jdbcType=VARCHAR},
-      manager_phone = #{managerPhone,jdbcType=VARCHAR}
+      manager_phone = #{managerPhone,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

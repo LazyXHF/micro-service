@@ -137,7 +137,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                 if(StringUtils.isEmpty(projectWeekly.getId())){
                     projectWeekly.setId(UuidPlus.getUUIDPlus());
                     projectWeekly.setCreateTime(new Date());
-
+                    projectWeekly.setSort(i+1);
                     int p = weeklyMapper.insertSelective(projectWeekly);
                     if(p!=1){
                         throw new Exception("保存失败");
@@ -230,7 +230,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
     //统一周报信息查询
     private  List<ProjectWeekly> selectProjectWeekly(TUser tUser,ProjectWeekly projectWeekly){
         ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
-        weeklyExample.setOrderByClause("create_time");
+        weeklyExample.setOrderByClause("sort");
         ProjectWeeklyExample.Criteria weeklyCriteria = weeklyExample.createCriteria();
         //项目经理id
         weeklyCriteria.andModifierEqualTo(tUser.getId());

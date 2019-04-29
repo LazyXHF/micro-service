@@ -39,6 +39,8 @@ public class ProjectWeekly {
 
     private String managerPhone;
 
+    private Integer sort;
+
     public String getId() {
         return id;
     }
@@ -181,5 +183,13 @@ public class ProjectWeekly {
 
     public void setManagerPhone(String managerPhone) {
         this.managerPhone = managerPhone == null ? null : managerPhone.trim();
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }
