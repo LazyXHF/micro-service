@@ -65,6 +65,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     private TRoleMapper roleMapper;
     @Autowired
     private ApplicationUserConfig applicationUserConfig;
+    @Autowired
+    private ProjectMapper projectMapper;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResponseMessage updateProject(JSONObject requestJson) {
@@ -432,6 +434,21 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         if(i!=1){
             throw new Exception("删除失败");
         }
+        ProjectApplication projectApplication = applicationMapper.selectByPrimaryKey(id);
+//        projectUtils.projectMethod(projectApplication.getProjectId(),null,"A", "Aa0",null,null);
+        BusinessConfigurationExample example = new BusinessConfigurationExample();
+        BusinessConfigurationExample.Criteria criteria = example.createCriteria();
+        criteria.andProjectIdEqualTo(projectApplication.getProjectId());
+        configurationMapper.deleteByExample(example);
+
+        Project project=new Project();
+        project.setId(projectApplication.getProjectId());
+        project.setProjectCode("");
+        project.setSchedule("");
+        project.setProjectStatus("");
+        project.setProjectMoney("");
+        project.setProjectApprovalType(null);
+        projectMapper.updateByPrimaryKeySelective(project);
         return  new ResponseMessage(Code.CODE_OK,"删除成功");
     }
 

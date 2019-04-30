@@ -627,7 +627,7 @@
             <if test="projectEndTime != null">
                 project_end_time = #{projectEndTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="projectApprovalType != null">
+            <if test="projectApprovalType != ''">
                 project_approval_type = #{projectApprovalType,jdbcType=INTEGER},
             </if>
         </set>
