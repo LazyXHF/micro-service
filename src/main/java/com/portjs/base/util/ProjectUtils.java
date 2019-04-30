@@ -135,6 +135,15 @@ public class ProjectUtils {
         } else {
             project.setProjectCode(projectCode);
             project.setSchedule(schedule);
+            if ("3".equals(project.getProjectStatus().substring(2, 3))) {
+                project.setStatus("3");
+            } else if ("0".equals(project.getProjectStatus().substring(2, 3))) {
+                project.setStatus("0");
+            } else if ("2".equals(project.getProjectStatus().substring(2, 3))) {
+                project.setStatus("2");
+            } else {
+                project.setStatus("1");
+            }
             projectMapper.updateByPrimaryKeySelective(project);
         }
     }
