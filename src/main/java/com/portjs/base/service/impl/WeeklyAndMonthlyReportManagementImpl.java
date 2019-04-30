@@ -209,14 +209,25 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
               // 当前登录人为部门负责人查询对应部门中除了分管领导的记录
               for (TDepartment department : departments) {
                   List<TUser> users = userMapper.selectByDid(department.getId());
-                  if (!CollectionUtils.isEmpty(users)) {
-                      for (TUser tUser : users) {
-                          List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
-                          if (!CollectionUtils.isEmpty(weeklies)) {
-                              list.addAll(weeklies);
+                  //判断本部门是否有分管领导
+                  for (TUser tUser : users) {
+                      TDepartmentExample tDepartmentExample1 = new TDepartmentExample();
+                      TDepartmentExample.Criteria tDepartmentCriteria1 = tDepartmentExample1.createCriteria();
+                      tDepartmentCriteria1.andReserved1EqualTo(tUser.getId());
+                      List<TDepartment> tDepartments1 = departmentMapper.selectByExample(tDepartmentExample1);
+                      if(CollectionUtils.isEmpty(tDepartments1)){
+                          //当前部门不是分管领导的
+                          if (!CollectionUtils.isEmpty(users)) {
+                              List<ProjectWeekly> weeklies = selectProjectWeekly(tUser, projectWeekly);
+                              if (!CollectionUtils.isEmpty(weeklies)) {
+                                  list.addAll(weeklies);
+                              }
                           }
-                      }
+                    }
                   }
+
+
+
               }
         }
         //和他自己的周报
@@ -234,7 +245,16 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
         });
 
         set.addAll(list);
-        return new ResponseMessage(Code.CODE_OK,"查询成功",new LinkedList(set));
+        LinkedList linkedList = new LinkedList(set);
+        Collections.sort(linkedList, new Comparator<ProjectWeekly>() {
+            public int compare(ProjectWeekly p1, ProjectWeekly p2) {
+                //降序
+//                return Integer.valueOf(p2.getSort()).compareTo(Integer.valueOf(p1.getSort()));
+                //升序
+                return Integer.valueOf(p1.getSort()).compareTo(Integer.valueOf(p2.getSort()));
+            }
+        });
+        return new ResponseMessage(Code.CODE_OK,"查询成功",linkedList);
     }
 
     //统一周报信息查询
