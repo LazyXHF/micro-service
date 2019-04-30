@@ -49,6 +49,16 @@ public class ProjectMonthly {
 
     private String currentProgress;
 
+    private String projectManagerId;
+
+    public String getProjectManagerId() {
+        return projectManagerId;
+    }
+
+    public void setProjectManagerId(String projectManagerId) {
+        this.projectManagerId = projectManagerId;
+    }
+
     public String getCurrentProgress() {
         return currentProgress;
     }

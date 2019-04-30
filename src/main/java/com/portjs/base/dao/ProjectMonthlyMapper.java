@@ -33,4 +33,8 @@ public interface ProjectMonthlyMapper {
 
     ProjectMonthly selectByprojectIdAndSchedule(@Param("projectId") String projectId,
                                                 @Param("projectSchedule") String projectSchedule);
+
+    List<ProjectMonthly> selectByprojectManagerId(@Param("projectManagerId") String projectManagerId,
+                                                  @Param("monthNum") String monthNum,
+                                                  @Param("projectId") String projectId);
 }

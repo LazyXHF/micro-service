@@ -26,6 +26,15 @@ public class ProjectVo {
     private String remark;
     private String situation;
     private String proMonId;
+    private String projectManagerId;
+
+    public String getProjectManagerId() {
+        return projectManagerId;
+    }
+
+    public void setProjectManagerId(String projectManagerId) {
+        this.projectManagerId = projectManagerId;
+    }
 
     public String getProMonId() {
         return proMonId;
