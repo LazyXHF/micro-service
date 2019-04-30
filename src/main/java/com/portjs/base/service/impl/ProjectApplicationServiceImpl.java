@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import sun.java2d.pipe.AAShapePipe;
 
 import java.util.*;
 
@@ -54,6 +55,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
     private BusinessConfigurationMapper configurationMapper;
     @Autowired
     private ProjectBudgetMapper budgetMapper;
+    @Autowired
+    private ProjectUtils projectUtils;
     @Autowired
     private TUserMapper userMapper;
     @Autowired
@@ -401,6 +404,8 @@ public class ProjectApplicationServiceImpl implements ProjectApplicationService 
         /*if(i1<=0){
             throw new Exception("废除失败");
         }*/
+        ProjectApplication projectApplication = applicationMapper.selectByPrimaryKey(id);
+        projectUtils.projectMethod(projectApplication.getProjectId(),null,"A", "Aa0",null,null);
         return new ResponseMessage(Code.CODE_OK,"废除成功");
     }
 
