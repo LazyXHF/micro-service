@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.portjs.base.entity.TDepartment" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="viceDepartmentLeaderId" property="viceDepartmentLeaderId" jdbcType="VARCHAR" />
+    <result column="viceDepartmentLeaderName" property="viceDepartmentLeaderName" jdbcType="VARCHAR" />
     <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
     <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
     <result column="niandu" property="niandu" jdbcType="TIMESTAMP" />
@@ -386,9 +388,11 @@
 
 
   <select id="selectAllDepartmentTree" resultMap="BaseResultMap">
-    SELECT d.*,u.`ID` AS uid ,u.`name_cn` AS uname ,dd.`NAME` AS parentName ,u.`name_cn` AS leaderName FROM t_department d
+     SELECT d.*,u.`ID` AS uid ,u.`name_cn` AS uname ,dd.`NAME` AS parentName ,u.`name_cn` AS leaderName,ur.`ID` AS viceDepartmentLeaderId,ur.`name_cn` AS viceDepartmentName
+  FROM t_department d
      LEFT JOIN t_department dd ON  d.`PARENT_ID` = dd.`ID`
      LEFT JOIN t_user u ON d.`leader_id` = u.`ID`
+     LEFT JOIN t_user ur ON ur.`ID` = d.`reserved1`
      WHERE FIND_IN_SET(d.`id`,
      getDepartmentChild((SELECT d.`id` FROM t_department d WHERE d.`name`="部门树")))
      ORDER BY d.`sort`;

@@ -1,12 +1,10 @@
 package com.portjs.base.service;
 
+import com.portjs.base.entity.TStuff;
 import com.portjs.base.entity.TUser;
 import com.portjs.base.entity.TUserRole;
 import com.portjs.base.util.ResponseMessage;
-import com.portjs.base.vo.ArrayVO;
-import com.portjs.base.vo.PageVo;
-import com.portjs.base.vo.SortVo;
-import com.portjs.base.vo.UserRoleVO;
+import com.portjs.base.vo.*;
 
 import java.util.List;
 
@@ -77,6 +75,31 @@ public interface TUserService {
 
 
     ResponseMessage selectUserDepartments(PageVo pageVo);
+
+
+
+
+
+    /**
+     *  //////-------------------------------------------------------------一人多部门  （员工表)
+     */
+
+    /**
+     * 添加员工信息
+     * @param stuff
+     * @return
+     */
+    ResponseMessage insertSuffer(TStuff stuff);
+    /**
+     * 添加用工部门信息
+     * @param userRoleStuffDepartmentVO
+     * @return
+     */
+    ResponseMessage insertSufferDepartment(UserRoleStuffDepartmentVO userRoleStuffDepartmentVO);
+
+
+    ResponseMessage insertUserDepartmentsSuffer(UserRoleVO userRoleVO);
+
 
 
 

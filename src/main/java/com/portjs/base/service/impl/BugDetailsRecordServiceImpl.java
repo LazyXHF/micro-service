@@ -280,6 +280,7 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord1.setFileUrl(fileUrl);
             bugDetailsRecord1.setBackup1(backup1);//解决结果
             bugDetailsRecord1.setBackup2(backup2);//解决方法
+            bugDetailsRecord1.setBackup10(backup10);
             if(!StringUtils.isEmpty(isAgree)){
                 bugDetailsRecord1.setIsAgree(Integer.valueOf(isAgree));
             }
@@ -297,7 +298,7 @@ public class BugDetailsRecordServiceImpl implements BugDetailsRecordService {
             bugDetailsRecord.setRecordTime(new Date());
             bugDetailsRecord.setBugId(bugId);
             bugDetailsRecord.setStatus(0);//代表流程下一步的状态值
-            bugDetailsRecord.setBackup10(backup10);
+//            bugDetailsRecord.setBackup10(backup10);
                 bugDetailsRecord.setId(UUID.randomUUID().toString());
 
 

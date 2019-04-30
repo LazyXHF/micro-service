@@ -19,7 +19,10 @@ public class DepartmentTree {
     public String viceName;
     public List<DepartmentTree> children = new ArrayList<>();
     public List<TUser> users;
+//    public String reverse1;
 
+    public String viceDepartmentLeaderId;
+    public String viceDepartmentLeaderName;
     public int leaf;
 
     public DepartmentTree() {
@@ -36,6 +39,8 @@ public class DepartmentTree {
         fu_id = department.getViceLeaderId();
         users = department.getUserList();
         leadName = department.getLeaderName();
+        viceDepartmentLeaderId = department.getViceDepartmentLeaderId();
+        viceDepartmentLeaderName = department.getViceDepartmentLeaderName();
 //        viceName = department.getViceName();
     }
 

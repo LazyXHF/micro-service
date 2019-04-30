@@ -5,12 +5,14 @@ import com.portjs.base.dao.*;
 import com.portjs.base.entity.*;
 import com.portjs.base.service.ProjectMonthlyService;
 import com.portjs.base.util.Code;
+import com.portjs.base.util.DateUtils;
 import com.portjs.base.util.IDUtils;
 import com.portjs.base.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.unit.DataUnit;
 
 import java.util.*;
 
@@ -73,6 +75,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
             criteria.andMonthNumEqualTo(createTime);
             criteria.andProjectIdEqualTo(project.getId());
             List<ProjectMonthly> projectMonthlies = projectMonthlyMapper.selectByExample(example);
+
             if (projectMonthlies.size() != 0) {
                 for (ProjectMonthly projectMonthly : projectMonthlies) {
                     ProjectVo projectVo = new ProjectVo();
@@ -100,28 +103,59 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                 List<BusinessConfiguration> businessConfigurations = businessConfigurationMapper.selectBySchedule(project.getId());
                 for (BusinessConfiguration businessConfiguration : businessConfigurations) {
                     ProjectVo projectVo = new ProjectVo();
+                    Long Dms1 = Long.valueOf(0);
+                    Long Dms2 = Long.valueOf(0);
+                    Long Ems1 = Long.valueOf(0);
+                    Long Ems2 = Long.valueOf(0);
+                    Long Fms1 = Long.valueOf(0);
+                    Long Fms2 = Long.valueOf(0);
+
+
+
                     if ("D".equals(businessConfiguration.getProjectSchedule()) ||
                             "E".equals(businessConfiguration.getProjectSchedule()) ||
                             "F".equals(businessConfiguration.getProjectSchedule())) {
 
                         content += businessConfiguration.getContent();
-                        if ("D".equals(businessConfiguration.getProjectSchedule())) {
-                            projectV1.setPredictStarttime(businessConfiguration.getPredictStarttime());
+
+
+
+                        if ("F".equals(businessConfiguration.getProjectSchedule())) {
+//                            projectV1.setPredictStarttime(businessConfiguration.getPredictStarttime());
+
                         }
                         BusinessConfiguration Dconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
-                                "D");
-                        BusinessConfiguration Econfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
-                                "E");
-                        BusinessConfiguration Fconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
-                                "F");
-
-                        if (Econfiguration == null && Fconfiguration == null) {
-                            projectV1.setPridectEndtime(Dconfiguration.getPridectEndtime());
-                        } else if (Econfiguration != null && Fconfiguration == null) {
-                            projectV1.setPridectEndtime(Econfiguration.getPridectEndtime());
-                        } else if (Fconfiguration != null) {
-                            projectV1.setPridectEndtime(Fconfiguration.getPridectEndtime());
+                                businessConfiguration.getProjectSchedule());
+//                        BusinessConfiguration Econfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+//                                "E");
+//                        BusinessConfiguration Fconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+//                                "F");
+                        if ("D".equals(businessConfiguration.getProjectSchedule())){
+                            Dms1=Dconfiguration.getPredictStarttime().getTime();
+                            Dms2=Dconfiguration.getPridectEndtime().getTime();
+                        }else if ("E".equals(businessConfiguration.getProjectSchedule())){
+                            Ems1=Dconfiguration.getPredictStarttime().getTime();
+                            Ems2=Dconfiguration.getPridectEndtime().getTime();
+                        }else if ("F".equals(businessConfiguration.getProjectSchedule())){
+                            Fms1=Dconfiguration.getPredictStarttime().getTime();
+                            Fms2=Dconfiguration.getPridectEndtime().getTime();
+                            long minTime = getMinTime(Dms1,Ems1,Fms1);
+                            long maxTime = getMaxTime(Dms2,Ems2,Fms2);
+                            projectV1.setPredictStarttime(DateUtils.LongToDare(minTime));
+                            projectV1.setPridectEndtime(DateUtils.LongToDare(maxTime));
                         }
+
+//
+//                        if (Econfiguration == null && Fconfiguration == null) {
+//                            projectV1.setPridectEndtime(Dconfiguration.getPridectEndtime());
+//                        } else if (Econfiguration != null && Fconfiguration == null) {
+//                            projectV1.setPridectEndtime(Econfiguration.getPridectEndtime());
+//                        } else if (Fconfiguration != null) {
+//                            projectV1.setPridectEndtime(Fconfiguration.getPridectEndtime());
+//                        }
+
+
+
                         projectV1.setProjectName(project.getProjectName());
                         projectV1.setProjectId(project.getId());
                         projectV1.setProjectCode(project.getProjectCode());
@@ -147,8 +181,18 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                         projectVo.setStatus(project.getStatus());
                         map1.put(businessConfiguration.getProjectSchedule(), projectVo);
                     }
+
+
+
+
+
+
                 }
                 map.put(project.getProjectName(), map1);
+
+
+
+
             }
         }
         if (map.size() == 0) {
@@ -524,5 +568,33 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
             return new ResponseMessage(Code.CODE_ERROR, "暂无数据");
         }
         return new ResponseMessage(Code.CODE_OK, "查询成功", map);
+    }
+
+
+
+    public long getMaxTime(long t1,long t2,long t3){
+        long max = t1;
+        if (t1>=t2){
+            max = t1;
+        }else {
+            max = t2;
+        }
+        if (max <=t3){
+            max = t3;
+        }
+        return max;
+    }
+
+    public long getMinTime(long t1,long t2,long t3){
+        long min = t1;
+        if (t1<=t2){
+            min = t1;
+        }else {
+            min = t2;
+        }
+        if (min >=t3){
+            min = t3;
+        }
+        return min;
     }
 }

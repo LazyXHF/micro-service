@@ -1,6 +1,7 @@
 package com.portjs.base.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.stereotype.Component;
 
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
@@ -12,6 +13,7 @@ import java.util.Date;
  * 
  * @author gumingyang
  */
+
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 {
     public static String YYYY = "yyyy";
@@ -153,5 +155,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         // 计算差多少秒//输出结果
         // long sec = diff % nd % nh % nm / ns;
         return day + "天" + hour + "小时" + min + "分钟";
+    }
+
+
+    public static Date LongToDare(long str){
+        return new Date(str * 1000);
     }
 }

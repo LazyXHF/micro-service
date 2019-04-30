@@ -41,6 +41,29 @@ public class TDepartment implements Serializable {
 
     private String duty;
 
+
+    //分管领导id
+    private  String viceDepartmentLeaderId;
+
+    //分管领导name
+    private String viceDepartmentLeaderName;
+
+    public String getViceDepartmentLeaderId() {
+        return viceDepartmentLeaderId;
+    }
+
+    public void setViceDepartmentLeaderId(String viceDepartmentLeaderId) {
+        this.viceDepartmentLeaderId = viceDepartmentLeaderId;
+    }
+
+    public String getViceDepartmentLeaderName() {
+        return viceDepartmentLeaderName;
+    }
+
+    public void setViceDepartmentLeaderName(String viceDepartmentLeaderName) {
+        this.viceDepartmentLeaderName = viceDepartmentLeaderName;
+    }
+
     public String getDuty() {
         return duty;
     }
