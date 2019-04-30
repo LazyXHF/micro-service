@@ -89,19 +89,21 @@ public class ProjectUtils {
                 project.setSchedule(schedule);
                 project.setProjectStatus(buffer.toString());
                 String[] statuss = project.getProjectStatus().split(",");
-                for (String prostatus : statuss) {
-                    if ("3".equals(prostatus.substring(2, 3))) {
-                        project.setStatus("3");
-                        break;
-                    } else if ("0".equals(prostatus.substring(2, 3))) {
-                        project.setStatus("0");
-                        break;
-                    } else if ("2".equals(prostatus.substring(2, 3))) {
-                        project.setStatus("2");
-                    } else {
-                        project.setStatus("1");
-                    }
-                }
+                String s = statuss[statuss.length - 1];
+                project.setStatus(s.substring(2, 3));
+//                for (String prostatus : statuss) {
+//                    if ("3".equals(prostatus.substring(2, 3))) {
+//                        project.setStatus("3");
+//                        break;
+//                    } else if ("0".equals(prostatus.substring(2, 3))) {
+//                        project.setStatus("0");
+//                        break;
+//                    } else if ("2".equals(prostatus.substring(2, 3))) {
+//                        project.setStatus("2");
+//                    } else {
+//                        project.setStatus("1");
+//                    }
+//                }
                 projectMapper.updateByPrimaryKeySelective(project);
             }
             //如果变了，说明追加了用新的
@@ -110,19 +112,21 @@ public class ProjectUtils {
                 project.setSchedule(schedule);
                 project.setProjectStatus(buffer2.toString());
                 String[] statuss = project.getProjectStatus().split(",");
-                for (String prostatus : statuss) {
-                    if ("3".equals(prostatus.substring(2, 3))) {
-                        project.setStatus("3");
-                        break;
-                    } else if ("0".equals(prostatus.substring(2, 3))) {
-                        project.setStatus("0");
-                        break;
-                    } else if ("2".equals(prostatus.substring(2, 3))) {
-                        project.setStatus("2");
-                    } else {
-                        project.setStatus("1");
-                    }
-                }
+                String s = statuss[statuss.length - 1];
+                project.setStatus(s.substring(2, 3));
+//                for (String prostatus : statuss) {
+//                    if ("3".equals(prostatus.substring(2, 3))) {
+//                        project.setStatus("3");
+//                        break;
+//                    } else if ("0".equals(prostatus.substring(2, 3))) {
+//                        project.setStatus("0");
+//                        break;
+//                    } else if ("2".equals(prostatus.substring(2, 3))) {
+//                        project.setStatus("2");
+//                    } else {
+//                        project.setStatus("1");
+//                    }
+//                }
                 projectMapper.updateByPrimaryKeySelective(project);
             }
 
@@ -135,15 +139,18 @@ public class ProjectUtils {
         } else {
             project.setProjectCode(projectCode);
             project.setSchedule(schedule);
-            if ("3".equals(project.getProjectStatus().substring(2, 3))) {
-                project.setStatus("3");
-            } else if ("0".equals(project.getProjectStatus().substring(2, 3))) {
-                project.setStatus("0");
-            } else if ("2".equals(project.getProjectStatus().substring(2, 3))) {
-                project.setStatus("2");
-            } else {
-                project.setStatus("1");
-            }
+            String[] statuss = project.getProjectStatus().split(",");
+            String s = statuss[statuss.length - 1];
+            project.setStatus(s.substring(2, 3));
+//            if ("3".equals(project.getProjectStatus().substring(2, 3))) {
+//                project.setStatus("3");
+//            } else if ("0".equals(project.getProjectStatus().substring(2, 3))) {
+//                project.setStatus("0");
+//            } else if ("2".equals(project.getProjectStatus().substring(2, 3))) {
+//                project.setStatus("2");
+//            } else {
+//                project.setStatus("1");
+//            }
             projectMapper.updateByPrimaryKeySelective(project);
         }
     }

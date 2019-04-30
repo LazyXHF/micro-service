@@ -936,12 +936,10 @@
             <if test="id !=null and id!=''">
                 and a.id =#{id}
             </if>
-            <if test="createTime !=null and createTime!=''">
-               and a.create_time like "%" #{createTime} "%"
-            </if>
             <if test="creator !=null and creator!=''">
                and a.back_up1 = #{creator,jdbcType=VARCHAR}
             </if>
+            and status!=1
         </where>
         order by create_time desc
     </select>

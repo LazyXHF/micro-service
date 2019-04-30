@@ -42,12 +42,12 @@ public class ProjectMonthlyController extends BaseController {
     @RequestMapping("/insert_projectMonthly")
     public ResponseMessage insertProjectMonthly(@RequestBody List<ProjectMonthly> projectMonthlyList) {
         logger.debug("insertProjectMonthly()begin......" + projectMonthlyList);
-//        try {
+        try {
             return projectMonthlyService.insertProjectMonthly(projectMonthlyList);
-//        } catch (Exception e) {
-//            logger.error("select_BusinessConfiguration_ById()error....", e);
-//            throw new RuntimeException();
-//        }
+        } catch (Exception e) {
+            logger.error("select_BusinessConfiguration_ById()error....", e);
+            throw new RuntimeException();
+        }
     }
 
     //根据项目id查询里程碑

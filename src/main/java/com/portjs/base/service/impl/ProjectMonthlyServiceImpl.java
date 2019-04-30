@@ -130,8 +130,6 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
                             projectV1.setPredictStarttime(new Date(minTime));
                             projectV1.setPridectEndtime(new Date(maxTime));
                         }
-
-
                         projectV1.setProjectName(project.getProjectName());
                         projectV1.setProjectId(project.getId());
                         projectV1.setProjectCode(project.getProjectCode());
