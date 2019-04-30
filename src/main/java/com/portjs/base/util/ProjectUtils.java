@@ -90,7 +90,11 @@ public class ProjectUtils {
                 project.setProjectStatus(buffer.toString());
                 String[] statuss = project.getProjectStatus().split(",");
                 String s = statuss[statuss.length - 1];
-                project.setStatus(s.substring(2, 3));
+                if (!"1".equals(s.substring(2, 3))) {
+                    project.setStatus(s.substring(2, 3));
+                } else {
+                    project.setStatus("0");
+                }
 //                for (String prostatus : statuss) {
 //                    if ("3".equals(prostatus.substring(2, 3))) {
 //                        project.setStatus("3");
@@ -113,7 +117,11 @@ public class ProjectUtils {
                 project.setProjectStatus(buffer2.toString());
                 String[] statuss = project.getProjectStatus().split(",");
                 String s = statuss[statuss.length - 1];
-                project.setStatus(s.substring(2, 3));
+                if (!"1".equals(s.substring(2, 3))) {
+                    project.setStatus(s.substring(2, 3));
+                } else {
+                    project.setStatus("0");
+                }
 //                for (String prostatus : statuss) {
 //                    if ("3".equals(prostatus.substring(2, 3))) {
 //                        project.setStatus("3");
@@ -141,7 +149,13 @@ public class ProjectUtils {
             project.setSchedule(schedule);
             String[] statuss = project.getProjectStatus().split(",");
             String s = statuss[statuss.length - 1];
-            project.setStatus(s.substring(2, 3));
+            if (!"1".equals(s.substring(2, 3))) {
+                project.setStatus(s.substring(2, 3));
+            } else {
+                project.setStatus("0");
+            }
+
+
 //            if ("3".equals(project.getProjectStatus().substring(2, 3))) {
 //                project.setStatus("3");
 //            } else if ("0".equals(project.getProjectStatus().substring(2, 3))) {
