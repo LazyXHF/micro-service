@@ -62,7 +62,7 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
         for (TRole role : roles) {
             if(role.getRoleName().equals("项目经理")){
                 //判断传入时间是不是当前周
-                /*if(weekNum.equals(flag)){*/
+                if(weekNum.equals(flag)){
                     //则取project中数据
                     ProjectExample projectExample = new ProjectExample();
                     projectExample.setOrderByClause("create_time");
@@ -103,14 +103,14 @@ public class WeeklyAndMonthlyReportManagementImpl  implements WeeklyAndMonthlyRe
                         return new ResponseMessage(Code.CODE_OK,"查询成功",list);
                     }
                     return new ResponseMessage(Code.CODE_ERROR,"暂无数据");
-                /*}else {
+                }else {
                     //如果不是当前周则取weekly中数据
                     ProjectWeeklyExample weeklyExample = new ProjectWeeklyExample();
                     ProjectWeeklyExample.Criteria criteria = weeklyExample.createCriteria();
                     criteria.andWeekNumEqualTo(weekNum);
                     List<ProjectWeekly> projectWeeklies = weeklyMapper.selectByExample(weeklyExample);
                     return new ResponseMessage(Code.CODE_OK,"查询成功",projectWeeklies);
-                }*/
+                }
             }
         }
         return new ResponseMessage(Code.CODE_ERROR,"当前登录人无权限");
