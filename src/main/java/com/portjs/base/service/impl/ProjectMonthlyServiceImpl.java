@@ -75,7 +75,7 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
             Map<String, ProjectVo> map1 = new LinkedHashMap<>();
             ProjectVo projectV1 = new ProjectVo();
             String content = "";
-            List<ProjectMonthly> projectMonthlies = projectMonthlyMapper.selectByprojectManagerId(userId, createTime,
+            List<ProjectMonthly> projectMonthlies = projectMonthlyMapper.selectByprojectManagerId(userId,createTime,
                     project.getId());
 
             if (projectMonthlies.size() != 0) {
@@ -105,75 +105,61 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
             } else {
                 List<BusinessConfiguration> businessConfigurations =
                         businessConfigurationMapper.selectBySchedule(project.getId());
-                if (businessConfigurations.size() != 0) {
-                    for (BusinessConfiguration businessConfiguration : businessConfigurations) {
-                        ProjectVo projectVo = new ProjectVo();
-
-
-                        if ("D".equals(businessConfiguration.getProjectSchedule()) ||
-                                "E".equals(businessConfiguration.getProjectSchedule()) ||
-                                "F".equals(businessConfiguration.getProjectSchedule())) {
-
-                            content += businessConfiguration.getContent();
-
-                            BusinessConfiguration Dconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
-                                    businessConfiguration.getProjectSchedule());
-                            if ("D".equals(businessConfiguration.getProjectSchedule())) {
-                                Dms1 = Dconfiguration.getPredictStarttime().getTime();
-                                Dms2 = Dconfiguration.getPridectEndtime().getTime();
-                            } else if ("E".equals(businessConfiguration.getProjectSchedule())) {
-                                Ems1 = Dconfiguration.getPredictStarttime().getTime();
-                                Ems2 = Dconfiguration.getPridectEndtime().getTime();
-                            } else if ("F".equals(businessConfiguration.getProjectSchedule())) {
-                                Fms1 = Dconfiguration.getPredictStarttime().getTime();
-                                Fms2 = Dconfiguration.getPridectEndtime().getTime();
-                                long minTime = getMinTime(Dms1, Ems1, Fms1);
-                                long maxTime = getMaxTime(Dms2, Ems2, Fms2);
-                                projectV1.setPredictStarttime(new Date(minTime));
-                                projectV1.setPridectEndtime(new Date(maxTime));
-                            }
-                            projectV1.setProjectName(project.getProjectName());
-                            projectV1.setProjectId(project.getId());
-                            projectV1.setProjectCode(project.getProjectCode());
-                            projectV1.setProjectType(project.getProjectType());
-                            projectV1.setLeval(project.getLeval());
-                            projectV1.setProjectManager(project.getProjectManager());
-                            projectV1.setStatus(project.getStatus());
-                            projectV1.setProjectSchedule("项目建设");
-                            projectV1.setContent(content);
-                            projectV1.setProjectManagerId(project.getBackUp1());
-                            map1.put("项目建设", projectV1);
-                        } else {
-                            projectVo.setProjectName(project.getProjectName());
-                            projectVo.setProjectId(project.getId());
-                            projectVo.setProjectSchedule(businessConfiguration.getProjectSchedule());
-                            projectVo.setPredictStarttime(businessConfiguration.getPredictStarttime());
-                            projectVo.setPridectEndtime(businessConfiguration.getPridectEndtime());
-                            projectVo.setContent(businessConfiguration.getContent());
-//                projectVo.setSchedule(schedule);
-                            projectVo.setProjectCode(project.getProjectCode());
-                            projectVo.setProjectType(project.getProjectType());
-                            projectVo.setLeval(project.getLeval());
-                            projectVo.setProjectManager(project.getProjectManager());
-                            projectVo.setStatus(project.getStatus());
-                            projectVo.setProjectManagerId(project.getBackUp1());
-                            map1.put(businessConfiguration.getProjectSchedule(), projectVo);
-                        }
-                    }
-                    map.put(project.getProjectName(), map1);
-                } else {
+                for (BusinessConfiguration businessConfiguration : businessConfigurations) {
                     ProjectVo projectVo = new ProjectVo();
-                    projectVo.setProjectName(project.getProjectName());
-                    projectVo.setProjectId(project.getId());
-                    projectVo.setProjectCode(project.getProjectCode());
-                    projectVo.setProjectType(project.getProjectType());
-                    projectVo.setLeval(project.getLeval());
-                    projectVo.setProjectManager(project.getProjectManager());
-                    projectVo.setStatus(project.getStatus());
-                    projectVo.setProjectManagerId(project.getBackUp1());
-                    map1.put(project.getProjectName(), projectVo);
-                    map.put(project.getProjectName(), map1);
+
+
+                    if ("D".equals(businessConfiguration.getProjectSchedule()) ||
+                            "E".equals(businessConfiguration.getProjectSchedule()) ||
+                            "F".equals(businessConfiguration.getProjectSchedule())) {
+
+                        content += businessConfiguration.getContent();
+
+                        BusinessConfiguration Dconfiguration = businessConfigurationMapper.queryBySchedule(project.getId(),
+                                businessConfiguration.getProjectSchedule());
+                        if ("D".equals(businessConfiguration.getProjectSchedule())){
+                            Dms1=Dconfiguration.getPredictStarttime().getTime();
+                            Dms2=Dconfiguration.getPridectEndtime().getTime();
+                        }else if ("E".equals(businessConfiguration.getProjectSchedule())){
+                            Ems1=Dconfiguration.getPredictStarttime().getTime();
+                            Ems2=Dconfiguration.getPridectEndtime().getTime();
+                        }else if ("F".equals(businessConfiguration.getProjectSchedule())){
+                            Fms1=Dconfiguration.getPredictStarttime().getTime();
+                            Fms2=Dconfiguration.getPridectEndtime().getTime();
+                            long minTime = getMinTime(Dms1,Ems1,Fms1);
+                            long maxTime = getMaxTime(Dms2,Ems2,Fms2);
+                            projectV1.setPredictStarttime(new Date(minTime));
+                            projectV1.setPridectEndtime(new Date(maxTime));
+                        }
+                        projectV1.setProjectName(project.getProjectName());
+                        projectV1.setProjectId(project.getId());
+                        projectV1.setProjectCode(project.getProjectCode());
+                        projectV1.setProjectType(project.getProjectType());
+                        projectV1.setLeval(project.getLeval());
+                        projectV1.setProjectManager(project.getProjectManager());
+                        projectV1.setStatus(project.getStatus());
+                        projectV1.setProjectSchedule("项目建设");
+                        projectV1.setContent(content);
+                        projectV1.setProjectManagerId(project.getBackUp1());
+                        map1.put("项目建设", projectV1);
+                    } else {
+                        projectVo.setProjectName(project.getProjectName());
+                        projectVo.setProjectId(project.getId());
+                        projectVo.setProjectSchedule(businessConfiguration.getProjectSchedule());
+                        projectVo.setPredictStarttime(businessConfiguration.getPredictStarttime());
+                        projectVo.setPridectEndtime(businessConfiguration.getPridectEndtime());
+                        projectVo.setContent(businessConfiguration.getContent());
+//                projectVo.setSchedule(schedule);
+                        projectVo.setProjectCode(project.getProjectCode());
+                        projectVo.setProjectType(project.getProjectType());
+                        projectVo.setLeval(project.getLeval());
+                        projectVo.setProjectManager(project.getProjectManager());
+                        projectVo.setStatus(project.getStatus());
+                        projectVo.setProjectManagerId(project.getBackUp1());
+                        map1.put(businessConfiguration.getProjectSchedule(), projectVo);
+                    }
                 }
+                map.put(project.getProjectName(), map1);
 
             }
         }
@@ -365,27 +351,28 @@ public class ProjectMonthlyServiceImpl implements ProjectMonthlyService {
     }
 
 
-    public long getMaxTime(long t1, long t2, long t3) {
+
+    public long getMaxTime(long t1,long t2,long t3){
         long max = t1;
-        if (t1 >= t2) {
+        if (t1>=t2){
             max = t1;
-        } else {
+        }else {
             max = t2;
         }
-        if (max <= t3) {
+        if (max <=t3){
             max = t3;
         }
         return max;
     }
 
-    public long getMinTime(long t1, long t2, long t3) {
+    public long getMinTime(long t1,long t2,long t3){
         long min = t1;
-        if (t1 <= t2) {
+        if (t1<=t2){
             min = t1;
-        } else {
+        }else {
             min = t2;
         }
-        if (min >= t3) {
+        if (min >=t3){
             min = t3;
         }
         return min;
