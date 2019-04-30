@@ -47,7 +47,7 @@ public class ProjectUtils {
         }
         Project project = projectMapper.selectByPrimaryKey(projectId);
 
-        if (project.getProjectStatus() == null) {
+        if (project.getProjectStatus() == null || project.getProjectStatus().equals("")) {
             project.setProjectStatus(projectStatus);
         }
         if (projectMoney != null) {
