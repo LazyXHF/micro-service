@@ -886,8 +886,12 @@ public class ProjectApprovalServiceImpl implements ProjectApprovalService {
 			}
 			List<TDepartment> departments = user.getDepartments();
 			for (int i=0;i<departments.size();i++){
-				TUser tUser =tUserMapper.selectByPrimaryKey(departments.get(i).getReserved1());
-				listUser.add(tUser);
+				String ex = departments.get(i).getReserved1();
+				JSONArray array = JSONArray.parseArray(ex);
+				for (int k =0;k<array.size();k++) {
+					TUser tUser =tUserMapper.selectByPrimaryKey(array.get(i).toString());
+					listUser.add(tUser);
+				}
 			}
 		}else if("2".equals(status)&&("1").equals(type)){
 			//查询技术委员会
