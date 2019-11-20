@@ -1,21 +1,23 @@
-package the.flash.protocol;
+package cn.xu.netty.protocol;
 
+import cn.xu.netty.protocol.request.LoginRequestPacket;
+import cn.xu.netty.protocol.request.MessageRequestPacket;
+import cn.xu.netty.protocol.response.LoginResponsePacket;
+import cn.xu.netty.protocol.response.MessageResponsePacket;
+import cn.xu.netty.serialize.Serializer;
+import cn.xu.netty.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
-import the.flash.protocol.request.LoginRequestPacket;
-import the.flash.protocol.request.MessageRequestPacket;
-import the.flash.protocol.response.LoginResponsePacket;
-import the.flash.protocol.response.MessageResponsePacket;
-import the.flash.serialize.Serializer;
-import the.flash.serialize.impl.JSONSerializer;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static the.flash.protocol.command.Command.*;
+import static cn.xu.netty.protocol.command.Command.*;
+
 
 public class PacketCodeC {
 
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
     public static final PacketCodeC INSTANCE = new PacketCodeC();
 
     private final Map<Byte, Class<? extends Packet>> packetTypeMap;

@@ -1,4 +1,4 @@
-package the.flash.protocol.command;
+package cn.xu.netty.protocol.command;
 
 public interface Command {
 

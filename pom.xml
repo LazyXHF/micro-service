@@ -1,340 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.port.base</groupId>
-
-	<artifactId>base</artifactId>
-
-	<name>mgt</name>
-	<description>Demo project for Spring Boot</description>
-
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.0.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>2.1.7.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<groupId>com.portjs.base</groupId>
+	<artifactId>base</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>base</name>
+	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<spring-boot-admin.version>2.1.1</spring-boot-admin.version>
-		<spring-cloud.version>Greenwich.M1</spring-cloud.version>
-		<fastjson.version>1.2.8</fastjson.version>
-		<lang.version>3.6</lang.version>
-		<lombok.version>1.16.18</lombok.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-starter-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-		<!--</dependency>-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<!-- json -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>${fastjson.version}</version>
-		</dependency>
-
-		<!--json转换包-->
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk15</classifier>
-		</dependency>
-
-
-
-		<!-- logback -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<!-- 属性文件 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<!-- 配置 JPA依赖后，就会默认配置数据源，这些默认数据源主要是内存数据库，如：H2、hqldb和Derby等。如果需要自定义数据源、数据库，则需要采用依赖其他配置项 -->
-		<!-- Spring Boot 默认集成 Hibernate -->
-		<!-- 依赖该jar包后，Spring会自动创建一个JpaTranscationManager对象作为事务管理器 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency><!-- DBCP数据源。Spring默认绑定的是Tomcat数据源，而DBCP是我们希望使用的第三方数据源，此时只需要引入依赖即可 -->
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-dbcp2</artifactId>
-		</dependency>
-		<dependency><!-- mysql数据库 -->
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency><!-- session采用数据库存储（非redis存储） -->
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-jdbc</artifactId>
-		</dependency>
-		<dependency><!-- JDBC -->
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
-		<!--<dependency>&lt;!&ndash; Oracle &ndash;&gt;-->
-		<!--<groupId>com.oracle</groupId>-->
-		<!--<artifactId>ojdbc</artifactId>-->
-		<!--<version>7</version>-->
-		<!--</dependency>-->
-		<!-- 使用Mybatis操作数据库。MyBatis是基于一种SQL到POJO的模型，需要提供SQL、映射关系和POJO。当前的映射关系以XML为主 -->
-		<!-- MyBatis的配置文件包括两大部分，一是基础配置文件、一是映射文件 -->
-		<!-- 依赖该jar包后，Spring会自动创建一个DataSourceTranscationManager对象作为事务管理器 -->
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>1.3.2</version>
-		</dependency>
-
-		<!-- 引入Spring缓存依赖 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-cache</artifactId>
-		</dependency>
-
-		<!-- 使用 ehcache 缓存技术 -->
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!--文件上传下载功能-->
-		<!--  https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-		<!-- lang3 -->
-	<!--	<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.6</version>
-		</dependency>-->
-
-		<!-- start poi -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.10-FINAL</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.10-FINAL</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
-			<version>3.10-FINAL</version>
-		</dependency>
-		<!-- poi end -->
-		<dependency>
-			<groupId>com.github.yinjihuan</groupId>
-			<artifactId>spring-boot-starter-encrypt</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.belerweb</groupId>
-			<artifactId>pinyin4j</artifactId>
-			<version>2.5.0</version>
-		</dependency>
-		<!--alibaba 数据库驱动-->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.1.10</version>
-		</dependency>
-		<!--lombok支持-->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.16.20</version>
-		</dependency>
-
-		<!--  easypoi  -->
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-base</artifactId>
-			<version>3.0.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-web</artifactId>
-			<version>3.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.afterturn</groupId>
-			<artifactId>easypoi-annotation</artifactId>
-			<version>3.0.3</version>
-		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.8.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.8.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.8.1</version>
-		</dependency>-->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.8.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<!-- 特别注意版本问题, 看到评论以后得以纠正 -->
-			<version>1.2.3</version>
-		</dependency>
 	</dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>de.codecentric</groupId>
-				<artifactId>spring-boot-admin-dependencies</artifactId>
-				<version>${spring-boot-admin.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.portjs.base.BaseApplication</mainClass>
-					<layout>JAR</layout>
-				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.mybatis.generator</groupId>
-					<artifactId>mybatis-generator-maven-plugin</artifactId>
-					<version>1.3.5</version>
-					<configuration>
-						<!-- generator 工具配置文件的位置 -->
-						<configurationFile>src/main/resources/generator/generatorConfig.xml</configurationFile>
-						<verbose>true</verbose>
-						<overwrite>true</overwrite>
-					</configuration>
-
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	<!--	<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.yml</include>
-					<include>**/*.properties</include>
-					<include>**/*.xml</include>
-				</includes>
-				<filtering>false</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/*.yml</include>
-					<include>**/*.properties</include>
-					<include>**/*.xml</include>
-				</includes>
-				<filtering>false</filtering>
-			</resource>
-		</resources>-->
 	</build>
-
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-
-
 
 </project>

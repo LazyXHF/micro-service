@@ -1,9 +1,9 @@
-package the.flash.codec;
+package cn.xu.netty.codec;
 
+import cn.xu.netty.protocol.PacketCodeC;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import the.flash.protocol.PacketCodeC;
 
 public class Spliter extends LengthFieldBasedFrameDecoder {
     private static final int LENGTH_FIELD_OFFSET = 7;

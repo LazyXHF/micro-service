@@ -1,9 +1,9 @@
-package the.flash.codec;
+package cn.xu.netty.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import the.flash.protocol.PacketCodeC;
+import cn.xu.netty.protocol.PacketCodeC;
 
 import java.util.List;
 

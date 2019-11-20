@@ -1,15 +1,16 @@
-package the.flash.server;
+package cn.xu.netty.server;
 
+import cn.xu.netty.server.handler.AuthHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import the.flash.codec.PacketDecoder;
-import the.flash.codec.PacketEncoder;
-import the.flash.server.handler.LoginRequestHandler;
-import the.flash.server.handler.MessageRequestHandler;
+import cn.xu.netty.codec.PacketDecoder;
+import cn.xu.netty.codec.PacketEncoder;
+import cn.xu.netty.server.handler.LoginRequestHandler;
+import cn.xu.netty.server.handler.MessageRequestHandler;
 
 import java.util.Date;
 
@@ -32,6 +33,7 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) {
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

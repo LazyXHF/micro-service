@@ -1,9 +1,9 @@
-package the.flash.protocol.request;
+package cn.xu.netty.protocol.request;
 
 import lombok.Data;
-import the.flash.protocol.Packet;
+import cn.xu.netty.protocol.Packet;
 
-import static the.flash.protocol.command.Command.LOGIN_REQUEST;
+import static cn.xu.netty.protocol.command.Command.LOGIN_REQUEST;
 
 @Data
 public class LoginRequestPacket extends Packet {

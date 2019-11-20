@@ -1,14 +1,16 @@
-package the.flash.protocol.response;
+package cn.xu.netty.protocol.response;
 
 import lombok.Data;
-import the.flash.protocol.Packet;
+import cn.xu.netty.protocol.Packet;
 
-import static the.flash.protocol.command.Command.MESSAGE_RESPONSE;
+import static cn.xu.netty.protocol.command.Command.MESSAGE_RESPONSE;
 
 @Data
 public class MessageResponsePacket extends Packet {
 
     private String message;
+    private String formUserId;
+    private String FromUserName;
 
     @Override
     public Byte getCommand() {

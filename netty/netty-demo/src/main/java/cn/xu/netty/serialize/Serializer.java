@@ -1,6 +1,6 @@
-package the.flash.serialize;
+package cn.xu.netty.serialize;
 
-import the.flash.serialize.impl.JSONSerializer;
+import cn.xu.netty.serialize.impl.JSONSerializer;
 
 public interface Serializer {
 

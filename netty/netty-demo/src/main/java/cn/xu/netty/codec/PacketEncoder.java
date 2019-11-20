@@ -1,10 +1,10 @@
-package the.flash.codec;
+package cn.xu.netty.codec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import the.flash.protocol.Packet;
-import the.flash.protocol.PacketCodeC;
+import cn.xu.netty.protocol.Packet;
+import cn.xu.netty.protocol.PacketCodeC;
 
 public class PacketEncoder extends MessageToByteEncoder<Packet> {
 

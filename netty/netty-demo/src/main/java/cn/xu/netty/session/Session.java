@@ -1,4 +1,4 @@
-package the.flash.session;
+package cn.xu.netty.session;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

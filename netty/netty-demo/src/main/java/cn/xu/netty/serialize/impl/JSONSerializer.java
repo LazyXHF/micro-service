@@ -1,8 +1,8 @@
-package the.flash.serialize.impl;
+package cn.xu.netty.serialize.impl;
 
 import com.alibaba.fastjson.JSON;
-import the.flash.serialize.Serializer;
-import the.flash.serialize.SerializerAlogrithm;
+import cn.xu.netty.serialize.Serializer;
+import cn.xu.netty.serialize.SerializerAlogrithm;
 
 public class JSONSerializer implements Serializer {
 

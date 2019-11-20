@@ -1,4 +1,4 @@
-package the.flash.serialize;
+package cn.xu.netty.serialize;
 
 public interface SerializerAlogrithm {
     /**

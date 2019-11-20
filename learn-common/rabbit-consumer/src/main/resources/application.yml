@@ -1,0 +1,15 @@
+
+spring:
+  rabbitmq:
+  ####连接地址
+    host: 192.168.11.207
+   ####端口号
+    port: 5672
+   ####账号
+    username: user
+   ####密码
+    password: password
+   ### 地址
+    virtual-host: /
+server:
+  port: 8090
